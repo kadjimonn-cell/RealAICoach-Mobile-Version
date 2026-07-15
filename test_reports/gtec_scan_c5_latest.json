@@ -1,6 +1,6 @@
 {
-  "task_id": "gtec_c5_10c6dc4c5b56",
-  "execution_hash": "1fe6841e5feaaaa7",
+  "task_id": "gtec_c5_ddbb603c36ae",
+  "execution_hash": "1d274b42a7a8ad27",
   "status": "FAIL",
   "critical_vulns": 0,
   "high_vulns": 0,
@@ -21,7 +21,7 @@
     "high": 0,
     "medium": 3,
     "low": 0,
-    "info": 7
+    "info": 14
   },
   "sections": {
     "sast": {
@@ -54,7 +54,7 @@
         "low": 0,
         "info": 0
       },
-      "elapsed_ms": 6024,
+      "elapsed_ms": 5805,
       "theme_violations": 0
     },
     "dep": {
@@ -103,7 +103,7 @@
         "low": 0,
         "info": 3
       },
-      "elapsed_ms": 7344
+      "elapsed_ms": 7331
     },
     "dast": {
       "status": "PASS",
@@ -112,9 +112,18 @@
           "severity": "info",
           "category": "dast",
           "label": "public_api_auth_rate_limit_artifact",
-          "count": 4,
+          "count": 9,
           "detail": "Public-route auth/rate-limit API noise (401/429) on healthy pages; excluded from actionable defects.",
           "sample": [
+            {
+              "url": "/auth",
+              "apis": [
+                {
+                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/me",
+                  "status": 401
+                }
+              ]
+            },
             {
               "url": "/auth/register",
               "apis": [
@@ -132,13 +141,31 @@
                   "status": 401
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "severity": "info",
+          "category": "dast",
+          "label": "rate_limit_only_artifact",
+          "count": 2,
+          "detail": "Rows with 429-only API failures and rate-limit console noise on otherwise healthy pages; treated as transient edge artifacts.",
+          "sample": [
             {
               "url": "/mini-apps/music-streaming",
               "apis": [
                 {
-                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/me",
-                  "status": 401
+                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/config/v2-compliance/runtime",
+                  "status": 429
+                }
+              ]
+            },
+            {
+              "url": "/pricing",
+              "apis": [
+                {
+                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/vitals/page-optimizations",
+                  "status": 429
                 }
               ]
             }
@@ -150,20 +177,20 @@
         "high": 0,
         "medium": 0,
         "low": 0,
-        "info": 4
+        "info": 11
       },
-      "elapsed_ms": 92689,
+      "elapsed_ms": 91090,
       "crawler_totals": {
         "scans": 128,
-        "passing": 124,
-        "failing": 4,
+        "passing": 117,
+        "failing": 11,
         "routes_scanned": 128
       },
       "actionable_failures": 0,
-      "artifact_failures_ignored": 4,
+      "artifact_failures_ignored": 11,
       "responsiveness_status": "PASS",
       "performance_status": "PASS",
-      "performance_p50_ms": 582
+      "performance_p50_ms": 541
     },
     "acl": {
       "rbac_status": "PASS",
@@ -180,7 +207,7 @@
         "low": 0,
         "info": 0
       },
-      "elapsed_ms": 580
+      "elapsed_ms": 506
     },
     "i18n": {
       "status": "PASS",
@@ -236,7 +263,7 @@
         "low": 0,
         "info": 0
       },
-      "elapsed_ms": 380
+      "elapsed_ms": 674
     },
     "duplicate": {
       "status": "PASS",
@@ -249,7 +276,7 @@
         "info": 0
       },
       "scanned_files": 444,
-      "elapsed_ms": 94
+      "elapsed_ms": 91
     },
     "api_contract": {
       "status": "PASS",
@@ -277,12 +304,12 @@
       },
       "route_count": 3044,
       "admin_path_count": 516,
-      "elapsed_ms": 31
+      "elapsed_ms": 28
     }
   },
   "steps_skipped": [],
   "directive_version": "3ab3a705bf380cab",
-  "generated_at": "2026-07-15T20:13:02.826659+00:00",
+  "generated_at": "2026-07-15T23:30:48.297334+00:00",
   "v3_output": {
     "SYSTEM_STATUS": "FAIL",
     "SECURITY_STATUS": "FAIL",
@@ -296,7 +323,7 @@
     "LEARNING_MEMORY": "UPDATED",
     "CONFIDENCE_LEVEL": "LOW"
   },
-  "elapsed_ms": 100176,
+  "elapsed_ms": 98574,
   "triggered_by": "scheduler",
   "actor": "apscheduler",
   "attempt_tag": "initial",
@@ -339,7 +366,7 @@
               "error": null
             }
           ],
-          "checked_at": "2026-07-15T20:11:19.589402+00:00"
+          "checked_at": "2026-07-15T23:29:06.990595+00:00"
         }
       },
       {
@@ -370,7 +397,7 @@
               "error": null
             }
           ],
-          "checked_at": "2026-07-15T20:11:21.241658+00:00"
+          "checked_at": "2026-07-15T23:29:08.363301+00:00"
         }
       },
       {
@@ -401,13 +428,13 @@
               "error": null
             }
           ],
-          "checked_at": "2026-07-15T20:11:22.648047+00:00"
+          "checked_at": "2026-07-15T23:29:09.714702+00:00"
         }
       }
     ],
     "require_external_preview": true,
     "require_local_backend": true,
-    "checked_at": "2026-07-15T20:11:22.648076+00:00"
+    "checked_at": "2026-07-15T23:29:09.714726+00:00"
   },
   "preflight_policy": {
     "require_external_preview": true,
@@ -445,7 +472,7 @@
   "incident_auto_closure": {
     "evaluated_incidents": 12,
     "active_finding_keys": 2,
-    "transitioned_to_pending_verification": 3,
+    "transitioned_to_pending_verification": 0,
     "auto_closed": 4,
     "reopened": 0,
     "streak_resets": 0,
@@ -453,31 +480,31 @@
       "clean_rescans_required": 3,
       "pending_verification_hours": 24
     },
-    "evaluated_at": "2026-07-15T20:13:02.837301+00:00"
+    "evaluated_at": "2026-07-15T23:30:48.332002+00:00"
   },
   "c5_notification_snapshot": {
     "snapshot_version": "c5-notification-snapshot.v2",
-    "source_task_id": "gtec_c5_10c6dc4c5b56",
-    "source_execution_hash": "1fe6841e5feaaaa7",
-    "source_generated_at": "2026-07-15T20:13:02.826659+00:00",
+    "source_task_id": "gtec_c5_ddbb603c36ae",
+    "source_execution_hash": "1d274b42a7a8ad27",
+    "source_generated_at": "2026-07-15T23:30:48.297334+00:00",
     "global_binding": {
       "bound_to_latest_trust_task": false,
-      "latest_trust_task_id": "gtec_c5_1af18876de66"
+      "latest_trust_task_id": "gtec_c5_10c6dc4c5b56"
     },
     "trust": {
       "score_percent": 100.0,
       "passed_gates": 9,
       "total_gates": 9,
-      "generated_at": "2026-07-15T20:13:02.887349+00:00"
+      "generated_at": "2026-07-15T23:30:50.783721+00:00"
     },
     "white_screen_sentry": {
       "status": "FAIL",
-      "run_id": "wss_20260715T200252Z",
-      "failed_checks": 6,
+      "run_id": "wss_20260715T232424Z",
+      "failed_checks": 5,
       "total_checks": 60,
       "routes_tested": 20,
       "route_source": "dynamic_inventory",
-      "generated_at": "2026-07-15T20:04:26.605499+00:00"
+      "generated_at": "2026-07-15T23:25:55.926230+00:00"
     },
     "responsive_viewport_matrix": {
       "artifact_count": 60,
@@ -488,8 +515,8 @@
       ],
       "matrix_summary": {
         "mobile": {
-          "pass": 18,
-          "fail": 2,
+          "pass": 19,
+          "fail": 1,
           "total": 20
         },
         "tablet": {
@@ -517,7 +544,7 @@
     },
     "incident_auto_closure": {
       "evaluated_incidents": 12,
-      "transitioned_to_pending_verification": 3,
+      "transitioned_to_pending_verification": 0,
       "auto_closed": 4,
       "reopened": 0,
       "streak_resets": 0,
@@ -525,7 +552,7 @@
         "clean_rescans_required": 3,
         "pending_verification_hours": 24
       },
-      "evaluated_at": "2026-07-15T20:13:02.837301+00:00"
+      "evaluated_at": "2026-07-15T23:30:48.332002+00:00"
     },
     "run_policy": {
       "scan_mode": "STRICT_GLOBAL",
@@ -535,8 +562,8 @@
       "preflight_require_external_preview": true,
       "preflight_require_local_backend": true
     },
-    "generated_at": "2026-07-15T20:13:02.924596+00:00",
-    "fail_reason_summary": "FAIL because: security_scan=FAIL; white_screen_sentry=6/60 failed",
+    "generated_at": "2026-07-15T23:30:50.843438+00:00",
+    "fail_reason_summary": "FAIL because: security_scan=FAIL; white_screen_sentry=5/60 failed",
     "snapshot_status": "COMPLETE",
     "data_freshness": "STALE_OR_PARTIAL",
     "consistency": {
@@ -548,7 +575,7 @@
   },
   "canonical_model_write": {
     "execution_graph_written": true,
-    "finding_catalog_rows": 6,
+    "finding_catalog_rows": 7,
     "remediation_plans_updated": 2,
     "canonical_incidents_synced": 106,
     "policy_store_written": true
