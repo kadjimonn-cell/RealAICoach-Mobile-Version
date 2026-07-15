@@ -373,3 +373,8 @@ KNOWN NOISE (pre-existing, non-blocking): /api/auth/me 401/403 console noise bef
 - FIX: symlink removed, real objects dir recreated, stale index/refs/logs cleared, fresh initial commit eae27c9 (13,367 files, 189MB pack, largest file 9.8MB). Old local history unrecoverable (user accepted).
 - RULE: NEVER symlink .git contents to /tmp.
 - Verified: testing_agent iteration_921 (100% — fsck clean, commit-ability, content sanity, services regression).
+
+## 2026-07-16 — Disk Cleanup + Artifact Retention
+- Reclaimed ~500MB (86% → 81%): pruned gtec_c5_viewport_matrix sentry artifacts (396MB, 140 runs → 10), removed frontend/build (regenerable), __pycache__, stale root logs, junk ANSI-named dirs.
+- Added retention to gtec_white_screen_sentry.py (_prune_artifact_runs keep=10 after each run) — prevents future disk exhaustion (the original cause of the /tmp git hack).
+- Committed as ab08007; platform auto-commits confirmed working again.
