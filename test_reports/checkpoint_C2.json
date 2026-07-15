@@ -1,0 +1,22 @@
+{
+  "checkpoint": "C2",
+  "goal": "Completeness-aware GPS health contract",
+  "health_ready": true,
+  "health_mode": "live",
+  "completeness": {
+    "plans_count": 3,
+    "faq_count": 3,
+    "missing_plan_ids": [],
+    "plan_ids": [
+      "basic",
+      "free",
+      "premium"
+    ],
+    "is_complete": true
+  },
+  "state_counts": {
+    "features": 6,
+    "plans": 3,
+    "faq": 3
+  }
+}

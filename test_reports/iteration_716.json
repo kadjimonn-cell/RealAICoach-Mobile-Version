@@ -1,0 +1,104 @@
+{
+  "summary": "Verified Welcome footer disclaimer card layout fix at compact mobile widths (320/390/430). The Learn more link now stays fully inside the disclaimer card bounds with healthy spacing from the copyright/address bottom bar. All critical metrics pass: learnInsideCard=true, learnGapToBottomBar>=27px, shellGap>=12px, no horizontal overflow, disclaimer text centered, footer centered.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/frontend/e2e/welcome-visual-regression.spec.ts"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "The fix in EnterpriseAIDisclaimer.tsx correctly uses explicit flexGrow/flexShrink/flexBasis rules instead of flex: 0 for centered mode, preventing the inner wrapper from collapsing to zero height"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (skipped)",
+    "frontend": "100%"
+  },
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Footer disclaimer fix verified. The e2e test 'mobile footer disclaimer keeps Learn more above the bottom bar' passes on all device types (mobile/tablet/desktop). Key metrics at 390px: learnInsideCard=true, learnGapToCardBottom=23px, shellGap=24px, learnGapToBottomBar=47px. The responsive contract test has a pre-existing issue with missing data-testid on column elements (footer-section-*-column pattern not found), but this is unrelated to the disclaimer fix.",
+  "verification_results": {
+    "mobile_320": {
+      "learnInsideCard": true,
+      "learnGapToCardBottom": 23,
+      "shellGap": 24,
+      "learnGapToBottomBar": 47,
+      "innerWrapperHeight": 17,
+      "horizontalOverflow": false,
+      "disclaimerTextAlign": "center",
+      "footerJustify": "center",
+      "status": "PASS"
+    },
+    "mobile_390": {
+      "learnInsideCard": true,
+      "learnGapToCardBottom": 23,
+      "shellGap": 24,
+      "learnGapToBottomBar": 47,
+      "innerWrapperHeight": 17,
+      "horizontalOverflow": false,
+      "disclaimerTextAlign": "center",
+      "footerJustify": "center",
+      "status": "PASS"
+    },
+    "mobile_430": {
+      "learnInsideCard": true,
+      "learnGapToCardBottom": 19,
+      "shellGap": 24,
+      "learnGapToBottomBar": 43,
+      "innerWrapperHeight": 17,
+      "horizontalOverflow": false,
+      "disclaimerTextAlign": "center",
+      "footerJustify": "center",
+      "status": "PASS"
+    },
+    "tablet_768": {
+      "learnInsideCard": true,
+      "learnGapToCardBottom": 19,
+      "shellGap": 16,
+      "learnGapToBottomBar": 35,
+      "horizontalOverflow": false,
+      "disclaimerTextAlign": "center",
+      "footerJustify": "center",
+      "status": "PASS"
+    },
+    "desktop_1180": {
+      "learnInsideCard": true,
+      "learnGapToCardBottom": 15,
+      "shellGap": 12,
+      "learnGapToBottomBar": 27,
+      "horizontalOverflow": false,
+      "disclaimerTextAlign": "center",
+      "footerJustify": "center",
+      "status": "PASS"
+    },
+    "desktop_1440": {
+      "learnInsideCard": true,
+      "learnGapToCardBottom": 15,
+      "shellGap": 12,
+      "learnGapToBottomBar": 27,
+      "horizontalOverflow": false,
+      "disclaimerTextAlign": "center",
+      "footerJustify": "center",
+      "status": "PASS"
+    }
+  },
+  "e2e_test_results": {
+    "mobile_footer_disclaimer_test": "PASS (3/3 device types)",
+    "learn_more_modal_functionality": "PASS - Modal opens and closes correctly"
+  },
+  "fix_verification": {
+    "root_cause_addressed": "Yes - inner wrapper no longer collapses to zero height on compact widths",
+    "learn_more_inside_card": "Yes - all viewports show learnInsideCard=true",
+    "healthy_spacing_from_bottom_bar": "Yes - minimum 27px gap at all viewports (requirement was >=8px)",
+    "no_horizontal_overflow": "Yes - all viewports pass",
+    "theme_compliance": "Yes - disclaimer text centered, footer centered, section titles centered"
+  }
+}

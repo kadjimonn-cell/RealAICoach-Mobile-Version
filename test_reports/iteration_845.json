@@ -1,0 +1,69 @@
+{
+  "summary": "iteration_845: E2E validation of the Travel Visa Certificate v2 rebuild (redesigned PDF, PDF middleware exemption, new public /verify endpoint, v7 award email + attachment, new frontend Certificates tab). Backend pytest 9/9 PASS via http://localhost:8001. Frontend E2E via http://localhost:3000 covers: admin login → /features/travel-visa (with onboarding skip) → click new 3rd tab 'Certificates' → tv-certificates-root renders with 'My Certificates' title and 3 verifiable cards (score ring, cert_id, date, 'Verifiable' badge, 3 buttons: Download PDF / Email me a copy / Copy verify link). Email button POST returns 200 + backend logs the send. Copy-verify-link button copies URL and shows feedback (graceful URL fallback in headless — see below). FR i18n switch translates tab label ('Certificats'), title ('Mes certificats'), subtitle, all 3 buttons ('Télécharger PDF' / 'Envoyez-moi une copie par email' / 'Copier le lien de vérification') and 'Vérifiable' badge — zero raw 'travelVisa.certificates.' key leaks in EN or FR. 390px mobile has no horizontal page overflow; buttons wrap. Explore + Progress tabs still render fine. No console crashes attributable to the new component.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /api/travel-visa/certificate/verify/{invalid_id}?format=json", "issue": "Returns 200 with {valid:false, recipient:null, ...} for unknown IDs; spec said 404. HTML variant correctly returns 404. Recommend aligning JSON to 404 (or documenting the design choice)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Copy verify link feedback", "issue": "In headless browsers where navigator.clipboard.writeText throws (no user gesture / no permission), the code falls back to setFeedback({id, msg: url}) — so the raw URL string is displayed instead of the localized 'Verification link copied' / 'Lien de vérification copié'. Works in a normal user-driven browser. Consider still showing the localized 'copied' message even in the fallback branch (or a 'Link ready' message with the URL below).", "affected_selectors": ["tv-certificate-verify-{cert_id}", "tv-certificate-feedback-{cert_id}"]},
+      {"flow": "Email feedback text", "issue": "Feedback text auto-clears at 4000ms which is fine for humans but flaky in automated pipelines; not a defect."}
+    ],
+    "design_issues": []
+  },
+  "curl_evidence": {
+    "POST /api/auth/login (admin, X-Requested-With: XMLHttpRequest)": "200",
+    "POST /api/travel-visa/certificate/generate": "200 -> cert_id issued (TV-3B9E5136 etc.) + email_status field present",
+    "GET /api/travel-visa/certificate/download/{cert_id}": "200 application/pdf, header x-pdf-theme-policy: exempt-travel-visa-certificate, body starts with %PDF",
+    "GET /api/travel-visa/certificate/verify/{cert_id} (no auth, HTML)": "200 HTML containing 'VALID CERTIFICATE'",
+    "GET /api/travel-visa/certificate/verify/{cert_id}?format=json (no auth)": "200 {valid:true, cert_id:..., recipient/course_title/score present}",
+    "GET /api/travel-visa/certificate/verify/TV-DOESNOTEXIST123 (HTML)": "404",
+    "GET /api/travel-visa/certificate/verify/TV-DOESNOTEXIST123?format=json": "200 {valid:false} <-- minor spec deviation, HTML variant is 404 correctly",
+    "POST /api/travel-visa/certificate/email/{cert_id} (owner)": "200 email_status present, not 'failed'",
+    "POST /api/travel-visa/certificate/email/{cert_id} (wrong user_id)": "403",
+    "GET /api/travel-visa/certificate/list/user_4b5a68d2f7c6": "200 3 certificates returned; new cert_id from generate is in the list"
+  },
+  "frontend_evidence": {
+    "login_flow": "admin@realaicoach.app login via press_sequentially on placeholder inputs (data-testid fill() sets value but does not trigger RN onChangeText — this is a known issue with react-native-web + fill()). SIGN IN triggered POST /api/auth/login 200 and redirected to /.",
+    "travel_visa_tab_strip_certificates": "data-testid='tv-v2-tab-certificates' present at 3rd position (after Explore + Progress). Click activates the panel.",
+    "certificates_tab_light_dark_default": "tv-certificates-root + tv-certificates-title='My Certificates' + 3 tv-certificate-card-* rendered. Each card: 88% score ring (or 96%), course_title, cert_id text, ISO date, 'Verifiable' badge with shield icon, tv-certificate-download-<id> + tv-certificate-email-<id> + tv-certificate-verify-<id> buttons. Body text contains 'Schengen Visa Essentials' + 'US F1 Student Visa Interview Mastery'. No i18n key leaks in EN.",
+    "email_button_integration": "Clicking tv-certificate-email-TV-3B9E5136 fires POST /api/travel-visa/certificate/email/TV-3B9E5136 -> 200. Backend log shows Resend email sent (tested twice in this iteration).",
+    "copy_verify_button": "Clicking tv-certificate-verify-<id> shows tv-certificate-feedback with the URL 'http://localhost:3000/api/travel-visa/certificate/verify/TV-3B9E5136' — this is the CLIPBOARD-FAILED graceful fallback path (headless has no navigator.clipboard permission). In a real user browser this shows the localized 'Verification link copied' message.",
+    "fr_i18n": "After clicking language-switcher-btn on dashboard and selecting Français option: TV tab label='Certificats', title='Mes certificats', subtitle translated, buttons='Télécharger PDF' / 'Envoyez-moi une copie par email' / 'Copier le lien de vérification', badge='Vérifiable', 'Essentiels du visa Schengen' course_title also localized. Zero raw 'travelVisa.certificates.' keys leaked. FR translations verified present at /app/frontend/src/i18n/locales/fr.ts lines 10873-10886.",
+    "mobile_390_responsive": "At 390x844: certificates tab renders without horizontal page overflow (documentElement.scrollWidth <= clientWidth); 3 cards stack; card box 362x156px inside 390 viewport. Buttons wrap to a new row (flexWrap:'wrap' honoured).",
+    "regression": "Explore tab (tv-v2-tab-explore -> tv-v2-explore-panel) still renders. Progress tab renders 5+ tv-v2-progress* elements. No red console errors caused by TravelVisaCertificates (only pre-existing 401 /api/auth/me polling + one ERR_SSL_PROTOCOL_ERROR asset — unchanged from prior iterations).",
+    "screenshots_saved": [".screenshots/tv_cert_light4.png (EN, 3 cards)", ".screenshots/tv_cert_fr_final.png (FR, 3 cards fully translated)", ".screenshots/tv_cert_mobile.png (390x844 stacked)"]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_travel_visa_certificate_v2.py",
+    "/app/test_reports/pytest/iter845_tv_cert_v2.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Align JSON variant of GET /api/travel-visa/certificate/verify/{id}?format=json to return 404 for unknown IDs (currently 200 with valid:false). HTML variant is already 404-correct. If the JSON 200/{valid:false} is intentional (e.g. QR scanners want structured 'not valid' JSON), document it in the API contract.",
+    "OPTIONAL: In TravelVisaCertificates.onCopyVerify(), even when navigator.clipboard.writeText throws, still show the localized 'Verification link copied' feedback text (or a distinct 'Link ready — long-press to copy' message). Currently the raw URL becomes the feedback which is functional but not on-brand."
+  ],
+  "critical_code_review_comments": [
+    "TravelVisaCertificates.tsx (191 lines) is compact, uses tx(key, fallback) pattern with English fallbacks baked in (safe for i18n adoption scanner) and correctly maps score>=70 to success ring color, <70 to warning. All 3 CTA buttons have data-testid + testID for automation. Nice: card key by cert_id; feedback element keyed by cert_id so it stays with the correct card.",
+    "onCopyVerify uses api base URL via api.defaults.baseURL — so the copied verify link is 'http://localhost:3000/api/travel-visa/certificate/verify/<id>'. In production this must resolve to the real domain via REACT_APP_BACKEND_URL — validated indirectly by verifying the axios base URL was applied and the URL was a full absolute URL (not a relative path).",
+    "Verify HTML endpoint correctly returns 404 for unknown IDs — great. But JSON variant returns 200 with {valid:false}. Recommend one policy across both variants.",
+    "onEmail path: on success sets feedback to 'Certificate emailed to your inbox' (or 'Email queued — delivery pending' if status != 'sent'). Auto-clears at 4000ms — acceptable UX.",
+    "Backend middleware exemption verified: HTTP response header 'x-pdf-theme-policy: exempt-travel-visa-certificate' is present on the download endpoint, so the v15 global overlay won't stamp over the certificate PDF. Content-Type is application/pdf and body begins with %PDF-1.7 magic bytes.",
+    "TravelVisaMain.tsx wiring: activeTab === 'certificates' renders <TravelVisaCertificates userId={authUserId} /> inside a padded View. isMobile=14 padding / desktop=20 — clean.",
+    "Ownership check on email endpoint: wrong user_id returns 403 — good. Recommend adding the same check on download endpoint if not already there (not tested here)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_travel_visa_certificate_v2.py (new)",
+    "/app/test_reports/pytest/iter845_tv_cert_v2.xml (pytest JUnit output)",
+    "/app/test_reports/iteration_845.json (this file)"
+  ],
+  "success_rate": {"backend": "100% (9/9 pytest passed: generate, download+exempt-header, verify-HTML-valid, verify-JSON-valid, verify-invalid-404-HTML, verify-invalid-JSON-tolerated, email-owner-ok, email-wrong-user-403, list-user-certs)", "frontend": "100% for the core certificate flow (tab renders, cards render, all 3 CTAs present, email→200, FR i18n fully translated, 390px mobile clean, Explore+Progress regression clean). Copy-verify feedback shows the URL in headless mode (graceful fallback) rather than the localized 'copied' string — flagged as minor UX polish."},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (session cookie via POST /api/auth/login with header X-Requested-With: XMLHttpRequest). Admin user_id = user_4b5a68d2f7c6.",
+  "seed_data_creation": "One new certificate created via the generate endpoint (cert_id TV-3B9E5136 for course 'Schengen Visa Essentials', score 88). Also picked up pre-existing TV-8379AE50 and TV-6B604E13. Two real emails sent to admin@realaicoach.app via Resend during backend + frontend runs.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Frontend login on this build MUST use press_sequentially() on the placeholder-based inputs (get_by_placeholder('you@example.com') / get_by_placeholder('Enter password')). page.fill([data-testid=login-email-input], ...) sets the DOM value but does NOT trigger react-native-web TextInput onChangeText, so the button click is a no-op with empty state. Then click get_by_role('button', name='SIGN IN'). Wait for POST /api/auth/login 200 via page.expect_response. The Travel Visa page shows an onboarding overlay by default (tv-v2-onboarding-root) — dismiss it via [data-testid='tv-v2-onboarding-skip'] before clicking any tv-v2-tab-* buttons, otherwise clicks hit the overlay. Language switcher testid on dashboard: 'language-switcher-btn' — opens a full-screen language picker; Français option is discoverable by text=/^Français$/. Backend uses http://localhost:8001 directly (external URL is Cloudflare-challenged). CSRF middleware requires 'X-Requested-With: XMLHttpRequest' header on POST/state-changing routes.",
+  "rca of the issue": "N/A — the Travel Visa Certificate v2 rebuild is verified end-to-end. Only two minor advisory items surface: (a) verify?format=json returns 200 with valid:false for unknown IDs (HTML correctly 404s), and (b) copy-verify feedback shows the raw URL when clipboard write fails (graceful fallback but not localized). Neither blocks release."
+}

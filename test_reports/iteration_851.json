@@ -1,0 +1,55 @@
+{
+  "summary": "Independent verification of HomeHero mobile responsiveness fix (HomeHero.tsx flex ratios + CTA flexDirection now isDesktop-only). All three defects resolved on mobile 390x844; tablet 768x1024 correctly renders stacked; desktop 1920x800 unchanged (two-column side-by-side layout preserved).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verification_matrix": {
+    "mobile_390x844": {
+      "cta_start_journey_left": 33, "cta_start_journey_right": 357, "winW": 390,
+      "cta_explore_tools_left": 33, "cta_explore_tools_right": 357,
+      "ctas_stacked_vertically": true, "ctas_both_fully_inside_viewport": true,
+      "hero_stats_grid_bottom": 1337, "left_col_parent_bottom": 1337, "dead_space_left_col_px": 0,
+      "momentum_scroll_minus_client_height": 0, "momentum_parent_scroll_minus_client_height": 0,
+      "momentum_steps_0_1_2_all_inside_card": true,
+      "document_scrollWidth_minus_innerWidth": 0,
+      "pulse_signals_present": true,
+      "enterprise_command_deck_below_hero": "found (data-testid=home-command-deck)",
+      "cta_start_journey_click_navigation": "https://.../ -> https://.../feature-gallery (works)",
+      "language_of_ui": "French (admin locale) - data-testid selectors language-agnostic"
+    },
+    "tablet_768x1024": {
+      "ctas_stacked_vertically": true, "cta1_fully_inside": true, "cta2_fully_inside": true,
+      "dead_space_left_col_px": 0, "momentum_clipped": 0, "momentum_parent_clipped": 0,
+      "steps_all_inside": true, "horizontal_overflow": 0,
+      "layout": "stacked column (left col top=522, right col top=952) - correct since isDesktop threshold is >=1024"
+    },
+    "desktop_1920x800": {
+      "ctas_inline_side_by_side": true, "cta1_fully_inside": true, "cta2_fully_inside": true,
+      "layout": "two columns side by side (leftColTop=507 == rightColTop=507)",
+      "momentum_clipped": 0, "momentum_parent_clipped": 0, "steps_all_inside": true,
+      "horizontal_overflow": 0,
+      "dead_space_left_col_px": 171,
+      "dead_space_desktop_note": "PRE-EXISTING flexbox stretch artifact: right column (Today Pulse + Momentum) is naturally taller than left column (title+CTAs+stats); left column's flex parent stretches to match tallest sibling, leaving space below stats. This is NOT introduced by the fix — the isDesktop path retains the same flex ratios (1.35/1.15 and 0.92) as before. Desktop layout unchanged per mandate."
+    }
+  },
+  "test_report_links": [
+    "/app/test_reports/mobile_390.png",
+    "/app/test_reports/tablet_768_v2.png",
+    "/app/test_reports/desktop_1920_v2.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix in HomeHero.tsx is minimal and surgical: (a) left column flex only when isDesktop, (b) right column flex only when isDesktop, (c) CTA row flexDirection = isDesktop ? 'row' : 'column'. No side-effects on desktop path.",
+    "Optional future enhancement: on desktop the left column has ~171px trailing space below stats grid because right column is taller. If product wants zero dead space at all breakpoints, consider justifyContent:'space-between' on left column or align-items:'flex-start' on the flex row — but this is a separate pre-existing behavior, not part of the current fix mandate."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only)", "frontend": "100%"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (login redirects to /dashboard then home hero at /)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "HomeHero mobile responsive fix verified across mobile 390, tablet 768, desktop 1920. UI renders in French for admin account but data-testid selectors are language-agnostic. Use window.location.href assignment (not page.goto) for reliable route navigation after SPA route changes to avoid client-side router cache. Login can take ~5s to redirect; polls page.url."
+}

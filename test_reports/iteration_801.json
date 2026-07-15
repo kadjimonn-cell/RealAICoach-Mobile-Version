@@ -1,0 +1,52 @@
+{
+  "summary": "Iteration 801 — Home Dashboard rebuild verification (Activity Pulse + Powerful Features). Backend contract: 7/7 pytest assertions PASS (safe allowlist, no banned phrases, dedupe ≤2 per type, enriched fields, FR localization, auth cookie flow). Frontend Activity Pulse component mounted with header, kicker, today count, all 5 filter chips, and empty-state (heavy 429/403 rate-limiting during automation session prevented items from rendering; backend feed returned items to pytest, so this is an env/rate-limit artifact — see 'context_for_next_testing_agent'). Powerful Features section renders 6 distinct cards (ai-writer, ai-chatbot, ai-search, ai-automations, ai-cognitive, school-tutor) with unique icons/colors, real descriptions (NO 'capability.' placeholder found), category chip ('platform'), plan chip ('Inclus'), 'Ouvert →' CTA, and features-view-all link. Card click navigates (ai-writer → /subscription/plans upgrade redirect; feature is basic_required for free plan). FR/dark theme rendered correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "HomeFeatureHighlights (plan chip)",
+        "issue": "Plan chip shows 'Inclus' (Included) for free users on features that actually require Basic/Premium — e.g., ai-writer displays 'Inclus' chip but clicking it redirects to /subscription/plans?upgrade_reason=basic_required&recommended_plan=basic. Frontend only marks 'Premium' when availability==='premium' and treats any non-premium as 'Included'; basic-gated features fall through to 'Included' incorrectly.",
+        "selector": "[data-testid='feature-card-plan-ai-writer']",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Activity Pulse live feed rendering",
+        "issue": "During automation session home-pulse-list rendered zero items (home-pulse-empty visible) despite backend returning defaults — API session hit repeated HTTP 429 (rate-limited) and one 403 after login on multiple non-cached endpoints, likely throttling /home/activity-feed too. This is environmental (Cloudflare/rate limit) not a code bug — pytest against the same endpoint from a fresh HTTP session succeeds with 6 items every time.",
+        "affected_selectors": ["[data-testid='home-pulse-list']", "[data-testid='home-pulse-empty']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter801_home_activity_pulse_backend.py",
+    "/app/test_reports/pytest/iter801_backend.xml"
+  ],
+  "action_items": [
+    "MEDIUM — In HomeFeatureHighlights.tsx (line ~71), replace `premium: String(f.availability || 'all') === 'premium'` with a proper tri-state (included / basic / premium) so basic-gated features show 'Basic' chip instead of 'Included' for free users. Prevents user confusion when clicking an 'Included' card redirects to an upgrade page.",
+    "LOW — Consider surfacing a lightweight optimistic client-side fallback (default items) in HomeActivityPulse if the /home/activity-feed request is throttled/errors — current empty-state message appears when the browser session gets rate-limited, even though backend defaults are otherwise available."
+  ],
+  "critical_code_review_comments": [
+    "home_dashboard.py activity-feed endpoint correctly enforces _SAFE_ACTIVITY_TYPES allowlist + per-type ≤2 dedupe + _sanitize_activity_copy for admin/cap phrases — good defense-in-depth.",
+    "Front-end HomeActivityPulse uses Intl.RelativeTimeFormat with numeric:'auto' + style:'short', which yields 'il y a 20 min' / 'il y a 20 h' in FR (positive human phrasing, not the leaked '-20 h' form) — matches spec.",
+    "HomeFeatureHighlights premium detection is binary (premium/included) — should support at least three tiers (included/basic/premium) matching backend availability values; see plan chip mismatch above.",
+    "Multiple app screens (home, features cards) issue simultaneous polling calls (useLiveQuery pollInterval=30000) which combined with useGlobalPlatformState fanout appear to be hitting per-user 429s during E2E automation — worth batching or gating live-queries under a shared throttle."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter801_home_activity_pulse_backend.py"
+  ],
+  "success_rate": {
+    "backend": "100% (7/7)",
+    "frontend": "~85% (structural elements + navigation verified; live feed items not visually confirmed in-browser due to session rate-limit)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free/FR/dark) — verified working",
+  "seed_data_creation": "None; used existing seeded free user.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend regression file /app/backend/tests/test_iter801_home_activity_pulse_backend.py is idempotent and can be rerun. When testing UI in the preview environment, browser automation sessions get aggressively 429/403-throttled after login (many polling endpoints fire on Home). Give a 2-3 min cooldown between runs, or split UI checks across smaller runs. Home renders lazy sections, so scroll progressively (~14× 500px) and reload once if home-activity-pulse is not present on first paint. The one open action item is the plan-chip tri-state fix in HomeFeatureHighlights.tsx.",
+  "rca_of_the_issue": "Activity Pulse showed empty in-browser despite backend returning items because (a) the automated preview session was hit with dozens of 429/403 responses on parallel Home polling endpoints, throttling /home/activity-feed for the fetch client, and (b) HomeActivityPulse falls back to an empty array when useLiveQuery has no data. Pytest against /api/home/activity-feed from a fresh HTTP session (outside the throttled browser context) succeeds every call. Not a code defect — an env/throttle artifact. Recommendation: add a rendering fallback path in HomeActivityPulse to gracefully retry or hydrate with defaults on transient error."
+}

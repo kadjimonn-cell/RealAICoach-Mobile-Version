@@ -1,0 +1,56 @@
+{
+  "summary": "Checkpoint D independent verification of the offer-letter QR bug (user-reported: PDFs said 'your secure candidate portal' but embedded no QR). Wrote a 17-test suite exercising (A) offline _generate_offer_pdf across all 5 variants — 'SCAN TO ACCEPT' present on original, 'SCAN TO VIEW' on accepted, ABSENT on rescinded/expired/declined; (B) portal_url selection (public_confirm_url wins, env-fallback used from candidate_token, legacy `public_token` field ignored, no QR when neither is present); (C) E2E ordering fix via real HTTP flow — POST /offers/draft → POST /offers/{id}/send → GET /offers/{id}/pdf; downloaded PDF text extracted with PyMuPDF asserts 'SCAN TO ACCEPT' present on the FIRST-sent letter (ordering fix verified); (D) public candidate portal regression — GET /public/{token} returns 404 for invalid tokens, accept enforces ack + non-empty signed_name, decline works. Frontend page /careers/offer/confirm loads without auth and shows correct 'Missing token' / 'Offer link invalid or expired' states. All existing offer regression suites still green (63 passed, 1 skipped — unchanged from iter876 baseline). Combined run: 80 passed, 1 skipped, 0 failed. Cleanup verified — 0 iter877 or review-sample records left in DB.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_offer_letter_qr_iter877.py",
+    "/app/test_reports/pytest/iter877_qr.xml",
+    "/app/test_reports/pytest/iter877_regression.xml",
+    "/app/test_reports/pytest/iter877_all.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/careers_offers.py:975-980 — portal_url = offer.get('public_confirm_url') or env-fallback(FRONTEND_BASE_URL|REACT_APP_BACKEND_URL)+/careers/offer/confirm?token=. Robust: neither field alone forces the QR — both are checked, and the SCAN label is only drawn for variants in ('original','accepted'). Verified across 17 test cases including a negative test with the OLD buggy field name 'public_token'.",
+    "routes/careers_offers.py:1462-1464 — admin_send_offer builds offer_for_pdf = {**offer, expires_at, candidate_token, public_confirm_url} BEFORE calling _generate_offer_pdf and BEFORE the update_one persist. This is the ordering fix. E2E test (TestOrderingFixE2E) confirms the FIRST persisted PDF served by GET /offers/{id}/pdf carries 'SCAN TO ACCEPT'.",
+    "test_offer_letter_pro_pdf.py fixtures 131/206/346 correctly use `candidate_token` (previously 'public_token' which had masked the bug). Old field name is now non-functional at runtime — verified by TestOldBuggyFieldIgnored.test_legacy_public_token_field_does_not_trigger_qr.",
+    "Public accept/decline endpoints correctly enforce CSRF (X-Requested-With header required). This is intentional. The candidate-portal frontend page adds this header via the fetch wrapper. Tests updated to include the header.",
+    "Consider adding a data-testid to the /careers/offer/confirm error state ('Link unavailable') for future E2E robustness — not blocking."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_offer_letter_qr_iter877.py (new — 17 tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (17/17 new iter877 tests + 63/64 existing offer regression, 1 pre-existing skip → 80 passed / 1 skipped combined)",
+    "frontend": "100% (portal page loads without auth; missing-token and invalid-token error states verified visually)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Each E2E test inserts a flagged application (application_id=app-iter877-*, is_review_sample=true, email=admin's inbox) and an offer, then unconditionally deletes both plus the persisted PDF in a finally block (mirrors _cleanup_review_samples). Post-run DB scan confirms zero iter877 or is_review_sample leftovers.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The QR bug is verified fixed at both root causes (wrong field name + generation-before-persist ordering). test_offer_letter_qr_iter877.py is standalone (loads env, uses fresh motor client per fixture) and can be rerun any time. IMPORTANT: TestOrderingFixE2E sends ONE real offer email to the admin inbox per run (candidate_email = admin's email on the flagged test application). The two portal-flow tests (accept validation + decline) each add one more send. So each full run sends 3 real offer emails to admin — significantly less than the review-pack's 8. The review-email endpoint POST /api/careers/offers/letters/review-email was NOT re-invoked in this iteration (main agent already invoked it once, delivered 05:50Z per Checkpoint D notes); its regression is covered by TestReviewEmailEndpoint in test_offer_letter_review_pack.py (still passing).",
+  "verification_evidence": {
+    "SCAN TO ACCEPT [original]": "PRESENT in extracted PDF text",
+    "SCAN TO VIEW [accepted]": "PRESENT in extracted PDF text",
+    "SCAN [rescinded/expired/declined]": "ABSENT (all three variants)",
+    "portal_url public_confirm_url path": "verified — SCAN TO ACCEPT present even with FRONTEND_BASE_URL/REACT_APP_BACKEND_URL unset",
+    "portal_url env-fallback path": "verified — SCAN TO ACCEPT present with only candidate_token + FRONTEND_BASE_URL set, image count >=3 (logo+sig+QR)",
+    "legacy public_token field": "IGNORED — no QR when only that field is set (bug regression guard)",
+    "ordering fix E2E": "verified via HTTP: draft → send → GET /pdf; downloaded PDF's text contains SCAN TO ACCEPT and >=3 embedded images",
+    "GET /careers/offers/public/<invalid>": "404 (as expected)",
+    "POST /public/<token>/accept": "422 without ack, 422 with empty signed_name (Pydantic validation)",
+    "POST /public/<token>/decline": "200 success",
+    "GET /careers/offer/confirm (frontend, no token)": "renders 'Missing token. Please use the full link from your offer email.'",
+    "GET /careers/offer/confirm?token=invalid": "renders 'Link unavailable — Offer link invalid or expired'",
+    "existing regression suites": "63 passed, 1 skipped (identical to iter876 baseline)",
+    "combined run": "80 passed, 1 skipped, 0 failed",
+    "cleanup verification": "0 iter877 apps, 0 iter877 offers, 0 is_review_sample records leaked"
+  },
+  "rca_of_the_issue": "Two independent defects made the QR silently vanish on production offer letters: (1) The PDF renderer checked `offer.get('public_token')` — a field name that is never persisted anywhere in the codebase (real fields are `candidate_token` and `public_confirm_url` written by admin_send_offer at ~line 1481-1482). The QR condition was therefore falsy for every real offer. (2) Even after fixing #1, admin_send_offer's original code path called _generate_offer_pdf BEFORE inserting candidate_token into offer_for_pdf, so the first-sent letter still could not embed a QR. Tests didn't catch this because fixtures set the wrong 'public_token' field — the same wrong name the buggy renderer accepted, masking the bug in both places simultaneously. Main agent's fix: (a) renderer now consults `public_confirm_url` then falls back to composing from `candidate_token` + FRONTEND_BASE_URL/REACT_APP_BACKEND_URL; (b) admin_send_offer builds offer_for_pdf = {**offer, expires_at, candidate_token, public_confirm_url} before rendering; (c) fixtures migrated to `candidate_token`. This iter877 suite adds an explicit regression guard (TestOldBuggyFieldIgnored) that renders a PDF with only the legacy `public_token` set and asserts NO QR appears, so the old masked pattern cannot re-emerge."
+}

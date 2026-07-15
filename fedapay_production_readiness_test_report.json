@@ -1,0 +1,80 @@
+{
+  "test_run": {
+    "timestamp": "2026-05-20T03:47:39.234892",
+    "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+    "test_email": "fedapay.prod.test.1779248852@example.com",
+    "all_passed": false
+  },
+  "results": [
+    {
+      "test": "Register new free user",
+      "passed": true,
+      "details": "User ID: user_b06fec982e41, Email: fedapay.prod.test.1779248852@example.com",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:33.252646"
+    },
+    {
+      "test": "/api/auth/me shows free plan",
+      "passed": true,
+      "details": "Plan: free, Status: active",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:33.332712"
+    },
+    {
+      "test": "Initiate FedaPay checkout for Basic plan",
+      "passed": true,
+      "details": "Payment ID: fedapay_5715e511715b, Ticket ID: MMSUB_01F75D553A",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:34.996060"
+    },
+    {
+      "test": "Initiate FedaPay checkout for Premium plan",
+      "passed": true,
+      "details": "Payment ID: fedapay_8aef5081af34, Ticket ID: MMSUB_27053A52B6",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:36.458840"
+    },
+    {
+      "test": "Simulate FedaPay webhook for Basic plan (approved)",
+      "passed": true,
+      "details": "Webhook accepted, Status: 200",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:36.537688"
+    },
+    {
+      "test": "Simulate FedaPay webhook for Premium plan (approved)",
+      "passed": true,
+      "details": "Webhook accepted, Status: 200",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:36.579452"
+    },
+    {
+      "test": "/api/fedapay/status/{payment_id} returns completed for Basic",
+      "passed": false,
+      "details": "Status: pending",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:38.851619"
+    },
+    {
+      "test": "/api/fedapay/status/{payment_id} returns completed for Premium",
+      "passed": false,
+      "details": "Status: pending",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:39.151997"
+    },
+    {
+      "test": "/api/notifications includes payment confirmation notifications",
+      "passed": false,
+      "details": "Found 0 payment-related notifications out of 1 total",
+      "error": null,
+      "timestamp": "2026-05-20T03:47:39.234584"
+    }
+  ],
+  "test_data": {
+    "user_id": "user_b06fec982e41",
+    "basic_payment_id": "fedapay_5715e511715b",
+    "premium_payment_id": "fedapay_8aef5081af34",
+    "basic_tx_id": "MMSUB_01F75D553A",
+    "premium_tx_id": "MMSUB_27053A52B6"
+  }
+}

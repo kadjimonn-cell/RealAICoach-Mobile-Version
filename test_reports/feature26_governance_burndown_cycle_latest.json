@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-06-19T12:57:54.451366+00:00",
+  "scope": "feature26_governance_burndown_continuation",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "health_contract": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "governance_gates": {
+    "strict_include_synthetic": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false
+    },
+    "near_include_synthetic": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "gate_divergence_detected": true
+    },
+    "near_excluding_synthetic": {
+      "sustained_gate_met": true,
+      "ready_for_legacy_code_removal": true
+    }
+  },
+  "residual_legacy_sources": {
+    "remaining_legacy_operations": [
+      "candidate_save_job",
+      "employers_reverify"
+    ],
+    "top_operations": [
+      {
+        "operation": "candidate_save_job",
+        "count": 17
+      },
+      {
+        "operation": "employers_reverify",
+        "count": 2
+      }
+    ],
+    "top_paths": [],
+    "active_legacy_users": null,
+    "migration_progress_pct": null
+  },
+  "retirement_readiness": {
+    "strict_sustained_gate_met": null,
+    "near_zero_sustained_gate_met": null,
+    "operational_near_zero_excluding_synthetic_sustained_gate_met": null,
+    "gate_divergence_detected": null,
+    "ready_for_legacy_code_removal": null
+  },
+  "parity_pack_latest": {
+    "summary": {
+      "total_routes": 10,
+      "pass_routes": 10,
+      "pass_with_warning_routes": 0,
+      "fail_routes": 0,
+      "overall_verdict": "pass",
+      "next_action": "Use this parity pack for explicit v2 read parity sign-off decision."
+    },
+    "signoff_required": true,
+    "explicit_signoff_status": "pending_user_explicit_confirmation"
+  },
+  "latest_cycle_runner": {
+    "timestamp": "2026-06-19T12:57:23.015218+00:00",
+    "monitoring_exit_code": 0,
+    "parity_exit_code": 0,
+    "admin_block_overall": "pass"
+  },
+  "policy_guardrails": {
+    "legacy_read_pruning_executed": false,
+    "retirement_action_executed": false,
+    "blocked_without_signoff_and_sustained_gates": true
+  },
+  "next_burndown_focus": [
+    "candidate_save_job",
+    "employers_reverify"
+  ]
+}

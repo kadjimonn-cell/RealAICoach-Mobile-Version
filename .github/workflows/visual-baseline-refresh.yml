@@ -1,0 +1,92 @@
+name: Visual Baseline Refresh (Label Trigger)
+
+on:
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh-baselines:
+    if: >-
+      github.event.label.name == 'visual-baseline-refresh' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      E2E_BASE_URL: ${{ secrets.APP_BASE_URL }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      E2E_USER_EMAIL: e2e.visual.kyc@example.com
+      E2E_USER_PASSWORD: TestPass2026!
+
+    steps:
+      - name: Validate required runtime secrets
+        run: |
+          test -n "$E2E_BASE_URL" || (echo "Missing secret APP_BASE_URL" && exit 1)
+          test -n "$ADMIN_EMAIL" || (echo "Missing secret ADMIN_EMAIL" && exit 1)
+          test -n "$ADMIN_PASSWORD" || (echo "Missing secret ADMIN_PASSWORD" && exit 1)
+
+      - name: Checkout PR head branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Refresh desktop visual baselines
+        working-directory: frontend
+        run: |
+          node node_modules/@playwright/test/cli.js test e2e/wake-admin-smoke.spec.ts \
+            --project=desktop-chromium \
+            --update-snapshots \
+            --config=playwright.config.ts
+
+      - name: Commit baseline snapshot updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- frontend/e2e; then
+            echo "No baseline snapshot changes detected."
+            exit 0
+          fi
+
+          git add frontend/e2e
+          git commit -m "chore(ci): refresh visual baselines from label trigger"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+
+      - name: PR comment summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = [
+              '✅ Visual baseline refresh workflow finished.',
+              '',
+              '- Trigger label: `visual-baseline-refresh`',
+              '- Scope: `frontend/e2e` snapshot baselines from `wake-admin-smoke.spec.ts`',
+              '- If no snapshot changes were detected, no commit was pushed.'
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

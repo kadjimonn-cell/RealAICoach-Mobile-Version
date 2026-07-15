@@ -1,0 +1,111 @@
+{
+  "started_at": "2026-05-20T13:20:40.911311+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "googleiap.prod.retest.8cb301d1@gmail.com",
+    "password": "GoogleIAP#2026Aa!",
+    "name": "Google IAP Prod User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_a9b159b083ea",
+        "email": "googleiap.prod.retest.8cb301d1@gmail.com",
+        "name": "Google IAP Prod User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_a9b159b083ea",
+        "email": "googleiap.prod.retest.8cb301d1@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "admin_login",
+      "status_code": 200
+    },
+    {
+      "step": "simulate_basic",
+      "status_code": 403,
+      "body": {
+        "success": null,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "notifications": null,
+        "checks": null,
+        "pricing_breakdown": null
+      }
+    },
+    {
+      "step": "simulate_premium",
+      "status_code": 403,
+      "body": {
+        "success": null,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "notifications": null,
+        "checks": null,
+        "pricing_breakdown": null
+      }
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_a9b159b083ea",
+        "email": "googleiap.prod.retest.8cb301d1@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active",
+        "iap_platform": null
+      }
+    },
+    {
+      "step": "iap_status",
+      "status_code": 200,
+      "body": {
+        "plan": "free",
+        "status": "active",
+        "platform": null,
+        "product_id": null,
+        "expires_at": null,
+        "auto_renewing": false,
+        "latest_transaction": null,
+        "jurisdiction_context": {
+          "country": "US",
+          "state": "",
+          "postal_code": "",
+          "source": {
+            "country": "default",
+            "state": "none",
+            "postal_code": "request_header"
+          },
+          "label": "US"
+        }
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 0,
+      "latest_payment_notifications": []
+    },
+    {
+      "step": "db_iap_transactions",
+      "count": 0,
+      "rows": []
+    }
+  ],
+  "finished_at": "2026-05-20T13:20:45.913712+00:00"
+}

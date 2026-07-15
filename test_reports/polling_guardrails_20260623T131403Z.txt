@@ -1,0 +1,38 @@
+[Polling Guardrails Locked Protocol Check]
+timestamp_utc=20260623T131403Z
+window_lines=3000
+max_429_total=120
+max_429_gps=60
+max_429_non_gps=60
+\n[1/3] Running locked-protocol contracts...
+.....                                                                    [100%]
+5 passed in 0.03s
+\n[2/4] Recent backend endpoint counters and threshold gate...
+   179  GET /api/gps/state 200
+    70  POST /api/onboarding-ab/assign 200
+    57  GET /api/gps/state 429
+    46  GET /api/subscriptions/renewal-banner 200
+    31  GET /api/subscriptions/plans 200
+    12  GET /api/notifications/user_4b5a68d2f7c6 200
+     9  GET /api/subscriptions/renewal-banner 429
+     7  GET /api/notifications/user_798c19018cad 200
+     1  GET /api/subscriptions/plans 429
+
+[Threshold Evaluation]
+total_429=67 (max=120)
+gps_429=57 (max=60)
+non_gps_429=10 (max=60)
+GATE_STATUS=PASS
+\n[3/4] Guardrail source anchors
+/app/frontend/src/components/RenewalBanner.tsx:114:      return window.sessionStorage.getItem(`renewal:banner:fetched:${userId}`) === '1';
+/app/frontend/src/components/RenewalBanner.tsx:123:      window.sessionStorage.setItem(`renewal:banner:fetched:${userId}`, '1');
+/app/frontend/src/components/SmartOnboarding.tsx:104:      return window.sessionStorage.getItem(`onboarding:ab:assigned:${userId}`) === '1';
+/app/frontend/src/components/SmartOnboarding.tsx:113:      window.sessionStorage.setItem(`onboarding:ab:assigned:${userId}`, '1');
+/app/frontend/src/hooks/useGlobalPlatformState.ts:507:    const id = setInterval(fetchState, Math.max(300000, retryDelayMs));
+/app/frontend/src/components/AppShell.tsx:697:  const enableHeavyBackgroundPollers = [
+/app/frontend/src/components/AppShell.tsx:705:  const shouldShowRenewalBanner = showNonCriticalBanners && enableHeavyBackgroundPollers;
+/app/frontend/src/components/AppShell.tsx:706:  const shouldShowOnboarding = deferNonCriticalReady && !whatsNewVisible && enableHeavyBackgroundPollers;
+/app/frontend/src/services/api.ts:338:const HARD_429_COOLDOWN_RULES: { match: string; methods: string[]; cooldownMs: number }[] = [
+/app/frontend/src/services/api.ts:349:  const rule = HARD_429_COOLDOWN_RULES.find((candidate) => (
+\n[4/4] Writing latest report pointer
+\nDONE. report=/app/test_reports/polling_guardrails_20260623T131403Z.txt

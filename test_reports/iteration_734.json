@@ -1,0 +1,82 @@
+{
+  "summary": "Guardrail verification for Welcome/Footer responsive behavior. Most guardrails PASS. One test assertion issue found: badgeOverlap check in welcome-responsive-contract.spec.ts fails at mobile widths because the test expects badge and state to NOT overlap vertically, but the component design intentionally places them in the same row (horizontally adjacent) on compact mobile.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "test_assertion_issues": [
+      {
+        "file": "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+        "line": 163,
+        "issue": "badgeOverlap assertion expects false for vp.width < 560, but component design uses flexDirection: row for compact mode, placing badge and state side by side (same Y coordinates = vertical overlap)",
+        "component": "WelcomeCapabilityMatrix.tsx line 309: cardTopMeta uses flexDirection: compact ? 'row' : 'column'",
+        "priority": "MEDIUM",
+        "recommendation": "Update test assertion to check for horizontal adjacency instead of vertical separation, or update component to stack badge/state vertically on compact mobile"
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+    "/app/frontend/e2e/platform-responsive-guardrails.spec.ts"
+  ],
+  "action_items": [
+    "Fix badgeOverlap test assertion in welcome-responsive-contract.spec.ts line 163 - either update test to match current component behavior (row layout on compact) or update component to stack badge/state vertically"
+  ],
+  "critical_code_review_comments": [
+    "Test assertion mismatch: badgeOverlap check assumes vertical stacking but component uses horizontal row layout on compact mobile",
+    "All other guardrails verified: capability matrix single-column on mobile, 2-column on tablet, 3-column on desktop",
+    "FAQ footer CTA buttons correctly centered with justifyContent: center, alignItems: center, textAlign: center",
+    "Welcome footer 2x2 layout preserved at compact-tablet widths (560-980px), single-row at wider widths (>=980px)",
+    "No horizontal overflow detected at any tested viewport"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "95% (1 test assertion issue)"
+  },
+  "seed_data_creation": "None required - public route testing",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Guardrail verification mostly complete. Key issue: badgeOverlap test assertion in welcome-responsive-contract.spec.ts line 163 fails because component uses row layout for badge/state on compact mobile, not vertical stacking. Main agent should either update the test assertion or the component design. All other guardrails verified working: (1) Capability matrix: 1 column at <768px, 2 columns at 768-1320px, 3 columns at >=1320px. (2) FAQ footer CTA: buttons centered at all widths, stacked column layout at <560px, row layout at >=560px. (3) Welcome footer: 2x2 layout at 560-980px, single-row at >=980px. (4) No horizontal overflow at any viewport.",
+  "test_results": {
+    "guardrails_verified": {
+      "capability_matrix_columns": {
+        "mobile_390": {"expected": 1, "actual": 1, "status": "PASS"},
+        "mobile_540": {"expected": 1, "actual": 1, "status": "PASS"},
+        "tablet_700": {"expected": 1, "actual": 1, "status": "PASS"},
+        "tablet_768": {"expected": 2, "actual": 2, "status": "PASS"},
+        "desktop_1179": {"expected": 2, "actual": 2, "status": "PASS"},
+        "desktop_1365": {"expected": 3, "actual": 3, "status": "PASS"}
+      },
+      "faq_footer_cta_centering": {
+        "mobile_390": {"justifyContent": "center", "alignItems": "center", "textAlign": "center", "layout": "column", "status": "PASS"},
+        "mobile_430": {"justifyContent": "center", "alignItems": "center", "textAlign": "center", "layout": "column", "status": "PASS"},
+        "tablet_768": {"justifyContent": "center", "alignItems": "center", "textAlign": "center", "layout": "row", "status": "PASS"}
+      },
+      "welcome_footer_layout": {
+        "mobile_390": {"rows": 2, "status": "PASS"},
+        "compact_tablet_560": {"expected_rows": 2, "actual_rows": 2, "status": "PASS"},
+        "compact_tablet_700": {"expected_rows": 2, "actual_rows": 2, "status": "PASS"},
+        "compact_tablet_768": {"expected_rows": 2, "actual_rows": 2, "status": "PASS"},
+        "tablet_980": {"expected_rows": 1, "actual_rows": 1, "status": "PASS"},
+        "desktop_1179": {"expected_rows": 1, "actual_rows": 1, "status": "PASS"},
+        "desktop_1365": {"expected_rows": 1, "actual_rows": 1, "status": "PASS"}
+      },
+      "horizontal_overflow": {
+        "all_viewports": "PASS - no overflow detected"
+      }
+    },
+    "e2e_test_failures": {
+      "welcome-responsive-contract.spec.ts": {
+        "test": "full Welcome flow stays locked on mobile-390",
+        "assertion": "expect(capability?.badgeOverlap).toBeFalsy()",
+        "actual": "true",
+        "root_cause": "Component uses flexDirection: row for cardTopMeta on compact mobile, placing badge and state side by side (same Y coordinates = vertical overlap)"
+      }
+    }
+  }
+}

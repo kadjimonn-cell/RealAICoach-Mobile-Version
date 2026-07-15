@@ -1,0 +1,45 @@
+{
+  "summary": "Checkpoint D validation for AI Operating Layer v2 (routing / knowledge / analytics / orchestration v2). Backend: 25 existing pytests re-verified green; wrote and ran 33 additional tests (security gates on all new endpoints, routing quality, workflow step validation, regression on 10 existing endpoints, marketplace readiness/coverage) — all 33 passed. Frontend: after triggering a dist rebuild (the pre-existing bundle was stale — see rca), all 8 tabs render, intent routing returns selected_agent + team + capability discovery panel (delegate/collaborate step types visible), knowledge collection create + source add flows work, analytics panels (stats/alerts/trends/recommendations/adoption/top-agents) all render, mobile viewport (390px) shows all 8 tabs without clipping, existing agents-tab search still works.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "AgentKnowledgeTab", "issue": "After clicking 'Add source' in a newly-created collection, the input fields did not clear and the source list continued to display 'No sources in this collection yet.' — subsequent search for a term contained in that source returned 'No matches found.' This may indicate the addSource POST silently failed OR the local state didn't refresh (visibleSources filter mismatch on collection_key). Overview stats did not increment sources_total either.", "selector": "[data-testid=\"knowledge-add-source-button\"] followed by [data-testid=\"knowledge-search-results\"]", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Analytics tab (dark theme)", "issues": ["Rendering is clean; contrast passes. No design issues found."]},
+      {"screen": "Mobile (390px)", "issues": ["All 8 tabs wrap into 3 rows cleanly; no clipping."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_ai_operating_layer_v2.py",
+    "/app/backend/tests/test_ai_operating_layer_v2_iter875_extra.py",
+    "/app/test_reports/pytest/iter875_v2.xml",
+    "/app/test_reports/pytest/iter875_extra.xml"
+  ],
+  "action_items": [
+    "Investigate AgentKnowledgeTab addSource flow: after creating a fresh collection and posting a manual source, the source doesn't appear in visibleSources and the retrieval search cannot find its content. Suspect: (a) POST /knowledge/sources may return but the reloaded /knowledge/sources list still filters by collection_key not matching, or (b) source_type=manual + immediate index isn't awaited before overview refetch. Compare with the already-working 'coaching_playbooks' source from smoke test which does appear.",
+    "OPERATIONAL: The frontend dist bundle was built 45 minutes BEFORE the ai-agents.tsx / AgentRoutingTab / AgentKnowledgeTab / AgentAnalyticsTab source files were last modified — expo_manual only rebuilds at startup via fingerprint check; hot-reload on source change is not active. I restarted expo_manual to force the rebuild. Main agent should confirm this rebuild is included in the deployment pipeline and consider re-running the smoke test to make sure the fix persists after any future container restart."
+  ],
+  "critical_code_review_comments": [
+    "routes/agent_framework_ops.py is well-structured, uses proper Pydantic validation and HTTPException status codes. No _id leaks. Auth guard via require_admin on every endpoint (verified — 16/16 endpoints return 401/403 for anon).",
+    "Frontend components use data-testid consistently across all interactive elements — excellent testability.",
+    "Routing determinism: the 'help me prepare for a job interview' intent selected 'AI Ethics Reviewer' (score 11) in one UI run while backend log shows previous runs selected 'resume_specialist' — router scoring appears stable but sensitive to exact wording. Not a bug (test asserts >100 candidates evaluated + team is returned) but worth noting for product."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_ai_operating_layer_v2_iter875_extra.py (new: 33 additional tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (25/25 existing + 33/33 new = 58/58)",
+    "frontend": "95% — all 8 tabs render, all 3 new tabs functional; only the addSource → re-list → search chain has an observed gap (see minor issue)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! — used successfully",
+  "seed_data_creation": "Created via UI: knowledge collection 'testpy7208' with 1 attempted source (add likely failed silently). Prior smoke test data: 'coaching_playbooks' with 1 source ('Interview Preparation Guide') remained intact.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Frontend build is served by expo_manual (node serve-production.js) reading from /app/frontend/dist/client. Dist rebuild happens at startup via fingerprint check — if you see missing UI elements that exist in source, run `sudo supervisorctl restart expo_manual` and wait ~4-5 minutes for the export to complete. Admin login: use fetch('/api/auth/login', {credentials:'include', headers:{'X-Requested-With':'XMLHttpRequest'}}) in browser context before navigating to /admin/ai-agents. All 8 tabs are testable via data-testid ai-agents-tab-{portfolio|agents|workflows|executions|tools|routing|knowledge|analytics}.",
+  "rca of the issue": "Stale dist bundle at test start — Root cause: expo_manual (serve-production.js) had been running for ~34 minutes when tests began; source files (ai-agents.tsx and the three new tab components) were modified after that startup, and the fingerprint-based rebuild only fires on process start. Metro is running in CI mode with reloads disabled. Reproduction: modify /app/frontend/app/admin/ai-agents.tsx while expo_manual is running; the served dist bundle at /_expo/static/js/web/index-*.js won't include the change. Mitigation applied: sudo supervisorctl restart expo_manual — the startup path detected fingerprint drift and rebuilt (new bundle hash d4a41b6865f23c4d3a3c59124b7f25fd). After rebuild, all 3 new tabs render, all data-testids match, and E2E flows work."
+}

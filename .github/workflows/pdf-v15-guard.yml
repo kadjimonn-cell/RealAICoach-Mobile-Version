@@ -1,0 +1,48 @@
+name: PDF v15 Global Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  pdf-v15-guard:
+    name: pdf-v15-logo-tile-guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run PDF v15 global guard
+        run: python backend/scripts/pdf_v15_logo_tile_guard.py
+
+      - name: Validate enterprise PDF helper compliance report
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = Path("test_reports/pdf_v15_logo_tile_guard.json")
+          if not report.exists():
+              raise SystemExit("Guard report missing: test_reports/pdf_v15_logo_tile_guard.json")
+          payload = json.loads(report.read_text())
+          if int(payload.get("failure_count", 0)) > 0:
+              raise SystemExit("PDF guard failure_count > 0")
+          if bool(payload.get("migration_note_required")):
+              raise SystemExit(payload.get("migration_note_template") or "Migration note required")
+          print("PDF v15 enterprise guard report validated")
+          PY
+
+      - name: Upload PDF guard report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-v15-guard-report
+          path: test_reports/pdf_v15_logo_tile_guard.json

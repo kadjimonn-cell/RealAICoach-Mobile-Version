@@ -1,0 +1,104 @@
+{
+  "summary": "Verified RouteAccessGuard public-route bypass fix for /welcome. The user-reported 'Checking access / Please wait while we prepare this page' overlay NO LONGER appears on /welcome for unauthenticated users across mobile (390x844), tablet (768x1024), and desktop (1920x1080) viewports. Protected routes (/dashboard, /features) correctly redirect unauthenticated users to /welcome with return_to parameter.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Welcome page mobile 390x844",
+        "issues": ["Minor horizontal overflow detected - may need investigation if user reports scrolling issues"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/root/.emergent/automation_output/20260707_001758/welcome_mobile_390x844.jpeg",
+    "/root/.emergent/automation_output/20260707_001758/welcome_desktop_1920x1080.jpeg",
+    "/root/.emergent/automation_output/20260707_001838/welcome_mobile_extended_wait.jpeg"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "RouteAccessGuard.tsx lines 376-387: Public route bypass correctly implemented using shouldBypassPublicGuard flag",
+    "The bypass checks bootstrapPathnameClean, normalizedPathnameClean, and browserPathnameClean against isPublicRoute()",
+    "When bypass triggers, accessLoadingStartedAtRef and accessOverlayDelayStartedAtRef are reset to 0, and overlayState is set to null",
+    "PUBLIC_EXACT_ROUTES includes /welcome, /about, /contact, /pricing, /auth, /about-us, /talent-network, /careers, /career, /blog, /track-application, /press"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (skipped per request)",
+    "frontend": "100% - All 6 tests passed"
+  },
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "RouteAccessGuard public-route bypass verified working. The fix at lines 376-387 in RouteAccessGuard.tsx correctly prevents the 'Checking access' overlay from appearing on public routes like /welcome. Protected routes still redirect unauthenticated users correctly.",
+  "verification_results": {
+    "mobile_390x844_welcome": {
+      "viewport": "390x844",
+      "route": "/welcome",
+      "auth_state": "unauthenticated",
+      "guard_overlay_visible": false,
+      "checking_access_text_visible": false,
+      "please_wait_text_visible": false,
+      "hero_content_visible": true,
+      "horizontal_overflow": true,
+      "status": "PASS"
+    },
+    "desktop_1920x1080_welcome": {
+      "viewport": "1920x1080",
+      "route": "/welcome",
+      "auth_state": "unauthenticated",
+      "guard_overlay_visible": false,
+      "checking_access_text_visible": false,
+      "hero_content_visible": true,
+      "status": "PASS"
+    },
+    "tablet_768x1024_welcome": {
+      "viewport": "768x1024",
+      "route": "/welcome",
+      "auth_state": "unauthenticated",
+      "guard_overlay_visible": false,
+      "status": "PASS"
+    },
+    "protected_route_dashboard": {
+      "viewport": "1920x1080",
+      "route": "/dashboard",
+      "auth_state": "unauthenticated",
+      "expected_behavior": "redirect to /welcome",
+      "actual_redirect": "/welcome?return_to=%2Fdashboard&auth_reason=unauthenticated",
+      "status": "PASS"
+    },
+    "protected_route_features": {
+      "viewport": "1920x1080",
+      "route": "/features",
+      "auth_state": "unauthenticated",
+      "expected_behavior": "redirect to /welcome",
+      "actual_redirect": "/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated",
+      "status": "PASS"
+    },
+    "mobile_extended_wait_welcome": {
+      "viewport": "390x844",
+      "route": "/welcome",
+      "auth_state": "unauthenticated",
+      "wait_time_ms": 4000,
+      "guard_overlay_visible": false,
+      "hero_content_visible": true,
+      "status": "PASS"
+    }
+  },
+  "user_complaint_assessment": {
+    "original_complaint": "Users unable to access Welcome page - stuck on RouteAccessGuard overlay showing 'Checking access / Please wait while we prepare this page'",
+    "fix_description": "Added shouldBypassPublicGuard early return in RouteAccessGuard.tsx that clears overlay/loading refs and returns immediately for public routes including /welcome",
+    "current_status": "RESOLVED - RouteAccessGuard overlay no longer appears on /welcome for unauthenticated users",
+    "visual_evidence": "Screenshots at 390x844 and 1920x1080 show Welcome page hero content without any blocking overlay",
+    "conclusion": "The fix has addressed the user's concern. Public routes bypass the guard correctly."
+  },
+  "viewports_tested": [
+    {"width": 390, "height": 844, "type": "mobile", "result": "PASS"},
+    {"width": 768, "height": 1024, "type": "tablet", "result": "PASS"},
+    {"width": 1920, "height": 1080, "type": "desktop", "result": "PASS"}
+  ]
+}

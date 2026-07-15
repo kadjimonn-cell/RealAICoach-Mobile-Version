@@ -1,0 +1,52 @@
+{
+  "summary": "Feature 37 Flappy Bird — frontend allow-list fix VERIFIED. The addition of '/features/flappy-bird' to FREE_TIER_FEATURE_PREFIXES in /app/frontend/src/context/AccessControlContext.tsx is present in both source (line 51) and the freshly-exported production bundle (client/_expo/static/js/web/index-faaf718f88d5ca0d6538f52ae11001ed.js contains all four allowed prefixes: fps-game, flappy-bird, ai-chatbot, daily-meditation). All 6 requested browser scenarios pass end-to-end against the live preview URL. No new bugs surfaced; the iter824 mirror-list gap is closed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "FlappyBirdCanvas / GetReady overlay",
+        "issue": "Overlay text 'Get Ready! / Préparez-vous !' renders correctly but the data-testid='flappy-bird-get-ready' is NOT attached to the overlay node — page.query_selector returned null on both free-user and admin views even though the overlay is clearly visible in screenshots. Cosmetic/testability issue only; does NOT block gameplay (start button click still triggered the game and produced flappy-bird-game-over as expected).",
+        "selector": "[data-testid=\"flappy-bird-get-ready\"]",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iter825_flappy_hub.png",
+    "/app/test_reports/iter825_gameover.png",
+    "/app/test_reports/iter825_fps_free.png",
+    "/app/test_reports/iter825_admin_flappy.png",
+    "/app/test_reports/iter825_logged_out_flappy.png"
+  ],
+  "action_items": [
+    "OPTIONAL / low-priority: attach data-testid=\"flappy-bird-get-ready\" to the 'Get Ready!' overlay div in the flappy-bird canvas component so future regressions can assert on the pre-game state without relying on canvas text. Not blocking — feature is live and working."
+  ],
+  "critical_code_review_comments": [
+    "The two mirror allow-lists (backend access_control_engine.FREE_PATTERNS + frontend AccessControlContext.FREE_TIER_FEATURE_PREFIXES) already caused two consecutive iteration bugs (iter823 backend miss, iter824 frontend miss). Strongly recommend deriving the frontend allow-list from the backend /access-control/session bootstrap response so a single source of truth governs both layers.",
+    "Rate limiting on /api/auth returned 429 during rapid test runs and briefly caused a 'Login failed' banner. Consider raising the login-endpoint throttle for the preview environment or exposing a per-suite backoff to reduce test flakiness."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (backend testing skipped per request; already 100% in iter824)",
+    "frontend": "100% (6/6 scenarios pass; 1 minor testid coverage note)"
+  },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (post-run personal_best=15, games_played=9 after +1 auto-death gameplay). Admin: admin@realaicoach.app / NewAdminPass2026! (personal_best=9999, games_played=38).",
+  "seed_data_creation": "None new. Free user games_played incremented from 8 -> 9 (one gameplay smoke run with a 0-score submission).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature 37 Flappy Bird is END-TO-END green: backend allow-list r'^/api/flappy-bird/' + frontend '/features/flappy-bird' in FREE_TIER_FEATURE_PREFIXES both landed and verified against production dist. Regressions clean: /features/ai-writer still redirects free user to /subscription/plans?upgrade_reason=basic_required; /features/fps-game still opens for free (fps-game-hub testid PRESENT); admin still gets full /features/flappy-bird with best=9999/games=38; logged-out visit to /features/flappy-bird redirects to /welcome?return_to=/features&auth_reason=unauthenticated. Only cosmetic follow-up: attach flappy-bird-get-ready testid to overlay.",
+  "detailed_scenario_results": {
+    "primary_free_user_flappy_bird": "PASS — hub, best-score-card (15), games-played-card (8), canvas, leaderboard-card all PRESENT; flappy-bird-error ABSENT; leaderboard shows #1 RealAICoach 9999 pts · 38 jeux, #2 P1 Free Sanity 15 pts · 8 jeux.",
+    "gameplay_smoke": "PASS — start button clicked, ~6s wait, flappy-bird-game-over overlay PRESENT, games_played incremented 8 -> 9 (score POST works E2E for free tier).",
+    "regression_ai_writer_redirect": "PASS — free user redirected to /subscription/plans?upgrade_from=%2Ffeatures%2Fai-writer&upgrade_reason=basic_required.",
+    "regression_fps_game_free": "PASS — fps-game-hub testid PRESENT for free user (Jeu FPS lobby renders).",
+    "regression_admin_flappy_bird": "PASS — admin sees flappy-bird-hub, personal_best 9999, games_played 38, no error.",
+    "logged_out_redirect": "PASS — /features/flappy-bird redirects to /welcome?return_to=%2Ffeatures&auth_reason=unauthenticated within ~10s."
+  },
+  "rca of the issue": "N/A — this iteration was a verification run of the iter824-recommended fix. Both layers of the access-control mirror list (backend FREE_PATTERNS + frontend FREE_TIER_FEATURE_PREFIXES) are now consistent for flappy-bird. Root cause remains the twin-list architecture; recommendation to eliminate it is captured in critical_code_review_comments."
+}

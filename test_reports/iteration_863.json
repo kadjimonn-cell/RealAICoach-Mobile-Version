@@ -1,0 +1,43 @@
+{
+  "summary": "Verified 'Earn yours' CTA on public /certificate-verify/{id} page + job-kit test fix. All backend + frontend checks PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "tests_executed": {
+    "backend": {
+      "test_job_search_email_kit.py": "10/10 passed (fixed .pdf-only assertion → now accepts .pdf + .docx attachments)",
+      "test_job_search_documents_docx.py": "9/9 passed (docx regression)",
+      "test_certificate_earn_yours_engagement.py (new)": "5/5 passed — earn_yours_click accepted (200 ok:true), verifier_view accepted, bogus_event rejected (400), missing event_type rejected (400/422), earn_yours_click event persisted in mongo learn_hub_certificate_engagement_events",
+      "certificate+engagement keyword suite": "5 passed, 3 skipped (no failures)"
+    },
+    "frontend": {
+      "public_route_no_redirect": "PASS — /certificate-verify/cert_b5e8b467bf1446 stays on verifier as unauthenticated user (RouteAccessGuard whitelist working)",
+      "verifier_root_visible": "PASS — data-testid=certificate-verifier-page-root rendered",
+      "earn_yours_section": "PASS — section + overline ('START YOUR JOURNEY') + title ('Earn yours') + copy + primary ('Start Learning Free') + secondary ('Explore RealAICoach') all present with correct text",
+      "primary_cta_click": "PASS — click navigated toward /ai-learning-hub; auth guard bounced unauthenticated user to /welcome?return_to=%2Fai-learning-hub (spec-accepted behavior)",
+      "regression_verifier_elements": "PASS — summary-card, trust-summary, copy-link-button all present",
+      "responsive": "PASS — mobile 390x844: earn-yours section width 354px (no overflow); desktop 1280x800 renders cleanly"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_job_search_email_kit.py",
+    "/app/backend/tests/test_job_search_documents_docx.py",
+    "/app/backend/tests/test_certificate_earn_yours_engagement.py",
+    "/app/test_reports/pytest/iter863_earn_yours.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Engagement endpoint is public/unauthenticated — good for tracking, but consider light rate-limiting (per-IP) to guard against click-fraud inflating earn_yours_click metrics.",
+    "learn_hub_certificate_engagement_events collection is now accumulating public traffic — verify a TTL/retention policy or aggregation job exists to keep the collection bounded."
+  ],
+  "updated_files": [],
+  "created_files": [
+    "/app/backend/tests/test_certificate_earn_yours_engagement.py"
+  ],
+  "success_rate": {"backend": "100% (24/24 across 3 suites)", "frontend": "100% (all assertions pass)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (used for job-kit endpoint)",
+  "seed_data_creation": "None — used existing cert_b5e8b467bf1446 and job_principal-fullstack-engineer",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature 'Earn yours' CTA on public /certificate-verify/{id} is live and stable. RouteAccessGuard now correctly whitelists /certificate-verify prefix (lines 13-38). Backend engagement endpoint POST /api/ai-learn/certificates/verify/{id}/engagement accepts event_type in {verifier_view, earn_yours_click, ...} and rejects unknown. Frontend served via serve-production.js on port 3000 (supervisor: 'expo' + 'expo_manual', not 'frontend').",
+  "rca of the issue": "Job-kit test was updated (line ~65) from asserting all attachments end in .pdf to the current 4-attachment contract (cv-*.pdf, cv-*.docx, cover-letter-*.pdf, cover-letter-*.docx) added on 2026-07-10. Confirmed correct fix; endpoint POST /api/job-search/documents/job_principal-fullstack-engineer/email returns 200 with all 4 attachments. Pre-existing route guard bug (missing /certificate-verify from public whitelist) was resolved by adding to PUBLIC_EXACT_ROUTES + PUBLIC_PREFIXES in RouteAccessGuard.tsx — verified unauthenticated user stays on the verifier page."
+}

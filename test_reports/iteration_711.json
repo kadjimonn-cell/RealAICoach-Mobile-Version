@@ -1,0 +1,111 @@
+{
+  "summary": "Verified Welcome page responsiveness bug fixes (Checkpoint A-D). All tests passed: (1) Desktop floating chrome (Progress Rail, Sticky Quick Navigator) correctly hidden below 1520px threshold and visible at/above 1520px; (2) Mobile capability card lock overlays use relative positioning on denseMobile (<430px) preventing overlap with badges/state pills; (3) Mobile footer disclaimer properly sized (84-88% of viewport) and center-aligned; (4) No horizontal overflow across all tested viewports (320px-1365px); (5) Hero/footer/quick-nav centering contracts remain valid.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_711.json",
+    "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+    "/app/frontend/e2e/welcome-visual-regression.spec.ts"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% (all responsiveness tests passed)"
+  },
+  "test_credentials": "No auth required for /welcome page",
+  "seed_data_creation": "None required",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Welcome page responsiveness bug fixes verified for Checkpoint A-D. Key fixes validated: (1) canShowFloatingWelcomeChrome gate at 1520px threshold working correctly; (2) denseMobile contract for capability cards using relative lock overlay positioning; (3) mobile footer disclaimer narrowed to match footer rhythm. All viewports (320px, 390px, 768px, 1024px, 1179px, 1365px, 1520px) show proper centering with no horizontal overflow.",
+  "test_results": {
+    "viewports_tested": ["mobile-320", "mobile-360", "mobile-390", "mobile-430", "mobile-540", "tablet-768", "desktop-1024", "desktop-1179", "desktop-1365", "desktop-1520"],
+    "floating_chrome_visibility": {
+      "1365px": {
+        "quickNavigatorCount": 0,
+        "progressRailCount": 0,
+        "status": "PASS - correctly hidden below 1520px threshold"
+      },
+      "1520px": {
+        "quickNavigatorCount": 1,
+        "progressRailCount": 1,
+        "status": "PASS - visible at threshold"
+      }
+    },
+    "mobile_capability_card_lock_overlay": {
+      "390px": {
+        "hasOverlays": true,
+        "overlayCount": 3,
+        "overlapCount": 0,
+        "positions": "all relative with alignSelf: center",
+        "status": "PASS - no overlap with badges/state pills"
+      },
+      "320px": {
+        "hasOverlays": true,
+        "overlayCount": 3,
+        "overlapCount": 0,
+        "status": "PASS - no overlap at narrowest viewport"
+      }
+    },
+    "mobile_footer_disclaimer": {
+      "320px": { "width": 274, "ratio": "86%", "textAlign": "center", "status": "PASS" },
+      "360px": { "width": 314, "ratio": "87%", "textAlign": "center", "status": "PASS" },
+      "390px": { "width": 344, "ratio": "88%", "textAlign": "center", "status": "PASS" },
+      "430px": { "width": 360, "ratio": "84%", "textAlign": "center", "status": "PASS" },
+      "540px": { "width": 360, "ratio": "67%", "textAlign": "center", "status": "PASS" }
+    },
+    "horizontal_overflow": {
+      "320px": false,
+      "390px": false,
+      "768px": false,
+      "1024px": false,
+      "1179px": false,
+      "1365px": false,
+      "status": "PASS - no overflow at any viewport"
+    },
+    "hero_centering_regression": {
+      "1024px": {
+        "leftMargin": 92,
+        "rightMargin": 92,
+        "marginDiff": 0,
+        "titleTextAlign": "center",
+        "badgeAlignSelf": "center",
+        "status": "PASS"
+      }
+    },
+    "footer_centering_regression": {
+      "1024px": {
+        "linkGridJustify": "center",
+        "sectionTitleAligns": ["center", "center", "center", "center"],
+        "status": "PASS"
+      }
+    }
+  },
+  "bug_fix_verification": {
+    "original_issues": [
+      "Desktop floating chrome had no reserved gutter and could overlap the features/capability section",
+      "Mobile capability cards still used a desktop-style absolute lock overlay",
+      "Mobile Welcome footer disclaimer still inherited a wider container rhythm than the surrounding footer content"
+    ],
+    "fixes_applied": [
+      "canShowFloatingWelcomeChrome gate at width >= 1520px before showing Progress Rail and Sticky Quick Navigator",
+      "denseMobile contract added to WelcomeCapabilityMatrix with relative lock overlay positioning",
+      "Mobile footer disclaimer sizing narrowed and aligned to mobile footer rhythm"
+    ],
+    "files_changed": [
+      "/app/frontend/app/welcome.tsx",
+      "/app/frontend/src/components/welcome/WelcomeCapabilityMatrix.tsx",
+      "/app/frontend/src/components/welcome/WelcomeBenefits.tsx",
+      "/app/frontend/src/components/Footer.tsx"
+    ],
+    "verification_status": "VERIFIED - All responsiveness contracts pass across all tested viewports"
+  }
+}

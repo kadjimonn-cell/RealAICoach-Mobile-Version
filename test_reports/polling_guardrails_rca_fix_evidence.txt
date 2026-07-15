@@ -1,0 +1,4 @@
+RCA_FIX_COMPLETED=YES
+timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+summary=Applied global polling dedupe + noisy endpoint preemptive cooldown + SmartOnboarding/Renewal route-scope and one-time markers + GPS suppressed-response fallback guard.
+validation=Backend 20s log window shows gps=3, onboarding=0, renewal=0, plans=0 for critical endpoints.

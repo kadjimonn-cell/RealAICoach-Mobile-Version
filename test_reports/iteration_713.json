@@ -1,0 +1,56 @@
+{
+  "summary": "Tested footer disclaimer overlap bug on mobile widths (320px, 390px, 430px). BUG CONFIRMED: Learn more link overlaps with bottom bar by 10-18px on all mobile widths. Applied fix by increasing marginBottom of footer-disclaimer-shell from 18px to 36px and adjusting paddingBottom of disclaimer container.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Footer disclaimer on Welcome page",
+        "issue": "Learn more link overlaps with bottom bar on mobile widths (320px: -18px gap, 390px: -10px gap, 430px: -14px gap)",
+        "selector": "[data-testid='footer-ai-disclaimer-learn-more-link']",
+        "priority": "HIGH",
+        "status": "FIX APPLIED - NEEDS REBUILD"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Rebuild static bundle to apply the fix (expo server was still building during testing)",
+    "Verify fix after rebuild by checking Learn more link gap to bottom bar is >= 8px on all mobile widths"
+  ],
+  "critical_code_review_comments": [
+    "The Learn more link is positioned outside the disclaimer container due to marginTop pushing it beyond the container's paddingBottom",
+    "Fix applied: Increased marginBottom of footer-disclaimer-shell from 18px to 36px in Footer.tsx",
+    "Fix applied: Changed paddingVertical to paddingTop/paddingBottom with increased paddingBottom (16px vs 12px) in EnterpriseAIDisclaimer.tsx"
+  ],
+  "updated_files": [
+    "/app/frontend/src/components/Footer.tsx",
+    "/app/frontend/src/components/EnterpriseAIDisclaimer.tsx"
+  ],
+  "success_rate": {
+    "backend": "N/A (skipped)",
+    "frontend": "0% (bug confirmed, fix applied but not verified due to static build)"
+  },
+  "seed_data_creation": "",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Footer disclaimer overlap bug was confirmed at all mobile widths. Fix applied to Footer.tsx (marginBottom: 36px) and EnterpriseAIDisclaimer.tsx (paddingBottom: 16px). The production server is serving a static build that doesn't reflect the changes. Expo dev server was still building during testing. Next agent should verify the fix after the static bundle is rebuilt.",
+  "rca_of_the_issue": {
+    "root_cause": "The Learn more link inside EnterpriseAIDisclaimer has marginTop: 10px which pushes it outside the container's bounds. The container's paddingBottom (10px) was not sufficient to contain the Learn more link (24px height). Combined with the footer-disclaimer-shell's marginBottom (18px) and footer-bottom-bar's paddingTop (6px), the total gap (24px) was less than the Learn more link's overflow (34px = 10px marginTop + 24px height).",
+    "reproduction_steps": [
+      "1. Navigate to /welcome page",
+      "2. Set viewport to mobile width (320px, 390px, or 430px)",
+      "3. Scroll to footer",
+      "4. Observe Learn more link overlapping with copyright row"
+    ],
+    "fix_applied": [
+      "Footer.tsx: Changed marginBottom of footer-disclaimer-shell from 18px to 36px for compact mobile",
+      "EnterpriseAIDisclaimer.tsx: Changed paddingVertical to paddingTop: 12px, paddingBottom: 16px for compact mobile"
+    ],
+    "verification_needed": "After rebuild, verify Learn more link bottom is at least 8px above bottom bar top on all mobile widths"
+  }
+}

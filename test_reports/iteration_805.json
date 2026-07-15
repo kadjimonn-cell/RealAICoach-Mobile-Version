@@ -1,0 +1,52 @@
+{
+  "summary": "Feature 26 'Job Search' (replacement of Jobs Portal) end-to-end verification — Backend (12 API tests) and Frontend (React Native Web / Expo Router). BACKEND: 11 passed + 1 skipped (fresh-user 400 skipped because free-tier register→ /api/job-search/* is blocked by subscription gate — flagged below; the 400 'Complete your career profile first' case itself is code-correct and covered by /_require_profile). All core endpoints work: PUT+GET /api/job-search/profile persists (headline+summary+skills+experience_years+remote), GET /jobs?q=engineer returns 32+ jobs with all required fields, unauth = 401, POST /match returns AI 5-dim fit score (overall_score, recommendation, dimensions, strengths, gaps), POST /documents/generate returns cv_markdown (~1400+ chars) + cover_letter_markdown + reviewer_notes, POST /ats-check returns ats_score + covered/missing keywords + parseability + recommendations, ats-check without generated docs = 400, tracker CRUD works (create 200, duplicate 409, patch to interview 200 with history growth, invalid status 400, delete 200, GET list), summary returns all 7 counts, /api/features/registry entry feature_id=jobs-portal now has title='Job Search', route='/job-search', icon='search', enabled=true. FRONTEND (admin@realaicoach.app): /job-search loads with all testids (job-search-page, job-search-hero, job-search-step-bar, 4 step buttons, 4 summary metric cards). Sidenav rename verified ('Job Search' string present in sidenav). /job-platform redirects to /job-search. Profile Save: filled headline/summary/skills, clicked job-search-profile-save, job-search-profile-status shows 'Profile saved. AI matching will now use your latest details.' Find Jobs: job-search-query-input='engineer' + job-search-search-btn returns job-search-job-card-0 (Careers Operations Analyst / SEO Manager). Documents Tab: job-search-generate-docs-btn, job-search-doc-content (CV markdown rendered), job-search-doc-view-cv, job-search-doc-view-cover, job-search-doc-copy-btn, job-search-ats-btn all present. Tracker Tab: job-search-tracker-row-0 renders. Command palette (Ctrl+K) shows 'Job Search'. Dark-mode toggle switches bg to rgb(5,10,24). Mobile 390px: hero, workspace, 4 metric cards, step buttons render responsively.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/job-search/*",
+        "issue": "Free-tier authenticated users receive 403 'This feature requires a Basic plan or higher' on ALL /api/job-search/* endpoints (profile, jobs, summary, match). Legacy /api/jobs/* was free-auth accessible (see /app/memory/test_credentials.md line 183-188, iteration_183). If the intent is to gate Job Search behind Basic+, that's a business decision; otherwise this is a regression from legacy Jobs Portal. Recommend confirming intent and either (a) adding /api/job-search/ to FREE_PATTERNS in access_control_engine.py or (b) documenting the plan requirement in the spec + surfacing an upgrade CTA on the frontend for free users."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "FindJobsTab",
+        "issue": "Residual error banner 'Could not load open jobs right now.' remains visible after a subsequent successful search (state errorMsg is set on failure but not cleared when the follow-up loadJobs succeeds and jobs render). Reproduce: trigger a first-load failure (e.g., 429/network hiccup), then click Search — cards render below but the red error message persists. Fix: setErrorMsg('') on successful load in loadJobs (already done at start of loadJobs; but if the request throws then a retry that succeeds should also explicitly clear). Actually the current code sets '' at start of loadJobs before try, so this should work — verify state race: the search error may be a different message coming from useEffect initial mount that failed. Suggest also clearing errorMsg in a finally-success branch and on searchBtn click.",
+        "selector": "[data-testid=\"job-search-jobs-error\"]",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_job_search_feature26.py",
+    "/app/test_reports/pytest/job_search_feature26.xml"
+  ],
+  "action_items": [
+    "CONFIRM INTENT (or fix regression): decide whether free-tier authenticated users should be able to use /api/job-search/* (legacy Jobs Portal was free). Currently 403 blocks free users at profile/jobs/summary/match. If intended, ensure the Job Search page renders an upgrade CTA / paywall UI for free users instead of a blank surface on 403.",
+    "MINOR UX: clear the 'Could not load open jobs right now.' error banner in FindJobsTab whenever a subsequent successful search loads jobs (or on Search button press). Currently the banner can linger after a transient 429.",
+    "OPTIONAL: for the fresh-user 400 'Complete your career profile first' path, the code correctness is confirmed by inspection of _require_profile in /app/backend/routes/job_search.py, but the automated test was skipped due to the free-tier 403 gate — once free access is decided, re-enable the test."
+  ],
+  "critical_code_review_comments": [
+    "/app/backend/routes/job_search.py is well-structured (462 lines, single responsibility, uses cookie-auth via require_auth, excludes _id in all reads, has proper 400/401/404/409 codes, non-blocking email failure). No changes recommended.",
+    "Frontend /app/frontend/app/job-search.tsx (168 lines) + 5 tab components under /app/frontend/src/components/jobSearch/ — clean separation of concerns. All interactive elements carry both data-testid AND testID (react-native-web + native compat). No file >280 lines. LGTM.",
+    "Feature registry entry updated correctly (title=Job Search, route=/job-search, icon=search, enabled=true). Sidenav in AppShell shows the renamed label. Command palette registered.",
+    "Potential inconsistency: legacy Jobs Portal (feature_id=jobs-portal) was free-tier accessible; new Job Search under the same feature_id is basic-tier gated by subscription_enforcement middleware. This may be intentional (candidate-only paid product) or an oversight. Worth an explicit call-out in the PRD."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_job_search_feature26.py (NEW - 12 pytest cases covering all Job Search endpoints; regression asset for future iterations)"
+  ],
+  "success_rate": {
+    "backend": "100% on tested cases (11 passed / 1 skipped due to free-tier 403 gate — not a code failure)",
+    "frontend": "100% on required flows (page load, all testids present, profile save success msg, jobs search cards render, docs tab with all buttons/content, tracker row, sidenav rename, /job-platform→/job-search redirect, command palette Job Search entry, dark theme, mobile 390px responsive)"
+  },
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (used for full E2E — no OTP challenge triggered in this session)",
+  "seed_data_creation": "Created 1 tracked application + 1 generated document + 1 match + saved profile under admin user via E2E flows. Tracker row was left in place to verify frontend list rendering. No cleanup needed — TEST_ prefixes not used because admin user is a stable fixture.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Environment quirks: (1) Preview WAF returns 429 aggressively when running multiple E2E sessions back-to-back; wait ~60-90s between full browser runs. (2) Free-tier users get 403 on /api/job-search/*; use admin@realaicoach.app for full E2E. (3) The 'fresh user 400 profile-first' test can't currently be executed against a free-tier account because 403 fires first — need a Basic+ fixture user or to change access control. (4) All Job Search testids follow the job-search-* prefix and are present in both data-testid and testID (RNW/native compat). (5) The AppShell sidenav nav-item id is 'jobs-portal' (unchanged for feature registry stability) but the visible label is 'Job Search'. (6) Command palette entry title 'Job Search' is searchable. (7) /job-platform is now a redirect route → /job-search (confirmed 200 → /job-search URL). (8) Mobile 390px renders fine — hero + step bar + metric cards stack correctly. (9) Backend regression suite: run `pytest backend/tests/test_job_search_feature26.py -v` (46s runtime including 2 LLM calls for generate + 2 for match + 1 for ats-check). (10) Non-blocking email failure after documents/generate is logged as warning; do not fail on missing job_search_kit_ready email in preview env.",
+  "rca_of_the_issue": "N/A — no functional bugs. Two minor items: (a) free-tier 403 gate on /api/job-search/* may be a regression from legacy Jobs Portal free access — needs product confirmation; (b) transient error banner in FindJobsTab not cleared on successful retry — one-line fix (setErrorMsg('') when jobs.length>0 in the setState after successful loadJobs)."
+}

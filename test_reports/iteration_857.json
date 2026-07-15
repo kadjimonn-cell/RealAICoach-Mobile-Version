@@ -1,0 +1,73 @@
+{
+  "summary": "Verified the new ReportLab Pro renderer for Payment Receipt PDF v15 end-to-end. Wrapper (services/receipt_pdf_pro.generate_receipt_pdf_pro) is live for the free user's receipt path via /api/r/f?d=r → HTTP 200 application/pdf (~361 KB) containing all required tokens: RECEIPT, RCT-, user email, PAYMENT TIMELINE, TOTAL YOU PAY, HASH, SIGN, RECEIPT EXPLAINABILITY. The previously broken 500 (missing await bug) is fixed. Permanent pytest suite tests/test_receipt_invoice_pro_pdf.py + tests/test_receipt_email_v7_fingerprint.py = 17/17 PASS. Added new E2E backend suite (9 tests) — 6 pass, 3 fail because of a pre-existing access-control policy mismatch between the two proxy aliases: /api/r/* is registered as a PUBLIC_API_PREFIX and thus completely bypasses SubscriptionEnforcementMiddleware, while /api/content/document defaults to BASIC_REQUIRED (no doc_type-aware policy). Frontend Payment History V2 loads for the free user, ledger renders txn_a98b73968e034fe7, and the ledger-level `payment-history-export-pdf-button` correctly hits /api/r/x?f=p → 200.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "/api/content/document",
+        "issue": "Returns 403 subscription_required for FREE user requesting doc_type=receipt (own receipt). SubscriptionEnforcementMiddleware treats the whole /api/content/document path as basic-required — the receipt case (which is owner-owned data and works via /api/r/f) is blocked. Also causes deterministic 400 validation errors (invalid doc_type, missing payment_id) to be masked as 403. Review request expected 200 for receipt on this endpoint.",
+        "priority": "HIGH"
+      },
+      {
+        "endpoint": "/api/r/f?d=i (invoice) via free user",
+        "issue": "PLAN-GATE BYPASS: free user CAN download INVOICE PDFs via /api/r/f?d=i&p={own_txn_id} (returns 200 application/pdf). Root cause: /api/r/ is listed in utils/public_api_contract.py PUBLIC_API_PREFIXES (line 75, intended for email tracking pixels) but the same prefix ALSO serves the receipt/invoice PDF proxy handler (content_document). Because the path is treated as public, subscription enforcement is skipped entirely, so the invoice plan-gate that exists on /api/content/document is trivially bypassed via the /api/r/f alias.",
+        "priority": "CRITICAL"
+      }
+    ],
+    "minor": [
+      {
+        "endpoint": "/api/content/document",
+        "issue": "Validation ordering: the 400 errors for invalid doc_type / missing payment_id are unreachable for free users because middleware 403 fires first. Consider either (a) exempting doc_type=receipt (owner-scoped) from plan-gate at ACL layer, or (b) adding a doc-type-aware plan-gate inside the handler and marking /api/content/document as FREE_PATTERNS."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "PaymentDetailPanel (Payment History V2)",
+        "issue": "Free user sees ENABLED 'View invoice' / 'Download invoice PDF' / 'Email invoice' buttons for their Pending payment. Clicking 'Download invoice PDF' navigates to '/payment-document...' V2 page which shows 'Payment not found' with no user-facing plan-gate messaging. Either invoice actions should be plan-gated at the UI (basic+ only) or the deep-link viewer should render a clear 'Upgrade to Basic to view invoice' message rather than 'Payment not found'.",
+        "selector": "text=Download invoice PDF / Payment Document V2 route",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "PaymentDetailPanel",
+        "issues": [
+          "Receipt-action gating on status='Pending' works nicely (buttons dimmed with tooltip 'Receipt actions unlock once the payment status becomes Paid or Completed.') — good UX. Invoice section does not have equivalent gating."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_receipt_pdf_pro_e2e_iter857.py",
+    "/app/backend/tests/test_receipt_invoice_pro_pdf.py",
+    "/app/backend/tests/test_receipt_email_v7_fingerprint.py",
+    "/app/test_reports/pytest/iter857_e2e.xml"
+  ],
+  "action_items": [
+    "Decide invoice access model — either (a) exclude /api/r/ from PUBLIC_API_PREFIXES (utils/public_api_contract.py L75) and instead exempt only email-tracking sub-paths like /api/r/track/, /api/r/click/, so the receipt/invoice proxy honours subscription enforcement, OR (b) enforce plan-gate inside content_document handler (routes/payments_document_proxy_routes.py) explicitly for doc_type=invoice. Currently the free user CAN download invoices via the /api/r/f alias.",
+    "Add doc_type-aware access rule for /api/content/document so receipt downloads for owners return 200 (currently 403 basic-gate blocks own-receipt access on that alias).",
+    "In PaymentHistoryV2 UI (frontend/src/components/paymentHistory/PaymentHistoryLedger.tsx or PaymentDetailPanel) plan-gate the invoice document actions for free users, or improve the '/payment-document/... V2' page to render a proper 'Upgrade required for invoice' state instead of 'Payment not found'.",
+    "(Nice-to-have) Add data-testid on Document Actions buttons in PaymentDetailPanel (`payment-detail-view-invoice`, `payment-detail-download-invoice-pdf`, `payment-detail-download-receipt-pdf`, ...) — currently they only expose text labels which makes automated coverage brittle."
+  ],
+  "critical_code_review_comments": [
+    "The unified proxy handler content_document is reachable via 4 aliases with DIFFERENT access-control semantics (/api/content/document = basic+ gated; /api/r/f = fully public; /api/asset/f + /api/content/retrieve = ???). This surface should have one consistent policy or one canonical handler with an inner gate. Current split is a subtle security foot-gun.",
+    "utils/public_api_contract.py L75 uses a broad '/api/r/' prefix — since /api/r/f serves receipt/invoice PDF for authenticated users, the tracking-pixel prefix should be narrowed (e.g. /api/r/track/, /api/r/pixel/, /api/r/click/) so PDF alias endpoints inherit normal auth+plan gating.",
+    "The receipt_pdf_pro fallback chain in utils/receipt_pdf_renderer.py L14-32 is correct and swallows exceptions from the pro renderer gracefully — verified by permanent tests test_wrapper_delegates_to_pro_and_enforces_v15 and test_wrapper_falls_back_on_pro_failure (both green).",
+    "Fix for missing `await` in routes/payments_document_proxy_routes.py L118 (`pdf_bytes = await _generate_pdf_from_payment(...)`) is confirmed in code and functionally verified — live receipt endpoint no longer 500s."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_receipt_pdf_pro_e2e_iter857.py (NEW — 9 test methods covering the review request scenarios)"
+  ],
+  "success_rate": {
+    "backend": "Permanent pro-PDF suite 17/17 (100%). New E2E iteration_857 suite 6/9 (67%). Critical receipt-flow endpoints (/api/r/f?d=r, PDF token check, unauth 401, invoice-403 via /api/content/document, CSV export /api/r/x?f=c, HTML tool /api/r/t?m=csv) all PASS.",
+    "frontend": "Payment History V2 UI 90% — page loads, ledger renders, detail panel opens, ledger-wide PDF/CSV exports (`payment-history-export-pdf-button` → /api/r/x?f=p 200) confirmed. Row-level receipt download not directly exercisable because the fixture payment is 'Pending' (UI correctly gates receipt actions until Paid). Invoice UI plan-gating gap noted above."
+  },
+  "test_credentials": "Free user p1.free.1779113329@example.com / P1Free#2026!Aa — cookie session (session_token). transaction_id under test: txn_a98b73968e034fe7 (PayPal Basic monthly, status=pending).",
+  "seed_data_creation": "None. Used existing free user + existing payment record.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "The Payment Receipt Pro PDF renderer itself is FUNCTIONALLY GREEN (17/17 permanent tests + primary review scenario green). The three test failures in test_receipt_pdf_pro_e2e_iter857.py are NOT PDF bugs — they are access-control policy issues in the proxy alias layer (utils/public_api_contract.py + routes/payments_document_proxy_routes.py). After main agent resolves the alias policy inconsistency (see action items), rerun `python -m pytest tests/test_receipt_pdf_pro_e2e_iter857.py -q` for regression. The permanent suite path is `tests/test_receipt_invoice_pro_pdf.py tests/test_receipt_email_v7_fingerprint.py`.",
+  "rca of the issue": "The /api/content/document endpoint hits SubscriptionEnforcementMiddleware -> evaluate_api_access -> get_required_level -> path matches no FREE_PATTERNS/PREMIUM_PATTERNS -> default=1 (basic). Free user (level 0) < 1 → 403 subscription_required. In contrast /api/r/f is intercepted by an earlier `public_api_contract.PUBLIC_API_PREFIXES` check (line 75 lists '/api/r/' for email tracking pixels), so the middleware treats it as public → no plan check → handler validates auth and returns the PDF regardless of doc_type. Reproduction: `curl -c /tmp/j -b /tmp/j -X POST $URL/api/auth/login -H 'X-Requested-With: XMLHttpRequest' -d '{\"email\":\"p1.free.1779113329@example.com\",\"password\":\"P1Free#2026!Aa\"}' -H 'Content-Type: application/json'` then `curl -b /tmp/j '$URL/api/r/f?d=i&p=txn_a98b73968e034fe7'` returns 200 PDF (should be 403). Mitigation: (a) narrow public prefix to '/api/r/track/' / '/api/r/pixel/' / '/api/r/click/'; or (b) inside content_document handler, when doc_type=='invoice' require compute_effective_plan(user_doc) in {'basic','premium'} else raise HTTPException(403, {'error':'Subscription Required', 'required_plan':'basic', 'upgrade_url':'/subscription/plans'})."
+}

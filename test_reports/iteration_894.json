@@ -1,0 +1,22 @@
+{
+  "summary": "Verified db-hardening fix + deployment readiness regression. All 7 pytest tests PASS (7/7). Direct invocation of ensure_db_security_hardening() twice returned status='healthy' with failed_indexes=[] and no immutable _id error. platform_security_state doc for _id='db_hardening' exists with status and updated_at. Backend error log (last 500 lines post-restart) contains ZERO 'scheduled pass failed' / 'index create failed' / 'immutable field _id' entries. Admin + free user login (cookie session + /auth/me) work. Frontend /auth/login renders correctly with email/password/submit form fields. Rate limiter returns 429 on /api/auth/register after burst (10/60s).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_db_hardening_iter894.py",
+    "/app/test_reports/pytest/iter894_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "db_security_hardening.py fix is correct: insert_one(dict(doc)) uses a shallow copy so the original doc is not mutated with ObjectId; the $set filters out _id defensively; IndexOptionsConflict (code 85) is tolerated; posture fallback to FIELD_ENCRYPTION_KEY for FIELD_LOOKUP_HMAC_KEY matches field_encryption.py; mongo_tls_hint is correctly informational-only and does not degrade status.",
+    "Function returns safe_doc with _id stripped so upstream code never leaks Mongo internals."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026!  ; p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "iter894 verified db-hardening idempotency fix, posture fallback, IndexOptionsConflict tolerance, and no regressions in login/health/rate-limiting. Test file /app/backend/tests/test_db_hardening_iter894.py can be re-used as a regression suite. Backend pid 9047 (restart ~06:00Z 2026-07-14). Frontend expo static export served OK from preview URL.",
+  "rca of the issue": "Root cause (already fixed by main agent): insert_one() mutated the input dict by injecting a fresh ObjectId as _id. That same mutated dict was then spread into $set on an upsert keyed by _id='db_hardening', triggering MongoDB WriteError 66 'Performing an update on the path _id would modify the immutable field _id'. Fix (verified): pass dict(doc) shallow-copy to insert_one, and defensively strip _id from the $set payload."
+}

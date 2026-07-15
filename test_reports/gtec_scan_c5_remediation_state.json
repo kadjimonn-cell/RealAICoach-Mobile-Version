@@ -1,0 +1,25 @@
+{
+  "attempted": 0,
+  "fixed": 0,
+  "failed": 0,
+  "skipped": 0,
+  "auto_escalated": 2,
+  "actions": [
+    {
+      "label": "react_dangerous_inner_html",
+      "severity": "medium",
+      "status": "auto_escalated",
+      "action_taken": "open_incident_and_contain",
+      "incident_id": "gtec_inc_5b0c9fac4553",
+      "detail": "no safe auto-remediator registered \u2014 auto-escalated to incident with containment"
+    },
+    {
+      "label": "dom_innerhtml_write",
+      "severity": "medium",
+      "status": "auto_escalated",
+      "action_taken": "open_incident_and_contain",
+      "incident_id": "gtec_inc_d743867c3a57",
+      "detail": "no safe auto-remediator registered \u2014 auto-escalated to incident with containment"
+    }
+  ]
+}

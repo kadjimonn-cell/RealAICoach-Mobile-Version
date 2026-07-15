@@ -1,0 +1,50 @@
+{
+  "summary": "iteration_849 (BACKEND-ONLY): Verified the fix for the reported bug — _dispatch_certificate_completion_email in /app/backend/routes/ai_learning_hub.py now attaches BOTH the portrait and landscape certificate PDFs to the Learning Hub completion award email. Wrote new pytest suite (9 tests, all PASS) that monkeypatches utils.email_service.send_email + is_email_configured, calls the dispatcher with force=True on a synthetic cert dict, captures kwargs, and asserts: (a) exactly 2 attachments, (b) correct filenames realaicoach-certificate-{vid}-portrait.pdf and realaicoach-certificate-{vid}-landscape.pdf, (c) both content_type=application/pdf, (d) both base64 payloads decode to valid PDFs (%PDF magic bytes) >10KB, (e) portrait PDF is A4 portrait (595x842pt) and landscape is A4 landscape (842x595pt), (f) both PDFs contain the enlarged blue-ink handwritten signature (portrait 56.88mm wide, landscape 56.76mm wide — both >45mm target) with 100% ink above the signature line and ~2.4mm gap (no overlap). Also verified negative paths: dispatcher returns False when learner_email missing, and does NOT invoke send_email when is_email_configured() returns False. REGRESSION: existing test_ai_learning_hub_signature_pdf.py — all 15/15 PASS (was 14/15 in iteration_848; the previously-failing test_served_portrait_pdf_endpoint_has_enlarged_signature now passes, meaning the stale-cache issue from iteration_848 has ALSO been fixed by the render-profile-version bump). Backend healthy, no import errors.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "pdf_content_evidence": {
+    "dispatcher_send_email_invoked": "YES — captured kwargs include recipient_email, subject, content, attachments",
+    "attachments_count": "2 (exactly)",
+    "attachment_1_filename": "realaicoach-certificate-TEST-SIG-EMAIL-ATTACH-portrait.pdf",
+    "attachment_2_filename": "realaicoach-certificate-TEST-SIG-EMAIL-ATTACH-landscape.pdf",
+    "portrait_content_type": "application/pdf",
+    "landscape_content_type": "application/pdf",
+    "portrait_base64_valid": "YES — decodes to %PDF-, size >10KB",
+    "landscape_base64_valid": "YES — decodes to %PDF-, size >10KB",
+    "portrait_page_size_pt": "595 x 842 (A4 portrait, h>w)",
+    "landscape_page_size_pt": "842 x 595 (A4 landscape, w>h)",
+    "portrait_blue_ink": "w=56.88mm h=26.54mm above_line=6107px below_line=0 gap_to_line=2.41mm — PASS",
+    "landscape_blue_ink": "w=56.76mm h=26.41mm above_line=6068px below_line=0 gap_to_line=2.54mm — PASS",
+    "negative_case_no_email": "dispatcher returns False when learner_email missing — PASS",
+    "negative_case_not_configured": "dispatcher returns False and does NOT invoke send_email when is_email_configured=False — PASS"
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_ai_learning_hub_certificate_email_attachments.py",
+    "/app/backend/tests/test_ai_learning_hub_signature_pdf.py",
+    "/app/test_reports/pytest/iter849_email_attachments.xml",
+    "/app/test_reports/pytest/iter849_signature_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/ai_learning_hub.py:5063 — orphan f-string literal computed but not assigned/used (`f\"Your RealAICoach certificate is ready — {certificate_doc.get('course_title', 'AI Learning Course')}\"`). Harmless but dead code; likely a leftover subject-string draft. Should be removed or wired into tpl.subject if intentional.",
+    "routes/ai_learning_hub.py:5036-5099 — the dispatcher catches all exceptions with bare `except Exception: return False`. Any error building either the portrait OR landscape PDF (or in template loading) silently drops the completion email. Consider logging the exception with logger.exception so ops can see build failures before users complain.",
+    "routes/ai_learning_hub.py:5077-5096 — no defensive check that pdf_b64 / pdf_landscape_b64 are non-empty before attaching. If _build_certificate_pdf_base64 returned an empty string on error, an empty attachment would be emailed. Low risk (builder does raise on failure) but worth an assert or truthiness check.",
+    "Regression coverage — new dispatcher test suite catches the exact bug reported (missing landscape attachment) so any future regressions removing one of the two attachments will fail loudly."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_ai_learning_hub_certificate_email_attachments.py (new — 9 tests, all PASS)",
+    "/app/test_reports/pytest/iter849_email_attachments.xml (new pytest JUnit)",
+    "/app/test_reports/pytest/iter849_signature_regression.xml (regression, 15/15 PASS)",
+    "/app/test_reports/iteration_849.json (this file)"
+  ],
+  "success_rate": {"backend": "100% (9/9 new + 15/15 regression = 24/24)", "frontend": "N/A (skipped per review request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (used only by regression suite endpoint tests); dispatcher tests do NOT require login — they use monkeypatch to bypass send_email and a synthetic cert dict.",
+  "seed_data_creation": "No new persistent seed data. Synthetic cert dict used in-memory with verification_id=TEST-SIG-EMAIL-ATTACH. No real email was sent (send_email monkeypatched); no DB writes issued by the dispatcher path other than reading _get_certificate_template_settings.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The fix is verified: _dispatch_certificate_completion_email now attaches both portrait+landscape PDFs (filenames realaicoach-certificate-{vid}-portrait.pdf and -landscape.pdf, both application/pdf, both containing the 56.9mm enlarged blue-ink signature). To re-test: `cd /app/backend && python -m pytest tests/test_ai_learning_hub_certificate_email_attachments.py tests/test_ai_learning_hub_signature_pdf.py -v`. IMPORTANT: use the _run(coro_factory) pattern (see top of test_ai_learning_hub_certificate_email_attachments.py) when invoking async dispatcher code — Motor client is loop-bound and pytest-asyncio's strict mode combined with sync test fns requires a fresh Motor client per fresh event loop, otherwise the second dispatcher call fails silently (dispatcher's bare except catches the loop-mismatch error and returns False). Monkeypatch utils.email_service.send_email (NOT routes.ai_learning_hub.send_email) because the dispatcher does `from utils.email_service import send_email` at call time.",
+  "rca of the issue": "Original bug (per problem statement): only portrait certificate PDF was attached to admin's award email; landscape was missing. Root cause: the previous _dispatch_certificate_completion_email built only pdf_b64 (portrait) and passed a single-item attachments list. Fix applied by main agent: builds pdf_landscape_b64 via _build_certificate_pdf_base64(..., layout='landscape') and includes both in the attachments list (lines 5056-5062 and 5084-5095). Verification approach: monkeypatch send_email → capture kwargs → assert attachments has both entries with correct filenames, MIME type, valid base64 PDFs, correct A4 page orientation (595x842 vs 842x595 pt), and enlarged blue-ink signature (56.88mm / 56.76mm) on both pages. All assertions PASS."
+}

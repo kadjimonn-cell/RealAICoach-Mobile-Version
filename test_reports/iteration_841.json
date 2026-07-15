@@ -1,0 +1,67 @@
+{
+  "summary": "E2E verification of Web-First / Multi-Platform API v1 architecture (middleware shim, /api/v1/client/bootstrap, admin-gated /api/v1/openapi.json + /docs, native token channel via X-Client-Platform, legacy backward compat) + frontend regression (login, dashboard, HomeArcadeChallenge, theme toggle, language switcher). All 40 backend tests pass (25 existing pytest suite + 15 new ingress curl-parity tests). Frontend regression fully green.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_api_v1_multiplatform_architecture.py",
+    "/app/backend/tests/test_api_v1_curl_public_verification.py",
+    "/app/test_reports/pytest/iter841_v1_arch.xml",
+    "/app/test_reports/pytest/iter841_curl_public.xml"
+  ],
+  "backend_verification_matrix": {
+    "GET /api/health": "200 OK, no X-API-Version header",
+    "GET /api/v1/health": "200 OK, X-API-Version: 1 header present",
+    "GET /api/v1/client/bootstrap (public)": "200 OK, api_version=v1, theming v2-light-dark / v7-light-dark, auth.native_token_header=X-Client-Platform, refresh_tokens_supported=true, mfa_supported=true, oauth_providers include google, docs sub-map present, X-API-Version header present",
+    "GET /api/client/bootstrap (legacy alias)": "200 OK, api_version=v1, NO X-API-Version header (legacy path untouched)",
+    "GET /api/v1/client/bootstrap with X-Client-Platform:android": "client_platform=android echoed",
+    "GET /api/v1/openapi.json (no auth)": "401/403 as expected",
+    "GET /api/v1/docs (no auth)": "401/403 as expected",
+    "GET /api/v1/admin/users (no auth)": "401/403 as expected — deny-by-default gate honored via versioned path",
+    "POST /api/auth/login with X-Client-Platform:ios + X-Requested-With": "200 OK, returns session_token in body (native channel)",
+    "POST /api/auth/login without X-Client-Platform (web)": "200 OK, tokens NOT leaked in body — cookie-only",
+    "GET /api/v1/auth/me with Bearer <native token>": "200 OK, returns admin user",
+    "GET /api/v1/openapi.json with Bearer <admin native token>": "200 OK, valid OpenAPI 3 schema (paths present)",
+    "GET /api/features/registry (legacy)": "200 OK",
+    "GET /api/i18n/languages (legacy)": "200 OK",
+    "Flappy Bird daily-challenge /api vs /api/v1 parity": "Identical status on both — gate behavior preserved"
+  },
+  "frontend_verification_matrix": {
+    "Homepage load": "OK — RealAICoach marketing page renders with header (Features, Analytics, Security, Pricing, EN switcher, Sign In, Start Free Trial)",
+    "Admin login (admin@realaicoach.app)": "OK — session created via [data-testid=login-submit-button], landed on Home dashboard",
+    "Home dashboard render": "OK — Welcome back RealAICoach, OWNER badge, Ops/Command sections, sidebar with Home/Features/FPS Game/Flappy Bird Game/Watch Videos/Audio Studio/My Podcasts/Sports/Travel Visa/Daily Meditation",
+    "HomeArcadeChallenge card": "OK — 7 elements matching [data-testid*=arcade] on Home page",
+    "Theme toggle": "OK — light/system/dark triad toggled successfully via [data-testid=theme-toggle]",
+    "Language switcher": "OK — [data-testid=language-switcher] opens EN dropdown",
+    "Console errors on /api": "None critical — only pre-login /api/auth/me 401 cookie probe (expected) + RN Web useNativeDriver warning (benign). Zero 5xx.",
+    "Admin RBAC": "OK — OWNER badge visible, admin console tile accessible"
+  },
+  "action_items": [],
+  "critical_code_review_comments": [
+    "APIVersionRewriteMiddleware correctly runs at the outermost layer (added via add_middleware AFTER register_middleware in server.py), so downstream auth/CSRF/rate-limit see canonical /api/* — matches problem statement design.",
+    "raw_path is updated in the ASGI scope, but scope.get('route_root_path') / scope.get('root_path') are untouched (they were empty, which is fine). Good.",
+    "WebSocket branch short-circuits before wrapping send() — correctly avoids header injection on ws frames.",
+    "X-API-Version header appended as bytes tuple to response headers — Starlette/FastAPI accepts this; verified via TestClient AND public ingress.",
+    "routes/api_docs.py imports require_admin from .db — depends on Depends(require_admin) which raised 401/403 correctly for unauthenticated and 200 for admin bearer. No leak of schema.",
+    "client_bootstrap.py: base_paths.versioned=/api/v1, base_paths.legacy=/api — matches the pytest contract; theming block returns v2-light-dark app + v7-light-dark email as required.",
+    "utils/public_api_contract.py must list /api/client/bootstrap in PUBLIC_API_PREFIXES for the deny-by-default auth gate to allow the unauthenticated call — verified 200 without auth on ingress path.",
+    "OpenAPI schema returned by /api/v1/openapi.json is FastAPI's app.openapi() with info.version overridden to 1.0.0 — safe (no route filtering; docs remain admin-gated so no info-disclosure concern).",
+    "Zero-regression: 25/25 pytest + 15/15 external ingress + full frontend flow — nothing else was touched."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_api_v1_curl_public_verification.py (new — 15 ingress-level regression tests)"
+  ],
+  "success_rate": {"backend": "100% (40/40)", "frontend": "100% (all regression checks pass)"},
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! — verified working for both web cookie and native bearer channels.",
+  "seed_data_creation": "None — no test data created; only new pytest file authored.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Web-First Multi-Platform API v1 shim is fully validated. The new test file /app/backend/tests/test_api_v1_curl_public_verification.py exercises the ingress URL and is safe for regression re-runs. The v1 alias only rewrites /api/v1/* → /api/* and stamps X-API-Version:1 on the response; legacy /api/* is byte-for-byte unchanged (confirmed by presence/absence of the header). Native auth is signaled via header X-Client-Platform (values: mobile/native/android/ios/expo) — this MUST be paired with X-Requested-With:XMLHttpRequest for CSRF. Admin session_token from native login unlocks /api/v1/openapi.json.",
+  "rca of the issue": "N/A — no bugs discovered. Implementation is additive and zero-regression as specified."
+}

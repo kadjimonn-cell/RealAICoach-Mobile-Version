@@ -1,0 +1,38 @@
+name: Frontend Lint Gate
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-lint-gate.yml'
+
+jobs:
+  lint-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: frontend
+
+      - name: Build changed file list
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --name-only "$BASE_SHA...$HEAD_SHA" > /tmp/changed_files.txt
+          echo "Changed file count: $(wc -l < /tmp/changed_files.txt)"
+
+      - name: Enforce lint gate (PR policy C)
+        run: node frontend/scripts/pr-lint-gate.mjs /tmp/changed_files.txt

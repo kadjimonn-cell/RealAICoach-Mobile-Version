@@ -1,0 +1,188 @@
+{
+  "started_at": "2026-05-20T05:45:36.532341+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "stripe.prod.retest.70e79f35@gmail.com",
+    "password": "StripeLive#2026Aa!",
+    "name": "Stripe Prod Retest User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_7649b634f6b6",
+        "email": "stripe.prod.retest.70e79f35@gmail.com",
+        "name": "Stripe Prod Retest User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_7649b634f6b6",
+        "email": "stripe.prod.retest.70e79f35@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "plans",
+      "status_code": 200,
+      "plan_ids": [
+        "free",
+        "basic",
+        "premium"
+      ]
+    },
+    {
+      "step": "create_checkout_basic",
+      "status_code": 200,
+      "body": {
+        "session_id": "cs_live_a1IJFvhlfp46yYGFQTZU3DMu9D8zm8DvW0wwkZjbEXxqcA8IOFH7AssE4d",
+        "checkout_url": "https://checkout.stripe.com/c/pay/cs_live_a1IJFvhlfp46yYGFQTZU3DMu9D8zm8DvW0wwkZjbEXxqcA8IOFH7AssE4d#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdicGRmZGhqaWBTZHdsZGtxJz8nZmprcXdqaScpJ2R1bE5gfCc%2FJ3VuWmlsc2BaMDRRMUZkdkBrVT1XN2d0cXJnfGpkVEAwZFEyPFxobHxRN2RoMjdCTjU3Q0xWMlZ%2FZ3BESz1WalRhZkhdcVRJVWxdRzJyTWg0Y0REfHJBT0lTdk9CZjJXfzQ1NWFBTF02cFBUJyknY3dqaFZgd3Ngdyc%2FcXdwYCknZ2RmbmJ3anBrYUZqaWp3Jz8nJmNjY2NjYycpJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl",
+        "checkout_host": "checkout.stripe.com",
+        "payment_method": "stripe",
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "pre_webhook_checkout_status_basic",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 776,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "create_checkout_premium",
+      "status_code": 200,
+      "body": {
+        "session_id": "cs_live_a1pPHsG9b8EMTXYRl2lbZ9Uqmk1itv4E6q5mYqcs0hah8qUtRT9i2Y8f5l",
+        "checkout_url": "https://checkout.stripe.com/c/pay/cs_live_a1pPHsG9b8EMTXYRl2lbZ9Uqmk1itv4E6q5mYqcs0hah8qUtRT9i2Y8f5l#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdicGRmZGhqaWBTZHdsZGtxJz8nZmprcXdqaScpJ2R1bE5gfCc%2FJ3VuWmlsc2BaMDRRMUZkdkBrVT1XN2d0cXJnfGpkVEAwZFEyPFxobHxRN2RoMjdCTjU3Q0xWMlZ%2FZ3BESz1WalRhZkhdcVRJVWxdRzJyTWg0Y0REfHJBT0lTdk9CZjJXfzQ1NWFBTF02cFBUJyknY3dqaFZgd3Ngdyc%2FcXdwYCknZ2RmbmJ3anBrYUZqaWp3Jz8nJmNjY2NjYycpJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl",
+        "checkout_host": "checkout.stripe.com",
+        "payment_method": "stripe",
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "pre_webhook_checkout_status_premium",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 2021,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "webhook_basic",
+      "status_code": 400,
+      "body": {
+        "detail": "Invalid webhook signature"
+      }
+    },
+    {
+      "step": "webhook_premium",
+      "status_code": 400,
+      "body": {
+        "detail": "Invalid webhook signature"
+      }
+    },
+    {
+      "step": "post_webhook_checkout_status_basic",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 776,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "db_tx_basic",
+      "doc": {
+        "transaction_id": "txn_d9c28cbe484f4c88",
+        "session_id": "cs_live_a1IJFvhlfp46yYGFQTZU3DMu9D8zm8DvW0wwkZjbEXxqcA8IOFH7AssE4d",
+        "plan_id": "basic",
+        "amount": 5.99,
+        "amount_local": 7.76,
+        "currency": "usd",
+        "provider": "stripe",
+        "payment_status": "initiated",
+        "amount_gross": 7.25,
+        "status": "initiated"
+      }
+    },
+    {
+      "step": "notification_queue_basic",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "post_webhook_checkout_status_premium",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 2021,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "db_tx_premium",
+      "doc": {
+        "transaction_id": "txn_b62efa8d031a4186",
+        "session_id": "cs_live_a1pPHsG9b8EMTXYRl2lbZ9Uqmk1itv4E6q5mYqcs0hah8qUtRT9i2Y8f5l",
+        "plan_id": "premium",
+        "amount": 15.99,
+        "amount_local": 20.21,
+        "currency": "usd",
+        "provider": "stripe",
+        "payment_status": "initiated",
+        "amount_gross": 19.35,
+        "status": "initiated"
+      }
+    },
+    {
+      "step": "notification_queue_premium",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_7649b634f6b6",
+        "subscription_plan": "free",
+        "subscription_status": "active",
+        "last_payment_id": null
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 0,
+      "latest_payment_notifications": []
+    },
+    {
+      "step": "receipt_pdf_basic",
+      "status_code": 409,
+      "content_type": "application/json",
+      "bytes": 0
+    },
+    {
+      "step": "receipt_pdf_premium",
+      "status_code": 409,
+      "content_type": "application/json",
+      "bytes": 0
+    }
+  ],
+  "finished_at": "2026-05-20T05:45:51.373055+00:00"
+}

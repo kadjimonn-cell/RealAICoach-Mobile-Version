@@ -1,0 +1,106 @@
+{
+  "summary": "Verified mobile Welcome footer compactness fixes from iteration_727. All three previously failing metrics now PASS: socialGap reduced from 44px to 12px (target <=28px), linksGap reduced from 31px to 15px (target <=24px), and 430px dense mode now activates correctly with footer height 1025px (was 1450px, target <=1325px). Non-regression checks for tablet/desktop centering and no horizontal overflow all pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_727.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "useDensePhoneFooter threshold correctly extended to width < 480 (was < 430), now covers iPhone 14 Pro Max (430px)",
+    "brandCol marginBottom reduced to 4px when useDensePhoneFooter is active (was 36px default)",
+    "Social card minHeight/gaps tightened: minHeight 42px, paddingVertical 6px, gap 6px when dense",
+    "Links grid row gaps tightened: gap 6px, rowGap 6px when useDensePhoneFooter is active",
+    "Disclaimer shell spacing reduced: marginTop 8px when useDensePhoneFooter is active"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (skipped per request)",
+    "frontend": "100% - All 3 previously failing metrics now pass"
+  },
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Mobile footer compactness fix fully verified. All gap metrics and dense mode activation now meet targets. Footer height at 390x844 is 1045px (was 1121px in iteration_727, was ~1485px before any fixes). Footer height at 430x932 is 1025px (was 1450px before fix). No horizontal overflow at any viewport. Non-regression checks for tablet/desktop centering all pass.",
+  "verification_results": {
+    "mobile_390x844": {
+      "viewport": "390x844",
+      "footerHeight": 1045,
+      "footerHeightTarget": "<=1325",
+      "footerHeightStatus": "PASS",
+      "socialHeight": 221,
+      "socialHeightTarget": "<=310",
+      "socialHeightStatus": "PASS",
+      "linksHeight": 311,
+      "linksHeightTarget": "<=350",
+      "linksHeightStatus": "PASS",
+      "socialGap": 12,
+      "socialGapTarget": "<=28",
+      "socialGapStatus": "PASS",
+      "linksGap": 15,
+      "linksGapTarget": "<=24",
+      "linksGapStatus": "PASS",
+      "disclaimerGap": 12,
+      "disclaimerGapTarget": "<=18",
+      "disclaimerGapStatus": "PASS",
+      "learnMoreAboveBottomBar": true,
+      "horizontalOverflow": false
+    },
+    "mobile_320x568": {
+      "viewport": "320x568",
+      "footerHeight": 1060,
+      "socialHeight": 221,
+      "linksHeight": 311,
+      "socialGap": 12,
+      "linksGap": 15,
+      "horizontalOverflow": false,
+      "status": "PASS"
+    },
+    "mobile_430x932": {
+      "viewport": "430x932",
+      "footerHeight": 1025,
+      "footerHeightTarget": "<=1325",
+      "footerHeightStatus": "PASS (was 1450px before fix - dense mode now activates)",
+      "socialHeight": 221,
+      "linksHeight": 311,
+      "socialGap": 12,
+      "linksGap": 15,
+      "status": "PASS"
+    },
+    "tablet_768x1024": {
+      "heroCentered": true,
+      "horizontalOverflow": false,
+      "status": "PASS"
+    },
+    "desktop_1180x900": {
+      "heroCentered": true,
+      "horizontalOverflow": false,
+      "status": "PASS"
+    },
+    "desktop_1920x1080": {
+      "heroCentered": true,
+      "horizontalOverflow": false,
+      "footerHeight": 966,
+      "status": "PASS"
+    }
+  },
+  "before_after_comparison": {
+    "at_390x844": {
+      "socialGap": {"iteration_727": "44px", "current": "12px", "target": "<=28px", "status": "FIXED"},
+      "linksGap": {"iteration_727": "31px", "current": "15px", "target": "<=24px", "status": "FIXED"},
+      "footerHeight": {"iteration_727": "1121px", "current": "1045px", "improvement": "76px reduction"}
+    },
+    "at_430x932": {
+      "footerHeight": {"iteration_727": "1450px (dense mode NOT active)", "current": "1025px (dense mode ACTIVE)", "target": "<=1325px", "status": "FIXED"},
+      "socialGap": {"iteration_727": "50px", "current": "12px"},
+      "linksGap": {"iteration_727": "47px", "current": "15px"}
+    }
+  }
+}

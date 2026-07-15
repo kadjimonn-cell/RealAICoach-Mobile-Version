@@ -1,0 +1,199 @@
+{
+  "started_at": "2026-05-20T13:06:42.687765+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "paypal.prod.retest.fix.611e6d3d@gmail.com",
+    "password": "PayPalLive#2026Aa!",
+    "name": "PayPal Prod Retest Fix User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_f624caf945dc",
+        "email": "paypal.prod.retest.fix.611e6d3d@gmail.com",
+        "name": "PayPal Prod Retest Fix User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_f624caf945dc",
+        "email": "paypal.prod.retest.fix.611e6d3d@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "plans",
+      "status_code": 200,
+      "plan_ids": [
+        "free",
+        "basic",
+        "premium"
+      ]
+    },
+    {
+      "step": "create_checkout_basic",
+      "status_code": 200,
+      "body": {
+        "order_id": "1UW49833CW014203Y",
+        "checkout_url": "https://www.paypal.com/checkoutnow?token=1UW49833CW014203Y",
+        "checkout_host": "www.paypal.com",
+        "payment_method": "paypal"
+      }
+    },
+    {
+      "step": "create_checkout_premium",
+      "status_code": 200,
+      "body": {
+        "order_id": "7WR35562CP5880350",
+        "checkout_url": "https://www.paypal.com/checkoutnow?token=7WR35562CP5880350",
+        "checkout_host": "www.paypal.com",
+        "payment_method": "paypal"
+      }
+    },
+    {
+      "step": "webhook_basic",
+      "status_code": 200,
+      "body": {
+        "received": true,
+        "event_type": "PAYMENT.CAPTURE.COMPLETED"
+      }
+    },
+    {
+      "step": "webhook_premium",
+      "status_code": 200,
+      "body": {
+        "received": true,
+        "event_type": "PAYMENT.CAPTURE.COMPLETED"
+      }
+    },
+    {
+      "step": "db_tx_basic",
+      "doc": {
+        "transaction_id": "txn_8877041f3eec4b0c",
+        "session_id": "1UW49833CW014203Y",
+        "plan_id": "basic",
+        "provider": "paypal",
+        "payment_status": "completed",
+        "status": "completed",
+        "admin_receipt_sent": true,
+        "receipt_delivery_ok": true,
+        "receipt_number": "RCT-20260520-209C67A35C",
+        "user_receipt_sent": true,
+        "notification_sent": true
+      }
+    },
+    {
+      "step": "notification_queue_basic",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "db_tx_premium",
+      "doc": {
+        "transaction_id": "txn_e025821a118f420d",
+        "session_id": "7WR35562CP5880350",
+        "plan_id": "premium",
+        "provider": "paypal",
+        "payment_status": "completed",
+        "status": "completed",
+        "admin_receipt_sent": true,
+        "receipt_delivery_ok": true,
+        "receipt_number": "RCT-20260520-2063D5AF03",
+        "user_receipt_sent": true,
+        "notification_sent": true
+      }
+    },
+    {
+      "step": "notification_queue_premium",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_f624caf945dc",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "last_payment_id": null
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 2,
+      "latest_payment_notifications": [
+        {
+          "id": "notif_e03d6766ad3c",
+          "notification_id": "notif_e03d6766ad3c",
+          "user_id": "user_f624caf945dc",
+          "type": "payment_confirmation",
+          "title": "Payment Confirmed - Premium Plan",
+          "message": "Your payment of $20.52 via PayPal has been processed. You're now subscribed to the Premium plan. eTicket: PP-20260520-63D5AF03",
+          "read": false,
+          "created_at": "2026-05-20T13:06:48.882617+00:00",
+          "metadata": {
+            "plan": "Premium",
+            "amount": 20.52,
+            "ticket_id": "PP-20260520-63D5AF03",
+            "payment_method": "PayPal",
+            "currency": "USD",
+            "amount_local": 20.52,
+            "transaction_id": "txn_e025821a118f420d",
+            "transaction_ref": "txn_e025821a118f420d",
+            "tax_amount": 3.36,
+            "amount_gross": 19.35,
+            "amount_net": 19.35,
+            "locale": "en"
+          }
+        },
+        {
+          "id": "notif_a9fd024f1a49",
+          "notification_id": "notif_a9fd024f1a49",
+          "user_id": "user_f624caf945dc",
+          "type": "payment_confirmation",
+          "title": "Payment Confirmed - Basic Plan",
+          "message": "Your payment of $7.99 via PayPal has been processed. You're now subscribed to the Basic plan. eTicket: PP-20260520-9C67A35C",
+          "read": false,
+          "created_at": "2026-05-20T13:06:47.012691+00:00",
+          "metadata": {
+            "plan": "Basic",
+            "amount": 7.99,
+            "ticket_id": "PP-20260520-9C67A35C",
+            "payment_method": "PayPal",
+            "currency": "USD",
+            "amount_local": 7.99,
+            "transaction_id": "txn_8877041f3eec4b0c",
+            "transaction_ref": "txn_8877041f3eec4b0c",
+            "tax_amount": 1.26,
+            "amount_gross": 7.25,
+            "amount_net": 7.25,
+            "locale": "en"
+          }
+        }
+      ]
+    },
+    {
+      "step": "receipt_pdf_basic",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320001
+    },
+    {
+      "step": "receipt_pdf_premium",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 319934
+    }
+  ],
+  "finished_at": "2026-05-20T13:06:58.402094+00:00"
+}

@@ -1,0 +1,51 @@
+{
+  "summary": "Backend verification of email chrome pro-grade redesign (GLOBAL_EMAIL_FOOTER_VERSION=gef_v2026_06_pro_chrome_redesign). All 35 targeted assertions pass (preview endpoint + header/footer/socials/badges/v7 theme markers + catalog + compact footer). Regression email/footer pytest suite: 269 passed / 4 skipped / 1 pre-existing failure. v7 theme gate: 0/202 failing (was 0/202 also per main-agent claim; confirmed).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "n/a",
+        "issue": "Review request referenced template type 'payment_failed' but the actual registered TEMPLATE_CATALOG key is 'failed_payment'. Preview endpoint returns 404 for 'payment_failed'. Test updated to use 'failed_payment' (which passed all header/footer/v7 assertions). Recommend the main agent align terminology in docs/PRD."
+      },
+      {
+        "endpoint": "/api/email-notifications/templates",
+        "issue": "Review request referenced GET /api/email-notifications/templates as the catalog endpoint but that path returns 404. Actual catalog endpoint is GET /api/email-notifications/catalog (returns a JSON list of 202 templates). Test updated accordingly. Recommend doc correction."
+      },
+      {
+        "endpoint": "tests/test_job_search_email_kit.py::test_send_kit_returns_success_with_attachments",
+        "issue": "Known pre-existing failure (attachment .pdf filename generator issue) — explicitly called out as unrelated in the review request. NOT introduced by this chrome redesign."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_email_chrome_v2026_06_pro_redesign.py",
+    "/app/test_reports/pytest/email_chrome_v2026_06.xml",
+    "/app/test_reports/pytest/email_footer_regression.xml"
+  ],
+  "action_items": [
+    "Optional doc fix: 'payment_failed' template type should be documented as 'failed_payment' (catalog key). Preview call must use failed_payment.",
+    "Optional doc fix: catalog endpoint is /api/email-notifications/catalog (not /templates).",
+    "Pre-existing test failure test_job_search_email_kit.py::test_send_kit_returns_success_with_attachments remains — unrelated to chrome redesign but eventually needs attention."
+  ],
+  "critical_code_review_comments": [
+    "Header/footer chrome markers are consistently present across all 4 sampled template types (welcome, subscription_confirmation, failed_payment, ticket_created) in both light & dark preview modes — the centralized _wrap + global_email_footer.html changes propagate correctly.",
+    "Exactly ONE data-global-footer-component marker and ONE 'gef_v2026_06_pro_chrome_redesign' marker per rendered email — dedupe/singleton contract is holding.",
+    "Squircle social buttons: border-radius:12px present; all 5 data-social-logo slugs (x, linkedin, facebook, instagram, youtube) rendered; LinkedIn 'in' glyph is literal text inside the linkedin block (verified via regex).",
+    "Store badges data-footer-badge=\"google-play\" and data-footer-badge=\"app-store\" render exactly once; single 'Take your coach everywhere' heading (no duplicate section)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_email_chrome_v2026_06_pro_redesign.py (created)"
+  ],
+  "success_rate": {"backend": "100% (35/35 new; 269/270 regression -1 pre-existing)", "frontend": "N/A (skipped per request)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (cookie-session auth via POST /api/auth/login with X-Requested-With header)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "New pytest file /app/backend/tests/test_email_chrome_v2026_06_pro_redesign.py covers header markers (email-header-wordmark/trust/pill/title), footer markers (single data-global-footer-component + gef_v2026_06_pro_chrome_redesign, chips, secondary-cta, Verified sender), squircle socials (border-radius:12px + all 5 data-social-logo slugs + literal 'in' LinkedIn glyph), store badges (google-play/app-store, single heading), v7 theme hooks (data-theme-light/dark, prefers-color-scheme:dark, [data-ogsc], max-width:479px, color-scheme), catalog no-error, compact footer variant, admin auth/me. Uses localhost fallback if external URL is Cloudflare-blocked. Note: use TEMPLATE_TYPES=['welcome','subscription_confirmation','failed_payment','ticket_created'] and catalog endpoint /api/email-notifications/catalog (not /templates).",
+  "rca of the issue": "N/A — no bugs found in the chrome redesign; only two documentation-level mismatches (payment_failed vs failed_payment; /templates vs /catalog) in the review request itself, corrected in tests."
+}

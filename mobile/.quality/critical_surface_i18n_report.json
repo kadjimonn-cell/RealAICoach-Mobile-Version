@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-07-15T01:56:43.714Z",
+  "target_files": [
+    "app/welcome.tsx",
+    "src/components/Footer.tsx"
+  ],
+  "scanned_literals": 0,
+  "exemption_count": 28,
+  "violation_count": 0,
+  "violations": []
+}

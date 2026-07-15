@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-06-19T14:39:28.772847+00:00",
+  "scope": "feature26_approval_progress_chip",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "checks": {
+    "onboarding_route": 1,
+    "approval_progress": 0,
+    "approval_chip": 0,
+    "approval_note": 0,
+    "step_dot_0": 0,
+    "step_dot_1": 0,
+    "step_dot_2": 0,
+    "submit_documents_text": 1
+  },
+  "overall_verdict": "fail"
+}

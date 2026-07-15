@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-06-18T00:55:30.593490Z",
+  "free_login_statuses": [
+    200
+  ],
+  "free_admin_url": "https://visa-polish-v2.preview.emergentagent.com/",
+  "free_admin_route_count": 0,
+  "free_admin_denied_count": 0,
+  "free_candidate_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate",
+  "free_candidate_route_count": 1,
+  "admin_login_statuses": [
+    200
+  ],
+  "admin_admin_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+  "admin_admin_route_count": 1,
+  "verdict": "pass"
+}

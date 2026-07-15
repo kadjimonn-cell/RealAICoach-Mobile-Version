@@ -1,0 +1,26 @@
+{
+  "summary": "Checkpoint D independent verification for v7 dark/light platform email templates. Created and ran pytest suite (23 tests) covering: (a) GET /api/email-notifications/templates/audit -> summary.templates_total=203, templates_passed=203, templates_failed=0, broken_links_found=0; NO result carries brand_translation_exclusion_missing:* or brand_logo_translate_attr_missing issues (b) rendered previews for welcome, referral_invite, gdpr_export_ready, magic_link, newsletter_weekly, failed_payment: 0 bare 'RealAICoach' text nodes outside notranslate protection AND every brand-alt <img> carries translate=\"no\" (c) build_failed_payment_email + build_recovery_email_day1/day3/day7 all produce canonical primary-CTA hrefs starting with https://realaicoach.app (no leak of admin-analytics-80.preview.emergentagent.com) (d) dark/light v7 rendering signatures present in both ?theme=light and ?theme=dark previews: @media (prefers-color-scheme:dark), [data-ogsc], viewport meta, color-scheme, @media only screen and (max-width:479px) (e) regression: preview endpoints return 200 with valid HTML for both themes; GET /catalog returns 203 entries. Result: 23/23 passed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_brand_translation_exclusion_and_billing_canonical_iter866.py",
+    "/app/test_reports/pytest/iter866_brand_billing.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "utils/email_templates.py is 8699 lines — well past the 700-line guideline. All builders + brand exclusion + wrap primitives live in one module. Consider splitting into utils/email/ (brand_guard.py, footer.py, builders_billing.py, builders_lifecycle.py, etc.) to reduce merge friction and speed up future audits.",
+    "_audit_rendered_template returns brand_translation_exclusion counts inside the per-template payload, but audit_email_templates (line 1567) merges only issues/broken_links into the top-level results — the brand_translation_exclusion counts are collapsed into the 'issues' list. If a caller wants visibility into HOW MANY unprotected nodes existed pre-guard, it's lost. Consider surfacing summary.brand_translation_exclusion_totals for observability.",
+    "EMAIL_LINK_MODE defaults to 'canonical' at module import time; there is no runtime toggle. If a preview environment ever needs its own link mode (e.g., staging), the backend must be restarted. Consider making it a request-scoped config or per-tenant setting.",
+    "The find_unprotected_brand_text scanner uses a hand-rolled tag tokenizer (_TAG_TOKEN_RE = re.compile(r'<[^>]+>')). This is fine for controlled server-rendered HTML but will misbehave on HTML containing '<' inside attribute values or CDATA. Acceptable given the input surface but worth a code-comment noting the constraint."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_brand_translation_exclusion_and_billing_canonical_iter866.py"
+  ],
+  "success_rate": {"backend": "100% (23/23)", "frontend": "N/A (backend-only per request)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (cookie-based session_token auth, verified working)",
+  "seed_data_creation": "None. All test data resolved from TEMPLATE_CATALOG and default builder args.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The audit endpoint GET /api/email-notifications/templates/audit takes ~5s (fast on this run — no 60-90s timeout observed). Cookie-jar session_token flow is required for admin endpoints. Sample canonical CTA hrefs captured: failed_payment -> https://realaicoach.app/subscription?utm_source=email_notification&utm_medium=email&utm_campaign=email_billing_failed_payment ; recovery_day1/3/7 -> https://realaicoach.app/subscription/plans?utm_...=email_billing_recovery_dayN . For future imports of backend utils inside pytest files, ensure sys.path.insert(0, /app/backend) at top of file — pytest's rootdir is /app/backend/pyproject.toml but the utils import isn't automatic.",
+  "rca of the issue": "N/A — verification-only pass. All Checkpoint D fixes (enforce_brand_translation_exclusion + find_unprotected_brand_text + find_brand_imgs_missing_translate_attr in utils/email_templates.py near line 184, 4 billing builders using _to_absolute_https at lines 1740/1775/1822/1850, _audit_rendered_template brand fields at line 613, audit endpoint reporting 203 pass at line 1567) are confirmed landed and behaving to spec."
+}

@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-06-17T16:19:27Z",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "checks": [
+    {
+      "name": "admin_login",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "body_excerpt": "{\"user_id\":\"user_4b5a68d2f7c6\",\"email\":\"admin@realaicoach.app\",\"name\":\"RealAICoach\",\"subscription_plan\":\"premium\",\"subscription_status\":\"active\",\"is_admin\":true"
+      }
+    },
+    {
+      "name": "v2_health",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "body_excerpt": "{\"ok\":true,\"service\":\"hiring-v2\",\"version\":\"v2\",\"feature_id\":\"jobs-portal\",\"feature_number\":26}"
+      }
+    },
+    {
+      "name": "deprecation_telemetry",
+      "pass": false,
+      "details": {
+        "status": 401,
+        "body_excerpt": "{\"detail\":\"Authentication required\",\"code\":\"AUTH_REQUIRED\"}"
+      }
+    },
+    {
+      "name": "retirement_readiness",
+      "pass": false,
+      "details": {
+        "status": 401,
+        "body_excerpt": "{\"detail\":\"Authentication required\",\"code\":\"AUTH_REQUIRED\"}"
+      }
+    },
+    {
+      "name": "removal_readiness_strict",
+      "pass": false,
+      "details": {
+        "status": 401,
+        "body_excerpt": "{\"detail\":\"Authentication required\",\"code\":\"AUTH_REQUIRED\"}"
+      }
+    },
+    {
+      "name": "removal_readiness_near_zero",
+      "pass": false,
+      "details": {
+        "status": 401,
+        "body_excerpt": "{\"detail\":\"Authentication required\",\"code\":\"AUTH_REQUIRED\"}"
+      }
+    },
+    {
+      "name": "lock_contract_ok",
+      "pass": true,
+      "details": {
+        "feature_number": 26,
+        "feature_id": "jobs-portal",
+        "version": "v2"
+      }
+    },
+    {
+      "name": "hard_pruning_not_executed_gate_not_open",
+      "pass": true,
+      "details": {
+        "prune_gate_open": false,
+        "decision": "continue_monitoring_no_pruning"
+      }
+    }
+  ],
+  "overall_pass": false,
+  "snapshot": {
+    "deprecation_total_events": null,
+    "deprecation_active_legacy_users": null,
+    "deprecation_migration_progress_pct": null,
+    "retirement_phase": null,
+    "retirement_target_phase_gate_ready": null,
+    "strict_sustained_gate_met": null,
+    "strict_ready_for_legacy_code_removal": null,
+    "near_zero_sustained_gate_met": null,
+    "near_zero_ready_for_legacy_code_removal": null,
+    "policy_decision": "continue_monitoring_no_pruning"
+  }
+}

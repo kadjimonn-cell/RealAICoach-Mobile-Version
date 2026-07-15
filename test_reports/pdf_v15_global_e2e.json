@@ -1,0 +1,23 @@
+{
+  "login_status": 200,
+  "endpoints": [
+    {
+      "path": "/api/payments/receipt/fedapay_b71db5d07029/pdf",
+      "status_code": 409,
+      "content_type": "application/json",
+      "body_preview": "{\"detail\":\"Pricing mismatch blocked for Basic monthly plan. Expected $5.99, got $3920.00.\"}"
+    },
+    {
+      "path": "/api/payments/invoice/fedapay_b71db5d07029/pdf",
+      "status_code": 409,
+      "content_type": "application/json",
+      "body_preview": "{\"detail\":\"Pricing mismatch blocked for Basic monthly plan. Expected $5.99, got $3920.00.\"}"
+    },
+    {
+      "path": "/api/payments/tax-statement/pdf?scope=monthly",
+      "status_code": 400,
+      "content_type": "application/json",
+      "body_preview": "{\"detail\":\"month is required for monthly scope (1-12)\"}"
+    }
+  ]
+}

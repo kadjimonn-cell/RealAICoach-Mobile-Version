@@ -1,0 +1,43 @@
+{
+  "summary": "Validated IP-based geo fallback for generic locales (iteration 890). BACKEND (14/15 pytest pass, 93%): /api/geo/detect is public and returns correct country/currency for anonymous callers with X-Forwarded-For headers (81.2.69.142→GB/GBP, 168.126.63.1→KR/KRW, 154.66.135.1→BJ/XOF); private IP (10.0.0.5) falls back to US/USD; anonymous /api/geo/countries, /api/geo/set-country, /api/geo/my-country all correctly still 401; canonical public endpoints (/api/health, /api/payments/currencies, /api/subscriptions/plans) still 200; /api/users still 401; existing test_public_api_contract_parity.py (4/4) still passes; new COUNTRIES entries (KR/AE/SA/TR/RU/BJ/TG/CI/NE) confirmed. FRONTEND (all 4 scenarios PASS): T1 generic 'en' locale + mocked geo/detect returning GB/GBP → welcome pricing selector renders GBP (select value=GBP, geo/detect called exactly 1x, 'Prices shown in £ GBP are approximate. You will be charged in GBP at checkout.' disclaimer displayed); T2 fr-FR visitor without geo mock → EUR applied via locale-region map (select value=EUR, geo/detect NOT called — locale FR→EUR short-circuits, French UI intact); T3 en-US + mocked US/USD → USD retained (select value=USD, no currency change); T4 manual override → 'CA$ CAD' rendered after page.select_option('CAD'). Only issue found: COUNTRIES map does not cover PLN (Poland) or THB (Thailand) even though both are exposed by /api/payments/currencies, so a Poland/Thailand IP falls back to USD instead of their local currency (see action_items).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/geo/detect + routes/geo_detection.py COUNTRIES map",
+        "issue": "COUNTRIES map is missing PL (Poland → PLN) and TH (Thailand → THB) even though /api/payments/currencies exposes PLN and THB. A Polish/Thai visitor's IP-detected country will not resolve their local currency and will fall back to USD. Review request claimed 'every currency in /api/payments/currencies (23 codes) is reachable from at least one COUNTRIES entry' — this is false for 2/23 codes (~91% coverage, not 100%)."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_geo_detect_public.py",
+    "/app/test_reports/pytest/iter890_geo_detect.xml"
+  ],
+  "action_items": [
+    "Add PL (Poland, PLN) and TH (Thailand, THB) to COUNTRIES map in /app/backend/routes/geo_detection.py so IP-based fallback covers 100% of currencies exposed by /api/payments/currencies. Suggested entries: PL = {name:'Poland', code:'PL', region:'europe', currency:'PLN', otp_methods:['email']}; TH = {name:'Thailand', code:'TH', region:'asia', currency:'THB', otp_methods:['email']}. This is a minor gap — everything else works as designed."
+  ],
+  "critical_code_review_comments": [
+    "routes/geo_detection.py: COUNTRIES currency-coverage gap (PLN, THB) — see action_items. Recommend a small unit test asserting coverage parity between currencies exposed by /api/payments/currencies and the currency values in the COUNTRIES map to prevent future drift.",
+    "routes/geo_detection.py detect_country_from_ip: acceptable now, but note that ipapi.co fallback silently swallows 429 (rate-limit) and always returns 'US'. Consider surfacing a distinct 'unknown' sentinel or exposing this via metrics/logging so admin can spot when the cached path fails and the ipapi fallback is also throttled.",
+    "frontend WelcomePricing.tsx geo fallback effect (~line 101-130): No abort/cancel on the geo/detect request beyond the local `cancelled` flag — if currencies re-loads (dependency change) while the geo/detect fetch is in flight, two overlapping requests can race. Non-blocking today because only ONE currencies load is triggered on mount.",
+    "frontend WelcomePricing.tsx: applies geo currency only when locale-derived guess is USD/undefined AND the geo currency isn't USD; correctly biases toward locale over IP (privacy-friendly). Confirmed via T2 (fr-FR) that geo/detect is NOT invoked when locale already yields EUR."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_geo_detect_public.py (new)"
+  ],
+  "success_rate": {
+    "backend": "93% (14/15 pytest; 1 legit coverage gap)",
+    "frontend": "100% (4/4 scenarios)"
+  },
+  "test_credentials": "None required — anonymous endpoint tests only.",
+  "seed_data_creation": "None. Backend uses live ip-api.com lookup + db.ip_geolocation cache (results for 81.2.69.142/168.126.63.1/154.66.135.1 now cached).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend tests: /app/backend/tests/test_geo_detect_public.py — 15 tests covering /api/geo/detect public access with well-known IPs (GB/KR/BJ + private-IP US fallback), regression that /api/geo/countries|set-country|my-country still 401, canonical public contract (/health, /payments/currencies, /subscriptions/plans, /users) intact, and currency-coverage parity between /api/payments/currencies and the COUNTRIES map. One PARITY test currently FAILS because PLN and THB are absent from COUNTRIES — this is a genuine backend gap, not a test bug. Frontend verified via Playwright against http://localhost:3000 with fresh browser contexts per scenario, page.route mock of /api/geo/detect, navigator.language override via add_init_script, and localStorage.removeItem('app_theme') only (never full clear — reload-guard warning respected). Wait for [data-testid='currency-selector-wrapper'] then wait_for_timeout(3000-4000) for geo fetch + state update to settle before asserting select value.",
+  "rca of the issue": "Not a runtime bug — the enhancement works. The one gap identified: routes/geo_detection.py COUNTRIES map missing PL and TH mappings. The condition inside detect_country returns country_code even if not in COUNTRIES (uses a default_meta with currency='USD'), so a Polish IP would get {'detected_country':'PL','default_currency':'USD'} — the frontend then checks `geoCurrency !== 'USD'` and skips overriding, so the visitor stays on USD even though PLN is a supported checkout currency. Mitigation: add PL and TH to COUNTRIES with their local currencies (PLN, THB). No user impact for the 21/23 currencies that already have coverage; this is a small edge for 2 markets."
+}

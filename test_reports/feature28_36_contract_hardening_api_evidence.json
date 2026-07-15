@@ -1,0 +1,950 @@
+{
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "logins": {
+    "free": {
+      "success": true,
+      "details": {
+        "email": "p1.free.1779113329@example.com",
+        "status_code": 200,
+        "user_id": "user_798c19018cad",
+        "subscription_plan": "free"
+      }
+    },
+    "basic": {
+      "success": true,
+      "details": {
+        "email": "f22.basic.20260613@example.com",
+        "status_code": 200,
+        "user_id": "user_f22_f22_basic_20260613",
+        "subscription_plan": "basic"
+      }
+    },
+    "premium": {
+      "success": true,
+      "details": {
+        "email": "f22.premium.20260613@example.com",
+        "status_code": 200,
+        "user_id": "user_f22_f22_premium_20260613",
+        "subscription_plan": "premium"
+      }
+    },
+    "admin": {
+      "success": true,
+      "details": {
+        "email": "admin@realaicoach.app",
+        "status_code": 200,
+        "user_id": "user_4b5a68d2f7c6",
+        "subscription_plan": "premium"
+      }
+    }
+  },
+  "resolved_accounts": {
+    "free": {
+      "email": "p1.free.1779113329@example.com",
+      "status_code": 200,
+      "user_id": "user_798c19018cad",
+      "subscription_plan": "free"
+    },
+    "basic": {
+      "email": "f22.basic.20260613@example.com",
+      "status_code": 200,
+      "user_id": "user_f22_f22_basic_20260613",
+      "subscription_plan": "basic"
+    },
+    "premium": {
+      "email": "f22.premium.20260613@example.com",
+      "status_code": 200,
+      "user_id": "user_f22_f22_premium_20260613",
+      "subscription_plan": "premium"
+    },
+    "admin": {
+      "email": "admin@realaicoach.app",
+      "status_code": 200,
+      "user_id": "user_4b5a68d2f7c6",
+      "subscription_plan": "premium"
+    }
+  },
+  "feature_results": {
+    "28_audio_studio": {
+      "free": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/audio-studio/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/audio-studio/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/audio-studio/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/audio-studio/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/audio-studio/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/audio-studio/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "29_my_podcasts": {
+      "free": {
+        "ok": false,
+        "calls": [
+          {
+            "path": "/api/videos/podcasts/bootstrap",
+            "status_code": null,
+            "ok": false,
+            "error": "HTTPSConnectionPool(host='kyc-enterprise-1.preview.emergentagent.com', port=443): Read timed out. (read timeout=25)"
+          },
+          {
+            "path": "/api/videos/podcasts/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/podcasts/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/podcasts/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/podcasts/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/podcasts/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "30_sports": {
+      "free": {
+        "ok": false,
+        "calls": [
+          {
+            "path": "/api/videos/sports/bootstrap",
+            "status_code": null,
+            "ok": false,
+            "error": "HTTPSConnectionPool(host='kyc-enterprise-1.preview.emergentagent.com', port=443): Read timed out. (read timeout=25)"
+          },
+          {
+            "path": "/api/videos/sports/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/sports/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/sports/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/videos/sports/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/sports/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "31_ai_problem_solver": {
+      "free": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/ai-solver/categories",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "categories",
+              "agent_catalog"
+            ]
+          },
+          {
+            "path": "/api/ai-solver/context-sources",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "data_sources",
+              "plan",
+              "plan_policy",
+              "usage_limits",
+              "entitlement_ai",
+              "zero_mock_mode"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/ai-solver/categories",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "categories",
+              "agent_catalog"
+            ]
+          },
+          {
+            "path": "/api/ai-solver/context-sources",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "data_sources",
+              "plan",
+              "plan_policy",
+              "usage_limits",
+              "entitlement_ai",
+              "zero_mock_mode"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/ai-solver/categories",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "categories",
+              "agent_catalog"
+            ]
+          },
+          {
+            "path": "/api/ai-solver/context-sources",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "data_sources",
+              "plan",
+              "plan_policy",
+              "usage_limits",
+              "entitlement_ai",
+              "zero_mock_mode"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "32_ai_briefing": {
+      "free": {
+        "ok": false,
+        "calls": [
+          {
+            "path": "/api/ai-briefing/preferences",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          },
+          {
+            "path": "/api/ai-briefing/today",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/ai-briefing/preferences",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "interests",
+              "industry",
+              "briefing_time",
+              "include_news",
+              "include_tips",
+              "include_motivation"
+            ]
+          },
+          {
+            "path": "/api/ai-briefing/today",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "briefing_id",
+              "user_id",
+              "date",
+              "greeting",
+              "weather_mood",
+              "top_priorities",
+              "learning_picks",
+              "industry_insights",
+              "motivation",
+              "wellness_tip",
+              "fun_fact",
+              "goals_snapshot"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/ai-briefing/preferences",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "interests",
+              "industry",
+              "briefing_time",
+              "include_news",
+              "include_tips",
+              "include_motivation"
+            ]
+          },
+          {
+            "path": "/api/ai-briefing/today",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "briefing_id",
+              "user_id",
+              "date",
+              "greeting",
+              "weather_mood",
+              "top_priorities",
+              "learning_picks",
+              "industry_insights",
+              "motivation",
+              "wellness_tip",
+              "fun_fact",
+              "goals_snapshot"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "33_library": {
+      "free": {
+        "ok": false,
+        "calls": [
+          {
+            "path": "/api/content/library",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/content/library",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "items",
+              "total",
+              "page",
+              "per_page",
+              "total_pages",
+              "categories",
+              "types"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/content/library",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "items",
+              "total",
+              "page",
+              "per_page",
+              "total_pages",
+              "categories",
+              "types"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "34_book_meeting": {
+      "free": {
+        "ok": false,
+        "calls": [
+          {
+            "path": "/api/calendar/status",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          },
+          {
+            "path": "/api/calendar/events/user_798c19018cad",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/calendar/status",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "google_available",
+              "google_connected",
+              "connection_lost",
+              "provider",
+              "auth_endpoint",
+              "sync_mode",
+              "selected_calendar_id",
+              "timezone"
+            ]
+          },
+          {
+            "path": "/api/calendar/events/user_f22_f22_basic_20260613",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "events",
+              "source"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/calendar/status",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "google_available",
+              "google_connected",
+              "connection_lost",
+              "provider",
+              "auth_endpoint",
+              "sync_mode",
+              "selected_calendar_id",
+              "timezone"
+            ]
+          },
+          {
+            "path": "/api/calendar/events/user_f22_f22_premium_20260613",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "events",
+              "source"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "35_integrations": {
+      "free": {
+        "ok": false,
+        "calls": [
+          {
+            "path": "/api/integrations/available",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          },
+          {
+            "path": "/api/integrations/dashboard/stats",
+            "status_code": 403,
+            "ok": false,
+            "sample_keys": []
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/integrations/available",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "integrations"
+            ]
+          },
+          {
+            "path": "/api/integrations/dashboard/stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "total_candidates",
+              "total_jobs",
+              "candidates_by_source",
+              "jobs_by_source",
+              "candidates_by_stage",
+              "recent_syncs",
+              "active_integrations",
+              "integrations"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/integrations/available",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "integrations"
+            ]
+          },
+          {
+            "path": "/api/integrations/dashboard/stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "total_candidates",
+              "total_jobs",
+              "candidates_by_source",
+              "jobs_by_source",
+              "candidates_by_stage",
+              "recent_syncs",
+              "active_integrations",
+              "integrations"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    },
+    "36_referrals": {
+      "free": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/referrals/my-stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referral_code",
+              "referral_link",
+              "total_clicks",
+              "total_signups",
+              "active_subscribers",
+              "conversion_rate",
+              "total_earnings",
+              "pending_earnings",
+              "paid_earnings",
+              "monthly_earnings",
+              "commission_rate",
+              "discount_rate"
+            ]
+          },
+          {
+            "path": "/api/referrals/my-referrals",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referrals",
+              "total"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "basic": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/referrals/my-stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referral_code",
+              "referral_link",
+              "total_clicks",
+              "total_signups",
+              "active_subscribers",
+              "conversion_rate",
+              "total_earnings",
+              "pending_earnings",
+              "paid_earnings",
+              "monthly_earnings",
+              "commission_rate",
+              "discount_rate"
+            ]
+          },
+          {
+            "path": "/api/referrals/my-referrals",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referrals",
+              "total"
+            ]
+          }
+        ],
+        "reason": ""
+      },
+      "premium": {
+        "ok": true,
+        "calls": [
+          {
+            "path": "/api/referrals/my-stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referral_code",
+              "referral_link",
+              "total_clicks",
+              "total_signups",
+              "active_subscribers",
+              "conversion_rate",
+              "total_earnings",
+              "pending_earnings",
+              "paid_earnings",
+              "monthly_earnings",
+              "commission_rate",
+              "discount_rate"
+            ]
+          },
+          {
+            "path": "/api/referrals/my-referrals",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referrals",
+              "total"
+            ]
+          }
+        ],
+        "reason": ""
+      }
+    }
+  },
+  "admin_results": {
+    "30_sports_admin": {
+      "ok": false,
+      "calls": [
+        {
+          "path": "/api/videos/admin/sports-source-health",
+          "status_code": 401,
+          "ok": false
+        }
+      ]
+    },
+    "36_referrals_admin": {
+      "ok": false,
+      "calls": [
+        {
+          "path": "/api/referrals/admin/analytics",
+          "status_code": 401,
+          "ok": false
+        }
+      ]
+    }
+  },
+  "timestamp": 1782038600.2954874,
+  "summary": {
+    "28_audio_studio": {
+      "free": true,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": true
+    },
+    "29_my_podcasts": {
+      "free": false,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": false
+    },
+    "30_sports": {
+      "free": false,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": false
+    },
+    "31_ai_problem_solver": {
+      "free": true,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": true
+    },
+    "32_ai_briefing": {
+      "free": false,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": false
+    },
+    "33_library": {
+      "free": false,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": false
+    },
+    "34_book_meeting": {
+      "free": false,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": false
+    },
+    "35_integrations": {
+      "free": false,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": false
+    },
+    "36_referrals": {
+      "free": true,
+      "basic": true,
+      "premium": true,
+      "all_tiers_pass": true
+    }
+  }
+}

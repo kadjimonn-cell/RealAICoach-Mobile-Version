@@ -1,0 +1,114 @@
+name: V2 Teal Theme Compliance Gate
+
+# Non-regression ratchet for theme compliance.
+# - On every PR and push to main, the current codebase is audited.
+# - If warns/fails increase above the baseline committed in
+#   `.theme-baseline.json`, the job fails and blocks merge.
+# - The only way to raise the baseline is to intentionally commit a new
+#   `.theme-baseline.json` (regenerate via
+#   `python backend/scripts/theme_gate.py --update-baseline`).
+#
+# Scope: read-only static analysis — no DB, no network, no secrets needed.
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**/*.tsx"
+      - "frontend/**/*.ts"
+      - "frontend/**/*.jsx"
+      - "frontend/**/*.js"
+      - "backend/routes/platform_perf.py"
+      - "backend/services/theme_autofix.py"
+      - "backend/scripts/theme_gate.py"
+      - ".theme-baseline.json"
+      - ".github/workflows/theme-compliance-gate.yml"
+  push:
+    branches: [main]
+
+concurrency:
+  group: theme-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  theme-gate:
+    name: Audit + non-regression check
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Shallow is fine — we only need the committed baseline + source
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      # Install ONLY the minimal deps the audit import path needs.
+      # The script stubs MONGO_URL/DB_NAME so no real DB is touched.
+      - name: Install minimal backend deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run theme compliance gate
+        id: gate
+        run: |
+          set +e
+          python backend/scripts/theme_gate.py --json | tee gate-output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          exit ${PIPESTATUS[0]}
+
+      - name: Parse gate JSON (for summary)
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          lines = pathlib.Path("gate-output.txt").read_text().splitlines()
+          # The last line is the single-line JSON summary
+          data = json.loads(lines[-1])
+          cur = data["current"]
+          bl  = data.get("baseline") or {}
+          gate = data.get("gate", "pass")
+          emoji = "✅" if gate == "pass" else "🚫"
+          md = []
+          md.append(f"## {emoji} V2 Teal Theme Compliance — **{gate.upper()}**")
+          md.append("")
+          md.append("| Metric | Current | Baseline | Δ |")
+          md.append("|---|---|---|---|")
+          for k in ("grade", "warns", "fails", "files_clean"):
+              c = cur.get(k)
+              b = bl.get(k, "—")
+              if isinstance(c, (int, float)) and isinstance(b, (int, float)):
+                  d = c - b
+                  sym = "↑" if d > 0 else ("↓" if d < 0 else "·")
+                  md.append(f"| `{k}` | **{c}** | {b} | {sym} {d:+d} |")
+              else:
+                  md.append(f"| `{k}` | **{c}** | {b} | — |")
+          if data.get("violations"):
+              md.append("")
+              md.append("### Violations")
+              for v in data["violations"]:
+                  md.append(f"- ⚠️ {v}")
+              md.append("")
+              md.append(
+                  "> To unblock: either fix the regressions, or intentionally "
+                  "raise the baseline by running "
+                  "`python backend/scripts/theme_gate.py --update-baseline` "
+                  "locally and committing the updated `.theme-baseline.json`."
+              )
+          pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(md) + "\n")
+          PY
+
+      - name: Upload gate JSON artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-gate-output
+          path: gate-output.txt
+          retention-days: 7

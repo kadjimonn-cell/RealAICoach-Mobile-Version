@@ -1,0 +1,136 @@
+{
+  "timestamp": "2026-06-16T19:02:36.353933+00:00",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "feature_lock_expected": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "checks": [
+    {
+      "name": "base_url_present",
+      "pass": true,
+      "status_code": null,
+      "detail": "https://visa-polish-v2.preview.emergentagent.com",
+      "data": null
+    },
+    {
+      "name": "login_admin",
+      "pass": true,
+      "status_code": 200,
+      "detail": "ok",
+      "data": null
+    },
+    {
+      "name": "login_free",
+      "pass": true,
+      "status_code": 200,
+      "detail": "ok",
+      "data": null
+    },
+    {
+      "name": "login_employer",
+      "pass": true,
+      "status_code": 200,
+      "detail": "ok",
+      "data": null
+    },
+    {
+      "name": "locked_protocol_health",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": {
+        "ok": true,
+        "service": "hiring-v2",
+        "version": "v2",
+        "feature_id": "jobs-portal",
+        "feature_number": 26
+      }
+    },
+    {
+      "name": "free_dashboard_summary_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "free_candidate_search_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "free_admin_workflow_events_403",
+      "pass": true,
+      "status_code": 403,
+      "detail": "{\"detail\":\"Admin access required\"}",
+      "data": null
+    },
+    {
+      "name": "free_boost_profile_403",
+      "pass": true,
+      "status_code": 403,
+      "detail": "{\"detail\":\"Boosted profile is available on Basic and Premium plans\"}",
+      "data": null
+    },
+    {
+      "name": "employer_pipeline_board_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "employer_offers_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "employer_dashboard_summary_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "admin_workflow_events_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "admin_deprecation_telemetry_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "admin_canary_controls_get_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "admin_premium_conversion_cohorts_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    },
+    {
+      "name": "admin_retirement_readiness_200",
+      "pass": true,
+      "status_code": 200,
+      "detail": null,
+      "data": null
+    }
+  ],
+  "overall_pass": true
+}

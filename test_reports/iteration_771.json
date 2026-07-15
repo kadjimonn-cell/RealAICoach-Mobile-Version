@@ -1,0 +1,60 @@
+{
+  "summary": "Welcome footer 4-style responsive contract final retest after compact-tablet width cap fix. 4 of 5 target viewports PASS. 700px STILL FAILS - shows single-column-stacked (4 rows) instead of expected 2x2 grid. Column width at 700px is 310px which is too wide to fit 2 columns side-by-side in the available 628px grid width. 820px, 930px, 1024px, 1179px all PASS. All regression checks pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Footer.tsx",
+        "issue": "At 700px viewport (compact tablet range 560-879px), footer link columns show single-column-stacked layout (4 rows) instead of expected 2x2 grid. Column width is 310px, grid width is 628px. Two 310px columns + 16px gap = 636px which exceeds 628px available width, causing columns to wrap to single column.",
+        "selector": "[data-testid='footer-link-columns-grid']",
+        "priority": "LOW",
+        "details": {
+          "viewport_width": 700,
+          "grid_width": 628,
+          "column_width": 310,
+          "expected_layout": "2x2-grid",
+          "actual_layout": "single-column-stacked-4-rows",
+          "column_y_positions": [258, 455, 652, 878]
+        }
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_771.json"],
+  "action_items": [
+    "STILL FAILING: 700px shows single-column-stacked instead of 2x2 grid",
+    "ROOT CAUSE: compactTabletLinkColumnWidth calculation at line 632-634 produces 310px columns at 700px viewport. Two 310px columns + 16px gap = 636px exceeds the 628px grid width.",
+    "FIX NEEDED: Reduce compactTabletLinkColumnWidth for narrower compact tablet viewports (560-750px range) to allow 2 columns to fit side-by-side. Consider: Math.max(184, Math.floor((Math.min(footerContentMaxWidth, 720) - 44) / 2)) or similar adjustment.",
+    "VERIFIED PASS: 820px (2x2 grid), 930px (4-col), 1024px (4-col), 1179px (4-col)"
+  ],
+  "critical_code_review_comments": [
+    "compactTabletLinkColumnWidth formula at line 632-634 needs adjustment for narrower viewports in the 560-750px range to ensure 2x2 layout is achievable"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "80% (4/5 target viewports pass)"
+  },
+  "test_credentials": "N/A",
+  "seed_data_creation": "N/A",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Welcome footer 4-style responsive contract final retest: (1) 700px FAIL - single-column-stacked instead of 2x2, column width 310px too wide for 628px grid, (2) 820px PASS - 2x2 grid, (3) 930px PASS - 4-column single row, (4) 1024px PASS - 4-column single row, (5) 1179px PASS - 4-column single row. All regression checks pass: no horizontal overflow, centered disclaimer, bottom bar intact.",
+  "viewport_test_results": [
+    {"width": 700, "expected": "2x2-grid", "actual": "single-column-stacked-4-rows", "status": "FAIL", "column_widths": [310, 310, 310, 310], "grid_width": 628, "row_count": 4, "cols_per_row": [1, 1, 1, 1]},
+    {"width": 820, "expected": "2x2-grid", "actual": "2x2-grid", "status": "PASS", "column_widths": [338, 338, 338, 338], "row_count": 2},
+    {"width": 930, "expected": "4-column-single-row", "actual": "4-column-single-row", "status": "PASS", "column_widths": [191, 191, 191, 191], "row_count": 1},
+    {"width": 1024, "expected": "4-column-single-row", "actual": "4-column-single-row", "status": "PASS", "column_widths": [210, 210, 210, 210], "row_count": 1},
+    {"width": 1179, "expected": "4-column-single-row", "actual": "4-column-single-row", "status": "PASS", "column_widths": [217, 217, 217, 217], "row_count": 1}
+  ],
+  "regression_checks": {
+    "no_horizontal_overflow": "PASS at all 5 viewports",
+    "centered_disclaimer": "PASS at all 5 viewports",
+    "bottom_bar_intact": "PASS at all 5 viewports"
+  },
+  "rca_of_the_issue": "At 700px viewport, footerContentMaxWidth calculates to ~664px, and the grid width is 628px. The compactTabletLinkColumnWidth formula: Math.max(184, Math.floor((Math.min(720, footerContentMaxWidth) - 44) / 2)) produces ~310px columns. Two 310px columns + 16px gap = 636px, which exceeds the 628px available grid width, causing flex-wrap to stack columns vertically instead of forming a 2x2 grid."
+}

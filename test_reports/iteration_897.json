@@ -1,0 +1,36 @@
+{
+  "summary": "Deployment/production readiness verification (iter 897). Verified backend clean boot (no index-creation errors after redis reinstall + stale integration_webhook_replay_guard.expires_at_1 drop). Ran 5 pytest checks (health, admin login, free login, Redis-backed rate-limit 429 via throwaway email, TTL indexes) - all 5 PASS. Frontend smoke: home shell (200) + login form + admin login -> Dashboard render (Enterprise sidebar, OWNER badge). No regressions.",
+  "checks_performed": [
+    {"name": "GET /api/health", "result": "PASS", "detail": "HTTP 200, {\"status\":\"healthy\",\"service\":\"RealAICoach API\"}, ~147ms"},
+    {"name": "Backend startup index creation", "result": "PASS", "detail": "backend.err.log shows 'Database indexes created successfully' at server.py:2853 after latest restart; zero 'Index creation error' entries"},
+    {"name": "POST /api/auth/login (admin@realaicoach.app)", "result": "PASS", "detail": "200 with is_admin=true"},
+    {"name": "POST /api/auth/login (free user p1.free.1779113329)", "result": "PASS", "detail": "200 (regression clean)"},
+    {"name": "Rate-limit 429 via throwaway wrong-password login", "result": "PASS", "detail": "Sliding-window Redis limiter kicks in within <40 attempts on iter897rl<ts>@example.com; observed 429 before completion"},
+    {"name": "Mongo TTL index integration_webhook_replay_guard.expires_at_1", "result": "PASS", "detail": "expireAfterSeconds=0 present"},
+    {"name": "Mongo TTL index service_heartbeats.checked_at_1", "result": "PASS", "detail": "expireAfterSeconds=259200 present (previously skipped index now created after stale-index drop unblocked the try block)"},
+    {"name": "Frontend home / (preview URL)", "result": "PASS", "detail": "HTTP 200; body non-blank (skip-to-content + welcome shell); no JS console errors beyond expected pre-auth /api/auth/me 401"},
+    {"name": "Frontend /auth/login", "result": "PASS", "detail": "Login form fully rendered; SIGN IN button + Google/Microsoft/Apple/PIN/Passkey/QR options visible"},
+    {"name": "Frontend Admin post-login (Admin Operations Console smoke)", "result": "PASS", "detail": "Successful password login redirects to Dashboard; sidebar shows RealAICoach Enterprise Suite with OWNER badge for admin@realaicoach.app; nav links (Home, Features, FPS Game, Learning Hub, etc.) render"}
+  ],
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_iter897_deployment_readiness.py",
+    "/app/test_reports/pytest/iter897.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py index-creation block (~2800-2914) still wrapped in a single broad try/except pattern where any one failing index halts subsequent index creation (the root cause of the original service_heartbeats TTL miss). Consider isolating each create_index in its own try/except so a future IndexOptionsConflict on any collection doesn't silently skip the remainder. This is a hardening recommendation only - current state is verified healthy."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter897_deployment_readiness.py (new)",
+    "/app/test_reports/pytest/iter897.xml (pytest JUnit)"
+  ],
+  "success_rate": {"backend": "100% (5/5 pytest)", "frontend": "100% (home + login + admin post-login smoke)"},
+  "test_credentials": "Admin admin@realaicoach.app/NewAdminPass2026! and free p1.free.1779113329@example.com/P1Free#2026!Aa used from /app/memory/test_credentials.md; throwaway iter897rl<ts>@example.com used for rate-limit probe to avoid admin lockout.",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Deployment readiness verified post redis-server reinstall and stale expires_at_1 index drop. Both fixes hold: (a) supervisor 'redis' RUNNING, (b) TTL index creation completes without aborting mid-block. Reusable test suite at /app/backend/tests/test_iter897_deployment_readiness.py (5 tests, ~2.3s) - run with `pytest backend/tests/test_iter897_deployment_readiness.py`. Consider granular try/except around per-collection index creation as a hardening follow-up.",
+  "rca of the issue": "Original defect (fixed by main agent before this iter): stale non-TTL index 'expires_at_1' on integration_webhook_replay_guard collided with code request for TTL expireAfterSeconds=0, raising IndexOptionsConflict inside the shared try block at ~server.py:2800. That single exception aborted the entire block, skipping later create_index calls (e.g. service_heartbeats.checked_at TTL 259200s). Mitigation: drop stale index, restart backend; on restart, new TTL indexes create cleanly. Verified in iter 897: log 'Database indexes created successfully' and motor index_information() confirms both TTL indexes with correct expireAfterSeconds."
+}

@@ -1,0 +1,33 @@
+{
+  "summary": "Iteration 899 backend-only independent confirmation of the 5 nightly monitoring email fixes on RealAICoach. All 16 pytest cases in tests/test_iter899_nightly_email_fixes.py pass (12.05s): (1) SAST _run_sast_scan returns PASS with 0 high-severity findings; adding a temp fixture with hardcoded password + subprocess shell=True is correctly flagged as hardcoded_secret (high) + shell_injection_risk (medium), fixture deleted, scan returns to PASS. (2) TDZ run_full_scan reports 0 critical TDZ issues on the live frontend tree (was 46); a synthetic .tsx fixture correctly flags useEffect-deps identifier + synchronous useMemo body call while NOT flagging a useEffect body-only call. (3) preview_host_guard.py both startup and ci modes print PASSED after BLOCKED_TOKEN→BLOCKED_HOST_MARKER rename; old symbol fully gone. (4) build_accessibility_audit_alert_email: score=60/critical=0 → WARNING (never CRITICAL), critical=2 → CRITICAL, score=100/critical=0 → PASSED; no raw python dicts ({'count':) leak into HTML/text. (5) _collect_report_data('daily') includes avg_response_ms key (None with no samples); send_performance_report source contains 'n/a (no samples yet)' + '%Y-%m-%d %H:%M UTC' formatting. (6) scheduler.py source at the GTEC C5 branch contains both 'trust_score_percent' + 'white_screen_sentry_failed_checks' derivations and 'Degrade reasons:' in action_taken, with no lingering '>=' hardcoded 100 branch. (7) Backend regression: /api/health 200, admin login 200 (returns user object with is_admin=true).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter899_nightly_email_fixes.py",
+    "/app/test_reports/pytest/iter899_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Non-blocking: routes/autonomous_engine/zero_trust.py:909 caps SAST scan at py_files[:200] (only ~17% of 1175 backend .py files). Fine for a smoke gate but by design cannot catch a secret introduced deep in a large sub-tree. Consider either full-scan with sampling or documenting the intent.",
+    "Non-blocking: routes/code_health_scanner.py uses a plain regex-based scanner (no AST). The new implementation is scope-aware for its explicit vectors (hook deps + synchronous useMemo body) which eliminated the 46 false positives, but any future TDZ-like patterns (e.g., useLayoutEffect deps, synchronous useCallback body calls to consts declared later) would need explicit additions. Current coverage matches the RCA and is intentionally narrow.",
+    "Non-blocking: utils/email_templates.py is very large (>8900 lines). Recommend eventual split by category/domain, though current change (~lines 7601-7628) is localized and correct.",
+    "Non-blocking: scheduler.py at ~line 4055-4090 uses a StopAsyncIteration-as-early-return sentinel inside a plain try — works, but a small helper function would be cleaner."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter899_nightly_email_fixes.py"
+  ],
+  "success_rate": {"backend": "100% (16/16)", "frontend": "not tested (backend-only per request)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Test transiently writes /app/backend/_iter899_sast_fixture.py containing a hardcoded password + subprocess shell=True call, verifies SAST flags it, then unlink()s in a finally block. Post-test verification confirms cleanup and clean SAST re-scan.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Use /app/backend/tests/test_iter899_nightly_email_fixes.py as regression coverage for the 5 nightly-email fixes. Runs from cwd=/app/backend (sys.path insertion at import time). Note: the SAST scanner in routes/autonomous_engine/zero_trust.py caps at first 200 .py files (rglob order) — the negative-test fixture MUST be placed at /app/backend/_iter899_sast_fixture.py (top-level) to be included. Admin login endpoint returns the user object directly (no 'token'/'access_token' key) — assert on body['email'] and body['is_admin']. Backend regression clean, no new tracebacks in supervisor logs. run_active_defense_nightly_scan was NOT invoked (DAST slowness) per main-agent guidance; _run_sast_scan direct call was sufficient.",
+  "rca of the issue": "N/A — this iteration is independent confirmation of already-shipped fixes. Two test scaffold issues encountered during my run: (a) fixture placed under routes/ was outside SAST's [:200] slice — moved to /app/backend/ top-level; (b) admin login body has no 'token' key, it returns the user object directly — assertion updated to check email + is_admin. Both were test-authoring bugs, not app bugs."
+}

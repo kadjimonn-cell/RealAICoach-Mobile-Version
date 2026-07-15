@@ -1,0 +1,47 @@
+{
+  "summary": "Iteration 874 — Suggested AI Specialists strip: full-stack verification for user-facing conversion strip on 37 canonical feature pages. Backend endpoints (GET /api/access-control/feature-specialists/{feature_key} and POST /click) verified sanitized, correct auth, mongo persistence. Frontend strip verified across /features/ai-writer, /features/fitness, /ai-briefing (mobile+desktop) with pill regression + coaching-team routing + dismiss persistence.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Mobile 390px viewport (/ai-briefing)", "issues": ["Strip container has fixed maxWidth=600 while viewport is 390px, causing strip bounding box to extend beyond viewport edges (x=-105, width=600). Not functionally broken since inner chips are in a horizontal ScrollView, but the pill+strip appear left-shifted and can extend off-screen. Consider constraining maxWidth to min(600, viewportWidth - 24)."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature_specialists_strip.py",
+    "/app/backend/tests/test_feature_specialists_strip_iter874_extra.py",
+    "/app/test_reports/pytest/feature_specialists_strip_iter874.xml",
+    "/app/test_reports/pytest/feature_specialists_strip_iter874_extra.xml"
+  ],
+  "action_items": [
+    "Minor: mobile strip overflow — clamp maxWidth in SuggestedSpecialistsStrip.tsx to viewport width minus horizontal margin (design polish only, functionality intact)."
+  ],
+  "critical_code_review_comments": [
+    "SuggestedSpecialistsStrip.tsx: clean, ~150 lines, single responsibility, correctly gated on session + featureKey + dismissed state; API errors are silently swallowed (setSpecialists remains empty) which correctly hides the strip — good UX.",
+    "Backend feature_specialists route uses strict SPECIALIST_PUBLIC_FIELDS allow-list projection preventing leakage of system_prompt / allowed_tools / permissions / provider / model / config_profile — verified via test_specialists_sanitized_and_relevant and parametric spot-check across 5 feature keys.",
+    "specialist_strip_events collection insert includes user_id, feature_key, agent_key, plan, event_id (uuid), created_at — verified count grows by 1 per click via mongo count_documents."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_feature_specialists_strip_iter874_extra.py (new)"
+  ],
+  "success_rate": {"backend": "100% (14/14 tests)", "frontend": "100% for core flows; 1 minor mobile-width design polish"},
+  "test_credentials": "Free user p1.free.1779113329@example.com / P1Free#2026!Aa (cookie session auth via /api/auth/login).",
+  "seed_data_creation": "None; existing 213 seed agents and free user account were sufficient. Test click created ~2 additional docs in specialist_strip_events (analytics; cleanup not required).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Route notes: /features/ai-writer -> smart-writing-studio (self_enforced, NO pill). To test pill+strip coexistence use metered non-self-enforced routes: /ai-briefing -> daily-briefing, /features/fitness -> fitness-planner-pro, /features/sports -> sports. See CANONICAL_FEATURE_UI_ROUTES in /app/backend/utils/access_control_engine.py. Browser automation must use http://localhost:3000 (preview URL is Cloudflare-challenged). Login flow: /welcome click Sign In -> /auth/login form (login-email-input, login-password-input, login-submit-button data-testids). Localstorage key format for daily dismissal: sss_dismiss_{featureKey} = YYYY-MM-DD.",
+  "detailed_evidence": {
+    "backend_pytest_results": "7/7 canonical + 7/7 iter874 extra (parametric spot-checks smart-writing-studio, fitness-planner-pro, sports, travel-visa, my-podcasts + mongo persistence + click validation) all passing.",
+    "frontend_ai_writer_smart_writing_studio": "Strip visible with title 'Suggested AI specialists' (not truncated) and 4 chips: Academic Writing Advisor, Copywriter, Creative Writer, Plain Language Editor.",
+    "frontend_features_fitness_fitness_planner_pro": "Strip visible with 4 chips: Fitness Trainer, Athletic Performance Analyst, Nutrition Coach, Physiotherapy Guide.",
+    "chip_tap_routes_to_coaching_team": "Confirmed: clicking specialist-chip-academic_writing_advisor navigated to /ai-coaching-team; coaching-team page body contains 'coach'/'team'.",
+    "dismiss_persistence": "Dismiss button hides strip; localStorage sss_dismiss_smart-writing-studio set to today's ISO date (2026-07-13); page reload keeps strip hidden; different feature key /features/fitness still shows its own strip.",
+    "negative_pages": "Strip correctly ABSENT on /dashboard, /admin, /ai-coaching-team.",
+    "quota_pill_regression_desktop": "/ai-briefing 1920x1080: feature-quota-pill and suggested-specialists-strip both present. strip_box y=964 height=42 (bottom=1006); pill_box y=1017 height=41 (bottom=1058). Strip sits above pill with 11px gap, no_overlap=True.",
+    "quota_pill_regression_mobile": "/ai-briefing 390x844: pill_box y=781 h=41; strip_box y=728 h=42. Strip above pill, no_overlap=True. Note: strip width 600 exceeds viewport 390 (design polish item)."
+  }
+}

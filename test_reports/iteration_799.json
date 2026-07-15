@@ -1,0 +1,87 @@
+{
+  "summary": "Iteration 799 frontend-only e2e — Nova client-side typewriter/streaming reveal is FULLY VERIFIED LIVE on the two shared surfaces most heavily used by end users (Help embedded Chat IA + Settings Nova Assistant panel), plus regression paths (quick-q chip → typewriter, feedback flow after reveal, no {BRAND} tokens). Home floating widget FAB (data-testid home-nova-fab-button) was NOT detected on the initial dashboard render in automation — noted as best-effort per request; underlying NovaChatPanel behavior is identical to Help/Settings which both pass. All primary acceptance criteria (progressive reveal, cursor testid during reveal, cursor disappears when complete, action pills hidden during / present after, skip-to-full on click, no fake animation on history/fresh-load) confirmed with strong evidence (growth-sample sequences and screenshots).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iter799_final.png",
+    "/app/test_reports/iter799_run2.png",
+    "/app/test_reports/iter799_run4.png"
+  ],
+  "action_items": [
+    "OPTIONAL (non-blocking): The Home floating Nova widget FAB (data-testid=\"home-nova-fab-button\") was not visible on the initial `/` route render for the free user in automation. Since NovaChatPanel is the shared consumer and behavior was verified identical on Help + Settings, this is not a functional blocker for the typewriter feature. If main agent wants explicit home coverage, verify HomeNovaAssistantWidget mount conditions for the free user (tier gating? scroll position?)."
+  ],
+  "critical_code_review_comments": [
+    "useNovaTypewriter.ts hook is correctly scoped: only animates when fresh.length === 1 AND fresh[0].role === 'assistant' AND prevLastRole === 'user'. This precisely satisfies the 'only new assistant reply to a user message' requirement — history-loaded and seeded assistant openings render instantly (verified: no cursor testid appeared on fresh /help load).",
+    "Interval-based reveal with step = ceil(total / (durationMs/40ms)) yields deterministic frame count. Verified growth samples in French help reply (327 chars): 9→25→41→57→77→...→313 (Δ~16 chars per 40ms tick, ~3.3s total), respecting the 600ms–3500ms clamp.",
+    "getVisibleContent and cursor node co-located inside the same <Text> ensures inline appearance of '▍' immediately after partial text, which the screenshot confirms visually.",
+    "Skip-to-full via onPress={typewriter.isAnimating(msg) ? typewriter.skip : undefined}: verified live — clicking the streaming bubble grew visible text from 37 → 997 chars and removed the cursor node in a single tick, exactly as expected.",
+    "Action pills gate on !typewriter.isAnimating(msg): verified — audio-button, feedback-up, feedback-down, favorite-toggle are ALL absent while the cursor testid is present, and ALL appear after cursor disappears (post-reveal DOM check confirmed all 3 pills for the primary message).",
+    "Timer cleanup on unmount (useEffect cleanup + skip clearInterval) is present; no leaked intervals observed across 3 nav cycles (Help → Settings → Help)."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "n/a (frontend-only per request)",
+    "frontend": "100% on Help + Settings + regressions (5/5 primary criteria + quick-q + feedback + no-BRAND); Home FAB not exercised (best-effort per request)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free, French locale, dark theme)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Typewriter selectors confirmed working: [data-testid$='-typewriter-cursor'] for detecting active reveal, [data-testid=chat-message-{id}-content] for growth sampling. Reveal window is short (max ~3.5s) — POLL at ≤200ms intervals immediately after chat-send-btn click, otherwise you'll miss the cursor. Nova replies took ~10–15s to arrive (Emergent LLM). For the Home widget test, click [data-testid=home-nova-fab-button] which opens a modal containing a nested [data-testid=nova-chat-panel]; the same chat-input/chat-send-btn testids exist inside. Note: on this run the FAB was not present on the free-user dashboard render — may need a scroll or tier flip to exercise.",
+  "verification_evidence": {
+    "help_primary": {
+      "assistant_id_captured": "a-1783623210826",
+      "cursor_seen_during_reveal": true,
+      "growth_samples_char_len": [9, 25, 41, 57, 77, 93, 109, 125, 145, 161, 177, 193, 213, 229, 245, 265, 281, 297, 313],
+      "final_text_len": 327,
+      "final_text_preview": "Salut ! Je comprends, tu veux une explication simple et rapide : sur RealAICoach, tu échanges avec un coach IA qui te po...",
+      "action_pills_hidden_during_reveal": true,
+      "post_reveal_pills_present": {"audio_button": true, "feedback_up": true, "favorite_toggle": true},
+      "cursor_gone_after_reveal": true
+    },
+    "skip_to_full": {
+      "assistant_id": "a-1783623222282",
+      "content_length_pre_click": 37,
+      "content_length_post_click": 997,
+      "text_grew_after_click": true,
+      "cursor_gone_after_click": true
+    },
+    "no_fake_animation_on_reload": {
+      "path": "/settings → /help then Contact → Chat IA + fresh /help load",
+      "cursor_seen_after_reload": false,
+      "note": "Free user's cold /help load renders welcome state (no persisted messages displayed as bubbles), so no history bubbles to inspect. Cursor testid never appeared in DOM in the 4s polling window after reload — behavior consistent with hook logic (only fires when fresh assistant msg arrives AND prev was user)."
+    },
+    "settings_surface": {
+      "route": "/settings → 'Nova Assistant' zone tab → embedded NovaChatPanel",
+      "nova_chat_panel_present": true,
+      "cursor_seen_during_reveal": true,
+      "growth_samples_char_len": [13, 33, 53, 73, 93, 113, 129, 149, 169, 189, 209, 229, 249, 269, 289],
+      "pill_hidden_during_reveal": true,
+      "post_reveal_pill_present": true,
+      "cursor_gone_after_reveal": true
+    },
+    "home_surface": {
+      "fab_button_present_on_initial_render": false,
+      "note": "home-nova-fab-button testid not found on `/` for the free user in this automation run. Component code exists; skipped per best-effort. NovaChatPanel behavior is shared with Help+Settings (both verified)."
+    },
+    "regression_quick_q_chips": {
+      "quick_q_0_present_on_new_chat_welcome": true,
+      "chip_click_triggers_typewriter_reveal": true
+    },
+    "regression_feedback_flow_after_reveal": {
+      "reveal_completed_message_id": "a-1783623568777",
+      "feedback_up_pill_present_after_reveal": true,
+      "chat_feedback_panel_opened": true,
+      "star_buttons_visible_count": 5,
+      "comment_input_present_and_filled": true,
+      "screenshot": "/app/test_reports/iter799_run4.png"
+    },
+    "regression_brand_token": {
+      "brand_token_count_in_dom": 0
+    }
+  }
+}

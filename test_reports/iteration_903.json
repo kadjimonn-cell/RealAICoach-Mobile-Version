@@ -1,0 +1,73 @@
+{
+  "summary": "Focused retest of the 2 issues found in iteration_902 (Travel Visa Explore KPI row @ 768x1024, and missing tv-v2-kpi-* data-testids in served DOM). Both PASSED. Plus quick sanity at 390 and 1920 — all green.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "focused_retest_results": {
+    "retest_1_kpi_2x2_at_768": {
+      "status": "PASS",
+      "measurement": {
+        "tv-v2-kpi-countries": {"x": 14, "y": 391, "w": 365, "h": 70, "text": "COUNTRIES | 30"},
+        "tv-v2-kpi-categories": {"x": 389, "y": 391, "w": 365, "h": 70, "text": "CATEGORIES | 480"},
+        "tv-v2-kpi-readiness": {"x": 14, "y": 471, "w": 365, "h": 70, "text": "READINESS | 0%"},
+        "tv-v2-kpi-plan": {"x": 389, "y": 471, "w": 365, "h": 70, "text": "PLAN | FREE"}
+      },
+      "verification": "Row 1 (y=391): Countries + Categories, both 365px wide. Row 2 (y=471): Readiness + Plan, both 365px wide. Clean 2x2 symmetric grid. READINESS label is no longer crushed vertically — card is 365px wide, label renders on a single line, '0%' renders normally. Fix confirmed (all 4 cards now share kpiCard style with flexBasis 45% when width<960)."
+    },
+    "retest_2_kpi_testids_in_dom": {
+      "status": "PASS",
+      "verification": "All 4 data-testids (tv-v2-kpi-countries, tv-v2-kpi-categories, tv-v2-kpi-readiness, tv-v2-kpi-plan) are present and queryable in the served DOM at 1280, 768, and 390. Static export was successfully rebuilt with the dual testID/data-testid attributes."
+    },
+    "sanity_390": {
+      "status": "PASS",
+      "overflow": false,
+      "scroll_width": 390,
+      "client_width": 390,
+      "kpi_layout": "2x2 grid (Countries+Categories row 1 at y=410, Readiness+Plan row 2 at y=490), each 176px wide, no crushing"
+    },
+    "sanity_1920": {
+      "status": "PASS",
+      "overflow": false,
+      "scroll_width": 1920,
+      "client_width": 1920,
+      "explore_panel_x": 340,
+      "explore_panel_w": 1240,
+      "content_centered_max_width_1240": true,
+      "hero_travel_visa_occurrences": 3,
+      "tabs_clickable": true,
+      "overflow_after_tab_click": false,
+      "note": "hero count is 3 (was 2 in iteration_902) because the hero has 3 'Travel Visa' text nodes now (top-bar chip + hero card title + one more likely from the airplane-icon aria/label). Not a regression — no visual duplicate header, still a single hero card."
+    },
+    "sanity_1280": {
+      "status": "PASS",
+      "kpi_layout": "1 row of 4 cards, each 292.5px wide at y=375, symmetric",
+      "note": "Confirms >=960px width triggers 22% flex-basis / 4-across layout as designed"
+    }
+  },
+  "test_report_links": [
+    "/app/test_reports/screenshots/iter903/tv_desktop_1280.png",
+    "/app/test_reports/screenshots/iter903/tv_tablet_768.png",
+    "/app/test_reports/screenshots/iter903/tv_mobile_390.png",
+    "/app/test_reports/screenshots/iter903/tv_desktop_1920.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "All previous responsive KPI issues resolved. Code in TravelVisaMain.tsx lines 285-299 correctly applies shared kpiCard style to all 4 KPI cards. Dual testID + data-testid emission is consistent across the KPI row.",
+    "MINOR (not a bug): The hero 'Travel Visa' text now shows 3 times in innerText at 1920 (iteration_902 showed 2). Not visually duplicated in screenshots — likely just an extra text node/aria-label. Confirm expected count with main agent if UX has changed.",
+    "For future: consider adding a mid-breakpoint (~960-1200) for KPI cards to render 3-across or 4-across depending on width — currently 45% below 960 (nice 2x2), 22% above 960 (nice 4-across). This is clean already."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A - frontend-only", "frontend": "100% (both focused retests PASS, sanity checks at 390/1280/1920 PASS)"},
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Both iteration_902 issues are now resolved on the static Expo export served at localhost:3000. Free-user Travel Visa flow is stable: login (fill both inputs, Enter, session cookie set even if URL stays on /auth/login) -> navigate to /features/travel-visa -> Skip onboarding via JS click on element whose innerText === 'Skip' (there is ONE visible + one off-viewport in earlier steps; use JS visibility filter). All 4 KPI data-testids are present. Do not use overly-complex regex or special-char strings inside page.evaluate — the automation harness has been known to error 'closing parenthesis does not match opening parenthesis' for certain JS-in-Python patterns; keep JS callbacks simple and prefer playwright locator + bounding_box() over page.evaluate.",
+  "rca_of_the_issue": {
+    "readiness_kpi_at_768px": "FIXED. Now all 4 KPI cards share the same kpiCard style (flexBasis '45%' when width<960), producing a clean 2x2 symmetric grid at tablet width.",
+    "kpi_testids_missing_from_dom": "FIXED. Static Expo web export was rebuilt; all four tv-v2-kpi-* data-testids are present and queryable in the served DOM."
+  }
+}

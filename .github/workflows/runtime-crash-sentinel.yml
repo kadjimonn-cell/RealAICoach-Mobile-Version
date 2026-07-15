@@ -1,0 +1,57 @@
+name: Runtime Crash Sentinel
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/app/**'
+      - 'frontend/src/**'
+      - 'frontend/scripts/runtime-crash-sentinel.js'
+      - 'frontend/package.json'
+      - '.github/workflows/runtime-crash-sentinel.yml'
+  push:
+    paths:
+      - 'frontend/app/**'
+      - 'frontend/src/**'
+      - 'frontend/scripts/runtime-crash-sentinel.js'
+      - 'frontend/package.json'
+      - '.github/workflows/runtime-crash-sentinel.yml'
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  runtime-crash-sentinel-critical:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run critical route crash sentinel (hard fail)
+        working-directory: frontend
+        run: node scripts/runtime-crash-sentinel.js --scope=critical
+
+  runtime-crash-sentinel-full-nightly:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run full route crash sentinel (nightly hard fail)
+        working-directory: frontend
+        run: node scripts/runtime-crash-sentinel.js --scope=full

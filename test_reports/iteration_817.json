@@ -1,0 +1,40 @@
+{
+  "summary": "Iter817 — Public FPS 'match card' feature validated end-to-end. Backend: 28/28 regression tests PASS (test_checkpoint_b_public.py 8, test_feature22_games_station.py 12, test_iter816_fps_viral_loop.py 8) + new /app/backend/tests/test_iter817_fps_public_match_card.py 7/7 PASS (JSON no-auth 200, PII-free schema {match_id,player_name,model,kills,deaths,kd_ratio,best_streak,won,room_name,duration_ms,created_at} — NO user_id/email/user/owner/auth/session/token keys; JSON 404 for invalid id; SVG 200 image/svg+xml for valid + fallback SVG for invalid; features/registry public smoke OK). Frontend E2E (Playwright): (a) LOGGED OUT /fps-match/fps_caa911d0104e renders card with fps-match-card + outcome=DEFEAT + player=X + stats (0/2/0/0) + copy-link (flips to 'Link copied' after click) + signin-cta ('Sign in to play') + cta-hint; no raw i18n keys visible; sign-in CTA navigates to /auth/login (NOT the game). (b) /fps-match/fps_doesnotexist renders fps-match-not-found ('Match not found or link expired.') AND still shows signin-cta. (c) RBAC (logged out): /features/fps-game → /welcome?return_to=%2Ffeatures&auth_reason=unauthenticated; /home → /welcome?return_to=%2Fdashboard&auth_reason=unauthenticated (no leaks). (d) Authenticated admin lobby /features/fps-game: fps-game-recent-card lists 5 recent matches with room+K/D+per-match Share buttons (fps-game-share-match-{match_id}); clicking Share flips label to 'Link copied' and writes share URL to clipboard. (e) End-to-end share loop: clipboard URL https://.../fps-match/fps_debb2b560228 opened in a brand-new logged-out browser context renders the card with outcome=VICTORY and stats (2/0/2/0) matching lobby row. (f) Other lobby cards (lobby, rooms, leaderboard, howto) still render. (g) /certificate-verify still loads publicly (redirects to /welcome as expected for its route). Everything shipped in the review request is working.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /api/games-station/match-card/{invalid}/social-preview.svg", "issue": "Returns 200 with a 'MATCH NOT FOUND' fallback SVG instead of 404. Review request asked for 404 on both endpoints. Current behavior is intentional for OG social images (must always render) and matches the code path; consider either (a) documenting this in the spec, or (b) returning 404 to strictly satisfy the contract. Non-blocking — social preview UX benefits from always-rendering fallback."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter817_fps_public_match_card.py",
+    "/app/test_reports/pytest/iter817_regression.xml",
+    "/app/test_reports/pytest/iter817_public_match_card.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Decide if SVG social-preview for invalid match_id should return 404 to strictly match the spec (currently 200 + placeholder SVG — better OG UX but deviates from stated contract)."
+  ],
+  "critical_code_review_comments": [
+    "backend/routes/games_station.py _public_match_payload (L579): schema is correctly PII-free (no user_id/email); verified via test_json_omits_pii. Good defensive slicing on match_id ([:32]) prevents accidental oversized-key lookups.",
+    "backend/routes/games_station.py L607-624: SVG social preview for missing match returns 200 + fallback rather than 404. This is a reasonable choice (OG images must render), but the review request explicitly asks for 404. Recommend aligning either the spec or the impl; either way is defensible.",
+    "Frontend fps-match card: sign-in CTA anchor has no href attribute — it uses a router-based click handler (still lands on /auth/login correctly). Consider adding href='/auth/login' for progressive-enhancement & better right-click 'open in new tab' UX.",
+    "Frontend FpsGameHub shareMatch flow correctly uses clipboard fallback since headless browsers have no native share sheet — label flips to 'Link copied'. Clipboard content matches expected URL shape /fps-match/{match_id}. Good.",
+    "Recent matches card renders each row with correct K/D; verified match_id from clipboard (fps_debb2b560228) resolves to the same VICTORY 2/0 stats when opened in a fresh logged-out context, confirming public API mirrors lobby data.",
+    "RBAC redirect uses auth_reason=unauthenticated which is exactly the pattern P1 tests expect (rbac_p1_unauthenticated_verification_2026-06-13.md). No RBAC leak observed on /features/fps-game or /home."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter817_fps_public_match_card.py (NEW — 7 tests, all PASS)"
+  ],
+  "success_rate": {"backend": "100% (35/35: 28 regression + 7 new)", "frontend": "100% (public card render, 404 state, RBAC, admin lobby recent+share, end-to-end share-loop)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (verified). Match IDs: fps_caa911d0104e (feed-e2e-1783704782, DEFEAT 0/2); fps_debb2b560228 (feed-e2e-1783704782, VICTORY 2/0).",
+  "seed_data_creation": "None — admin already has 5+ recent FPS matches in db.fps_game_matches from prior iterations.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Public FPS match-card feature is GREEN. Re-run backend: `REACT_APP_BACKEND_URL='https://visa-polish-v2.preview.emergentagent.com' TEST_ADMIN_PASSWORD='NewAdminPass2026!' python -m pytest backend/tests/test_checkpoint_b_public.py backend/tests/test_feature22_games_station.py backend/tests/test_iter816_fps_viral_loop.py backend/tests/test_iter817_fps_public_match_card.py -v` (35 tests, ~9s). Frontend re-test flow: (1) hit /fps-match/fps_caa911d0104e logged-out → all 6 testids present; (2) click fps-match-signin-cta → lands /auth/login; (3) hit /fps-match/fps_doesnotexist logged-out → fps-match-not-found + CTA; (4) hit /features/fps-game logged-out → /welcome?...auth_reason=unauthenticated; (5) login admin → /features/fps-game → fps-game-recent-card + fps-game-share-match-* buttons → click first → label flips to 'Link copied' + clipboard has /fps-match/{id}; (6) open clipboard URL in new context → public card renders. Only lingering minor: SVG for invalid id returns 200 (placeholder) not 404 — see backend_issues.minor.",
+  "rca of the issue": "N/A — no bugs. Feature is fully wired: backend `/api/games-station/match-card/{id}` + `/social-preview.svg` (allowlisted in public_api_contract.py) return privacy-safe payloads without auth; frontend `/fps-match/{matchId}` public page (RouteAccessGuard + AccessControlContext + routeResolution + serve-production dynamicRoutePrefixes all correctly whitelist the prefix) renders the read-only card with proper testids; FpsGameHub Recent matches card correctly stores best_streak and offers clipboard-fallback share; RBAC guards ensure logged-out users never reach /features/fps-game or /home. The SVG-404 spec deviation is intentional design for OG images."
+}

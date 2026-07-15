@@ -1,0 +1,615 @@
+{
+  "pages": {
+    "admin_system_dark": {
+      "body": {
+        "bg": "rgb(5, 10, 24)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "app-shell-brand-icon",
+          "text": "RealAICoach\nENTERPRISE SUITE\nOperator-grade control surface\n\uf229\n\u2728\n\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "desktop-sidebar-top-actions",
+          "text": "\u2728\n\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "admin-notification-bell",
+          "text": "\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_main",
+          "text": "MAIN",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-home",
+          "text": "\uf356\nHome\nCtrl+1",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_platform",
+          "text": "PLATFORM",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-gallery",
+          "text": "\uf58d\nFeatures\nCtrl+2",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-games-station",
+          "text": "\uf3c2\nFPS Game",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-flappy-bird",
+          "text": "\uf48e\nFlappy Bird Game",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-watch-videos",
+          "text": "\uf2ff\nWatch Videos",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-audio-studio",
+          "text": "\uf46a\nAudio Studio",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-my-podcasts",
+          "text": "\uf45e\nMy Podcasts",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-sports",
+          "text": "\uf119\nSports",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-travel-visa",
+          "text": "\uf10a\nTravel Visa",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-daily-meditation",
+          "text": "\uf3b3\nDaily Meditation",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_ai_tools",
+          "text": "AI TOOLS",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-learning-hub",
+          "text": "\uf55d\nLearning Hub\nCtrl+3",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-coaching-team",
+          "text": "\uf4a1\nAI Coaching Team",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-briefing",
+          "text": "\uf473\nDaily Briefing",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-library",
+          "text": "\uf1a6\nLibrary",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    "admin_activity_dark": {
+      "body": {
+        "bg": "rgb(5, 10, 24)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "app-shell-brand-icon",
+          "text": "RealAICoach\nENTERPRISE SUITE\nOperator-grade control surface\n\uf229\n\u2728\n\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "desktop-sidebar-top-actions",
+          "text": "\u2728\n\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "admin-notification-bell",
+          "text": "\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_main",
+          "text": "MAIN",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-home",
+          "text": "\uf356\nHome\nCtrl+1",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_platform",
+          "text": "PLATFORM",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-gallery",
+          "text": "\uf58d\nFeatures\nCtrl+2",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-games-station",
+          "text": "\uf3c2\nFPS Game",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-flappy-bird",
+          "text": "\uf48e\nFlappy Bird Game",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-watch-videos",
+          "text": "\uf2ff\nWatch Videos",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-audio-studio",
+          "text": "\uf46a\nAudio Studio",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-my-podcasts",
+          "text": "\uf45e\nMy Podcasts",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-sports",
+          "text": "\uf119\nSports",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-travel-visa",
+          "text": "\uf10a\nTravel Visa",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-daily-meditation",
+          "text": "\uf3b3\nDaily Meditation",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_ai_tools",
+          "text": "AI TOOLS",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-learning-hub",
+          "text": "\uf55d\nLearning Hub\nCtrl+3",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-coaching-team",
+          "text": "\uf4a1\nAI Coaching Team",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-briefing",
+          "text": "\uf473\nDaily Briefing",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-library",
+          "text": "\uf1a6\nLibrary",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    "exec_dash_dark": {
+      "body": {
+        "bg": "rgb(5, 10, 24)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "app-shell-brand-icon",
+          "text": "RealAICoach\nENTERPRISE SUITE\nOperator-grade control surface\n\uf229\n\u2728\n\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "desktop-sidebar-top-actions",
+          "text": "\u2728\n\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "admin-notification-bell",
+          "text": "\uf47f\n9+",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_main",
+          "text": "MAIN",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-home",
+          "text": "\uf356\nHome\nCtrl+1",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_platform",
+          "text": "PLATFORM",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-gallery",
+          "text": "\uf58d\nFeatures\nCtrl+2",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-games-station",
+          "text": "\uf3c2\nFPS Game",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-flappy-bird",
+          "text": "\uf48e\nFlappy Bird Game",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-watch-videos",
+          "text": "\uf2ff\nWatch Videos",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-audio-studio",
+          "text": "\uf46a\nAudio Studio",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-my-podcasts",
+          "text": "\uf45e\nMy Podcasts",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-sports",
+          "text": "\uf119\nSports",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-travel-visa",
+          "text": "\uf10a\nTravel Visa",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-daily-meditation",
+          "text": "\uf3b3\nDaily Meditation",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "section-_section_ai_tools",
+          "text": "AI TOOLS",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-learning-hub",
+          "text": "\uf55d\nLearning Hub\nCtrl+3",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-coaching-team",
+          "text": "\uf4a1\nAI Coaching Team",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-ai-briefing",
+          "text": "\uf473\nDaily Briefing",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "sidebar-nav-library",
+          "text": "\uf1a6\nLibrary",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    "admin_system_light": {
+      "body": {
+        "bg": "rgb(248, 250, 252)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "global-nav-system-health-label",
+          "text": "System Healthy",
+          "contrast": "1.00",
+          "fg": "rgb(20, 184, 166)",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    "admin_activity_light": {
+      "body": {
+        "bg": "rgb(248, 250, 252)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "global-nav-system-health-label",
+          "text": "System Healthy",
+          "contrast": "1.00",
+          "fg": "rgb(20, 184, 166)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "event-row-1",
+          "text": "Jul 14, 03:52:48 PM\nWs Ticket Issued\nLOW\nadmin@realaicoach.app\n10.49.132.78",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-3",
+          "text": "Jul 14, 03:52:48 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-5",
+          "text": "Jul 14, 03:52:48 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-7",
+          "text": "Jul 14, 03:52:44 PM\nWs Ticket Issued\nLOW\nadmin@realaicoach.app\n10.49.132.78",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-9",
+          "text": "Jul 14, 03:52:44 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-11",
+          "text": "Jul 14, 03:52:43 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-13",
+          "text": "Jul 14, 03:52:40 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-15",
+          "text": "Jul 14, 03:52:36 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-17",
+          "text": "Jul 14, 03:52:35 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-19",
+          "text": "Jul 14, 03:52:35 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-21",
+          "text": "Jul 14, 03:52:32 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        },
+        {
+          "tid": "event-row-23",
+          "text": "Jul 14, 03:52:32 PM\nRisk Engine Preview Bypass Applied\nMEDIUM\nadmin@realaicoach.",
+          "contrast": "1.05",
+          "fg": "rgb(15, 23, 42)",
+          "bg": "rgba(17, 27, 53, 0.25)"
+        }
+      ]
+    },
+    "exec_dash_light": {
+      "body": {
+        "bg": "rgb(248, 250, 252)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "risk-overall-pill",
+          "text": "Risk: Low (12.1)",
+          "contrast": "1.00",
+          "fg": "rgb(20, 184, 166)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "high-risk-level-0",
+          "text": "HIGH \u00b7 71",
+          "contrast": "1.00",
+          "fg": "rgb(217, 119, 6)",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    "welcome_dark": {
+      "body": {
+        "bg": "rgb(248, 250, 252)",
+        "color": "rgb(15, 23, 42)"
+      },
+      "low_contrast": [
+        {
+          "tid": "welcome-system-status-last-refresh",
+          "text": "Updated syncing",
+          "contrast": "1.68",
+          "fg": "rgb(93, 108, 130)",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "tid": "welcome-hero-nova-kicker",
+          "text": "PLATFORM GUIDE",
+          "contrast": "1.00",
+          "fg": "rgb(180, 83, 9)",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ]
+    }
+  },
+  "errors": [
+    "Failed to load resource: the server responded with a status of 401 ()",
+    "WebSocket connection to 'wss://admin-analytics-hub-17.preview.emergentagent.com/api/ws/live-activity' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://admin-analytics-hub-17.preview.emergentagent.com/api/ws/live-activity' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://admin-analytics-hub-17.preview.emergentagent.com/api/ws/live-activity' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://admin-analytics-hub-17.preview.emergentagent.com/api/ws/live-activity' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://admin-analytics-hub-17.preview.emergentagent.com/api/ws/live-activity' failed: Error during WebSocket handshake: Unexpected response code: 403",
+    "WebSocket connection to 'wss://admin-analytics-hub-17.preview.emergentagent.com/api/ws/live-activity' failed: Error during WebSocket handshake: Unexpected response code: 403"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-06-18T02:17:14.211444Z",
+  "validation_type": "feature26_checkpoint_validation_v2",
+  "checkpoint_file": "/app/test_reports/feature26_root_cause_checkpointC_20260618T021249Z.json",
+  "tests": [
+    {
+      "test": "1) strict_zero exclude_synthetic=false => sustained false",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "test": "2) near_zero exclude_synthetic=false => sustained false",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "test": "3) near_zero exclude_synthetic=true => sustained true",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "test": "4) telemetry includes candidate_save_job operation",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "test": "5) telemetry includes employers_reverify operation",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "test": "6) governance-vs-operational divergence pattern correct",
+      "expected": "strict_false=True, near_false=True, near_true=False",
+      "actual": "strict_false=True, near_false=True, near_true=False",
+      "passed": true
+    },
+    {
+      "test": "7) operational signal is green (sustained_gate_met=true)",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "test": "8) candidate_save_job count = 17",
+      "expected": 17,
+      "actual": 17,
+      "passed": true
+    },
+    {
+      "test": "9) employers_reverify count = 2",
+      "expected": 2,
+      "actual": 2,
+      "passed": true
+    }
+  ],
+  "overall_status": "PASS"
+}

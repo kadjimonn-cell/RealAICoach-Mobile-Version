@@ -1,0 +1,39 @@
+name: Nightly i18n New Missing Keys Guard
+
+on:
+  schedule:
+    - cron: '20 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  i18n-new-missing-keys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: |
+          corepack enable
+          yarn install --frozen-lockfile
+
+      - name: Check newly introduced missing i18n keys
+        run: node frontend/scripts/i18n-new-missing-keys-check.js
+
+      - name: Upload i18n report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-new-missing-keys-report
+          path: test_reports/i18n_new_missing_keys_report.json
+          if-no-files-found: ignore

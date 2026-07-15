@@ -1,0 +1,102 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# IDE and editors
+.idea/
+.vscode/
+
+# Dependencies
+node_modules/
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Production builds
+/build
+dist/
+dist
+
+# Environment files (comprehensive coverage)
+.env
+.env.*
+**/.env
+**/.env.*
+
+*token.json*
+*credentials.json*
+frontend/cookies.txt
+backend/*service_account*.json
+backend/AuthKey_*.p8
+backend/SubscriptionKey_*.p8
+
+# Logs and debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dump.rdb
+
+# System files
+.DS_Store
+*.pem
+
+# Python
+__pycache__/
+*pyc*
+venv/
+.venv/
+
+# Development tools
+chainlit.md
+.chainlit
+.ipynb_checkpoints/
+.ac
+
+# Deployment
+.vercel
+
+# Data and databases
+agenthub/agents/youtube/db
+
+# Archive files and large assets
+**/*.zip
+**/*.tar.gz
+**/*.tar
+**/*.tgz
+*.pack
+*.deb
+*.dylib
+
+# Build caches
+.cache/
+
+# Mobile development
+android-sdk/ backend/media/videos/stream-003.mp4
+backend/media/videos/stream-001.mp4
+backend/media/videos/stream-002.mp4
+backend/media/videos/stream-003.mp4
+frontend/playwright-report/data/abc95ca94b649df47b7de16470a8c02ecd9be02e.zip
+frontend/playwright-report/data/4983a23e276e543b336009b7b967335b904f554f.zip
+frontend/playwright-report/data/6834d527e2238b311db1f7a3a7a367eeb7360f11.zip
+frontend/playwright-report/data/7bc32f9d2f09dbfa730660a7b58ba9e7eec51c1f.zip
+
+# Test credentials (exclude from deployment)
+memory/test_credentials.md
+*.env
+credentials.json
+*.key
+.credentials

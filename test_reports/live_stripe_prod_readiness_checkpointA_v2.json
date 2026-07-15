@@ -1,0 +1,253 @@
+{
+  "started_at": "2026-05-20T05:48:05.025314+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "stripe.prod.retest.0d5e32ee@gmail.com",
+    "password": "StripeLive#2026Aa!",
+    "name": "Stripe Prod Retest User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_2cd949f546e9",
+        "email": "stripe.prod.retest.0d5e32ee@gmail.com",
+        "name": "Stripe Prod Retest User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_2cd949f546e9",
+        "email": "stripe.prod.retest.0d5e32ee@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "plans",
+      "status_code": 200,
+      "plan_ids": [
+        "free",
+        "basic",
+        "premium"
+      ]
+    },
+    {
+      "step": "create_checkout_basic",
+      "status_code": 200,
+      "body": {
+        "session_id": "cs_live_a1ofmstpJGVMdlh0gYDl2IO3aMpLal1eLiFSbrSRkafxX9Ecdnf7GPTMuK",
+        "checkout_url": "https://checkout.stripe.com/c/pay/cs_live_a1ofmstpJGVMdlh0gYDl2IO3aMpLal1eLiFSbrSRkafxX9Ecdnf7GPTMuK#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdicGRmZGhqaWBTZHdsZGtxJz8nZmprcXdqaScpJ2R1bE5gfCc%2FJ3VuWmlsc2BaMDRRMUZkdkBrVT1XN2d0cXJnfGpkVEAwZFEyPFxobHxRN2RoMjdCTjU3Q0xWMlZ%2FZ3BESz1WalRhZkhdcVRJVWxdRzJyTWg0Y0REfHJBT0lTdk9CZjJXfzQ1NWFBTF02cFBUJyknY3dqaFZgd3Ngdyc%2FcXdwYCknZ2RmbmJ3anBrYUZqaWp3Jz8nJmNjY2NjYycpJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl",
+        "checkout_host": "checkout.stripe.com",
+        "payment_method": "stripe",
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "pre_webhook_checkout_status_basic",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 776,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "create_checkout_premium",
+      "status_code": 200,
+      "body": {
+        "session_id": "cs_live_a1ZxbNeJB46gt8tF6dfK9wnTz6jIm2LLaGVCKiKnzSusC7UdDx1Own0O4q",
+        "checkout_url": "https://checkout.stripe.com/c/pay/cs_live_a1ZxbNeJB46gt8tF6dfK9wnTz6jIm2LLaGVCKiKnzSusC7UdDx1Own0O4q#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdicGRmZGhqaWBTZHdsZGtxJz8nZmprcXdqaScpJ2R1bE5gfCc%2FJ3VuWmlsc2BaMDRRMUZkdkBrVT1XN2d0cXJnfGpkVEAwZFEyPFxobHxRN2RoMjdCTjU3Q0xWMlZ%2FZ3BESz1WalRhZkhdcVRJVWxdRzJyTWg0Y0REfHJBT0lTdk9CZjJXfzQ1NWFBTF02cFBUJyknY3dqaFZgd3Ngdyc%2FcXdwYCknZ2RmbmJ3anBrYUZqaWp3Jz8nJmNjY2NjYycpJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl",
+        "checkout_host": "checkout.stripe.com",
+        "payment_method": "stripe",
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "pre_webhook_checkout_status_premium",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 2021,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "webhook_basic",
+      "status_code": 200,
+      "body": {
+        "received": true
+      }
+    },
+    {
+      "step": "webhook_premium",
+      "status_code": 200,
+      "body": {
+        "received": true
+      }
+    },
+    {
+      "step": "post_webhook_checkout_status_basic",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 776,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "db_tx_basic",
+      "doc": {
+        "transaction_id": "txn_afa06d48e4854ddf",
+        "session_id": "cs_live_a1ofmstpJGVMdlh0gYDl2IO3aMpLal1eLiFSbrSRkafxX9Ecdnf7GPTMuK",
+        "plan_id": "basic",
+        "amount": 5.99,
+        "amount_local": 7.76,
+        "currency": "usd",
+        "provider": "stripe",
+        "payment_status": "completed",
+        "amount_gross": 9.02,
+        "status": "completed",
+        "admin_receipt_sent": true,
+        "admin_receipt_sent_at": "2026-05-20T05:48:10.532116+00:00",
+        "receipt_delivery_ok": true,
+        "receipt_number": "RCT-20260520-20A0193C9A",
+        "user_receipt_sent": true,
+        "user_receipt_sent_at": "2026-05-20T05:48:09.962973+00:00",
+        "notification_sent": true,
+        "notification_sent_at": "2026-05-20T05:48:10.534099+00:00"
+      }
+    },
+    {
+      "step": "notification_queue_basic",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "post_webhook_checkout_status_premium",
+      "status_code": 200,
+      "body": {
+        "status": "open",
+        "payment_status": "unpaid",
+        "amount_total": 2021,
+        "currency": "usd"
+      }
+    },
+    {
+      "step": "db_tx_premium",
+      "doc": {
+        "transaction_id": "txn_2a0d89c1f2974e01",
+        "session_id": "cs_live_a1ZxbNeJB46gt8tF6dfK9wnTz6jIm2LLaGVCKiKnzSusC7UdDx1Own0O4q",
+        "plan_id": "premium",
+        "amount": 15.99,
+        "amount_local": 20.21,
+        "currency": "usd",
+        "provider": "stripe",
+        "payment_status": "completed",
+        "amount_gross": 23.57,
+        "status": "completed",
+        "admin_receipt_sent": true,
+        "admin_receipt_sent_at": "2026-05-20T05:48:12.241965+00:00",
+        "receipt_delivery_ok": true,
+        "receipt_number": "RCT-20260520-206A73B552",
+        "user_receipt_sent": true,
+        "user_receipt_sent_at": "2026-05-20T05:48:11.578448+00:00",
+        "notification_sent": true,
+        "notification_sent_at": "2026-05-20T05:48:12.244047+00:00"
+      }
+    },
+    {
+      "step": "notification_queue_premium",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_2cd949f546e9",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "last_payment_id": null
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 2,
+      "latest_payment_notifications": [
+        {
+          "id": "notif_47c611faae69",
+          "notification_id": "notif_47c611faae69",
+          "user_id": "user_2cd949f546e9",
+          "type": "payment_confirmation",
+          "title": "Payment Confirmed - Premium Plan",
+          "message": "Your payment of $24.43 via Card (Stripe) has been processed. You're now subscribed to the Premium plan. eTicket: STR-20260520-6A73B552",
+          "read": false,
+          "created_at": "2026-05-20T05:48:10.960308+00:00",
+          "metadata": {
+            "plan": "Premium",
+            "amount": 24.43,
+            "ticket_id": "STR-20260520-6A73B552",
+            "payment_method": "stripe",
+            "currency": "USD",
+            "amount_local": 20.21,
+            "transaction_id": "txn_2a0d89c1f2974e01",
+            "transaction_ref": "txn_2a0d89c1f2974e01",
+            "tax_amount": 3.36,
+            "amount_gross": 23.57,
+            "amount_net": 23.57,
+            "locale": "en"
+          }
+        },
+        {
+          "id": "notif_f4a04ff4cd74",
+          "notification_id": "notif_f4a04ff4cd74",
+          "user_id": "user_2cd949f546e9",
+          "type": "payment_confirmation",
+          "title": "Payment Confirmed - Basic Plan",
+          "message": "Your payment of $9.53 via Card (Stripe) has been processed. You're now subscribed to the Basic plan. eTicket: STR-20260520-A0193C9A",
+          "read": false,
+          "created_at": "2026-05-20T05:48:09.321353+00:00",
+          "metadata": {
+            "plan": "Basic",
+            "amount": 9.53,
+            "ticket_id": "STR-20260520-A0193C9A",
+            "payment_method": "stripe",
+            "currency": "USD",
+            "amount_local": 7.76,
+            "transaction_id": "txn_afa06d48e4854ddf",
+            "transaction_ref": "txn_afa06d48e4854ddf",
+            "tax_amount": 1.26,
+            "amount_gross": 9.02,
+            "amount_net": 9.02,
+            "locale": "en"
+          }
+        }
+      ]
+    },
+    {
+      "step": "receipt_pdf_basic",
+      "status_code": 409,
+      "content_type": "application/json",
+      "bytes": 0
+    },
+    {
+      "step": "receipt_pdf_premium",
+      "status_code": 409,
+      "content_type": "application/json",
+      "bytes": 0
+    }
+  ],
+  "finished_at": "2026-05-20T05:48:25.828451+00:00"
+}

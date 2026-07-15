@@ -1,0 +1,45 @@
+{
+  "summary": "Iter888 — verified two payment-receipt bugfixes in /app/backend/routes/payments.py :: _send_payment_email. FIX1 (subtotal now sourced from tx, not USD amount): FedaPay XOF receipt PDF for MR. Mathieu Kiriakou (premium/monthly/BJ) now shows 'XOF 9,674' base row (previously showed the mislabeled 'XOF 16' from USD 15.99); tax XOF 799, fee XOF 304, total XOF 10,777, rows sum invariant holds. FIX2 (admin alert amount now uses display_amount): unit-tested build_payment_admin_alert_email renders 'CFA 10,777' with no '$15.99' leak. All 9 new tests pass. All 28 tests in test_fedapay_production_e2e_iter887.py and test_stripe_production_e2e_iter885.py still pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_payment_receipt_bugfix_iter888.py",
+    "/app/test_reports/pytest/iter888_results.xml",
+    "/app/test_reports/pytest/iter888_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix quality is good: subtotal now correctly pulled from tx (line ~1587), and display_amount is threaded into the admin-alert template (line ~1707).",
+    "Note: the base row in the receipt PDF is derived from _payment_from_txn which reads tx.subtotal — verified this now equals the LOCAL subtotal (9674 XOF), which is the intent. If provider integrations ever store a USD subtotal in the tx for a non-USD currency, the same bug shape would return; consider adding a tx-level invariant check (subtotal in tx.currency) during write.",
+    "routes/payments.py is 3628 lines — exceeds the 700-line guideline; splitting _send_payment_email + provider webhook glue into a payments/receipt_dispatcher.py module would improve maintainability.",
+    "The USD symbol default for admin alert (amount='$15.99') in email_templates.build_payment_admin_alert_email is now a documentation-only artifact; consider setting it to an empty string or generic '$0.00' placeholder to avoid future confusion when template gallery is browsed."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_payment_receipt_bugfix_iter888.py (new)"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "not tested (skip per request)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! — used cookie-login POST /api/auth/login + X-Requested-With header.",
+  "seed_data_creation": "Created 4 fresh @example.com users via simulator endpoints (fedapay.receipt.*, stripe.receipt.*, paypal.receipt.*, iap.receipt.*) — all prefixed with iter888 for cleanup.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iter888 verified two payment-receipt bugfixes end-to-end by regenerating the exact receipt PDF from the stored payment_transactions row (via _payment_from_txn + generate_receipt_pdf_pro) and running pypdf.extract_text() to assert on-page strings. That approach avoids the OWNING-user session cookie requirement of the /api/payments/history/receipt/{payment_id} endpoint. Reuse this pattern for any future PDF text assertions. Stripe/PayPal simulator responses only expose 'transaction_id' (not 'payment_id') in the top-level scenario dict; tx lookup should try {payment_id | session_id | transaction_id}.",
+  "rca of the issue": {
+    "issue_1": "XOF receipt base row showed 'XOF 16'.",
+    "root_cause_1": "_send_payment_email set `subtotal = amount` where `amount` is the USD base price (15.99). The PDF renderer then formatted that as 'XOF {int(round(15.99))}' = 'XOF 16' because the currency was passed as XOF while the value was still in USD.",
+    "fix_1": "line ~1587 changed to `subtotal = _safe_float(tx.get('subtotal', amount), amount)` — pulls the LOCAL subtotal from the transaction context.",
+    "issue_2": "Admin email showed 'Amount $15.99' for XOF FedaPay charge of CFA 10,777.",
+    "root_cause_2": "admin alert dispatch passed `amount=f\"${amount:.2f}\"` (always USD-base) instead of the already-computed `display_amount`.",
+    "fix_2": "line ~1707 now passes `amount=display_amount` which is currency-aware ('CFA 10,777' for XOF, '$168.12' for USD Stripe totals).",
+    "reproduction": "POST /api/admin/payments/simulate-fedapay-production-e2e with premium/monthly/BJ/XOF payload; regenerate receipt via _payment_from_txn + generate_receipt_pdf_pro; extract text; grep 'XOF 16'. Post-fix: no match; instead 'XOF 9,674'. Also call build_payment_admin_alert_email(amount='CFA 10,777') and verify HTML/text bodies contain it."
+  }
+}

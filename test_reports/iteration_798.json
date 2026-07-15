@@ -1,0 +1,42 @@
+{
+  "summary": "Iteration 798 retest — FIX 3 UI (quick question chips fallback) is now LIVE-VERIFIED end-to-end. On /help → Contact → Chat IA, [data-testid=quick-q-0/1/2] all render with the French canonical strings from help.nova.quickQ1..3 (buildNovaQuickQuestionFallbacks). Clicking quick-q-0 sends the chip text as a user message and Nova replies. Regression FIX 2 (feedback panel on embedded surface) and FIX 4 (no {BRAND} token in DOM) both re-verified live. Backend regression (test_iter796_gps_quick_questions + test_iter797_brand_translate_guard) 5/5 pass.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_iter796_gps_quick_questions.py",
+    "/app/backend/tests/test_iter797_brand_translate_guard.py",
+    "/app/test_reports/pytest/iter798_backend_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "FIX 3 UI fallback correctly implemented in /app/frontend/app/help.tsx L197-201: useMemo returns fromGps if non-empty else buildNovaQuickQuestionFallbacks(t). Fallback correctly picks localized help.nova.quickQ1..3 from the i18n bundle when GPS state is empty, ensuring cold-session render.",
+    "novaPersona.ts NOVA_QUICK_QUESTION_FALLBACKS + buildNovaQuickQuestionFallbacks provides a robust default that always returns strings (fallback if t() misses key). Slice(0,4) in SettingsNovaAssistantPanel keeps the UX consistent.",
+    "en.ts/fr.ts (and per plan 21 other locales) contain help.nova.quickQ1..3 entries. Verified render uses French strings correctly under FR locale.",
+    "Suggestion (already noted in 797): consider hoisting the quickQuestions filter into useGlobalPlatformState so consumers receive a stable memoized array, but current fallback path eliminates the cold-session gap regardless."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (5/5)", "frontend": "100% (chips render, chip-click flow, feedback panel, no {BRAND})"},
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free, French, dark theme)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All 4 Nova bug fixes verified live and via backend regression. No open issues remaining from the FIX 1..4 series. If a new iteration is opened for adjacent Nova/help work, the chip fallback + feedback panel + no-{BRAND} guardrails are in place. Login went through cleanly (no Cloudflare challenge). Selectors used: login-method-password (not shown on this run), login-email-input, login-password-input, login-submit-button, help-tab text=Contact, sub-tab text='Chat IA', [data-testid=nova-chat-panel], [data-testid=chat-welcome], [data-testid=quick-q-0/1/2], [data-testid$=-feedback-up], [data-testid=chat-feedback-panel].",
+  "verification_evidence": {
+    "backend_pytest": "5 passed in 2.94s (test_iter796_gps_quick_questions.py + test_iter797_brand_translate_guard.py) — junit at /app/test_reports/pytest/iter798_backend_regression.xml",
+    "primary_fix3_ui_live": {
+      "quick-q-0": "Comment pouvez-vous m'aider ?",
+      "quick-q-1": "Comment fonctionne le coaching AI ?",
+      "quick-q-2": "Comment puis-je mettre à jour ou gérer mon plan ?",
+      "chip_click_sent_message": true,
+      "nova_replied_with_assistant_message": true
+    },
+    "regression_fix2_live": {
+      "feedback_up_pill_found": true,
+      "chat_feedback_panel_opened": true
+    },
+    "regression_fix4_live": {
+      "brand_token_count_pre_interaction": 0,
+      "brand_token_count_post_interaction": 0
+    }
+  }
+}

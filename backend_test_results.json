@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-05-18T00:45:25.582230",
+  "checkpoints": {
+    "C1_C2": {
+      "tests": [
+        {
+          "name": "GET /api/admin/subscriptions/plans",
+          "status": "PASS",
+          "details": "Found all 3 plans: {'free', 'premium', 'basic'}"
+        },
+        {
+          "name": "GET /api/subscriptions/plans",
+          "status": "PASS",
+          "details": "Found all 3 plans: {'free', 'premium', 'basic'}"
+        },
+        {
+          "name": "GET /api/admin/subscription-analytics plan_catalog",
+          "status": "PASS",
+          "details": "Found all 3 plans: {'free', 'premium', 'basic'}"
+        }
+      ],
+      "passed": 3,
+      "failed": 0
+    },
+    "C3": {
+      "tests": [
+        {
+          "name": "GET /api/gps/health completeness block",
+          "status": "PASS",
+          "details": "Completeness present with is_complete=True"
+        }
+      ],
+      "passed": 1,
+      "failed": 0
+    },
+    "C5": {
+      "tests": [
+        {
+          "name": "GET /api/gps/admin/catalog-integrity/status",
+          "status": "PASS",
+          "details": "Status: ok, catalog present"
+        },
+        {
+          "name": "POST /api/gps/admin/catalog-integrity/repair endpoint",
+          "status": "PASS",
+          "details": "Endpoint accessible (HTTP 200)"
+        }
+      ],
+      "passed": 2,
+      "failed": 0
+    },
+    "C8": {
+      "tests": [
+        {
+          "name": "GET /api/system/live-metrics?mode=stream (public)",
+          "status": "PASS",
+          "details": "metric_source present: {'vanity': 'synthetic_generator', 'kpis': 'vanity_public', 'realtime_kpis': 'unavailable_without_auth'}"
+        },
+        {
+          "name": "GET /api/system/live-metrics?mode=stream (auth)",
+          "status": "PASS",
+          "details": "metric_source and kpis_realtime present, source: database_aggregates"
+        },
+        {
+          "name": "GET /api/gps/admin/integrity-artifacts/latest",
+          "status": "PASS",
+          "details": "Status: ok, artifact: <class 'dict'>"
+        },
+        {
+          "name": "POST /api/gps/admin/integrity-artifacts/run endpoint",
+          "status": "PASS",
+          "details": "Endpoint accessible (HTTP 200)"
+        }
+      ],
+      "passed": 4,
+      "failed": 0
+    }
+  },
+  "summary": {
+    "passed": 10,
+    "failed": 0,
+    "total": 10
+  }
+}

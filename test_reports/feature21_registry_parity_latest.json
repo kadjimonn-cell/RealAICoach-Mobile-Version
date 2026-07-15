@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-06-19T11:59:17.260986+00:00",
+  "scope": "feature21_registry_parity_verification",
+  "locked_protocol": {
+    "feature_number_expected": 21,
+    "feature_id_expected": "watch-videos",
+    "route_expected": "/features/watch-videos"
+  },
+  "registry_payload_shape": {
+    "has_features_array": true,
+    "total_features": 36
+  },
+  "feature21_match_count": 1,
+  "feature21_row": {
+    "feature_id": "watch-videos",
+    "title": "Watch Videos",
+    "description": "Netflix + YouTube style premium streaming hub with plan-aware access and AI recommendations.",
+    "icon": "film",
+    "route": "/features/watch-videos",
+    "category": "productivity",
+    "color": "#14B8A6",
+    "is_new": true,
+    "premium": false,
+    "enabled": true,
+    "sort_order": 20,
+    "created_at": "2026-05-18T00:04:27.653998+00:00",
+    "updated_at": "2026-06-08T15:24:55.813637+00:00",
+    "feature_number": 21,
+    "feature_batch": 4,
+    "order_source": "locked_canonical"
+  },
+  "parity_checks": {
+    "feature_id_match": true,
+    "feature_number_match": true,
+    "route_match": true,
+    "enabled_true": true,
+    "order_source_locked": true
+  },
+  "overall_verdict": "pass"
+}

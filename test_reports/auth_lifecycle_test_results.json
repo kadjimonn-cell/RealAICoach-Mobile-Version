@@ -1,0 +1,150 @@
+[
+  {
+    "user_type": "premium_user",
+    "tests": {
+      "unauthenticated_me": {
+        "status": 401,
+        "passed": true
+      },
+      "login": {
+        "status": 200,
+        "passed": true,
+        "has_cookies": true,
+        "response_keys": [
+          "user_id",
+          "email",
+          "name",
+          "subscription_plan",
+          "subscription_status",
+          "is_admin",
+          "full_access",
+          "roles",
+          "role",
+          "email_verified",
+          "profile_image",
+          "welcome_back",
+          "last_active_route",
+          "last_active_at",
+          "theme_preference",
+          "language_preference",
+          "currency_preference",
+          "tenant_id",
+          "organization_id",
+          "company_id",
+          "workspace_id",
+          "tenant_disclaimer_profile",
+          "risk_level",
+          "risk_score",
+          "risk_engine_status",
+          "risk_output"
+        ]
+      },
+      "authenticated_me": {
+        "status": 200,
+        "passed": true,
+        "email": "watchvideos.premium.4dc6ab84@example.com",
+        "user_id": "user_32c891456875",
+        "subscription_plan": "premium"
+      },
+      "protected_endpoint": {
+        "status": 200,
+        "passed": true,
+        "response_keys": [
+          "plan",
+          "scope_label",
+          "quota",
+          "total_visible",
+          "total_catalog",
+          "categories",
+          "featured_video",
+          "today_drop",
+          "continue_watching",
+          "continue_queue"
+        ]
+      },
+      "logout": {
+        "status": 200,
+        "passed": true
+      },
+      "post_logout_me": {
+        "status": 401,
+        "passed": true
+      }
+    },
+    "all_passed": true
+  },
+  {
+    "user_type": "admin_user",
+    "tests": {
+      "unauthenticated_me": {
+        "status": 401,
+        "passed": true
+      },
+      "login": {
+        "status": 200,
+        "passed": true,
+        "has_cookies": true,
+        "response_keys": [
+          "user_id",
+          "email",
+          "name",
+          "subscription_plan",
+          "subscription_status",
+          "is_admin",
+          "full_access",
+          "roles",
+          "role",
+          "email_verified",
+          "profile_image",
+          "welcome_back",
+          "last_active_route",
+          "last_active_at",
+          "theme_preference",
+          "language_preference",
+          "currency_preference",
+          "tenant_id",
+          "organization_id",
+          "company_id",
+          "workspace_id",
+          "tenant_disclaimer_profile",
+          "risk_level",
+          "risk_score",
+          "risk_engine_status",
+          "risk_output"
+        ]
+      },
+      "authenticated_me": {
+        "status": 200,
+        "passed": true,
+        "email": "admin@realaicoach.app",
+        "user_id": "user_4b5a68d2f7c6",
+        "subscription_plan": "premium"
+      },
+      "protected_endpoint": {
+        "status": 200,
+        "passed": true,
+        "response_keys": [
+          "plan",
+          "scope_label",
+          "quota",
+          "total_visible",
+          "total_catalog",
+          "categories",
+          "featured_video",
+          "today_drop",
+          "continue_watching",
+          "continue_queue"
+        ]
+      },
+      "logout": {
+        "status": 200,
+        "passed": true
+      },
+      "post_logout_me": {
+        "status": 401,
+        "passed": true
+      }
+    },
+    "all_passed": true
+  }
+]

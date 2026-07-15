@@ -1,0 +1,56 @@
+{
+  "summary": "Verified Subscription Access Control Policy 2026-06.v3 (37-feature free-limited lock). Backend: 15/15 baseline + 11/11 new verification tests pass. Frontend: free user can open all 6 previously-locked feature pages; basic regression clean. FRONTEND 2 acceptance is partially satisfied via missing route (see minor issues).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "/content-studio and /workspace",
+        "issues": [
+          "Both routes return +not-found (Page Not Found) for ALL tiers including basic — the routes are not defined in expo-router at app/. Review criteria expected an 'upgrade lock or redirect for free users'. Goal (free user cannot reach them) is met, but not via a subscription-aware lock UI. If intentional (routes retired), consider removing them from AccessControlContext free_limited_ui_prefixes to reflect reality; otherwise implement the actual lock screen."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration_871_policy_v3_verification.py",
+    "/app/backend/tests/test_feature37_free_limited_access_policy.py",
+    "/app/test_reports/pytest/iteration_871_feature37.xml",
+    "/app/test_reports/pytest/iteration_871_verification.xml"
+  ],
+  "action_items": [
+    "Optional: Either add real /content-studio and /workspace expo-router pages that render a subscription-upgrade lock for free users, or remove them from UI_TIER_ROUTES.free_limited_ui_prefixes since they are 404 for every tier and no gating is actually taking effect.",
+    "Free user is now 429'd on /api/ai-enterprise/* for the rest of the day due to meter probe tests (expected policy behavior; no fix needed)."
+  ],
+  "critical_code_review_comments": [
+    "access_control_engine.py FREE_PATTERNS contains a duplicate '^/api/bill-generator/' entry (once at ~line 170, again at ~line 185). Harmless but should be dedup'd.",
+    "BACKEND 1 endpoint /api/decision-coach/decisions and /api/smart-shopping-advisor/wishlists and /api/mobility-assistant/vehicles and /api/ai-speech-studio/projects were included in the baseline test but not in the review request BACKEND 1 list; coverage is still complete because the baseline test file exercises them."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration_871_policy_v3_verification.py"
+  ],
+  "success_rate": {
+    "backend": "100% (26/26 tests: 15 baseline + 11 verification)",
+    "frontend": "88% (7/8 UI checks — 6 free routes render, 1 basic-regression route, 1 minor +not-found discrepancy on premium surfaces)"
+  },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa | Basic: f22.basic.20260613@example.com / F22Basic#2026Aa | Premium: f22.premium.20260613@example.com / F22Premium#2026Aa | Admin: admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "None. feature_usage_meter mongo collection was reset before meter tests to avoid stale quota state.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend policy 2026-06.v3.free-limited-37 is live: free = 5/day per feature (some tuned higher e.g., 10/20/25), basic = 200/day, premium = -1. Reads are never metered. Self-enforced features (writing-studio, personal-assistant, research-navigator, workflows, decision-coach, money-strategy-hub, smart-shopping-advisor, travel-planner-pro, relationship-coach, mobility-assistant, ai-speech-studio, bill-generator, word-forge, videos, ai-coaching-team, referrals) keep -1 in canonical policy and are exempt from generic middleware meter. To rerun meter tests, clear mongo collection feature_usage_meter first. /content-studio and /workspace are +not-found for all tiers — route files do not exist in /app/frontend/app/. Free user meter for ai-enterprise may be exhausted at time of testing due to the daily-meter test.",
+  "verification_matrix": {
+    "BACKEND_1_free_reads_not_forbidden": "PASS (18/18 endpoints, no 403)",
+    "BACKEND_2_session_policy_contract": "PASS (limited, 2026-06.v3.free-limited-37, 37 canonical_feature_policy entries, read_access=unlimited)",
+    "BACKEND_3_daily_meter_429_contract": "PASS (429 within 6 POSTs, error_code=feature_daily_limit_reached, required_plan=basic, upgrade_url=/subscription/plans; 8 GETs on /api/ai-briefing/today all 200)",
+    "BACKEND_4_basic_premium_profiles": "PASS (basic=almost_unlimited limit=200, premium=full_unlimited limit=-1)",
+    "BACKEND_5_security_regression": "PASS (5 admin endpoints stay 403 for free; admin login OK and can hit /api/admin/employees)",
+    "BACKEND_6_self_enforced_intact": "PASS (/api/ai-coaching-team/coaches=200 for free; lexicon-intelligence-hub / bill-generator / ai-coaching-team all show self_enforced=true and daily_action_limit=-1 in canonical policy)",
+    "FRONTEND_1_free_opens_locked_routes": "PASS (bill-generator, ai-writer, pennypilot, smartbuy, ai-video, ai-photo all render; bill-generator shows correct 'Subscription Scope — Limited access / FREE' card)",
+    "FRONTEND_2_free_still_blocked_premium": "PARTIAL — /content-studio and /workspace return +not-found for free (technically blocked) but the same happens for basic; no dedicated upgrade-lock UI",
+    "FRONTEND_3_basic_regression": "PASS (basic user renders /features/bill-generator and /features/ai-video normally)"
+  }
+}

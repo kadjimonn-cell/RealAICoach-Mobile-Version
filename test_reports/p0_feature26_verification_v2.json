@@ -1,0 +1,411 @@
+{
+  "timestamp": "2026-06-15T23:46:40Z",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "locked_protocol": {
+    "feature_number_expected": 26,
+    "feature_id_expected": "jobs-portal",
+    "checks": [
+      {
+        "endpoint": "/api/hiring/v2/health",
+        "status_code": 200,
+        "ok": true,
+        "response_excerpt": {
+          "ok": true,
+          "service": "hiring-v2",
+          "version": "v2",
+          "feature_id": "jobs-portal",
+          "feature_number": 26
+        }
+      }
+    ]
+  },
+  "roles": {
+    "free": {
+      "login_status": 200,
+      "login_ok": true,
+      "checks": [
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/dashboard/summary",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "open_roles": 0,
+            "candidate_applications": 0,
+            "interview_applications": 0,
+            "offer_applications": 0,
+            "saved_jobs": 1,
+            "employer_jobs": null,
+            "last_sync_at": "2026-06-15T23:46:44.402201+00:00",
+            "candidate": {
+              "analytics": {
+                "total_applications": 0,
+                "status_breakdown": {},
+                "response_rate": 0.0,
+                "interview_rate": 0.0,
+                "monthly_applications": [],
+                "saved_jobs": 1,
+                "resume_score": 0,
+                "profile_complete": false
+              },
+              "applications": {
+                "applications": [],
+                "total": 0,
+                "stats": {}
+              },
+              "saved": {
+                "saved_jobs": [],
+                "jobs": [],
+                "total": 0
+              }
+            },
+            "employer": {
+              "has_employer_access": false,
+              "kpi_header": null,
+              "pipeline": null,
+              "error": null
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/candidate/jobs/search",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "jobs": [],
+            "total": 0,
+            "page": 1,
+            "pages": 0
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/admin/workflow-events?limit=5",
+          "status_code": 403,
+          "expected": [
+            403
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "detail": "Admin access required"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/hiring/v2/candidate/boost-profile",
+          "status_code": 403,
+          "expected": [
+            403
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "detail": "Boosted profile is available on Basic and Premium plans"
+          }
+        }
+      ]
+    },
+    "employer": {
+      "login_status": 200,
+      "login_ok": true,
+      "checks": [
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/employer/pipeline-board?limit=10",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "generated_at": "2026-06-15T23:46:44.712711+00:00",
+            "stages": [
+              "applied",
+              "viewed",
+              "interview",
+              "offer",
+              "hired",
+              "rejected"
+            ],
+            "counts": {
+              "applied": 0,
+              "viewed": 0,
+              "interview": 0,
+              "offer": 0,
+              "hired": 0,
+              "rejected": 0
+            },
+            "jobs": [],
+            "applications": [],
+            "total": 0
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/employer/offers?limit=10",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "offers": [],
+            "total": 0
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/dashboard/summary",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "open_roles": 0,
+            "candidate_applications": 0,
+            "interview_applications": 0,
+            "offer_applications": 0,
+            "saved_jobs": 0,
+            "employer_jobs": null,
+            "last_sync_at": "2026-06-15T23:46:44.859043+00:00",
+            "candidate": {
+              "analytics": {
+                "total_applications": 0,
+                "status_breakdown": {},
+                "response_rate": 0.0,
+                "interview_rate": 0.0,
+                "monthly_applications": [],
+                "saved_jobs": 0,
+                "resume_score": 0,
+                "profile_complete": false
+              },
+              "applications": {
+                "applications": [],
+                "total": 0,
+                "stats": {}
+              },
+              "saved": {
+                "saved_jobs": [],
+                "jobs": [],
+                "total": 0
+              }
+            },
+            "employer": {
+              "has_employer_access": false,
+              "kpi_header": null,
+              "pipeline": null,
+              "error": null
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/employer/shortlist/explainability?limit=5",
+          "status_code": 200,
+          "expected": [
+            200,
+            403
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "total": 0,
+            "items": []
+          }
+        }
+      ]
+    },
+    "admin": {
+      "login_status": 200,
+      "login_ok": true,
+      "checks": [
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/admin/workflow-events?limit=5",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "generated_at": "2026-06-15T23:46:44.978695+00:00",
+            "lookback_hours": 72,
+            "filters": {
+              "event_type": null,
+              "user_id": null
+            },
+            "include_metadata": false,
+            "total": 0,
+            "events": []
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/admin/deprecation-telemetry?lookback_days=14&limit=200",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "generated_at": "2026-06-15T23:46:45.073428+00:00",
+            "lookback_days": 14,
+            "total_events": 6,
+            "active_legacy_users": 2,
+            "remaining_legacy_operations": [
+              "candidate_save_job"
+            ],
+            "migration_progress_pct": 96.0,
+            "top_operations": [
+              {
+                "operation": "candidate_save_job",
+                "count": 6
+              }
+            ],
+            "top_legacy_endpoints": [
+              {
+                "endpoint": "/api/jobs/save/test_job_nonexistent_12345",
+                "count": 3
+              },
+              {
+                "endpoint": "/api/jobs/save/test_telemetry_job_12345",
+                "count": 2
+              },
+              {
+                "endpoint": "/api/jobs/save/test_job_12345",
+                "count": 1
+              }
+            ],
+            "events": [
+              {
+                "event_id": "f26legacy_d73072f8faa948",
+                "feature_number": 26,
+                "feature_id": "jobs-portal",
+                "operation": "candidate_save_job",
+                "legacy_path": "/api/jobs/save/test_job_12345",
+                "method": "POST",
+                "user_id": "user_4b5a68d2f7c6",
+                "created_at": "2026-06-15T19:20:08.666309+00:00"
+              },
+              {
+                "event_id": "f26legacy_d443cf38342348",
+                "feature_number": 26,
+                "feature_id": "jobs-portal",
+                "operation": "candidate_save_job",
+                "legacy_path": "/api/jobs/save/test_telemetry_job_12345",
+                "method": "POST",
+                "user_id": "user_798c19018cad",
+                "created_at": "2026-06-15T19:15:49.933146+00:00"
+              },
+              {
+                "event_id": "f26legacy_e56cdf5ebb234d",
+                "feature_number": 26,
+                "feature_id": "jobs-portal",
+                "operation": "candidate_save_job",
+                "legacy_path": "/api/jobs/save/test_job_nonexistent_12345",
+                "method": "POST",
+                "user_id": "user_798c19018cad",
+                "created_at": "2026-06-15T19:15:49.240627+00:00"
+              },
+              {
+                "event_id": "f26legacy_ff57bba723ed4f",
+                "feature_number": 26,
+                "feature_id": "jobs-portal",
+                "operation": "candidate_save_job",
+                "legacy_path": "/api/jobs/save/test_job_nonexistent_12345",
+                "method": "POST",
+                "user_id": "user_798c19018cad",
+                "created_at": "2026-06-15T18:54:40.396268+00:00"
+              },
+              {
+                "event_id": "f26legacy_1b97ab194a0443",
+                "feature_number": 26,
+                "feature_id": "jobs-portal",
+                "operation": "candidate_save_job",
+                "legacy_path": "/api/jobs/save/test_telemetry_job_12345",
+                "method": "POST",
+                "user_id": "user_798c19018cad",
+                "created_at": "2026-06-15T18:53:27.703332+00:00"
+              },
+              {
+                "event_id": "f26legacy_5c0e6c7021e94a",
+                "feature_number": 26,
+                "feature_id": "jobs-portal",
+                "operation": "candidate_save_job",
+                "legacy_path": "/api/jobs/save/test_job_nonexistent_12345",
+                "method": "POST",
+                "user_id": "user_798c19018cad",
+                "created_at": "2026-06-15T18:53:26.725182+00:00"
+              }
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/admin/canary-controls",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "generated_at": "2026-06-15T23:46:45.130541+00:00",
+            "controls": {
+              "key": "feature26_legacy_write_rollout",
+              "feature_number": 26,
+              "feature_id": "jobs-portal",
+              "canary_enabled": false,
+              "legacy_allow_pct": 100,
+              "auto_rollback_enabled": true,
+              "rollback_window_hours": 6,
+              "rollback_legacy_event_threshold": 500,
+              "soft_disable_operations": [],
+              "admin_override_user_ids": [],
+              "updated_at": "2026-06-15T19:20:09.061642+00:00",
+              "updated_by": "user_4b5a68d2f7c6"
+            },
+            "defaults": {
+              "key": "feature26_legacy_write_rollout",
+              "feature_number": 26,
+              "feature_id": "jobs-portal",
+              "canary_enabled": false,
+              "legacy_allow_pct": 100,
+              "auto_rollback_enabled": true,
+              "rollback_window_hours": 6,
+              "rollback_legacy_event_threshold": 500,
+              "soft_disable_operations": [],
+              "admin_override_user_ids": []
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/hiring/v2/admin/premium-conversion-cohorts?lookback_days=30",
+          "status_code": 200,
+          "expected": [
+            200
+          ],
+          "ok": true,
+          "response_excerpt": {
+            "generated_at": "2026-06-15T23:46:51.176114+00:00",
+            "lookback_days": 30,
+            "activation_users": 0,
+            "repeat_users": 0,
+            "repeat_rate_pct": 0.0,
+            "churn_signal_users": 0,
+            "churn_signal_pct": 0.0,
+            "events_by_plan": {},
+            "total_events": 0
+          }
+        }
+      ]
+    }
+  },
+  "overall_pass": true
+}

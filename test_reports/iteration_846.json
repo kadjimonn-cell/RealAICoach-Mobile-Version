@@ -1,0 +1,49 @@
+{
+  "summary": "iteration_846: Programmatic PDF-content verification of the Travel Visa Certificate bug-fix task (3 items). 9/9 pytest PASS via http://localhost:8001. Independently confirmed via PyMuPDF (fitz 1.27.1) that: (a) signature block reads 'Adjimon Kouatonou \u2014 Program Director' and does NOT contain 'Nova \u2014 Program Director'; (b) 'VERIFY AUTHENTICITY' (rendered spaced) fits inside the verification panel \u2014 rect x1=755.42pt <= panel right edge 770pt (page width 842pt - 72pt margin), no overflow; (c) page embeds 4 images (logo + QR + signature + certified-stamp) \u2014 the old 'RAC/CERTIFIED' circle-seal drawing path is bypassed by the certified-stamp.png; (d) 'Issued' date renders as human date 'Issued July 11, 2026' with no raw ISO timestamp (regex T\\d{2}:\\d{2}:\\d{2} absent). Regression 100%: generate 200 with new cert_id, regenerate-all -> regenerated>=1, existing cert TV-6B604E13 re-passes all four PDF assertions, download response header 'x-pdf-theme-policy: exempt-travel-visa-certificate' present, verify HTML/JSON both return 200 valid + 404 for unknown IDs (JSON 404 fix from prior iteration_845 advisory landed), POST email endpoint returns email_status='sent'.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "curl_evidence": {
+    "POST /api/auth/login (admin, X-Requested-With)": "200",
+    "POST /api/travel-visa/certificate/generate": "200 with cert_id",
+    "GET /api/travel-visa/certificate/download/{fresh_cert_id}": "200, %PDF, x-pdf-theme-policy=exempt-travel-visa-certificate",
+    "GET /api/travel-visa/certificate/download/TV-6B604E13": "200, %PDF, x-pdf-theme-policy=exempt-travel-visa-certificate",
+    "POST /api/travel-visa/certificate/regenerate-all": "200 regenerated>=1",
+    "GET /api/travel-visa/certificate/verify/TV-6B604E13": "200 HTML contains 'VALID CERTIFICATE'",
+    "GET /api/travel-visa/certificate/verify/TV-6B604E13?format=json": "200 valid=true",
+    "GET /api/travel-visa/certificate/verify/TV-DOESNOTEXIST999": "404",
+    "GET /api/travel-visa/certificate/verify/TV-DOESNOTEXIST999?format=json": "404 (now aligned with HTML variant \u2014 previously 200 with valid:false in iteration_845)",
+    "POST /api/travel-visa/certificate/email/{cert_id}": "200 email_status=sent"
+  },
+  "pdf_content_evidence": {
+    "extracted_text_sample": "Adjimon Kouatonou \u2014 Program Director / RealAICoach Travel Visa Academy / Issued July 11, 2026 / V E R I F Y   A U T H E N T I C I T Y / TV-6B604E13 / Certificate TV-6B604E13  \u2022  Issued July 11, 2026  \u2022  Verify: https://.../verify/TV-6B604E13",
+    "verify_authenticity_rect": "Rect(x0=645.89, y0=462.05, x1=755.42, y1=471.35) \u2014 x1 <= 770pt panel right edge, so no overflow.",
+    "embedded_image_count": "4 (logo, QR code, signature PNG, certified stamp PNG)",
+    "iso_timestamp_regex_hits": "0 (no 'T\\d{2}:\\d{2}:\\d{2}' anywhere in extracted text)",
+    "signature_string_present": "'Adjimon Kouatonou \u2014 Program Director' present. 'Nova \u2014 Program Director' NOT present.",
+    "certificates_tested": ["fresh generate (score 91)", "existing TV-6B604E13 after regenerate-all"]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_travel_visa_certificate_pdf_content.py",
+    "/app/test_reports/pytest/iter846_tv_cert_pdf_content.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "travel_visa_ext.py::_generate_certificate_pdf (lines ~580-670): signature image draws via ImageReader with preserveAspectRatio and mask='auto' \u2014 the small horizontal signature line (base_y+34) sits directly under the drawn PNG, which is exactly the visual layout expected. Text 'Adjimon Kouatonou \u2014 Program Director' uses an em-dash \u2014 renders correctly in Helvetica-Bold and extracts cleanly via PyMuPDF.",
+    "The 'VERIFY AUTHENTICITY' fit-to-width loop is robust: it starts with spaced letters at 7pt, decrements to 5.5pt if needed, and falls back to the compact 'VERIFY AUTHENTICITY' string. Verified rect right edge = 755.4pt vs. panel right edge 770pt \u2014 comfortable ~14.6pt safety margin.",
+    "Certified stamp uses `stamp_drawn` guard \u2014 the old RAC/CERTIFIED circle fallback only fires when the PNG is missing. certified-stamp.png (74pt square) and adjimon-signature-handwritten.png (118x36pt) exist in /app/backend/static/branding/ and are correctly embedded.",
+    "_format_cert_date correctly normalises stored ISO timestamps to 'Month DD, YYYY'; the regenerate-all path (line 894) passes cert.created_at through _format_cert_date so re-issued PDFs no longer contain raw ISO. Verified end-to-end.",
+    "Verify JSON endpoint now returns 404 for unknown IDs (previously 200 with valid:false in iteration_845). Aligned with HTML variant \u2014 the advisory action item from iteration_845 landed."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_travel_visa_certificate_pdf_content.py (new)",
+    "/app/test_reports/pytest/iter846_tv_cert_pdf_content.xml (pytest JUnit output)",
+    "/app/test_reports/iteration_846.json (this file)"
+  ],
+  "success_rate": {"backend": "100% (9/9 pytest passed)", "frontend": "not tested (per request \u2014 backend only)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (session cookie via POST /api/auth/login + X-Requested-With: XMLHttpRequest). Admin user_id = user_4b5a68d2f7c6.",
+  "seed_data_creation": "One new certificate generated per test run via /api/travel-visa/certificate/generate (course 'Certificate Layout Verification Course', score 91). Existing TV-6B604E13 was regenerated via /api/travel-visa/certificate/regenerate-all. One live Resend email sent to admin@realaicoach.app.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend testing uses http://localhost:8001 directly (external URL is Cloudflare-challenged). CSRF middleware requires 'X-Requested-With: XMLHttpRequest' header on POST/state-changing routes. Auth cookie carried by requests.Session(). PyMuPDF (fitz 1.27.1) is installed and works for text/image/rect extraction on the certificate PDF. Landscape A4 page dimensions in ReportLab are 842pt x 595pt \u2014 the verification panel right edge sits at 770pt (page_width - 72pt margin). certificate assets: /app/backend/static/branding/adjimon-signature-handwritten.png (signature), certified-stamp.png (official stamp), realaicoach-logo.png.",
+  "rca of the issue": "N/A \u2014 no defects found. All three PDF bug fixes verified programmatically: (1) VERIFY AUTHENTICITY label right edge 755.4pt <= panel right edge 770pt (fit-to-width loop working); (2) certified-stamp.png embedded (4 images total on the certificate), the old RAC/CERTIFIED circle-seal fallback path is not reached; (3) signature block reads 'Adjimon Kouatonou \u2014 Program Director' with the handwritten signature PNG on top of the underline. Bonus: 'Issued' dates now render as 'Issued July 11, 2026' \u2014 no raw ISO timestamps remain."
+}

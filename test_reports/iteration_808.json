@@ -1,0 +1,29 @@
+{
+  "summary": "Feature 26 'Send kit to my email' — independent backend + frontend re-verification. Backend pytest (/app/backend/tests/test_job_search_email_kit.py) 10/10 PASSED in 1.06s: (1) POST /api/job-search/documents/job_principal-fullstack-engineer/email as admin returns 200 with success:true, sent_to='admin@realaicoach.app', attachments=['cv-...pdf','cover-letter-...pdf']; (2) unauthenticated returns 401; (3) nonexistent job_id returns 404; (4) template 'job_search_kit_email' registered in TEMPLATE_CATALOG and build_job_search_kit_email renders subject/html/text; (5) _is_job_search_kit_attachment_exempt returns True for cv-*.pdf and cover-letter-*.pdf under template_key='job_search_kit_email', False for other filenames, False for other templates; (6) _apply_pdf_theme_policy_to_attachments passes kit PDF content through unchanged when template=job_search_kit_email (exemption confirmed) but enforces/blocks non-matching filenames (report-x.pdf) and other templates (receipt_v7) even with cv-*.pdf name. Frontend Playwright E2E via preview URL: admin cookie-login OK -> /job-search -> clicked job-search-step-documents -> confirmed job-search-email-kit-btn visible next to Run ATS check + Generate CV; clicked button; job-search-docs-status displayed text 'Application kit sent to admin@realaicoach.app' — exactly matching acceptance criteria. Regression testids visible: job-search-doc-download-btn, job-search-doc-download-pdf-btn, job-search-doc-copy-btn all count=1. job-search-docs-retry-btn NOT shown on successful load (correct — only on fetch failure).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_job_search_email_kit.py",
+    "/app/test_reports/pytest/job_search_email_kit.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "/app/backend/routes/job_search.py::email_document_kit (lines 413-460) correctly gates with require_auth (401), returns 404 when doc/content missing, base64-encodes PDFs, passes template_key='job_search_kit_email' so the scoped exemption applies, and returns Response {success, sent_to, attachments}. Filename convention (cv-{job_id}.pdf / cover-letter-{job_id}.pdf) aligns exactly with _is_job_search_kit_attachment_exempt substring check. Non-blocker: if the email provider returns success but the dedupe layer suppresses, the response still says success:true — matches review-request note.",
+    "/app/backend/utils/email_service.py::_is_job_search_kit_attachment_exempt (lines 1268-1274) is tightly scoped: (a) exact template_key match against a single-item set, (b) filename prefix 'cv-' OR 'cover-letter-' AND suffix '.pdf'. No wildcard leakage — verified in the four unit assertions above.",
+    "/app/backend/utils/email_service.py::_apply_pdf_theme_policy_to_attachments (lines 1277-1360) checks learning-cert exemption first, then job-search-kit exemption, then falls through to enforce_pdf_v15_theme_bytes. Order is correct and mutually exclusive — a rogue 'cv-x.pdf' under a receipt template still gets v15 enforcement, preserving the standing UNBRANDED-for-job-search-only mandate without weakening the platform-wide theme policy.",
+    "/app/frontend/src/components/jobSearch/DocumentsTab.tsx emailKit handler is straightforward: POST to /documents/{job_id}/email with credentials, on success sets status i18n key jobSearch.docs.emailKitSent with sent_to interpolation. Button has data-testid='job-search-email-kit-btn' and status has data-testid='job-search-docs-status' — both selectors resolved cleanly in Playwright."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_job_search_email_kit.py (NEW — 10 pytest cases: endpoint 200/401/404, template catalog registration, exemption unit True/False matrix in 3 axes, and integration verification of _apply_pdf_theme_policy_to_attachments both exempt and non-exempt code paths)"
+  ],
+  "success_rate": {
+    "backend": "100% (10/10 pytest cases passed in 1.06s)",
+    "frontend": "100% ('Send kit to my email' click showed 'Application kit sent to admin@realaicoach.app'; all regression testids present; retry card correctly absent on happy path)"
+  },
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md).",
+  "seed_data_creation": "None — admin's job_search_documents already contained the entry for job_id=job_principal-fullstack-engineer from iteration_807.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Feature 26 'Send kit to my email' is fully verified. Endpoint: POST /api/job-search/documents/{job_id}/email (auth-required, returns {success, sent_to, attachments:[cv-{id}.pdf, cover-letter-{id}.pdf]}). Scoped-exemption unit test at /app/backend/tests/test_job_search_email_kit.py::TestAttachmentExemption locks the UNBRANDED-only-for-job-search-kit contract — future changes to _is_job_search_kit_attachment_exempt or _apply_pdf_theme_policy_to_attachments will be caught. Frontend testids validated: job-search-email-kit-btn, job-search-docs-status, job-search-step-documents, job-search-doc-download-btn, job-search-doc-download-pdf-btn, job-search-doc-copy-btn, job-search-docs-retry-btn (absent on happy path).",
+  "rca_of_the_issue": "N/A — no bugs found. All acceptance criteria satisfied: (a) admin endpoint 200 with success/sent_to/attachments ✓, (b) 401 unauth ✓, (c) 404 nonexistent job ✓, (d) template registered + renders subject/html/text ✓, (e) exemption True for kit template+kit filename, False otherwise (both axes) ✓, (f) non-exempt attachments still go through v15 enforcer ✓, (g) frontend button click shows 'Application kit sent to admin@realaicoach.app' ✓, (h) Download .md/.pdf/Copy regression buttons present ✓, (i) retry card not shown on healthy load ✓."
+}

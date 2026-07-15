@@ -1,0 +1,35 @@
+{
+  "feature": "27",
+  "name": "feature27_enterprise_final_e2e_summary",
+  "timestamp": "2026-06-20T21:08:57.870949Z",
+  "backend": {
+    "pytest_suite": "/app/backend/tests/test_feature27_id_checker_enterprise.py",
+    "result": "PASS",
+    "tests_passed": 6
+  },
+  "frontend": {
+    "base_url": "http://localhost:3000",
+    "result": "PASS",
+    "validated_testids": {
+      "free": [
+        "id-verification-screen",
+        "idv-form-section",
+        "idv-start-btn"
+      ],
+      "admin": [
+        "id-checker-commercial-kpis",
+        "id-checker-commercial-kpi-approval-rate",
+        "id-checker-commercial-kpi-doc-completion",
+        "id-checker-commercial-kpi-sla-breach",
+        "id-checker-commercial-kpi-submitted-to-approved",
+        "id-checker-funnel-insights",
+        "id-checker-refresh-button"
+      ],
+      "responsive_mobile": [
+        "id-checker-commercial-kpis"
+      ]
+    },
+    "note": "Preview-domain Cloudflare challenge persisted; frontend E2E validated on localhost as approved bypass."
+  },
+  "overall": "PASS"
+}

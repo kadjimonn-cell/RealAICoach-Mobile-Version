@@ -1,0 +1,11 @@
+{
+  "login": 200,
+  "token_present": true,
+  "canary_controls": 200,
+  "readiness": 200,
+  "readiness_excerpt": {
+    "phase": "observe",
+    "recommended_phase": "phase2_jobs_employers_writes"
+  },
+  "apply_observe": 200
+}

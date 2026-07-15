@@ -1,0 +1,81 @@
+{
+  "summary": "Help & Support Nova fix verification PASSED - All checkpoints verified: (1) Contact tab is now the default active tab on /help, (2) Chat input and send button are visible within viewport on desktop/tablet/mobile, (3) No horizontal overflow on any viewport, (4) Message send/receive works correctly with Nova responding to user messages.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "desktop_1920x1080": {
+      "status": "PASS",
+      "details": [
+        "Contact tab is active by default (highlighted with green background)",
+        "Chat IA LIVE button is visible and selected",
+        "Nova chat panel visible at y=256, height=620",
+        "Chat input visible at y=807, height=52 - WITHIN VIEWPORT",
+        "Send button visible at y=821 - WITHIN VIEWPORT",
+        "Welcome message area visible with Nova avatar",
+        "Nova status shows 'Prêt Nova' with prompt to send message",
+        "Pinned conversations and Favorite answers sections visible"
+      ]
+    },
+    "tablet_768x1024": {
+      "status": "PASS",
+      "details": [
+        "Chat input visible at y=785 - WITHIN VIEWPORT",
+        "No horizontal overflow - body width matches viewport (768px)",
+        "All UI elements responsive and usable"
+      ]
+    },
+    "mobile_390x844": {
+      "status": "PASS",
+      "details": [
+        "Chat input visible at y=599 - WITHIN VIEWPORT",
+        "Send button visible at y=613 - WITHIN VIEWPORT",
+        "No horizontal overflow - body width matches viewport (390px)",
+        "All UI elements responsive and usable"
+      ]
+    },
+    "chat_functionality": {
+      "status": "PASS",
+      "details": [
+        "User message 'Hello Nova, can you help me?' sent successfully",
+        "Nova responded with helpful message asking for more details",
+        "Status changed to 'Nova Saine' indicating live replies working",
+        "4 message elements found after send (user + assistant messages)",
+        "Auto-scroll working - latest message visible"
+      ]
+    },
+    "contact_mode_toggles": {
+      "status": "PASS",
+      "details": [
+        "Chat mode toggle works correctly",
+        "Email mode toggle works correctly and shows email form",
+        "Switching between modes preserves state"
+      ]
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "help.tsx correctly defaults activeTab to 'contact' (line 67)",
+    "NovaChatPanel uses surfaceVariant='embedded' for compact layout in Help page",
+    "Embedded panel height is dynamically calculated based on viewport",
+    "Chat input and send button are always visible within viewport on all tested devices"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - skipped per request",
+    "frontend": "100%"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Help & Support Nova fix verified working across all viewports. Contact tab is now the default, chat input is visible within viewport, and message send/receive works correctly. The embedded NovaChatPanel uses dynamic height calculation to ensure composer is always visible.",
+  "rca_of_the_issue": "N/A - Fix verified working. Root cause was: (1) Help defaulted to Support tab instead of Contact, (2) NovaChatPanel allocated too much height to welcome/message content pushing composer below fold, (3) Large curation blocks below panel worsened the issue. All fixed by: defaulting to Contact tab, using embedded surfaceVariant with compact heights, and reducing curation summary sizes."
+}

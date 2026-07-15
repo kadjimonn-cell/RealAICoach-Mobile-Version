@@ -1,0 +1,32 @@
+{
+  "summary": "Full E2E validation of the new native AI Agent Framework (backend admin API + frontend Operations Console panel at /admin/ai-agents). Backend: 19/19 pytest cases pass covering auth guards, overview, agents CRUD w/ versioning, agent execution+memory recall (Emergent LLM), prompt render, tools list, workflow validation, workflow E2E with parallel+condition+HITL approve AND reject paths, policy get/update, audit trail, and regression on /api/email-notifications/templates/audit. Frontend: /admin/ai-agents renders with all 5 stat cards (Agents=10, Workflows=1, Executions=7, Pending=0, Tools=3), 4 tabs, 10 agent cards. Career Coach live LLM execution returned a real 387-char tip in ~10s via the UI. Executions (7), workflows (1), tools (3) render on their tabs. Mobile viewport (390px) renders correctly with responsive stat wrap. Zero regressions detected.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_agent_framework_admin_api.py",
+    "/app/test_reports/pytest/agent_framework_admin_api.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Workflow step schema uses 'tool_name' + 'args' (NOT 'tool' + 'params') — recommend documenting in the routes/agent_framework.py docstring or a JSON schema so future integrators do not misconfigure workflows (I initially mis-authored the E2E test with 'tool'/'params' and the engine silently failed with 'Unknown tool ''' error). Consider adding a validate_workflow_steps() check that raises 400 when a step of type=tool has no non-empty tool_name.",
+    "agent-framework/executions list is currently unpaginated beyond a 200-cap limit; if executions grow > few hundred, admin UI should add pagination or a status filter shortcut.",
+    "The seeded workflow 'E2E Release Note Workflow' is the only Workflows-tab card at present — consider adding a couple more starter templates in the seeder to help admins learn the DSL."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_agent_framework_admin_api.py"
+  ],
+  "success_rate": {"backend": "100% (19/19)", "frontend": "100% (all panel checks + live LLM run + mobile)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! ; p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "None persisted — TestAgentCrud creates 'test_qa_agent_<uuid>' and deletes it in the same test; TestWorkflowE2E creates a workflow via fixture and deletes it in teardown. Two ephemeral executions (approve + reject) remain in audit/execution history from the E2E workflow run.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend pytest suite at /app/backend/tests/test_agent_framework_admin_api.py is the durable regression suite for this feature. To re-run: `cd /app/backend && python -m pytest tests/test_agent_framework_admin_api.py -v`. The suite includes an LLM-backed test (test_career_coach_execute_with_memory) that consumes Emergent LLM budget — expect ~25s total. Frontend panel testIDs render as data-testid attributes in DOM: use 'ai-agents-panel', 'agent-run-toggle-<key>', 'agent-run-input-<key>', 'agent-run-submit-<key>', 'agent-run-output-<key>', 'hitl-approve-<execution_id>', 'ai-agents-tab-<tab>'. Frontend is a STATIC EXPORT — do not attempt hot-reload edits.",
+  "rca_of_workflow_test_initial_failure": "Initial workflow E2E test used step keys 'tool' and 'params' — the engine reads 'tool_name' and 'args' (engine.py lines 133/139). This caused parallel branch steps to fail with \"Unknown tool ''\" and the execution transitioned to 'failed' instead of pausing at human_approval. Fixed by renaming keys in WF_STEPS; both approve and reject E2E paths now pass. This is a test-authoring mistake, NOT a product bug, but the code review comment suggests hardening the validator to catch it earlier."
+}

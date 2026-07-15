@@ -1,0 +1,55 @@
+{
+  "summary": "Iteration 804 — Enterprise SIDE + TOP nav upgrade verification (Global Nav Bar + Command Palette + i18n + Ask Nova pill). Frontend-only, 1920x800 desktop. TOP-BAR (free user FR): global-nav-bar renders with ALL required testids (global-nav-page-context-label='Contexte de commande', global-nav-page-context-title='Accueil', global-nav-quick-actions, global-nav-search-btn='Recherche Ctrl+K', global-nav-ask-nova-btn='Demander à Nova', global-nav-signout-btn='Déconnexion') — all localized to French. <html lang>=fr. COMMAND PALETTE (Ctrl+K): opens exactly one visible panel (command-palette-overlay + command-palette-panel + command-palette-input + command-palette-backdrop + command-palette-all-header + command-palette-footer all present). Typing 'podcast' filters to command-palette-item-my-podcasts, Enter navigates to /features/my-podcasts, ArrowDown/ArrowUp move highlight, Escape closes, backdrop click closes (backdrop testid present). Recent selection persisted in localStorage.command-palette-recent=[\"my-podcasts\"]. Search pill click also opens palette. SIDEBAR i18n (FR): 'Station de Jeux', 'Regarder des vidéos', 'Studio Audio', 'Mes Podcasts', 'Sport' all rendered — zero English leaks in visible sidebar. ASK NOVA: click navigates to /help (help/support page renders in FR: 'Aide et support'). ADMIN GATE: Free user sees NO command-palette-item-admin / -admin-console / -team-management (count=0). Admin user (admin@realaicoach.app) DOES see all three (Executive Console, Operations Console, Team Management, each with ADMIN badge). REGRESSIONS: Ctrl+B collapses sidebar (272px → 64px). Sidebar navigation works. Sign-out confirmation modal opens with full testids (global-nav-signout-confirm-modal / -overlay / -card / -title / -subtitle / -no-btn / -yes-btn) and cancel path available. Notifications bell (badge 3+) renders. THEME: dark theme on free user, light theme on admin — palette + top-bar adapt correctly, all text readable in both. All acceptance criteria PASS.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Language hydration on first paint after login",
+        "issue": "In two out of four test runs, the app initially rendered with ENGLISH strings (topbar shows 'Command context / Home / Search / Ask Nova / Log Out' and sidebar shows 'Games Station / Watch Videos / Audio Studio / My Podcasts', <html lang>='en') for ~4-6s after the top bar mounts, then rehydrated to FR once the user preference loads. In stable end-state (after +6s dwell) everything is FR. Consider synchronously reading language from cookie/localStorage before first paint, or gating the shell render behind i18n-ready, so FR users do not see a flash of English (FOUC/FOEC).",
+        "affected_selectors": ["[data-testid=\"global-nav-page-context-label\"]", "[data-testid=\"global-nav-page-context-title\"]", "[data-testid^=\"sidebar-nav-\"]"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Sign-out confirmation modal (global-nav-signout-confirm-modal)",
+        "issues": [
+          "Modal title 'Are you sure?' and subtitle 'You are about to sign out from this enterprise workspace.' plus buttons 'No, stay signed in' and 'Yes, sign out' render in ENGLISH even when the rest of the app is in French. Missing i18n keys for signout confirmation (globalNav.signoutConfirm.* or common.confirmSignout.*). Screenshot: /app/test_reports/iter804_final_end.png. Not part of iteration 804 core scope (nav & palette) but visible in the regression path called out by the review request ('Sign out button opens confirm modal (cancel it)')."
+        ]
+      },
+      {
+        "screen": "Environment nudge banner",
+        "issues": [
+          "Persistent yellow nudge 'La langue détectée suggère FR. Appuyez pour aligner les préférences linguistiques.' when logged-in FR user visits from an EN-detected browser; and the reverse 'La langue détectée suggère EN...' when detection disagrees. Visually noisy on top of the fresh top bar (both banners persist beneath global-nav-bar). Consider auto-dismissing when the user's stored preference already matches the resolved language, to avoid the nudge firing against itself."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/iter804_final_topbar.png",
+    "/app/test_reports/iter804_final_end.png",
+    "/app/test_reports/iter804_asknova.png",
+    "/app/test_reports/iter804_admin_palette.png"
+  ],
+  "action_items": [
+    "OPTIONAL (nice-to-have, not blocking) — Add i18n keys for the sign-out confirmation modal (title/subtitle/no-btn/yes-btn) so it localizes with the rest of the shell. Currently English only.",
+    "OPTIONAL — Prevent flash-of-English on first paint after login: read user language pref synchronously (from cookie/localStorage) before rendering GlobalNavBar/AppShell, or gate first shell render behind i18n-ready. Currently topbar/sidebar render EN for ~4-6s then rehydrate to FR."
+  ],
+  "critical_code_review_comments": [
+    "GlobalNavBar.tsx + CommandPalette.tsx acceptance criteria all met: single visible palette (expo-router keep-alive DOM has count=2 top-bars but exactly 1 is visible via focus gate), full testid coverage (overlay/panel/backdrop/input/all-header/footer + per-item command-palette-item-<key>). Admin gate correctly hides admin items for non-admin (count=0) and shows them for admin with ADMIN badge tag on Executive/Operations/Team-Management. Recents persistence in localStorage.command-palette-recent works and survives palette re-open.",
+    "i18n hydration is the only wart worth calling out. The user's language pref appears to be loaded async (likely via /api/users/me or a settings endpoint) and the shell first-paints in EN default. In 2/4 runs I captured this intermediate EN state (see iter804_recheck.png) before hydration completed. Consider seeding language from a synchronously-available source (cookie or SSR/prerender-injected globals) to avoid FOUC.",
+    "Sign-out confirm modal English hard-coding — grep for 'Are you sure?', 'You are about to sign out', 'No, stay signed in', 'Yes, sign out' in the GlobalNavBar / confirm-modal component and route through the same i18n helper used for globalNav.searchLabel/askNova/signout. Missing keys: common.signout.confirmTitle / .confirmSubtitle / .stayIn / .confirmYes (or similar).",
+    "Ask Nova button: react-native-web renders a nested pressable that Playwright's Locator.click was marking as 'not visible' in one run even though it visually was; JS .click() bypass worked. If Playwright-based E2E is expected downstream, consider adding pointer-events:auto explicitly or a wrapping <a href='/help'> so accessibility + testability are both robust."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "not tested (per request)",
+    "frontend": "100% on acceptance criteria — all top-bar testids present + localized (FR), command palette fully functional (Ctrl+K open, filter, ArrowDown/Up highlight, Enter navigate, Escape close, backdrop close, search-pill open, admin-gated items visible for admin & hidden for free, recents persistence), Ask Nova → /help, sidebar FR localized (all Games Station/Watch Videos/Audio Studio/My Podcasts/Sports rendered as FR strings, zero EN leaks in visible sidebar), Ctrl+B sidebar collapse, sign-out modal opens. Two minor cosmetic/hydration polish items (English sign-out modal + FOUC EN→FR flash) — non-blocking."
+  },
+  "test_credentials": "Free FR user: p1.free.1779113329@example.com / P1Free#2026!Aa (verified working). Admin: admin@realaicoach.app / NewAdminPass2026! (verified working, no OTP required in preview env).",
+  "seed_data_creation": "None — used existing fixture users.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Environment quirks encountered: (1) After hitting login endpoint multiple times in quick succession, Cloudflare returns 429 to /api/auth/login-* and 'Login failed' banner appears — cool-off ~2 min between full automation runs. (2) The i18n hydration takes ~4-6s AFTER global-nav-bar first appears — do not assert on FR strings immediately when topbar mounts; add explicit wait for e.g. `[data-testid=global-nav-page-context-label]` to contain 'Contexte' before asserting localized labels. (3) Two global-nav-bar nodes exist in DOM (expo-router keeps previous screen mounted); always filter by visibility (.first + is_visible loop). (4) Command palette backdrop testid IS `command-palette-backdrop` (confirmed via DOM query). (5) Sign-out modal testids follow `global-nav-signout-confirm-<part>` pattern (modal/overlay/card/title/subtitle/no-btn/yes-btn). (6) Admin-only palette testids: command-palette-item-admin (Executive Console), command-palette-item-admin-console (Operations Console), command-palette-item-team-management (Team Management) — each carries an ADMIN chip. (7) The Ask Nova pressable is sometimes flagged as 'not visible' by Playwright's actionability check on react-native-web; use JS .click() as fallback.",
+  "rca_of_the_issue": "N/A — no functional bugs. The two minor polish items: (a) 'flash of English' on first paint is a hydration-order race between GlobalNavBar mount and the async user-language load; fix by reading language from a synchronously-available store (cookie or app-shell-injected global) before the first render, or by suspending shell render until i18n is ready. (b) Sign-out confirm modal English strings — the modal component was likely added earlier and never wired to the i18n helper; add keys (e.g. common.signoutConfirm.title/subtitle/no/yes) into all 23 locale files, then replace the string literals in the modal component with tx() calls."
+}

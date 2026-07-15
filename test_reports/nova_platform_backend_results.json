@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-07-08T04:25:26.680998",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "tests": {
+    "nova_health": true,
+    "gps_state": true,
+    "login": true,
+    "nova_chat": true,
+    "conversation_history": true
+  }
+}

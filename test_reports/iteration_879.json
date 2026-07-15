@@ -1,0 +1,67 @@
+{
+  "summary": "Checkpoint D verification for Security Runbook Monitor RED->AMBER remediation. Ran the three main pytest suites plus the offers spot-check on the live preview backend, and executed a UI smoke test (login + dashboard render). All targeted behaviors verified.",
+  "test_execution": {
+    "test_red_to_green_remediation.py": "16/16 PASSED (suite file contains 16 tests; review_request noted '18' but the file at HEAD has 16 parametrized+regular tests -- see note below)",
+    "test_apple_sso_provider_verified_only.py": "11/11 PASSED (Apple provider-verified redirect flow intact; Microsoft still preview-based)",
+    "test_runbook_monitor_email_fix.py": "9/9 PASSED (dedicated v7 template, RAG colors, scheduler suppression, manual email, /monitor/status + /history 200)",
+    "test_offer_letter_review_pack.py": "8/8 PASSED (offers regression + review pack)",
+    "total": "44/44 PASSED (0 failures, 0 skips)",
+    "live_endpoint_smokes": {
+      "GET /": "200",
+      "GET /dashboard": "200",
+      "GET /admin-console": "200",
+      "GET /careers/offer/confirm": "200",
+      "GET /admin/ai-agents": "200",
+      "POST /api/auth/login (admin cookie)": "200",
+      "GET /api/admin/platform-perf/navigation-lock-audit": "status=healthy",
+      "GET /api/admin/platform-perf/route-integrity-checker": "missing_from_whitelist=[], stale_whitelist_segments=[]",
+      "GET /api/admin/platform-perf/route-health": "route_integrity_checker_status=healthy, protected_integrity_pct=100.0",
+      "GET /api/agent-framework/overview": "agents >= 200 (test_agent_framework_untouched PASSED)"
+    },
+    "ui_smoke": {
+      "login_page_/auth/login": "renders (Welcome Back form with data-testid=login-email-input / login-password-input / login-submit-button)",
+      "admin_login_via_UI": "SUCCESS - after submit landed at /, user chip shows 'RealAICoach admin@reala... OWNER' badge",
+      "dashboard_render_after_login": "SUCCESS - full authenticated layout renders (sidebar with Home/Features/FPS Game/.../AI Coaching Team; header 'System Healthy'; command context 'Home'; skeleton -> content). No white screen."
+    }
+  },
+  "policy_gate_verification": {
+    "collect_policy_gate_signals": "all 4 checks passed=True (admin_e2e_health_gate, subscription_plan_guardrail, sso_e2e_validation, cia_trust_score)",
+    "subscription_plan_guardrail": "writer schema uses 'status' (not 'state'); gate tolerates both -- confirmed by test_guardrail_accepts_status_field",
+    "cia_trust_heartbeat": "latest doc has trust_score>=75 and all three pillars (confidentiality/integrity/availability) non-null",
+    "no_stale_pending_payments": "0 payment_transactions with status pending|processing older than 24h",
+    "runbook_rag": "latest security_runbook_monitor_runs.rag in (AMBER, GREEN); rag_change notification exists with previous_rag=RED and success=true"
+  },
+  "a11y_auto_fixer_safety": {
+    "_safe_insert_label('useRef<TextInput>')": "returns None (skips generics)",
+    "_safe_insert_label('<TouchableOpacity onPress={() => setX(1)} style={s.btn}>')": "inserts label correctly without corrupting the arrow",
+    "_safe_insert_label('<TouchableOpacity')": "returns None (multi-line tag)",
+    "_safe_insert_label('<Image source={img} />')": "correctly inserts label with self-closing form",
+    "/app/scripts/auto_fixer_corruption_guard.py": "exit code 0 (no corruption patterns in codebase)"
+  },
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_red_to_green_remediation.py",
+    "/app/backend/tests/test_apple_sso_provider_verified_only.py",
+    "/app/backend/tests/test_runbook_monitor_email_fix.py",
+    "/app/backend/tests/test_offer_letter_review_pack.py",
+    "/app/test_reports/pytest/iter_879_main.xml",
+    "/app/test_reports/pytest/iter_879_offers.xml"
+  ],
+  "action_items": [
+    "MINOR NOTE (not a bug): review_request stated tests/test_red_to_green_remediation.py has 18 tests, but the file at HEAD contains 16 (all pass). Main agent may want to reconcile count OR add the missing 2 (candidates: an SSO gate positive-case, or a duplicate parametrize on /admin/ai-agents which is NOT in TestFrontendRoutesServe though the review_request lists it -- currently only /, /dashboard, /admin-console, /careers/offer/confirm are parametrized). LATENT decorator bug from iteration_878 (utils/email_templates.py L7780 @_register('admin_outbound') stacked on wrong function) still applies -- see iteration_878.json for details."
+  ],
+  "critical_code_review_comments": [
+    "TestFrontendRoutesServe.test_route_returns_200 does NOT include /admin/ai-agents even though the review_request explicitly lists it as one of the 5 must-return-200 routes. It was verified separately via curl (returned 200) but adding it to the parametrize list would give durable regression coverage.",
+    "test_red_to_green_remediation.py has no assertion that _safe_insert_label preserves the arrow character (=>) itself -- currently checks by string-equality on the full expected output, which implicitly proves it, but a dedicated 'assert => in output' would document the intent more clearly.",
+    "collect_policy_gate_signals is invoked with a fresh AsyncIOMotorClient per test via _db() helper (correct per agent-to-agent note about fresh client per event loop) -- good pattern preserved."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (44/44 pytest passed + 6 live-endpoint smokes green)", "frontend": "100% (UI login + dashboard render smoke passed; 5/5 static route 200s)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md, matches backend/.env TEST_ADMIN_EMAIL/PASSWORD)",
+  "seed_data_creation": "None. Read-only verification against existing MongoDB state (security_runbook_monitor_runs/notifications, cia_trust_heartbeat, payment_transactions, subscription_plan_guardrail_runs). Per protocol constraint (c) DID NOT trigger /monitor/run-now or run_security_runbook_monitor_cycle in manual mode to avoid extra emails. Per constraint (b) DID NOT invoke the a11y auto-fix endpoints -- only unit-tested _safe_insert_label as a pure function and ran the corruption guard script.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Full RED->AMBER remediation Checkpoint D verified end-to-end at 2026-01-13 22:15Z. All 4 policy gate checks pass, runbook RAG is AMBER with rag_change email delivered (previous_rag=RED, success=true), CIA heartbeat writing with trust_score>=75 and non-null pillars, zero stale pending payments, a11y _safe_insert_label safe against generics/arrows/multiline tags, all 5 target static routes serve 200 (was 500 before dist rebuild), navigation-lock-audit healthy, route-integrity whitelist clean, agent-framework overview >=200 agents, Apple SSO still provider-verified (env revert holds), Microsoft still preview-based. GREEN blockers (SIEM webhook URL + oauth_microsoft manual rotation evidence) remain -- these are documented, expected, and OUT OF SCOPE per problem statement. NO NEW BUGS FOUND in this iteration. The one LATENT decorator-stacking issue documented in iteration_878.json (utils/email_templates.py L7780) is unchanged.",
+  "rca of the issue": "N/A - verification-only iteration. All root causes from the remediation plan (admin E2E cookie auth + env creds, route whitelist drift, expo group segments, navigation-lock EXPECTED keys, theme grade schema, guardrail status/state field, apple strategy-aware check, cia_trust_heartbeat writer + stale payment sweep, and the a11y auto-fixer TSX corruption) were confirmed fixed by 44 green pytest cases + 11 live endpoint smokes + UI login+dashboard smoke."
+}

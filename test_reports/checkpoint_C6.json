@@ -1,0 +1,12 @@
+{
+  "checkpoint": "C6",
+  "goal": "Critical-route V2 hard enforcement in gate",
+  "exit_code": 0,
+  "summary": {
+    "grade": "A",
+    "warns": 6,
+    "fails": 0,
+    "files": 668
+  },
+  "stdout_tail": "\n\ud83d\udd12 Theme Compliance Build Gate (strict)\n\n   Running local V2 theme audit scanner...\n   Grade: A | Warns: 6 | Fails: 0 | Infos: 25 | Files: 668\n   \u2705 GATE PASSED (transitional) \u2014 no FAIL issues; WARN/INFO report emitted.\n\n\n"
+}

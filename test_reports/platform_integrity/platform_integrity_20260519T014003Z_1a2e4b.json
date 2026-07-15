@@ -1,0 +1,105 @@
+{
+  "run_id": "platform_integrity_20260519T014003Z_1a2e4b",
+  "generated_at": "2026-05-19T01:40:03.848938+00:00",
+  "source": "scheduler_nightly",
+  "gps_counts": {
+    "features": 25,
+    "plans": 3,
+    "faq": 3
+  },
+  "catalog_completeness": {
+    "features_count": 25,
+    "plans_count": 3,
+    "faq_count": 3,
+    "testimonials_count": 3,
+    "activities_count": 4,
+    "state_updated_at": "2026-05-19T01:37:22.751525+00:00",
+    "state_age_seconds": 160,
+    "missing_plan_ids": [],
+    "missing_feature_ids": [],
+    "feature_ids": [
+      "ai-automations",
+      "ai-chatbot",
+      "ai-cognitive",
+      "ai-enterprise",
+      "ai-found-love",
+      "ai-learning-hub",
+      "ai-photo",
+      "ai-search",
+      "ai-speech",
+      "ai-video",
+      "ai-writer",
+      "bill-generator",
+      "buy-smart-home",
+      "daily-meditation",
+      "fitness",
+      "games-station",
+      "lexicon-intelligence",
+      "medimate",
+      "pennypilot",
+      "school-tutor",
+      "smart-cars",
+      "smartbuy",
+      "travel-visa",
+      "travelpal",
+      "watch-videos"
+    ],
+    "plan_ids": [
+      "basic",
+      "free",
+      "premium"
+    ],
+    "thresholds": {
+      "min_features": 25,
+      "min_plans": 3,
+      "min_faq": 3,
+      "min_testimonials": 3,
+      "min_activities": 3,
+      "max_state_stale_seconds": 900
+    },
+    "failed_checks": [],
+    "is_complete": true
+  },
+  "subscription_catalog": {
+    "count": 3,
+    "plan_ids": [
+      "free",
+      "basic",
+      "premium"
+    ]
+  },
+  "public_endpoint_contract": {
+    "subscriptions_plans_public": true,
+    "gps_state_public": true,
+    "features_registry_public": true,
+    "live_metrics_public": true
+  },
+  "social_proof_integrity": {
+    "testimonials_total": 3,
+    "testimonials_seeded": 3,
+    "activities_total": 4,
+    "activities_seeded": 4
+  },
+  "theme_gate": {
+    "grade": "A",
+    "warns": 4,
+    "fails": 0,
+    "files_scanned": 672,
+    "raw_excerpt": "\n\ud83d\udd12 Theme Compliance Build Gate (strict)\n\n   Running local V2 theme audit scanner...\n   Grade: A | Warns: 4 | Fails: 0 | Infos: 10 | Files: 672\n   \u2705 GATE PASSED (transitional) \u2014 no FAIL issues; WARN/INFO report emitted.\n\n",
+    "exit_code": 0
+  },
+  "matrix64": {
+    "run_id": "matrix64_20260519T010148Z_e777b7",
+    "status": "FAIL",
+    "strict_passed": false,
+    "failed_checks": 1
+  },
+  "rollback_criteria": {
+    "trigger_when": [
+      "catalog_completeness.is_complete == false",
+      "theme_gate.fails > 0",
+      "matrix64.strict_passed == false"
+    ],
+    "action": "mark_degraded_and_require_operator_review"
+  }
+}

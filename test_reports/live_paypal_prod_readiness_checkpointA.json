@@ -1,0 +1,150 @@
+{
+  "started_at": "2026-05-20T12:23:58.369231+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "paypal.prod.retest.63e810b9@gmail.com",
+    "password": "PayPalLive#2026Aa!",
+    "name": "PayPal Prod Retest User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_7867f95fd8b9",
+        "email": "paypal.prod.retest.63e810b9@gmail.com",
+        "name": "PayPal Prod Retest User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_7867f95fd8b9",
+        "email": "paypal.prod.retest.63e810b9@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "plans",
+      "status_code": 200,
+      "plan_ids": [
+        "free",
+        "basic",
+        "premium"
+      ]
+    },
+    {
+      "step": "create_checkout_basic",
+      "status_code": 200,
+      "body": {
+        "order_id": "94D88032HL550341V",
+        "checkout_url": "https://www.paypal.com/checkoutnow?token=94D88032HL550341V",
+        "checkout_host": "www.paypal.com",
+        "payment_method": "paypal"
+      }
+    },
+    {
+      "step": "create_checkout_premium",
+      "status_code": 200,
+      "body": {
+        "order_id": "48A903307R7069625",
+        "checkout_url": "https://www.paypal.com/checkoutnow?token=48A903307R7069625",
+        "checkout_host": "www.paypal.com",
+        "payment_method": "paypal"
+      }
+    },
+    {
+      "step": "webhook_basic",
+      "status_code": 401,
+      "body": {
+        "detail": "Authentication required",
+        "code": "AUTH_REQUIRED"
+      }
+    },
+    {
+      "step": "webhook_premium",
+      "status_code": 401,
+      "body": {
+        "detail": "Authentication required",
+        "code": "AUTH_REQUIRED"
+      }
+    },
+    {
+      "step": "db_tx_basic",
+      "doc": {
+        "transaction_id": "txn_a304e5658a9a4c1c",
+        "session_id": "94D88032HL550341V",
+        "plan_id": "basic",
+        "amount": 5.99,
+        "currency": "usd",
+        "provider": "paypal",
+        "payment_status": "initiated",
+        "amount_gross": 7.25,
+        "total_amount": 7.99,
+        "status": "initiated"
+      }
+    },
+    {
+      "step": "notification_queue_basic",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "db_tx_premium",
+      "doc": {
+        "transaction_id": "txn_c385ad988ca64ffd",
+        "session_id": "48A903307R7069625",
+        "plan_id": "premium",
+        "amount": 15.99,
+        "currency": "usd",
+        "provider": "paypal",
+        "payment_status": "initiated",
+        "amount_gross": 19.35,
+        "total_amount": 20.52,
+        "status": "initiated"
+      }
+    },
+    {
+      "step": "notification_queue_premium",
+      "count": 0,
+      "docs": []
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_7867f95fd8b9",
+        "subscription_plan": "free",
+        "subscription_status": "active",
+        "last_payment_id": null
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 0,
+      "latest_payment_notifications": []
+    },
+    {
+      "step": "receipt_pdf_basic",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320128,
+      "body_preview": "binary"
+    },
+    {
+      "step": "receipt_pdf_premium",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320088,
+      "body_preview": "binary"
+    }
+  ],
+  "finished_at": "2026-05-20T12:24:10.124369+00:00"
+}

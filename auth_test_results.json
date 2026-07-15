@@ -1,0 +1,99 @@
+{
+  "timestamp": "2026-06-08 21:38:48 UTC",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "tests": [
+    {
+      "name": "Test 1: Valid Login",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "response_time_ms": 7429,
+        "user_id": "user_4b5a68d2f7c6",
+        "email": "admin@realaicoach.app",
+        "is_admin": true,
+        "requires_2fa": false,
+        "has_session_cookie": true,
+        "profile_image_size": 0,
+        "profile_image_oversized": false,
+        "risk_level": "medium",
+        "risk_score": 46
+      }
+    },
+    {
+      "name": "Test 2: Invalid Password",
+      "status": "PASS",
+      "details": {
+        "status_code": 401,
+        "response_time_ms": 1387,
+        "detail": "Invalid credentials"
+      }
+    },
+    {
+      "name": "Test 3: GET /auth/me",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "response_time_ms": 242,
+        "user_id": "user_4b5a68d2f7c6",
+        "email": "admin@realaicoach.app",
+        "is_admin": true,
+        "profile_image_size": 0
+      }
+    },
+    {
+      "name": "Test 4: Risk/OTP Behavior",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "response_time_ms": 4973,
+        "has_risk_level": true,
+        "has_risk_score": true,
+        "risk_level": "medium",
+        "risk_score": 46,
+        "risk_engine_status": "ACTIVE",
+        "requires_2fa": false,
+        "note": "Risk fields present, normal login flow working"
+      }
+    },
+    {
+      "name": "Test 5: Payload Size Check",
+      "status": "PASS",
+      "details": {
+        "response_time_ms": 3637,
+        "total_response_size_bytes": 824,
+        "profile_image_size_chars": 0,
+        "is_base64_image": false,
+        "max_allowed_chars": 2048,
+        "oversized": false,
+        "response_reasonable": true,
+        "note": "Response payload size is within acceptable limits"
+      }
+    },
+    {
+      "name": "Test 6: Sequential Login Timing",
+      "status": "PASS",
+      "details": {
+        "total_attempts": 5,
+        "successful_attempts": 5,
+        "timings_ms": [
+          6521,
+          13405,
+          3566,
+          1828,
+          1891
+        ],
+        "avg_time_ms": 5442,
+        "min_time_ms": 1828,
+        "max_time_ms": 13405,
+        "performance_trend": "improving",
+        "degradation_pct": "-71.0%",
+        "note": "Average response time: 5442ms, Trend: improving"
+      }
+    }
+  ],
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "summary": "Feature 26 Job Search redo (7-tab restructure + external job import + full pipeline on ext_ jobs) validated end-to-end. Backend pytest (/app/backend/tests/test_job_search_external_import.py) 16/16 PASSED in 85.87s covering: (a) GET /api/job-search/external/portals returns exactly 14 labels including Jobindex/LinkedIn/Indeed/Glassdoor/EURES/Generic; (b) import-manual guards: <120 chars pasted_text -> 400, ftp:// scheme -> 400, http://localhost SSRF -> 400, unauth -> 401; (c) import-manual Jobindex happy path: returns success with ext_<hex> id, portal='Jobindex.dk', extracted title+department+requirements; ext job listed in /external/jobs; (d) LinkedIn URL via /external/import returns fetch_blocked:true portal:'LinkedIn' with paste hint; (e) full pipeline on the ext_ job: /match returns 5-dimension AI fit score, /documents/generate returns CV+cover_letter+reviewer_notes, /ats-check returns ATS report, /applications/mark-applied works; (f) per-user isolation: other user (p1.free.1779113329) gets 404 on the admin's ext_ job via /match; (g) DELETE /external/jobs/{id} works with 404 on repeat; (h) internal job_ pipeline regression: /jobs, /match on internal job_id, /summary. Frontend E2E via Playwright on preview URL admin cookie-login (paced ~60-75s for CF/429 backoff): (1) /job-search renders all 7 STEP_ITEMS: profile/find-jobs/fit-scores/documents/ats-check/tracker/salary-interview - all data-testids present; (2) 390px mobile view - step bar wraps correctly; (3) Find Jobs tab shows import-card + portal-chips + url-input + import-btn; pasting LinkedIn URL + clicking Import correctly shows blocked message 'This site blocks automated fetching — paste the job description below instead.' + paste textarea + manual extract button; (4) after LLM extraction ext-job-card-0 renders with portal-badge, open-posting link, apply-on-site btn, remove btn, and match/generate/track buttons; (5) Apply-on-site opens new tab (Stripe URL for pre-seeded Greenhouse job) AND shows applied-prompt-0 with confirm + dismiss buttons; confirm click -> Tracker page shows job as APPLIED (6 APPLIED occurrences observed); (6) AI fit score btn triggered fit-card-0 to render (auto-switch to Fit Scores tab); (7) ATS Check tab shows ats-chip-0 + ats-btn + ats-report + ats-score (78/100 in screenshot); Documents tab no longer contains ats-btn/ats-report (fully migrated); (8) Salary/Interview tab renders all 5 inputs and 2 action buttons - HOWEVER both Benchmark salary and Interview questions FAIL with 'unavailable right now' error because backend returns HTTP 410 (hard-retired). Confirmed via direct curl: /api/jobs/ai/salary-benchmark and /api/jobs/ai/interview-sim both return 410 'Legacy /api/jobs write endpoint is permanently retired. Use v2 routes.' - the feature26_hard_retire_legacy_v1_writes middleware in /app/backend/server.py:778-798 matches ALL POST paths starting with '/api/jobs' including these new AI endpoints. This is a CRITICAL integration bug for the new Salary & Interview tab.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "POST /api/jobs/ai/salary-benchmark",
+        "issue": "Returns HTTP 410 'Legacy /api/jobs write endpoint is permanently retired' due to Feature 26 middleware (/app/backend/server.py:778-798) matching any POST under /api/jobs prefix. Salary & Interview tab is fully broken.",
+        "priority": "CRITICAL"
+      },
+      {
+        "endpoint": "POST /api/jobs/ai/interview-sim",
+        "issue": "Same as above - hard-retired by feature26_hard_retire_legacy_v1_writes middleware. Interview questions button in Salary & Interview tab returns 'unavailable right now'.",
+        "priority": "CRITICAL"
+      },
+      {
+        "endpoint": "POST /api/jobs/ai/translate (same router, same issue)",
+        "issue": "job_ai_services.py router prefix '/jobs/ai' collides with the retired '/api/jobs' write prefix - all POSTs on this router will 410. Not exercised in this iteration but likely broken too.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Salary & Interview tab (job-search-step-salary-interview)",
+        "issue": "Both action buttons (Benchmark salary, Interview questions) fail with generic error toast 'unavailable right now' because underlying /api/jobs/ai/* endpoints return 410. Frontend correctly shows error state, but the feature is completely non-functional.",
+        "affected_selectors": ["job-search-salary-benchmark-btn", "job-search-interview-prep-btn", "job-search-salary-error"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_job_search_external_import.py",
+    "/app/test_reports/pytest/job_search_external_import.xml"
+  ],
+  "action_items": [
+    "URGENT: Move POST endpoints in /app/backend/routes/job_ai_services.py (translate, interview-sim, salary-benchmark) OUT of the '/jobs/ai' prefix. Recommended: change router prefix to '/job-search/ai' and update frontend calls in /app/frontend/src/components/jobSearch/SalaryInterviewTab.tsx (lines 56, 77) accordingly. OR add an explicit allowlist for '/api/jobs/ai/' in the FEATURE26 retirement middleware in /app/backend/server.py:778-798.",
+    "After fix, re-verify: (a) direct curl POST returns 200 with benchmark/questions payload; (b) Salary & Interview tab renders 5 percentile cells + trend + insights (job-search-salary-result) and 5 interview questions (job-search-interview-q-0..4)."
+  ],
+  "critical_code_review_comments": [
+    "server.py:580-589 FEATURE26_LEGACY_WRITE_PREFIXES uses coarse startswith('/api/jobs') matching that unintentionally captures the new /api/jobs/ai/* AI-services router — this is the root cause. Since /api/jobs/ai/* were purposefully retained as free-tier accessible AI helpers (main agent's own context note confirms this), they must either be renamed or explicitly allowlisted before the retirement gate.",
+    "job_search.py:339 'if len(page_text) < 300' is a magic constant; consider naming a MIN_FETCHED_JOB_HTML_TEXT = 300 for clarity and testability. Also worth logging portal identity when returning fetch_blocked to help debugging.",
+    "FindJobsTab.tsx:177-180 applyOnSite fires openExternal then sets appliedPromptJobId — works, but if openExternal throws (e.g., popup blocker) the applied-prompt still opens. Consider try/catch around openExternal to still show a fallback link if window.open returns null; alternatively wire applied-prompt only after successful new-window open.",
+    "job_ai_services.py:14 router prefix '/jobs/ai' is fine as an internal name but the semantic collision with retired /api/jobs writes is a namespace hazard — recommend prefix '/job-search/ai' to align with the new feature namespace.",
+    "job_search.py is 918 lines — over the 700-line guideline. Consider splitting into modules: external_import.py (portals/import/import-manual/external/jobs), pipeline.py (match/documents/ats-check), applications.py (tracker/mark-applied)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_job_search_external_import.py (NEW - 16 pytest cases covering portals, guards, import-manual Jobindex happy path + list, LinkedIn fetch_blocked, ext job pipeline (/match/documents/ats-check/mark-applied), per-user isolation, delete-and-repeat-404, internal pipeline regression)"
+  ],
+  "success_rate": {
+    "backend": "89% (16/16 external-import backend suite passed; but 2 critical AI endpoints /api/jobs/ai/salary-benchmark + /api/jobs/ai/interview-sim return 410 — out-of-scope of external-import suite but blocking the Salary & Interview tab UI)",
+    "frontend": "85% (7-tab structure, mobile responsive, LinkedIn blocked flow, manual paste extraction, ext-job card, apply-on-site + applied prompt + tracker APPLIED, AI fit score auto-switch, ATS tab + report, Documents/ATS separation all verified; ONLY Salary & Interview AI actions fail due to backend 410)"
+  },
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (writes require X-Requested-With: XMLHttpRequest). Free user for isolation: p1.free.1779113329@example.com / P1Free#2026!Aa.",
+  "seed_data_creation": "Test flow created 1 imported Jobindex ext_ job during backend suite, exercised full pipeline (match+documents+ats+mark-applied), then DELETE cleaned it up (final state matches baseline). Frontend flow used the pre-seeded Stripe Greenhouse ext job (idx 0) for Apply-on-site test — tracker shows it as APPLIED (idempotent - was already marked).",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Feature 26 external job import + 7-tab restructure is fully working EXCEPT Salary & Interview tab is broken by a namespace collision. Root cause: feature26_hard_retire_legacy_v1_writes middleware (server.py:778-798) matches '/api/jobs' prefix which captures the intended-live /api/jobs/ai/* AI endpoints. Frontend SalaryInterviewTab.tsx calls '/jobs/ai/salary-benchmark' and '/jobs/ai/interview-sim' (via api.post), both return 410. Fix requires either (a) moving job_ai_services.py router prefix to '/job-search/ai' + updating frontend, or (b) allowlisting '/api/jobs/ai/' in the retirement middleware before the startswith check. Once fixed, re-verify job-search-salary-result renders 5 percentile cells + trend + insights, and job-search-interview-q-0..4 render 5 questions. Rate-limiter tip: preview URL 429s rapid re-logins + Cloudflare bot-check shown; pace with 60-75s between phases; login+curl-based cookie session is reliable.",
+  "rca_of_the_issue": "Salary & Interview tab bug RCA: (1) Reproduction: login as admin, navigate /job-search -> tab 7 (Salary & Interview), fill inputs, click Benchmark salary or Interview questions -> shows error 'unavailable right now'. (2) Direct verification via curl: POST /api/jobs/ai/salary-benchmark and POST /api/jobs/ai/interview-sim both return HTTP 410 with detail 'Legacy /api/jobs write endpoint is permanently retired'. (3) Root cause: /app/backend/server.py:580-589 defines FEATURE26_LEGACY_WRITE_PREFIXES containing '/api/jobs' (coarse startswith match). Middleware at :778-798 rejects any POST/PUT/PATCH/DELETE to any path starting with '/api/jobs'. The router in /app/backend/routes/job_ai_services.py:14 uses prefix '/jobs/ai' which under the '/api' app router becomes '/api/jobs/ai/*' — swept up by the retirement gate. (4) Mitigation options: A) rename router prefix to '/job-search/ai' in job_ai_services.py:14 and update frontend api.post calls in SalaryInterviewTab.tsx:56,77 (recommended - keeps semantic separation); B) add explicit allowlist check in the middleware: if path.startswith('/api/jobs/ai/'): return await call_next(request) BEFORE the retire prefix check."
+}

@@ -1,0 +1,44 @@
+[public] dark /welcome -> landed=/welcome redirected=False issues=0
+[public] dark /pricing -> landed=/pricing redirected=False issues=0
+[public] dark /gdpr -> landed=/gdpr redirected=False issues=0
+[public] dark /security -> landed=/security redirected=False issues=0
+[public] dark /careers -> landed=/careers redirected=False issues=0
+[public] dark /blog -> landed=/blog redirected=False issues=0
+[public] dark /talent-network -> landed=/talent-network redirected=False issues=0
+[public] light /welcome -> landed=/welcome redirected=False issues=0
+[public] light /pricing -> landed=/pricing redirected=False issues=0
+[public] light /gdpr -> landed=/gdpr redirected=False issues=0
+[public] light /security -> landed=/security redirected=False issues=0
+[public] light /careers -> landed=/careers redirected=False issues=0
+[public] light /blog -> landed=/blog redirected=False issues=0
+[public] light /talent-network -> landed=/talent-network redirected=False issues=0
+login attempt 1 failed, url=http://localhost:3000/auth/login
+login form error: Locator.fill: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("input[type=\"email\"], input[placeholder*=\"mail\" i]").first
+
+login form error: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid=\"login-form-submit-button\"], button:has-text(\"SIGN IN\")").first
+    - locator resolved to <button role="button" type="button" aria-label="Sign In" data-testid="login-submit-button" class="css-g5y9jx r-1i6wzkk r-lrvibr r-1otgn73 r-1awozwy r-odgczb r-1q9bdsx r-1loqt21 r-1iud8zs r-1777fci r-14gqq1x">…</button>
+  - attempting click action
+    - scrolling into view if needed
+  - element was detached from the DOM, retrying
+
+[user] login ok=False
+[admin] login ok=True
+[admin] mode dark set=True
+[admin] dark /executive-dashboard -> landed=/executive-dashboard redirected=False issues=0
+[admin] dark /admin-system -> landed=/admin-system redirected=False issues=11
+[admin] dark /performance-observability -> landed=/performance-observability redirected=False issues=0
+[admin] dark /route-health-report -> landed=/route-health-report redirected=False issues=0
+[admin] dark /email-templates-admin -> landed=/admin-console?category=revenue&tab=notifications-messaging-hub redirected=True issues=0
+[admin] dark /admin-activity-log -> landed=/admin-activity-log redirected=False issues=0
+[admin] mode light set=True
+[admin] light /executive-dashboard -> landed=/executive-dashboard redirected=False issues=0
+[admin] light /admin-system -> landed=/admin-system redirected=False issues=0
+[admin] light /performance-observability -> landed=/performance-observability redirected=False issues=0
+[admin] light /route-health-report -> landed=/route-health-report redirected=False issues=0
+[admin] light /email-templates-admin -> landed=/admin-console?category=revenue&tab=notifications-messaging-hub redirected=True issues=0
+[admin] light /admin-activity-log -> landed=/admin-activity-log redirected=False issues=0
+TOTAL unique findings: 11

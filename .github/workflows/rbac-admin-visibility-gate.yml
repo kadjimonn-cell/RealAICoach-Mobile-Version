@@ -1,0 +1,91 @@
+name: RBAC Admin Visibility Gate
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - 'frontend/e2e/admin-visibility-auth-session.spec.ts'
+      - 'frontend/e2e/helpers/auth.ts'
+      - 'frontend/src/context/AccessControlContext.tsx'
+      - 'frontend/src/context/AuthContext.tsx'
+      - 'frontend/src/components/AppShell.tsx'
+      - 'frontend/src/lib/platformRoleLanding.ts'
+      - 'frontend/src/utils/adminAccess.ts'
+      - 'backend/utils/access_control_engine.py'
+      - 'backend/routes/subscription_enforcement.py'
+      - '.github/workflows/rbac-admin-visibility-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/e2e/admin-visibility-auth-session.spec.ts'
+      - 'frontend/e2e/helpers/auth.ts'
+      - 'frontend/src/context/AccessControlContext.tsx'
+      - 'frontend/src/context/AuthContext.tsx'
+      - 'frontend/src/components/AppShell.tsx'
+      - 'frontend/src/lib/platformRoleLanding.ts'
+      - 'frontend/src/utils/adminAccess.ts'
+      - 'backend/utils/access_control_engine.py'
+      - 'backend/routes/subscription_enforcement.py'
+
+jobs:
+  rbac-admin-visibility-e2e:
+    name: RBAC Admin Visibility E2E — Desktop Tablet Mobile
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      REACT_APP_BACKEND_URL: http://127.0.0.1:8001
+      EXPO_PUBLIC_BACKEND_URL: http://127.0.0.1:8001
+      E2E_BASE_URL: http://127.0.0.1:4173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build static bundle
+        working-directory: frontend
+        run: yarn export:web
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+
+      - name: Serve static bundle
+        working-directory: frontend
+        run: |
+          node scripts/welcome-visual-ci-server.js > /tmp/rbac-admin-visibility-server.log 2>&1 &
+          for i in $(seq 1 35); do
+            if curl -sf http://127.0.0.1:4173/ >/dev/null; then echo "RBAC gate static server ready"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/rbac-admin-visibility-server.log || true
+          echo "::error::RBAC gate static server did not start"
+          exit 1
+
+      - name: Run RBAC admin visibility auth-session suite (multi-breakpoint)
+        working-directory: frontend
+        run: |
+          node node_modules/@playwright/test/cli.js test e2e/admin-visibility-auth-session.spec.ts --project=desktop-chromium --project=tablet-chromium --project=mobile-chromium --reporter=list
+
+      - name: Upload RBAC gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rbac-admin-visibility-gate-artifacts
+          path: |
+            frontend/test-results
+            frontend/playwright-report
+            /tmp/rbac-admin-visibility-server.log
+          retention-days: 7
+          if-no-files-found: warn

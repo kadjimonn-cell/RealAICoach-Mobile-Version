@@ -1,0 +1,29 @@
+BACKEND_URL=https://visa-polish-v2.preview.emergentagent.com
+--- FEATURE 25 HEALTH SNAPSHOT ---
+{"detail":"Not Found"}
+--- FEATURE 25 FEATURE MAP ---
+{"tab":"Daily Meditation","total_features":33,"features":[{"feature_id":"heart_checkin","label":"Heart Check-In","tier":"free","available":true},{"feature_id":"gentle_companion","label":"Gentle Companion Chat","tier":"free","available":true},{"feature_id":"mind_body_pattern_prompts","label":"Mind/Body Pattern Prompts","tier":"free","available":true},{"feature_id":"daily_gifts","label":"Daily Gifts","tier":"free","available":true},{"feature_id":"two_min_scripture","label":"2-Minute Scripture","tier":"free","available":true},{"feature_id":"guided_reflections","label":"Guided Reflections","tier":"free","available":true},{"feature_id":"embodied_practice","label":"Optional Embodied Practice","tier":"free","available":true},{"feature_id":"somatic_invitations","label":"Somatic Invitations","tier":"free","available":true},{"feature_id":"calming_breathwork","label":"Calming Breathwork","tier":"free","available":true},{"feature_id":"private_prayer_journal","label":"Private Prayer Journal","tier":"basic","available":true},{"feature_id":"private_reflection_vault","label":"Private Reflection Vault","tier":"basic","available":true},{"feature_id":"community_care","label":"Community Care Feed","tier":"basic","available":true},{"feature_id":"prayer_support_loop","label":"Prayer Support Loop","tier":"basic","available":true},{"feature_id":"lookback_timeline","label":"Weekly/Monthly Look Back","tier":"free","available":true},{"feature_id":"calm_mode_design","label":"Calm Mode (No-Pressure UX)","tier":"free","available":true},{"feature_id":"ai_theme_insights","label":"AI Theme Insights","tier":"basic","available":true},{"feature_id":"personalized_journey_plans","label":"Personalized Journey Plans","tier":"basic","available":true},{"feature_id":"smart_reminders","label":"Smart Reminder Engine","tier":"basic","available":true},{"feature_id":"compassionate_progress","label":"Compassionate Progress","tier":"free","available":true},{"feature_id":"wellbeing_guardrails","label":"Wellbeing Risk Guardrails","tier":"free","available":true},{"feature_id":"v2_theme_mode","label":"V2 Light/Dark Support","tier":"free","available":true},{"feature_id":"i18n_ready_content","label":"Global i18n-ready Content","tier":"free","available":true},{"feature_id":"ai_entitlement_guard","label":"AI-Driven Entitlement Guard","tier":"free","available":true},{"feature_id":"community_moderation_tools","label":"Community Moderation Hooks","tier":"premium","available":true},{"feature_id":"audit_export_pack","label":"Audit/Compliance Export Pack","tier":"premium","available":true},{"feature_id":"prayer_audio_library_150_categories","label":"Prayer Audio Library (150 Categories)","tier":"free","available":true},{"feature_id":"animated_prayer_visuals","label":"Animated Prayer Visual Experience","tier":"basic","available":true},{"feature_id":"daily_three_audio_auto_drop","label":"Daily Auto-Drop (3 New Prayer Audios)","tier":"basic","available":true},{"feature_id":"audio_drop_notifications","label":"Prayer Audio In-App + Email Notifications","tier":"basic","available":true},{"feature_id":"audio_player_personalization","label":"Prayer Audio Player Personalization","tier":"premium","available":true},{"feature_id":"prayer_audio_completion_funnels","label":"Prayer Audio Completion Funnels + Cohort Analytics","tier":"basic","available":true},{"feature_id":"prayer_audio_semantic_search","label":"Prayer Audio Semantic Search (Intent + Scripture + Mood)","tier":"basic","available":true},{"feature_id":"prayer_audio_upgrade_attribution_by_category","label":"Prayer Audio Upgrade Attribution by Category","tier":"basic","available":true}],"plan":"premium"}
+--- FEATURE 25 OVERVIEW (admin user) ---
+{"user_id":"user_4b5a68d2f7c6","plan":"premium","limits":{"daily_checkins":999,"daily_journal_entries":999,"daily_ai_companion":999,"daily_ai_insights":999,"daily_somatic_sessions":999,"daily_audio_plays":999,"weekly_community_posts":999,"monthly_exports":999},"usage_today":{},"progress":{"user_id":"user_4b5a68d2f7c6","checkins_total":442,"created_at":"2026-05-21T14:50:27.237590+00:00","last_active_at":"2026-05-27T20:57:11.659105+00:00","updated_at":"2026-05-27T20:57:11.659111+00:00","community_posts_total":804,"prayer_support_given":409},"pending_reminders":0,"unread_notifications":1261,"today_prayer_audio_count":0,"total_prayer_audio_count":600,"available_prayer_audio_categories":150,"value_message":"Calm, relational, and spacious practice — presence over pressure."}
+--- FEATURE 25 REGISTRY ROW CHECK ---
+{
+  "count": 1,
+  "row": {
+    "feature_id": "daily-meditation",
+    "title": "Daily Meditation",
+    "description": "Faith-centered daily reflection with companion guidance, reminders, and progress insights.",
+    "icon": "leaf",
+    "route": "/features/daily-meditation",
+    "category": "wellness",
+    "color": "#14B8A6",
+    "is_new": true,
+    "premium": false,
+    "enabled": true,
+    "sort_order": 24,
+    "created_at": "2026-05-16T23:35:57.677421+00:00",
+    "updated_at": "2026-06-08T15:24:55.813637+00:00",
+    "feature_number": 25,
+    "feature_batch": 4,
+    "order_source": "locked_canonical"
+  }
+}

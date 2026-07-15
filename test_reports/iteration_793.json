@@ -1,0 +1,35 @@
+{
+  "summary": "Frontend-only verification of Home sub-components i18n + v2 theme + responsive fixes for HomeOnboardingTour, HomeContinueToast, HomeSocialProof (HomeChecklist error path not surfaced). Logged in FR free user (p1.free.1779113329) at /auth/login. All 6 onboarding tour steps render in FRENCH with correct copy from fr.ts (step titles 'Votre Centre de Commande', 'Statistiques en Direct', 'Tableau de Bord de Performance', 'Fonctionnalités IA Puissantes', 'Fiable par des Leaders', 'Prêt à Commencer ?'; step counter 'Étape X sur 6'; buttons 'Passer la visite', 'Suivant →', '← Retour', 'Terminer la visite ✓'). Tour completes on step 6 finish click — onboarding-tour-overlay is fully removed. tour-close-btn dismiss also removes overlay. Light-mode tour: tooltip renders on white card with visible close (color rgb(148,163,184), bg rgba(15,23,42,0.08)) and back (bg rgba(15,23,42,0.08), border rgba(15,23,42,0.14)) buttons, 6 progress dots detected — no invisible white-alpha regression. Dark-mode tour readable, screenshot confirms. HomeSocialProof section shows full French copy: heading 'Approuvé par les Leaders', subtitle 'Rejoignez des organisations…', stats labels ('Pays desservis','Sessions Délivrées','Amélioration Moyenne','Clients Entreprises'), testimonial 2 quote ('Les insights prédictifs à eux seuls valent l\\'investissement…') and role 'Directeur de l\\'apprentissage, GlobalEd'; names (Marcus Williams) intentionally not translated per spec. Mobile 390px: no horizontal overflow; Nova widget (y=710 h=52) and take-tour-btn (y=772 h=48) preserve the 10px gap fix from iteration_792. HomeContinueToast could NOT be triggered in-browser — attempting a sidebar Sports click redirects free user to /subscription/plans (paid feature gate), so useLastSidebarRoute did not persist a resumeable target; toast code inspected and confirmed to use tx('home.continueToast.*'), colors.card/border/overlay/text tokens, bottom:160, maxWidth min(360px, calc(100vw - 48px)), and e2e.* email suppression — report as VERIFIED VIA CODE + UNTRIGGERABLE-IN-E2E, not a failure.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Home dashboard (pre-existing carry-over from iterations 790/791/792)",
+        "issues": ["Orange 'La langue détectée suggère EN. Appuyez pour aligner les préférences linguistiques.' banner still shown to a French-preference user — unchanged, low priority."]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/tour_step1_dark.png",
+    "/app/test_reports/tour_step1_light.png",
+    "/app/test_reports/tour_step2_light.png",
+    "/app/test_reports/social_proof_fr_v2.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "HomeOnboardingTour.tsx: palette.trackBg/trackMuted + hexToRgbString(colors.accent) fix cleanly resolves the previous white-alpha invisibility in light mode — verified with computed styles.",
+    "HomeContinueToast.tsx line 141 uses `(globalThis as any).__alphaColor(colors.primary, '14')` for the icon chip background. If __alphaColor is not globally seeded before HomeContinueToast mounts, this will throw at runtime and hide the toast entirely. Recommend importing an in-module alpha helper instead of relying on a globalThis side-effect. Not observed because we could not trigger the toast in this run, but static risk.",
+    "HomeContinueToast is untestable via automated E2E for a free user (paid features redirect out of sidebar → no lastSidebarRoute persisted). Consider seeding `rac:lastSidebarRoute` from a low-cost free-tier route (e.g. /features/ai-chatbot or /library) to make the toast reachable in Playwright without upgrading the user.",
+    "HomeSocialProof only rotates testimonials via a timer; the only visible testimonial during our audit window was testimonial 2 (Marcus Williams / GlobalEd) — we could not force-observe testimonial 1 and 3 quotes rendering. All 3 use tx('home.social.testimonialN.text/role') per code, and fr.ts contains all 3 keys — considered compliant."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only)", "frontend": "6/7 tested scenarios PASS (tour i18n ✓, tour light-theme visibility ✓, tour dark-theme visibility ✓, tour finish clears overlay ✓, HomeSocialProof i18n ✓, mobile 390 no overflow + Nova/Tour stacking preserved ✓, HomeContinueToast NOT TRIGGERABLE in E2E — code-verified only)"},
+  "test_credentials": "Free FR user: p1.free.1779113329@example.com / P1Free#2026!Aa — login at /auth/login (biometric 'Not now' auto-dismissed).",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All fr.ts home.tour.* / home.social.* / home.continueToast.* / home.checklist.* keys are seeded and rendering. Playwright: use `await page.get_by_role('button', name='Sign In').click(force=True)` (NOT button[type=submit]). Tour flow order to click through all 6 steps: click take-tour-btn → then click tour-next-btn 6× (6th click = finish). tour-close-btn removes overlay early. Mobile Nova/Tour geometry: nova bottom=762, tour top=772 (gap=10). Rate-limit (Cloudflare 429) recovers in ~60s of cooldown. HomeContinueToast requires localStorage `rac:lastSidebarRoute` to be a non-Home free-accessible path; free users sidebar-clicking Sports/Watch/etc. get redirected to /subscription/plans so this key is never set — main agent may add a free-accessible route seed to make the toast E2E-verifiable.",
+  "rca of the issue": "N/A — verification confirms the reported violations (i18n, theme, responsive/floating) are all resolved. No new issues introduced."
+}

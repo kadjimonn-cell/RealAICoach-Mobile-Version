@@ -1,0 +1,46 @@
+{
+  "summary": "LIGHT SMOKE / regression test after deployment-readiness fixes (supervisor --tunnel flag + app.json expo-notifications plugin & EAS projectId). All 4 requested checks PASS. Frontend static export served on port 3000 loads /auth/login with 'Welcome Back' shell. Admin (admin@realaicoach.app) login succeeds via cookie session — /api/auth/me returns 200 with is_admin=true and roles=[admin, premium, user]. Post-login home '/' renders full Enterprise Suite dashboard with left-nav (Home, Features, FPS Game, Watch Videos, Audio Studio, My Podcasts, Sports, Travel Visa, Daily Meditation, AI Tools, etc.). AI Chat panel in /features/ai-writer opens correctly and the model picker exposes all three options: GPT-4o, Claude Sonnet 4.6, Claude Haiku 4.5 (data-testid ai-chat-model-picker + three ai-chat-model-option-* testids). No console/page errors, no blank screen, no 404 on the app shell. Zero paid LLM messages sent, per instructions.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "AI Chat panel — Conversations sidebar",
+        "issues": ["PRE-EXISTING (iteration_904/905): Conversation rows still display 'Invalid Date' under message count. Not related to this deployment-readiness pass."]
+      }
+    ]
+  },
+  "smoke_check_results": {
+    "1_frontend_loads_at_preview_url": "PASS — GET / and /auth/login return 200; static Expo export serves without blank screen; 'Welcome Back / Sign in to your AI coaching command center' rendered.",
+    "2_admin_login_reaches_dashboard": "PASS — 2 inputs + Sign In → cookie session established. Navigating to '/' renders full 'Enterprise Suite · Operator-grade control surface' dashboard with all left-nav modules visible.",
+    "3_backend_api_authenticated_after_login": "PASS — GET /api/auth/me → 200 {is_admin: true, email: 'admin@realaicoach.app', roles: [admin, premium, user]}. Session cookie flow works end-to-end.",
+    "4_ai_chat_panel_model_picker_with_anthropic_models": "PASS — /features/ai-writer AI Chat tab (feature-layout-tab-ai-writer-chat) opens Nova AI chat; picker (ai-chat-model-picker count=1) exposes 3 pills visible in screenshot: 'GPT-4o' (selected), 'Claude Sonnet 4.6', 'Claude Haiku 4.5'. Testids: ai-chat-model-option-gpt-4o, ai-chat-model-option-claude-sonnet-4-6, ai-chat-model-option-claude-haiku-4-5. No LLM calls made.",
+    "console_errors": "None — no page errors captured during the full smoke flow."
+  },
+  "observations_non_blocking": [
+    "Direct hit to /admin/operations returns 'Page Not Found · Redirecting to home in 5s'. The dashboard/admin surface is fully reachable via '/' (Enterprise Suite nav lists all admin modules), so this is a route-path observation rather than a blocker. If main agent expected /admin/operations to be a distinct top-level path, it may need to be surfaced under a different route (e.g., /operations, /admin, or a nav item click) — but the LIGHT smoke ask ('reach their dashboard/Operations Console') is satisfied by the '/' dashboard.",
+    "Supervisor status: backend RUNNING, expo RUNNING, expo_manual RUNNING, mongodb RUNNING — no failed services after the supervisord.conf --tunnel flag edit.",
+    "app.json additions (expo-notifications plugin + extra.eas.projectId) are native-build-only and had zero observed impact on the web static export."
+  ],
+  "test_report_links": [
+    "/app/test_reports/screenshots/iter907_ai_writer_chat.png"
+  ],
+  "action_items": [
+    "NONE for the deployment-readiness scope — no regressions detected after the --tunnel supervisor edit and app.json plugin/projectId additions.",
+    "OPTIONAL (pre-existing, out of scope for this smoke): Fix 'Invalid Date' formatting in AI Chat sidebar conversation rows (already flagged in iteration_904/905).",
+    "OPTIONAL: Confirm whether /admin/operations is expected to exist as a distinct route — currently returns Page Not Found. If not planned, ignore."
+  ],
+  "critical_code_review_comments": [
+    "app.json: expo-notifications plugin + extra.eas.projectId additions are correctly scoped to native/EAS builds and do not affect the web/Expo static export served here — verified by clean web load with no plugin-related console errors.",
+    "supervisord.conf: --tunnel flag on expo command took effect without breaking web preview; runtime behavior on the preview URL is unchanged (expo_manual + expo both RUNNING, port 3000 serving static export)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (smoke: /api/health 200, /api/auth/login cookie session, /api/auth/me 200 with admin flags)", "frontend": "100% (4/4 requested checks pass: load, admin login, backend auth call, AI chat model picker with Anthropic models)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (verified working). Free user credentials also read from /app/memory/test_credentials.md but not exercised in this light smoke.",
+  "seed_data_creation": "None — no messages sent, no sessions created.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Deployment-readiness post-fix smoke is clean. If a deeper Operations Console route check is needed later, note /admin/operations currently returns 'Page Not Found' with 5s redirect to /; the actual admin surface is exposed via the '/' Enterprise Suite left-nav. Login flow reminders (unchanged from iter906): 2 inputs + Sign In button (or Enter on the password field); URL may stay /auth/login briefly but the session cookie is set — subsequent nav authenticates via cookie. AI Chat model pill testids: ai-chat-model-option-gpt-4o / -claude-sonnet-4-6 / -claude-haiku-4-5.",
+  "rca_of_the_issue": "N/A — no bugs found in this iteration. The two configuration changes (supervisord.conf --tunnel flag; app.json expo-notifications plugin + eas.projectId) had no runtime impact on the web preview, confirming the deployment-agent's PASS result."
+}

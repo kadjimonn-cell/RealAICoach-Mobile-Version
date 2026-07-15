@@ -1,0 +1,43 @@
+{
+  "run_id": "platform_integrity_20260518T014001Z_1a5621",
+  "generated_at": "2026-05-18T01:40:01.023809+00:00",
+  "source": "scheduler_nightly",
+  "gps_counts": {
+    "features": 6,
+    "plans": 3,
+    "faq": 3
+  },
+  "catalog_completeness": {
+    "plans_count": 3,
+    "faq_count": 3,
+    "missing_plan_ids": [],
+    "plan_ids": [
+      "basic",
+      "free",
+      "premium"
+    ],
+    "is_complete": true
+  },
+  "subscription_catalog": {
+    "count": 3,
+    "plan_ids": [
+      "free",
+      "basic",
+      "premium"
+    ]
+  },
+  "theme_gate": {
+    "grade": "A",
+    "warns": 6,
+    "fails": 0,
+    "files_scanned": 668,
+    "raw_excerpt": "\n\ud83d\udd12 Theme Compliance Build Gate (strict)\n\n   Running local V2 theme audit scanner...\n   Grade: A | Warns: 6 | Fails: 0 | Infos: 25 | Files: 668\n   \u2705 GATE PASSED (transitional) \u2014 no FAIL issues; WARN/INFO report emitted.\n\n",
+    "exit_code": 0
+  },
+  "matrix64": {
+    "run_id": "matrix64_20260518T010202Z_afd1cd",
+    "status": "PASS",
+    "strict_passed": true,
+    "failed_checks": 0
+  }
+}

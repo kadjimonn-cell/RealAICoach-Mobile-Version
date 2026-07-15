@@ -1,0 +1,77 @@
+[public] dark /welcome -> landed=/welcome redirected=False issues=0
+[public] dark /pricing -> landed=/pricing redirected=False issues=0
+[public] dark /gdpr -> landed=/gdpr redirected=False issues=0
+[public] dark /security -> landed=/security redirected=False issues=0
+[public] dark /careers -> landed=/careers redirected=False issues=0
+[public] dark /blog -> landed=/blog redirected=False issues=2
+[public] dark /talent-network -> landed=/talent-network redirected=False issues=0
+[public] light /welcome -> landed=/welcome redirected=False issues=0
+[public] light /pricing -> landed=/pricing redirected=False issues=0
+[public] light /gdpr -> landed=/gdpr redirected=False issues=0
+[public] light /security -> landed=/security redirected=False issues=0
+[public] light /careers -> landed=/careers redirected=False issues=0
+[public] light /blog -> landed=/blog redirected=False issues=2
+[public] light /talent-network -> landed=/talent-network redirected=False issues=0
+[user] login ok=True
+[user] mode dark set=True
+[user] dark /dashboard -> landed=/ redirected=True issues=0
+[user] dark /ai-learning-hub -> landed=/ai-learning-hub redirected=False issues=0
+[user] dark /ai-briefing -> landed=/ai-briefing redirected=False issues=0
+[user] dark /content-library -> landed=/content-library redirected=False issues=0
+[user] dark /achievements -> landed=/achievements redirected=False issues=0
+[user] dark /calendar -> landed=/calendar redirected=False issues=0
+[user] dark /session-history -> landed=/session-history redirected=False issues=0
+[user] dark /progress -> landed=/progress redirected=False issues=0
+[user] dark /leaderboard -> landed=/leaderboard redirected=False issues=0
+[user] dark /edit-profile -> landed=/welcome?return_to=%2Fedit-profile&auth_reason=unauthenticated redirected=True issues=0
+[user] dark /subscription -> landed=/subscription redirected=False issues=0
+[user] dark /book-meeting -> landed=/book-meeting redirected=False issues=0
+[user] dark /ai-coaching-team -> landed=/ai-coaching-team redirected=False issues=0
+[user] dark /job-search -> landed=/job-search redirected=False issues=9
+[user] dark /hiring-hub -> landed=/hiring-hub redirected=False issues=0
+[user] dark /messages -> landed=/messages redirected=False issues=0
+[user] dark /feedback -> landed=/feedback redirected=False issues=0
+[user] dark /integrations -> landed=/integrations redirected=False issues=0
+[user] dark /certificate-gallery -> landed=/ redirected=True issues=0
+[user] dark /features -> landed=/features redirected=False issues=0
+[user] dark /ai-problem-solver -> landed=/ai-coaching-team redirected=True issues=0
+[user] dark /settings -> landed=/settings redirected=False issues=0
+[user] mode light set=True
+[user] light /dashboard -> landed=/ redirected=True issues=0
+[user] light /ai-learning-hub -> landed=/ai-learning-hub redirected=False issues=0
+[user] light /ai-briefing -> landed=/ai-briefing redirected=False issues=0
+[user] light /content-library -> landed=/content-library redirected=False issues=0
+[user] light /achievements -> landed=/achievements redirected=False issues=0
+[user] light /calendar -> landed=/calendar redirected=False issues=0
+[user] light /session-history -> landed=/session-history redirected=False issues=0
+[user] light /progress -> landed=/progress redirected=False issues=0
+[user] light /leaderboard -> landed=/leaderboard redirected=False issues=0
+[user] light /edit-profile -> landed=/welcome?return_to=%2Fedit-profile&auth_reason=unauthenticated redirected=True issues=0
+[user] light /subscription -> landed=/subscription redirected=False issues=0
+[user] light /book-meeting -> landed=/book-meeting redirected=False issues=0
+[user] light /ai-coaching-team -> landed=/ai-coaching-team redirected=False issues=0
+[user] light /job-search -> landed=/job-search redirected=False issues=9
+[user] light /hiring-hub -> landed=/hiring-hub redirected=False issues=2
+[user] light /messages -> landed=/messages redirected=False issues=0
+[user] light /feedback -> landed=/feedback redirected=False issues=0
+[user] light /integrations -> landed=/integrations redirected=False issues=0
+[user] light /certificate-gallery -> landed=/ redirected=True issues=0
+[user] light /features -> landed=/features redirected=False issues=0
+[user] light /ai-problem-solver -> landed=/ai-coaching-team redirected=True issues=0
+[user] light /settings -> landed=/settings redirected=False issues=0
+[admin] login ok=True
+[admin] mode dark set=True
+[admin] dark /executive-dashboard -> landed=/executive-dashboard redirected=False issues=7
+[admin] dark /admin-system -> landed=/admin-system redirected=False issues=71
+[admin] dark /performance-observability -> landed=/performance-observability redirected=False issues=1
+[admin] dark /route-health-report -> landed=/route-health-report redirected=False issues=1
+[admin] dark /email-templates-admin -> landed=/admin-console?category=revenue&tab=notifications-messaging-hub redirected=True issues=1
+[admin] dark /admin-activity-log -> landed=/admin-activity-log redirected=False issues=7
+[admin] mode light set=True
+[admin] light /executive-dashboard -> landed=/executive-dashboard redirected=False issues=1
+[admin] light /admin-system -> landed=/admin-system redirected=False issues=11
+[admin] light /performance-observability -> landed=/performance-observability redirected=False issues=1
+[admin] light /route-health-report -> landed=/route-health-report redirected=False issues=1
+[admin] light /email-templates-admin -> landed=/admin-console?category=revenue&tab=notifications-messaging-hub redirected=True issues=1
+[admin] light /admin-activity-log -> landed=/admin-activity-log redirected=False issues=43
+TOTAL unique findings: 170

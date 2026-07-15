@@ -1,0 +1,64 @@
+{
+  "summary": "Iteration 800 frontend-only e2e — Nova animated typing indicator ('Nova est en train d'écrire' + 3 staggered dots) FULLY VERIFIED on the shared NovaChatPanel via the Help > Contact > Chat IA surface for the French free user. All 3 acceptance criteria pass: (1) PRIMARY — after chat-send-btn click, [data-testid=chat-typing-indicator] appeared IMMEDIATELY (first_seen at 0ms/first poll) with chat-typing-indicator-text = 'Nova est en train d'écrire' and chat-typing-dots containing exactly 3 animated child dots; the legacy 'Nova is thinking...' string is NOT present in DOM. (2) HANDOFF — typing indicator disappeared at ~9800ms, typewriter cursor testid appeared 200ms later (assistant id a-1783624415409), cursor cleared at ~12600ms and the post-reveal action pills (audio-button, feedback-up, feedback-down) all rendered. (3) REGRESSION — quick-q chip 'Comment pouvez-vous m'aider ?' present on new-chat welcome; clicking it triggered the typing indicator instantly (0ms, French label + 3 dots) then handed off into the typewriter reveal (cursor seen at 12800ms). No '{BRAND}' tokens anywhere in DOM (count=0 on both runs). Shared NovaChatPanel means Home floating widget and Settings embedded surface inherit the identical isLoading bubble path already verified.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iter800_typing_indicator.png",
+    "/app/test_reports/iter800_final.png",
+    "/app/test_reports/iter800_chip_regression.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "NovaChatPanel.tsx isLoading branch (line 440-453) correctly replaces the static italic 'Nova is thinking...' with chat-typing-indicator bubble containing chat-typing-indicator-text (tx fallback 'Nova is typing') + NovaTypingDots. Both data-testid and testID are set (dual attrs for RN web + native).",
+    "NovaTypingDots.tsx implements 3 Animated.Value dots (0.25→1 opacity loop, 320ms duration, staggered by 160ms via Animated.delay). useNativeDriver=true (warning about missing RCTAnimation is JS-fallback for RN-Web and is expected/harmless).",
+    "Loop cleanup on unmount is present (return () => loops.forEach((loop) => loop.stop())) — no leaked animations.",
+    "tx() helper correctly falls back to 'Nova is typing' when the i18n key is missing, ensuring the label is always populated. For French locale, help.chat.novaTyping resolves to 'Nova est en train d'écrire' (confirmed line 6455 of /app/frontend/src/i18n/locales/fr.ts).",
+    "Handoff is seamless: typing indicator conditionally renders on isLoading=true (line 440), separate from the messages.map() loop, so the moment isLoading flips to false and the new assistant message is appended, the typewriter (useNovaTypewriter) auto-detects the fresh assistant message and starts reveal. Measured gap between indicator disappearance and cursor appearance was ~200ms — well within one render tick.",
+    "Note (informational, not a bug): a separate string 'Nova is thinking...' still exists in /app/frontend/src/components/help/FAQSection.tsx:358 for the 'Ask Nova AI' inline FAQ button. That is an unrelated surface (not NovaChatPanel) — if consistency is desired, main agent could migrate it to help.chat.novaTyping too. Non-blocking."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "n/a (frontend-only per request)",
+    "frontend": "100% (3/3 primary + handoff + quick-q regression + no-BRAND + no-thinking-text)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free, French locale, dark theme)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Typing indicator selectors confirmed: [data-testid=chat-typing-indicator] (bubble), [data-testid=chat-typing-indicator-text] (label), [data-testid=chat-typing-dots] (dot container - has exactly 3 Animated.View children). Indicator appears immediately (0ms poll) after chat-send-btn or quick-q chip click — no need to race. Reply arrival takes ~10s (Emergent LLM). Handoff: indicator vanishes just before typewriter cursor appears in the new assistant bubble (chat-message-{id}-typewriter-cursor). To exercise regression on quick-q, use a fresh /help navigation (welcome state) since after any user turn the welcome view is replaced by the conversation view.",
+  "verification_evidence": {
+    "primary_help_chat_ia_free_user_fr": {
+      "route": "/help > Contact > Chat IA",
+      "typing_indicator_first_seen_ms_after_send": 0,
+      "typing_indicator_text": "Nova est en train d'écrire",
+      "chat_typing_dots_present": true,
+      "chat_typing_dots_children_count": 3,
+      "legacy_nova_is_thinking_in_dom": false,
+      "legacy_fr_reflechir_in_dom": false
+    },
+    "handoff": {
+      "typing_indicator_gone_at_ms": 9800,
+      "cursor_seen_at_ms": 10000,
+      "assistant_message_id": "a-1783624415409",
+      "cursor_gone_at_ms": 12600,
+      "post_reveal_pills": {"audio_button": true, "feedback_up": true, "feedback_down": true}
+    },
+    "regression_quick_q_chip": {
+      "chip_present_on_new_chat_welcome": true,
+      "chip_text": "Comment pouvez-vous m'aider ?",
+      "typing_indicator_seen_after_chip_click_ms": 0,
+      "typing_indicator_text": "Nova est en train d'écrire",
+      "dot_children": 3,
+      "cursor_seen_after_handoff": true,
+      "cursor_seen_ms": 12800
+    },
+    "regression_brand_token": {
+      "brand_token_count_in_dom_after_primary_flow": 0,
+      "brand_token_count_in_dom_after_chip_flow": 0
+    }
+  }
+}

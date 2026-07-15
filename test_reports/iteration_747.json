@@ -1,0 +1,67 @@
+{
+  "summary": "Home Dashboard background image fix verification - PASSED. Tested background image visibility in both light and dark themes after login. The fix correctly enables the shell background for the home route in dark mode.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "light_theme": {
+      "status": "PASS",
+      "background_found": true,
+      "background_variant": "home",
+      "background_opacity": "0.28",
+      "background_visible": true,
+      "content_readable": true
+    },
+    "dark_theme": {
+      "status": "PASS",
+      "background_found": true,
+      "background_variant": "home",
+      "background_opacity": "0.34",
+      "background_visible": true,
+      "notes": "First test run confirmed dark mode background visible with opacity 0.34. Second test run showed session check modal during theme toggle."
+    },
+    "content_elements_verified": {
+      "home_hero_section": "present",
+      "executive_overview_band": "present",
+      "command_deck": "present",
+      "ai_status_badge": "present",
+      "cta_start_journey": "present",
+      "cta_explore_tools": "present",
+      "sidebar": "present"
+    },
+    "theme_toggle": "working"
+  },
+  "code_verification": {
+    "file": "AppShell.tsx",
+    "line": 732,
+    "logic": "shouldRenderDesktopBackground = Platform.OS === 'web' && decorativeBackgroundReady && (!darkMode || bgVariant === 'home')",
+    "explanation": "In dark mode, background now renders when bgVariant === 'home', fixing the issue where home dashboard background was disabled in dark mode"
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Home dashboard background image fix verified. Background layer renders with variant 'home' and visible opacity in both light (0.28) and dark (0.34) themes. All home content elements (hero, overview band, command deck, CTA buttons, sidebar) remain readable with the background visible.",
+  "features_tested": [
+    "Background image visible in light theme - PASS",
+    "Background image visible in dark theme - PASS",
+    "Dashboard shell background renders for home route in both themes - PASS",
+    "Home surfaces readable (hero, overview band, command deck, CTA buttons, sidebar) - PASS",
+    "Theme toggle works correctly - PASS",
+    "Authenticated dashboard loads after login - PASS"
+  ]
+}

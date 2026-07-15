@@ -1,0 +1,49 @@
+{
+  "timestamp": "2026-06-19T13:50:52.091910+00:00",
+  "scope": "feature26_access_hardening_defaults_applied",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "results": {
+    "free_user": {
+      "actor": "free_user",
+      "login_status": 200,
+      "is_admin": false,
+      "is_employer": false,
+      "employer_tab_visible": 1,
+      "admin_sidebar_visible": 0,
+      "admin_route_visible_on_direct_open": 0,
+      "employer_onboarding_visible": 1,
+      "employer_onboarding_title_visible": 1,
+      "employer_full_route_visible": 0,
+      "employer_full_title_visible": 0,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer"
+    },
+    "admin_user": {
+      "actor": "admin_user",
+      "login_status": 200,
+      "is_admin": true,
+      "is_employer": false,
+      "employer_tab_visible": 1,
+      "admin_sidebar_visible": 2,
+      "admin_route_visible_on_direct_open": 1,
+      "employer_onboarding_visible": 0,
+      "employer_onboarding_title_visible": 0,
+      "employer_full_route_visible": 1,
+      "employer_full_title_visible": 1,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer"
+    }
+  },
+  "verdicts": {
+    "non_admin_admin_tab_hidden": true,
+    "non_admin_admin_surface_blocked": true,
+    "non_admin_employer_tab_visible": true,
+    "non_admin_employer_onboarding_first": true,
+    "admin_admin_surface_visible": true,
+    "admin_employer_full_visible": true
+  },
+  "overall_verdict": "pass",
+  "approved_non_admin_note": "Full employer portal for approved non-admin remains keyed to is_employer=true. No non-admin approved fixture found in current credential set."
+}

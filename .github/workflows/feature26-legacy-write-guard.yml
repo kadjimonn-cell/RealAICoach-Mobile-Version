@@ -1,0 +1,28 @@
+name: Feature26 Legacy Write Guard
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/app/**'
+      - 'frontend/src/**'
+      - 'scripts/feature26_frontend_legacy_write_guard.py'
+      - '.github/workflows/feature26-legacy-write-guard.yml'
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  frontend-legacy-write-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Feature 26 frontend legacy write guard
+        run: python scripts/feature26_frontend_legacy_write_guard.py

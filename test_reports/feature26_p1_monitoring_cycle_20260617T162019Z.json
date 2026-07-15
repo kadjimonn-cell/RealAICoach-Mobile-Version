@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-06-17T16:20:19Z",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "auth_mode": "mobile_bearer_token",
+  "checks": [
+    {
+      "name": "admin_login",
+      "pass": false,
+      "details": {
+        "status": 429,
+        "body_excerpt": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content"
+      }
+    },
+    {
+      "name": "session_token_present",
+      "pass": false,
+      "details": {
+        "token_length": 0
+      }
+    }
+  ],
+  "overall_pass": false
+}

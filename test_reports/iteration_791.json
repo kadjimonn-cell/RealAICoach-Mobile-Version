@@ -1,0 +1,65 @@
+{
+  "summary": "Verified end-to-end the 'Verified Member Perks' teaser on /id-checker, the /api/auth/me KYC field extension, and the sidebar Verified badge in AppShell. Backend: added and passed pytest test_auth_me_kyc_fields.py (3/3) confirming kyc_verified/kyc_tier are correct for both the free and the verified premium user; the existing test_id_checker_kyc_status.py regression (4/4) still passes. Frontend: on /id-checker as the free user (French, dark), all 5 perks-teaser data-testids render inside the Enterprise Timeline preview with correctly translated French strings ('Avantages réservés aux membres vérifiés' + 3 perk rows + 'Voir les plans' CTA), the 'View plans' button navigates to /subscription/plans which renders the tiered plans page, and the sidebar user card shows the user name WITHOUT a verified chip. Verified premium user's dashboard rendered in an earlier session and clearly displayed a green 'Verified' chip next to the user name in the sidebar with PREMIUM plan chip; the /api/auth/me contract that drives the UI badge is directly proven via pytest. Mobile 390 shows the teaser without horizontal overflow (scrollWidth==clientWidth==390, teaser bbox 324px wide). Regression testids (id-checker-preview-timeline / stages / eta-card / milestones / idv-form-hero / idv-start-btn) still render.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "/id-checker - locale banner (pre-existing from iteration_790)",
+        "issues": [
+          "Small orange 'Detected locale suggests EN. Tap to align language preferences.' banner still displayed to French-preference user (unchanged from previous iteration; low priority)."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_auth_me_kyc_fields.py",
+    "/app/backend/tests/test_id_checker_kyc_status.py",
+    "/app/test_reports/pytest/auth_me_kyc_fields.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Duplicate biometric-prompt modal on /auth/login intermittently blocks fresh Playwright logins if no 'Remember me' cookie exists; it is unrelated to this feature but is worth noting as it made automated verification of the verified-user flow racy. Consider adding data-testid to the 'Not now'/'Enable now' buttons or debouncing the prompt on first paint so E2E can consistently dismiss it.",
+    "id-verification.tsx remains >1000 lines (carried over from iteration_790); splitting the preview-timeline card and the new perks-teaser row into its own component would improve maintainability."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_auth_me_kyc_fields.py"
+  ],
+  "success_rate": {"backend": "100% (3/3 new + 4/4 regression)", "frontend": "100% (all 5 perks testids + 6 regression testids + navigation to /subscription/plans + French i18n + mobile responsive)"},
+  "test_credentials": "Free user: p1.free.1779113329@example.com / P1Free#2026!Aa (French, dark, kyc_verified=false). Verified premium: watchvideos.premium.4dc6ab84@example.com / WatchVideos#2026Aa (kyc_verified=true, kyc_tier='verified').",
+  "seed_data_creation": "None. No writes to any resource.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "GET /api/auth/me now exposes kyc_verified and kyc_tier. For p1.free.1779113329@example.com these are False/None, for watchvideos.premium.4dc6ab84@example.com they are True/'verified'. Frontend AppShell reads user.kyc_verified to render data-testid=sidebar-verified-badge. On /id-checker the new perks teaser (data-testid=id-checker-perks-teaser) is rendered inside the preview timeline card BELOW id-checker-preview-stages with children id-checker-perk-badge/-lanes/-support and CTA id-checker-perks-view-plans-btn which navigates to /subscription/plans. Teaser background is rgba(45, 212, 191, 0.05) — teal-tinted, readable in both light and dark. Playwright note: the biometric-prompt modal on /auth/login can block first login attempts (Cloudflare 429 sometimes follows rapid retries) — dismiss with page.get_by_role('button', name='Not now').click() BEFORE filling the form. Approximately 60s cooldown between fresh browser sessions is enough to avoid 429s.",
+  "detailed_verification": {
+    "backend_pytest_new": "3/3 passed — /api/auth/me unauth 401, free kyc_verified=False+kyc_tier=None, verified kyc_verified=True+kyc_tier='verified'",
+    "backend_pytest_regression": "4/4 passed — /api/id-checker/kyc/status auth + timeline structure + NOT_SUBMITTED state",
+    "frontend_free_user": {
+      "id-checker-perks-teaser": "present + visible",
+      "id-checker-perk-badge": "present + visible",
+      "id-checker-perk-lanes": "present + visible",
+      "id-checker-perk-support": "present + visible",
+      "id-checker-perks-view-plans-btn": "present + visible; click → /subscription/plans (Plans page rendered with Gratuit/Essentiel/Prémium tiers in FR)",
+      "teaser_theme": "bg=rgba(45,212,191,0.05) — green/teal-tinted; readable text in dark mode",
+      "sidebar-verified-badge": "ABSENT (correct for kyc_verified=false)",
+      "regression_testids": "id-checker-preview-timeline / -stages / -eta-card / -milestones / idv-form-hero / idv-start-btn all present+visible",
+      "i18n_fr": "Teaser title 'Avantages réservés aux membres vérifiés' + 3 rows + 'Voir les plans' all translated"
+    },
+    "frontend_verified_user": {
+      "sidebar-verified-badge": "PRESENT — visible next to user name 'Watch Videos Premium QA' with green 'Verified' text (confirmed visually in browser session before biometric modal blocked subsequent fresh-login retries; API contract for kyc_verified=True is proven by pytest)",
+      "sidebar-user-badge": "PRESENT with PREMIUM plan chip",
+      "notes": "Verified user's dashboard is in English/light per that user's preferences."
+    },
+    "responsive_390": {
+      "horizontal_overflow": false,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "teaser_bbox": "x=33, width=324, height=229 — fits within viewport, no overflow"
+    }
+  },
+  "rca of the issue": "N/A — no issues found."
+}

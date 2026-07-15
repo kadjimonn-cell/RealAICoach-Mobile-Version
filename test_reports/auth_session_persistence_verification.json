@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-05-16T18:16:37.410059",
+  "tests": [
+    {
+      "test": "Auth login",
+      "passed": true,
+      "details": "Login successful, session_token length: 236",
+      "timestamp": "2026-05-16T18:16:38.666444"
+    },
+    {
+      "test": "/api/auth/me endpoint",
+      "passed": true,
+      "details": "Endpoint working correctly. 5/5 requests successful. Rate limiting: not triggered in 5 requests",
+      "timestamp": "2026-05-16T18:16:40.170702"
+    },
+    {
+      "test": "Session bootstrap telemetry",
+      "passed": true,
+      "details": "Endpoint accepts valid payload and rejects missing reason_code",
+      "timestamp": "2026-05-16T18:16:40.392416"
+    },
+    {
+      "test": "Renew session",
+      "passed": true,
+      "details": "Endpoint works with auth and fails without auth",
+      "timestamp": "2026-05-16T18:16:40.730780"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

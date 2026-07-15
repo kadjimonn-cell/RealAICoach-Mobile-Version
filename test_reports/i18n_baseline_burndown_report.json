@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-30T04:30:58.962Z",
+  "mode": "apply",
+  "batch_size": 20,
+  "baseline_before_count": 0,
+  "eligible_count": 0,
+  "selected_count": 0,
+  "locale_updated": false,
+  "baseline_updated": false,
+  "selected_keys": [],
+  "unresolved_top_keys": [],
+  "next_baseline_count": 0
+}

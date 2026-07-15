@@ -1,0 +1,137 @@
+{
+  "summary": "Verified mobile Welcome footer compactness fix at phone widths. The fix significantly reduced footer height from ~1485px to 1121px at 390x844, but two gap metrics still exceed targets: socialGap (44px vs <=28px target) and linksGap (31px vs <=24px target). At 430px width, the useDensePhoneFooter flag is not active, causing footer to revert to 1450px height. Non-regression checks for tablet/desktop centering and no horizontal overflow all pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Footer.tsx",
+        "issue": "socialGap (44px) exceeds target (<=28px) at 390x844 phone width",
+        "selector": "[data-testid='footer-social-section']",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "Footer.tsx",
+        "issue": "linksGap (31px) exceeds target (<=24px) at 390x844 phone width",
+        "selector": "[data-testid='footer-link-columns-grid']",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "Footer.tsx",
+        "issue": "At 430px width, useDensePhoneFooter is not active (width >= 430), causing footer height to be 1450px (exceeds 1325px target)",
+        "selector": "[data-testid='platform-footer']",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Mobile Welcome Footer (390x844)",
+        "issues": [
+          "Gap between social section and links grid is 44px (target: <=28px)",
+          "Gap between links grid and disclaimer is 31px (target: <=24px)"
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/frontend/e2e/welcome-visual-regression.spec.ts"
+  ],
+  "action_items": [
+    "Reduce socialGap from 44px to <=28px at phone widths (390x844) - likely need to reduce marginBottom on brandCol or rowGap on inner container when useDensePhoneFooter is active",
+    "Reduce linksGap from 31px to <=24px at phone widths - likely need to reduce spacing between links grid and disclaimer shell",
+    "Consider extending useDensePhoneFooter threshold from 430px to 480px to cover iPhone 14 Pro Max (430px width)"
+  ],
+  "critical_code_review_comments": [
+    "useDensePhoneFooter flag (width < 430) correctly activates compact styling but gaps between sections still exceed e2e test thresholds",
+    "The brandCol marginBottom: 36 in styles contributes to the socialGap - this should be reduced when useDensePhoneFooter is active",
+    "The rowGap on inner container (line 783) is set to 8px for useDensePhoneFooter but the actual measured gaps are larger due to additional margins",
+    "Learn more link correctly stays above bottom bar with 31px gap - this is working as expected"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (skipped per request)",
+    "frontend": "70% - Footer compactness improved but 2 gap metrics still exceed targets"
+  },
+  "seed_data_creation": "",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Mobile footer compactness fix partially working. Footer height reduced from ~1485px to 1121px at 390x844. Two gaps still exceed targets: socialGap (44px vs <=28px) and linksGap (31px vs <=24px). The useDensePhoneFooter flag activates at width < 430 but the gap reductions are not sufficient. Non-regression checks for tablet/desktop centering all pass.",
+  "verification_results": {
+    "mobile_390x844": {
+      "viewport": "390x844",
+      "footerHeight": 1121,
+      "footerHeightTarget": "<=1325",
+      "footerHeightStatus": "PASS",
+      "socialHeight": 243,
+      "socialHeightTarget": "<=310",
+      "socialHeightStatus": "PASS",
+      "linksHeight": 315,
+      "linksHeightTarget": "<=350",
+      "linksHeightStatus": "PASS",
+      "newsletterGap": 8,
+      "newsletterGapTarget": "<=16",
+      "newsletterGapStatus": "PASS",
+      "socialGap": 44,
+      "socialGapTarget": "<=28",
+      "socialGapStatus": "FAIL",
+      "linksGap": 31,
+      "linksGapTarget": "<=24",
+      "linksGapStatus": "FAIL",
+      "disclaimerGap": 14,
+      "disclaimerGapTarget": "<=18",
+      "disclaimerGapStatus": "PASS",
+      "learnMoreAboveBottomBar": true,
+      "horizontalOverflow": false
+    },
+    "mobile_320x568": {
+      "viewport": "320x568",
+      "footerHeight": 1213,
+      "socialHeight": 320,
+      "linksHeight": 315,
+      "socialGap": 44,
+      "linksGap": 31,
+      "issues": ["socialHeight 320 > 310", "socialGap 44 > 28", "linksGap 31 > 24"]
+    },
+    "mobile_430x932": {
+      "viewport": "430x932",
+      "footerHeight": 1450,
+      "socialHeight": 375,
+      "linksHeight": 397,
+      "socialGap": 50,
+      "linksGap": 47,
+      "issues": ["footerHeight 1450 > 1325 (useDensePhoneFooter not active at 430px)", "socialHeight 375 > 310", "linksHeight 397 > 350", "socialGap 50 > 28", "linksGap 47 > 24"]
+    },
+    "tablet_768x1024": {
+      "heroCentered": true,
+      "careersBannerCentered": true,
+      "horizontalOverflow": false,
+      "status": "PASS"
+    },
+    "desktop_1180x900": {
+      "heroCentered": true,
+      "careersBannerCentered": true,
+      "horizontalOverflow": false,
+      "status": "PASS"
+    },
+    "desktop_1920x1080": {
+      "heroCentered": true,
+      "careersBannerCentered": true,
+      "horizontalOverflow": false,
+      "status": "PASS"
+    }
+  },
+  "before_after_comparison": {
+    "at_390x844": {
+      "footerHeight": {"before": "~1485px", "after": "1121px", "improvement": "364px reduction"},
+      "socialHeight": {"before": "~375px", "after": "243px", "improvement": "132px reduction"},
+      "linksHeight": {"before": "~397px", "after": "315px", "improvement": "82px reduction"},
+      "newsletterGap": {"before": "~20px", "after": "8px", "improvement": "12px reduction"},
+      "socialGap": {"before": "~50px", "after": "44px", "improvement": "6px reduction (still exceeds 28px target)"},
+      "linksGap": {"before": "~47px", "after": "31px", "improvement": "16px reduction (still exceeds 24px target)"},
+      "disclaimerGap": {"before": "~24px", "after": "14px", "improvement": "10px reduction"}
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "summary": "Feature 24 Learning Hub cinematic rebuild — backend 8/8 pytest pass, frontend main flows verified (momentum strip, cinema hero, 4 rails with UNIQUE cover images 48/48 200s, journey cover banners, enrollment CTA flip). One critical UI bug found: mark-complete does NOT trigger celebration overlay (setCelebration is never called with a payload).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "LessonPlayer.markComplete (EnterpriseLearningHubScreen.tsx:701)",
+        "issue": "Clicking the Complete button in the Lesson Playback modal only emits telemetry (event_type='complete') and updates lessonPlayer positionSeconds — it NEVER calls setCelebration(...). The <CelebrationOverlay payload={celebration}/> is wired at line 1911 but `celebration` state (line 218) is only reset (to null) via onNext/onClose. Result: the celebration overlay (data-testid=ai-learning-hub-celebration-overlay), title, next-lesson CTA and 'Keep going' close are dead code — they never render on Mark complete. Verified in browser: after clicking [data-testid=ai-learning-hub-lesson-player-complete-button], overlay=None, title=None, next=None, close=None.",
+        "selector": "[data-testid='ai-learning-hub-celebration-overlay']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Rail enroll button flip-to-Resume",
+        "issue": "After clicking [data-testid='ai-learning-hub-enroll-<course_id>'], the corresponding [data-testid='ai-learning-hub-enrolled-<course_id>'] Resume button was not immediately found in a subsequent DOM query. However, ACTIVE course count did increase 4 -> 5 in the KPI strip on reload, indicating the enrollment persisted server-side. The card likely re-renders under a different key or moves into 'Continue learning' rail. Recommend main-agent verify optimistic UI update state.",
+        "affected_selectors": ["[data-testid^='ai-learning-hub-enroll-']", "[data-testid^='ai-learning-hub-enrolled-']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "backend_verified": {
+    "public_cover_endpoint": "GET /api/ai-learn/course-cover/{id}.jpg — public (no auth), returns 1280x720 image/jpeg with Cache-Control header. Verified via JPEG SOF marker parsing.",
+    "cover_uniqueness": "Two different course_ids produce different SHA-256 hashes; unknown course_id returns generic 200 JPEG (not 500).",
+    "courses_cover_url": "48 courses returned, every row has cover_url = '/api/ai-learn/course-cover/{course_id}.jpg'.",
+    "enrollment_kickoff_email": "Fresh enroll -> exactly +1 row in db.email_sends with template_key='learning_hub_enrollment_kickoff' and subject containing 'enrolled'. Re-enroll on existing enrollment produces 0 new rows (idempotent).",
+    "regression": "hub-dashboard, my-learning-center, admin/integrity/status all 200 with expected shapes."
+  },
+  "frontend_verified": {
+    "momentum_strip": "ai-learning-hub-momentum-strip renders with all 4 tiles (streak/missions/minutes/insurance). Content shows day streak, x1.00 XP boost, 0/4 missions, 0 minutes goal 90m, 0 streak shields.",
+    "cinema_hero": "ai-learning-hub-cinema-hero + -title ('Enterprise AI Foundations for Builders') present. Resume CTA (-resume) shown because admin is already enrolled in the featured course — enroll CTA (-enroll) is intentionally absent in that state (expected behavior).",
+    "rails": "ai-learning-hub-rail-continue (4 items), -rail-ai (46), -rail-business (1), -rail-cybersecurity (1) all render.",
+    "cover_images": "53 <img> elements point to /api/ai-learn/course-cover/... — 48 network requests observed, ALL returned HTTP 200. Sample: course_seed_251d6401.jpg, course_d00e46542897.jpg, course_d7b018d4ecdf.jpg.",
+    "course_cards": "52 [data-testid^='ai-learning-hub-course-card-'] rendered, 43 -enroll- and 9 -enrolled- action buttons visible.",
+    "journey_tab": "data-testid='ai-learning-hub-tab-journey' clicks into journey view; 6 [data-testid^='ai-learning-hub-enrollment-cover-'] cover banners render at the top of each enrolled course card with real cover art (purple/teal AI-themed backdrops).",
+    "lesson_player": "Play button in journey opens lesson modal with [data-testid=ai-learning-hub-lesson-player-title]='Lesson Playback' and [data-testid=ai-learning-hub-lesson-player-complete-button] present.",
+    "responsive": "Verified 1920x4000 desktop and 390x844 mobile — momentum + hero render on all viewports; screenshots saved."
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature24_learning_cinema_iteration820.py",
+    "/app/test_reports/pytest/feature24_iter820.xml"
+  ],
+  "action_items": [
+    "CRITICAL: Fix markComplete in /app/frontend/src/components/learning-hub/EnterpriseLearningHubScreen.tsx line 701 to call setCelebration({courseId, lessonId, nextLesson, ...}) after successful telemetry. The CelebrationOverlay JSX (line 1911) and setCelebration setter (line 218) exist but are never populated. Without this, the celebration overlay + next-lesson autoplay CTA + confetti described in the review request are completely unreachable to users.",
+    "OPTIONAL: Investigate the two low-severity console errors during hub load (one 401 and one 403 on non-blocking endpoints) — they do not affect functionality but pollute the console."
+  ],
+  "critical_code_review_comments": [
+    "EnterpriseLearningHubScreen.tsx is 1928 lines — should be split into smaller focused modules per the >700-line guideline.",
+    "markComplete swallows errors from setError in emitLessonTelemetry but still returns ws=null; the celebration is expected to fire only on ws!=null, so once fixed, guard with `if (ws) setCelebration(...)`.",
+    "cinema-hero-enroll and cinema-hero-resume are mutually exclusive by design (only one is shown depending on enrollment state) — this is correct but not clearly documented in the spec; the test-fixture must select the right assertion."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_feature24_learning_cinema_iteration820.py"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 pytest)",
+    "frontend": "~85% (all discoverable data-testids render + cover images all 200; celebration overlay does not fire on mark-complete)"
+  },
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (login via POST /api/auth/login with X-Requested-With header set; session_token cookie is HttpOnly / SameSite=None; must be injected via page.request.post to give the browser context the cookie because /welcome auto-redirect + Cloudflare bot challenge make UI login unreliable in headless preview).",
+  "seed_data_creation": "None — used existing 48 seeded courses. Admin was already enrolled in 4 courses (5 after the automated enroll test).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend pytest at /app/backend/tests/test_feature24_learning_cinema_iteration820.py is regression-ready. To reach the Learning Hub in the browser, POST to /api/auth/login via page.request.post BEFORE navigating to /ai-learning-hub — the /welcome marketing landing does NOT contain a real login form (only newsletter subscription), and Cloudflare intermittently challenges. Journey tab testid is ai-learning-hub-tab-journey. Complete button testid is ai-learning-hub-lesson-player-complete-button.",
+  "rca_of_the_issue": "CelebrationOverlay never fires: The markComplete handler (line 701) emits lesson-complete telemetry via emitLessonTelemetry and updates lessonPlayer.positionSeconds, but it never invokes setCelebration({...}) with the finished lesson + next-lesson metadata. The CelebrationOverlay component is rendered conditionally on `celebration` state which stays null forever, so the overlay markup (data-testid=ai-learning-hub-celebration-overlay/-title/-next/-close) is unreachable. Fix: after `const ws = await emitLessonTelemetry(...)` succeeds, compute nextLesson (find next lesson in course.video_lessons after current lessonId) and call setCelebration({ courseId: lessonPlayer.courseId, lessonId: lessonPlayer.lessonId, title: lessonPlayer.title, nextLesson }). Then the onNext handler (already wired at line 1912) will call openCourseVideo(courseId, nextLesson) correctly."
+}

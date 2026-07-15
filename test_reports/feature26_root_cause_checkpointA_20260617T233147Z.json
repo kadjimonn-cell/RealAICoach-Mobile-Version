@@ -1,0 +1,171 @@
+{
+  "timestamp": "2026-06-17T23:31:47.503438Z",
+  "scope": "feature26_root_cause_checkpointA",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "admin_login_status": 200,
+  "gate_comparison": {
+    "strict_zero_exclude_false": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "failing_windows_count": 4,
+      "jobs_72h": {
+        "total_events": 17,
+        "raw_total_events": 17,
+        "synthetic_excluded_count": 0,
+        "active_users": 2,
+        "gate_met": false
+      },
+      "employers_72h": {
+        "total_events": 2,
+        "raw_total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": false
+      }
+    },
+    "strict_zero_exclude_true": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "failing_windows_count": 4,
+      "jobs_72h": {
+        "total_events": 2,
+        "raw_total_events": 17,
+        "synthetic_excluded_count": 15,
+        "active_users": 1,
+        "gate_met": false
+      },
+      "employers_72h": {
+        "total_events": 2,
+        "raw_total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": false
+      }
+    },
+    "near_zero_exclude_false": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "failing_windows_count": 4,
+      "jobs_72h": {
+        "total_events": 17,
+        "raw_total_events": 17,
+        "synthetic_excluded_count": 0,
+        "active_users": 2,
+        "gate_met": false
+      },
+      "employers_72h": {
+        "total_events": 2,
+        "raw_total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": true
+      }
+    },
+    "near_zero_exclude_true": {
+      "sustained_gate_met": true,
+      "ready_for_legacy_code_removal": true,
+      "failing_windows_count": 0,
+      "jobs_72h": {
+        "total_events": 2,
+        "raw_total_events": 17,
+        "synthetic_excluded_count": 15,
+        "active_users": 1,
+        "gate_met": true
+      },
+      "employers_72h": {
+        "total_events": 2,
+        "raw_total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": true
+      }
+    }
+  },
+  "telemetry_snapshot": {
+    "deprecation_14d": {
+      "total_events": 19,
+      "active_legacy_users": 2,
+      "remaining_legacy_operations": [
+        "candidate_save_job",
+        "employers_reverify"
+      ],
+      "top_operations": [
+        {
+          "operation": "candidate_save_job",
+          "count": 17
+        },
+        {
+          "operation": "employers_reverify",
+          "count": 2
+        }
+      ],
+      "top_legacy_endpoints": [
+        {
+          "endpoint": "/api/jobs/save/test_job_nonexistent_12345",
+          "count": 5
+        },
+        {
+          "endpoint": "/api/jobs/save/test_telemetry_job_12345",
+          "count": 4
+        },
+        {
+          "endpoint": "/api/jobs/save/job_admin_test_123",
+          "count": 3
+        },
+        {
+          "endpoint": "/api/jobs/save/job_metadata_test",
+          "count": 2
+        },
+        {
+          "endpoint": "/api/employers/reverify",
+          "count": 2
+        },
+        {
+          "endpoint": "/api/jobs/save/job_test_p2_123",
+          "count": 2
+        },
+        {
+          "endpoint": "/api/jobs/save/test_job_12345",
+          "count": 1
+        }
+      ],
+      "route_family_breakdown": [
+        {
+          "route_family": "jobs",
+          "count": 17
+        },
+        {
+          "route_family": "employers",
+          "count": 2
+        }
+      ]
+    },
+    "deprecation_30d": {
+      "total_events": 19,
+      "active_legacy_users": 2,
+      "remaining_legacy_operations": [
+        "candidate_save_job",
+        "employers_reverify"
+      ],
+      "route_family_breakdown": [
+        {
+          "route_family": "jobs",
+          "count": 17
+        },
+        {
+          "route_family": "employers",
+          "count": 2
+        }
+      ]
+    }
+  },
+  "root_cause_hypothesis": {
+    "primary": "Legacy-removal gates remain blocked by residual deprecation telemetry, dominated by jobs-family candidate_save_job events.",
+    "secondary": "Synthetic exclusion heuristics do not remove all test-generated legacy events (notably employers_reverify and some test-pattern variants), leaving non-zero counts even with exclude_synthetic=true.",
+    "tertiary": "Gate policy requires sustained all-window pass (72h/7d/14d/30d) for both families, so any residual events keep sustained_gate_met=false."
+  }
+}

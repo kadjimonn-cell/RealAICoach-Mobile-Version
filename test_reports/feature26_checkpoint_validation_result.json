@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-18T02:14:41.558835Z",
+  "validation_type": "feature26_checkpoint_validation",
+  "checkpoint_file": "/app/test_reports/feature26_root_cause_checkpointC_20260618T021249Z.json",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "tests": [
+    {
+      "test": "telemetry includes candidate_save_job",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "test": "telemetry includes employers_reverify",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "test": "candidate_save_job count",
+      "expected": 17,
+      "actual": 17,
+      "passed": true
+    },
+    {
+      "test": "employers_reverify count",
+      "expected": 2,
+      "actual": 2,
+      "passed": true
+    }
+  ],
+  "overall_status": "PASS"
+}

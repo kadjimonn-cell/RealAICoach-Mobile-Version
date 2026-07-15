@@ -1,0 +1,669 @@
+{
+  "timestamp": "2026-06-19T12:57:33.009588+00:00",
+  "scope": "feature26_phase_p1_5_read_parity_pack",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "admin_login": {
+    "status_code": 200,
+    "payload": {
+      "user_id": "user_4b5a68d2f7c6",
+      "email": "admin@realaicoach.app",
+      "name": "RealAICoach",
+      "subscription_plan": "premium",
+      "subscription_status": "active",
+      "is_admin": true,
+      "full_access": true,
+      "roles": [
+        "admin",
+        "premium",
+        "user"
+      ],
+      "role": "admin",
+      "email_verified": false,
+      "profile_image": "",
+      "welcome_back": true,
+      "last_active_route": "/dashboard",
+      "last_active_at": "2026-05-16T23:41:42.947005+00:00",
+      "theme_preference": "light",
+      "language_preference": "es",
+      "currency_preference": null,
+      "tenant_id": null,
+      "organization_id": null,
+      "company_id": null,
+      "workspace_id": null,
+      "tenant_disclaimer_profile": "default",
+      "risk_level": "medium",
+      "risk_score": 50,
+      "risk_engine_status": "ACTIVE",
+      "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 50\nRISK_LEVEL: MEDIUM\nTRIGGER: STEP_UP_MFA\nFALSE_POSITIVE_RATE: 1.0%\nSESSION_PROTECTION: MFA_CHALLENGE\nCONFIDENCE: 98.0%",
+      "e2e_otp_bypass_applied": false
+    }
+  },
+  "routes_compared": [
+    {
+      "route_name": "candidate_jobs_search",
+      "legacy": {
+        "path": "/api/jobs/search?q=engineer&page=1&limit=5",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "jobs",
+            "total"
+          ],
+          "list_sizes": {
+            "jobs": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/candidate/jobs/search?q=engineer&page=1&limit=5",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "jobs",
+            "total"
+          ],
+          "list_sizes": {
+            "jobs": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "candidate"
+    },
+    {
+      "route_name": "candidate_recommendations",
+      "legacy": {
+        "path": "/api/jobs/recommendations",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "recommendations",
+            "total"
+          ],
+          "list_sizes": {
+            "recommendations": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/candidate/recommendations",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "recommendations",
+            "total"
+          ],
+          "list_sizes": {
+            "recommendations": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "candidate"
+    },
+    {
+      "route_name": "candidate_my_applications",
+      "legacy": {
+        "path": "/api/jobs/my-applications?status=all",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "applications",
+            "total"
+          ],
+          "list_sizes": {
+            "applications": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/candidate/applications?status=all",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "applications",
+            "total"
+          ],
+          "list_sizes": {
+            "applications": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "candidate"
+    },
+    {
+      "route_name": "candidate_saved_jobs",
+      "legacy": {
+        "path": "/api/jobs/saved",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "jobs",
+            "saved_jobs",
+            "total"
+          ],
+          "list_sizes": {
+            "saved_jobs": 0,
+            "jobs": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/candidate/saved-jobs",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "jobs",
+            "saved_jobs",
+            "total"
+          ],
+          "list_sizes": {
+            "saved_jobs": 0,
+            "jobs": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "candidate"
+    },
+    {
+      "route_name": "candidate_analytics",
+      "legacy": {
+        "path": "/api/jobs/analytics",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "resume_score",
+            "saved_jobs",
+            "status_breakdown",
+            "total_applications"
+          ],
+          "list_sizes": {},
+          "scalar_keys": [
+            "resume_score",
+            "saved_jobs",
+            "total_applications"
+          ],
+          "dict_keys": [
+            "status_breakdown"
+          ]
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/candidate/analytics",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "resume_score",
+            "saved_jobs",
+            "status_breakdown",
+            "total_applications"
+          ],
+          "list_sizes": {},
+          "scalar_keys": [
+            "resume_score",
+            "saved_jobs",
+            "total_applications"
+          ],
+          "dict_keys": [
+            "status_breakdown"
+          ]
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "candidate"
+    },
+    {
+      "route_name": "candidate_portal_summary",
+      "legacy": {
+        "path": "/api/jobs/portal-summary",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "my_applications",
+            "saved_jobs",
+            "total_active_jobs"
+          ],
+          "list_sizes": {},
+          "scalar_keys": [
+            "my_applications",
+            "saved_jobs",
+            "total_active_jobs"
+          ],
+          "dict_keys": []
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/dashboard/summary",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "my_applications",
+            "saved_jobs",
+            "total_active_jobs"
+          ],
+          "list_sizes": {},
+          "scalar_keys": [
+            "my_applications",
+            "saved_jobs",
+            "total_active_jobs"
+          ],
+          "dict_keys": []
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "candidate"
+    },
+    {
+      "route_name": "employer_pipeline_board",
+      "legacy": {
+        "path": "/api/jobs/employer/pipeline-board?limit=20",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "applications",
+            "counts",
+            "generated_at",
+            "jobs",
+            "stages",
+            "total"
+          ],
+          "list_sizes": {
+            "stages": 6,
+            "jobs": 0,
+            "applications": 0
+          },
+          "scalar_keys": [
+            "generated_at",
+            "total"
+          ],
+          "dict_keys": [
+            "counts"
+          ]
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/employer/pipeline-board?limit=20",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "applications",
+            "counts",
+            "generated_at",
+            "jobs",
+            "stages",
+            "total"
+          ],
+          "list_sizes": {
+            "stages": 6,
+            "jobs": 0,
+            "applications": 0
+          },
+          "scalar_keys": [
+            "generated_at",
+            "total"
+          ],
+          "dict_keys": [
+            "counts"
+          ]
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": false,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "employer"
+    },
+    {
+      "route_name": "employer_offers",
+      "legacy": {
+        "path": "/api/jobs/employer/offers?limit=20",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "offers",
+            "total"
+          ],
+          "list_sizes": {
+            "offers": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/employer/offers?limit=20",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "offers",
+            "total"
+          ],
+          "list_sizes": {
+            "offers": 0
+          },
+          "scalar_keys": [
+            "total"
+          ],
+          "dict_keys": []
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": true,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "employer"
+    },
+    {
+      "route_name": "employer_kpi_header",
+      "legacy": {
+        "path": "/api/jobs/employer/kpi-header?window_days=30",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "counts",
+            "generated_at",
+            "kpis",
+            "window_days"
+          ],
+          "list_sizes": {},
+          "scalar_keys": [
+            "generated_at",
+            "window_days"
+          ],
+          "dict_keys": [
+            "counts",
+            "kpis"
+          ]
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/employer/kpi-header?window_days=30",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "counts",
+            "generated_at",
+            "kpis",
+            "window_days"
+          ],
+          "list_sizes": {},
+          "scalar_keys": [
+            "generated_at",
+            "window_days"
+          ],
+          "dict_keys": [
+            "counts",
+            "kpis"
+          ]
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": false,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "employer"
+    },
+    {
+      "route_name": "employer_sla_alerts",
+      "legacy": {
+        "path": "/api/jobs/employer/sla-alerts?limit=20",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "bottlenecks",
+            "generated_at",
+            "items",
+            "overdue_by_stage",
+            "overdue_total",
+            "thresholds_days"
+          ],
+          "list_sizes": {
+            "bottlenecks": 0,
+            "items": 0
+          },
+          "scalar_keys": [
+            "generated_at",
+            "overdue_total"
+          ],
+          "dict_keys": [
+            "overdue_by_stage",
+            "thresholds_days"
+          ]
+        }
+      },
+      "v2": {
+        "path": "/api/hiring/v2/employer/sla-alerts?limit=20",
+        "status_code": 200,
+        "summary": {
+          "keys": [
+            "bottlenecks",
+            "generated_at",
+            "items",
+            "overdue_by_stage",
+            "overdue_total",
+            "thresholds_days"
+          ],
+          "list_sizes": {
+            "bottlenecks": 0,
+            "items": 0
+          },
+          "scalar_keys": [
+            "generated_at",
+            "overdue_total"
+          ],
+          "dict_keys": [
+            "overdue_by_stage",
+            "thresholds_days"
+          ]
+        }
+      },
+      "comparison": {
+        "both_status_200": true,
+        "same_status": true,
+        "status_expected": true,
+        "exact_match": false,
+        "shape_match_with_counts": true,
+        "tolerance_ok": true,
+        "parity_equivalent": true,
+        "verdict": "pass"
+      },
+      "actor": "employer"
+    }
+  ],
+  "summary": {
+    "total_routes": 10,
+    "pass_routes": 10,
+    "pass_with_warning_routes": 0,
+    "fail_routes": 0,
+    "overall_verdict": "pass",
+    "next_action": "Use this parity pack for explicit v2 read parity sign-off decision."
+  },
+  "policy_guardrails": {
+    "legacy_read_pruning_executed": false,
+    "allowed_action": "read_parity_verification_only",
+    "blocked_action": "legacy_read_prune_or_delete_without_signoff_and_sustained_governance_gates"
+  },
+  "actor_logins": {
+    "candidate": {
+      "status_code": 200,
+      "payload": {
+        "user_id": "user_bf6ff5981dda",
+        "email": "jobs.free.final.90705154@gmail.com",
+        "name": "Jobs Free Final",
+        "subscription_plan": "free",
+        "subscription_status": "active",
+        "is_admin": false,
+        "full_access": false,
+        "roles": [
+          "user"
+        ],
+        "role": "user",
+        "email_verified": false,
+        "profile_image": "",
+        "welcome_back": false,
+        "last_active_route": "",
+        "last_active_at": "",
+        "theme_preference": null,
+        "language_preference": "en",
+        "currency_preference": null,
+        "tenant_id": null,
+        "organization_id": null,
+        "company_id": null,
+        "workspace_id": null,
+        "tenant_disclaimer_profile": "default",
+        "risk_level": "low",
+        "risk_score": 8,
+        "risk_engine_status": "ACTIVE",
+        "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 8\nRISK_LEVEL: LOW\nTRIGGER: NO_FRICTION\nFALSE_POSITIVE_RATE: 11.55%\nSESSION_PROTECTION: STANDARD_MONITORING\nCONFIDENCE: 61.5%",
+        "e2e_otp_bypass_applied": false
+      }
+    },
+    "employer": {
+      "status_code": 200,
+      "payload": {
+        "user_id": "user_e2e_employer_feature26",
+        "email": "e2e.employer.feature26@realaicoach.app",
+        "name": "Feature 26 E2E Employer",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "is_admin": false,
+        "full_access": false,
+        "roles": [
+          "premium",
+          "user"
+        ],
+        "role": "premium",
+        "email_verified": false,
+        "profile_image": "",
+        "welcome_back": false,
+        "last_active_route": "",
+        "last_active_at": "",
+        "theme_preference": null,
+        "language_preference": "en",
+        "currency_preference": null,
+        "tenant_id": null,
+        "organization_id": null,
+        "company_id": null,
+        "workspace_id": null,
+        "tenant_disclaimer_profile": "default",
+        "risk_level": "low",
+        "risk_score": 10,
+        "risk_engine_status": "ACTIVE",
+        "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 10\nRISK_LEVEL: LOW\nTRIGGER: NO_FRICTION\nFALSE_POSITIVE_RATE: 11.55%\nSESSION_PROTECTION: STANDARD_MONITORING\nCONFIDENCE: 61.5%",
+        "e2e_otp_bypass_applied": false
+      }
+    }
+  }
+}

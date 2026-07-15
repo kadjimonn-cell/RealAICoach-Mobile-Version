@@ -1,0 +1,82 @@
+{
+  "summary": "Welcome/Footer responsive guardrail verification PASSED after assertion-only correction. All guardrails now match live component behavior. The previously failing mobile-390 badge/state assertion now correctly checks for horizontal adjacency (same row) instead of vertical separation.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "test_assertion_issues": []
+  },
+  "test_report_links": [
+    "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+    "/app/frontend/e2e/platform-responsive-guardrails.spec.ts"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Corrected assertion in welcome-responsive-contract.spec.ts lines 167-168 now properly validates horizontal adjacency for compact mobile badge/state layout",
+    "All responsive guardrails verified working across mobile-390, compact-tablet (560-979), tablet (768+), and desktop (980+, 1320+) breakpoints",
+    "No horizontal overflow detected at any tested viewport",
+    "Component behavior confirmed: WelcomeCapabilityMatrix.tsx uses flexDirection: row for cardTopMeta on compact mobile"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "seed_data_creation": "None required - public route testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All Welcome/Footer responsive guardrails verified working. Key guardrails locked: (1) Capability matrix: 1 column at <768px, 2 columns at 768-1320px, 3 columns at >=1320px. (2) Compact mobile badge/state: horizontal adjacency (same row, badge left of state). (3) FAQ footer CTA: buttons centered at all widths, stacked column layout at <560px, row layout at >=560px. (4) Welcome footer: 2x2 layout at 560-979px, single-row at >=980px. (5) No horizontal overflow at any viewport.",
+  "test_results": {
+    "guardrails_verified": {
+      "capability_matrix_columns": {
+        "mobile_390": {"expected": 1, "actual": 1, "status": "PASS"},
+        "mid_700": {"expected": 1, "actual": 1, "status": "PASS"},
+        "tablet_768": {"expected": 2, "actual": 2, "status": "PASS"},
+        "desktop_1024": {"expected": 2, "actual": 2, "status": "PASS"},
+        "desktop_1365": {"expected": 3, "actual": 3, "status": "PASS"}
+      },
+      "compact_mobile_badge_state_adjacency": {
+        "mobile_390": {
+          "badgeTop": 1225,
+          "stateTop": 1225,
+          "topDiff": 0,
+          "badgeRight": 168,
+          "stateLeft": 174,
+          "horizontalAdjacencyPass": true,
+          "badgeLeftOfStatePass": true,
+          "status": "PASS"
+        }
+      },
+      "faq_footer_cta_centering": {
+        "mobile_390": {"rowDirection": "column", "allButtonsCentered": true, "status": "PASS"},
+        "mid_700": {"rowDirection": "row", "allButtonsCentered": true, "status": "PASS"}
+      },
+      "welcome_footer_layout": {
+        "mobile_390": {"expected_rows": ">=2", "actual_rows": 2, "status": "PASS"},
+        "mid_700": {"expected_rows": 2, "actual_rows": 2, "status": "PASS"},
+        "tablet_768": {"expected_rows": 2, "actual_rows": 2, "status": "PASS"},
+        "desktop_1024": {"expected_rows": 1, "actual_rows": 1, "status": "PASS"},
+        "desktop_1365": {"expected_rows": 1, "actual_rows": 1, "status": "PASS"}
+      },
+      "horizontal_overflow": {
+        "mobile_390": "PASS - no overflow",
+        "mid_700": "PASS - no overflow",
+        "tablet_768": "PASS - no overflow",
+        "desktop_1024": "PASS - no overflow",
+        "desktop_1365": "PASS - no overflow"
+      }
+    },
+    "corrected_assertion_verification": {
+      "file": "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+      "lines": "167-168",
+      "old_assertion": "expect(capability?.badgeOverlap).toBeFalsy() - incorrectly expected vertical separation",
+      "new_assertion": "expect(Math.abs(badgeTop - stateTopRaw)).toBeLessThanOrEqual(10) AND expect(badgeRight).toBeLessThanOrEqual(stateLeft + 4) - correctly checks horizontal adjacency",
+      "component_behavior": "WelcomeCapabilityMatrix.tsx line 309: cardTopMeta uses flexDirection: compact ? 'row' : 'column'",
+      "status": "PASS - assertion now matches component behavior"
+    }
+  }
+}

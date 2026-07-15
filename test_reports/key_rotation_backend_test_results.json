@@ -1,0 +1,145 @@
+{
+  "total": 23,
+  "passed": 23,
+  "failed": 0,
+  "tests": [
+    {
+      "name": "Admin Login",
+      "passed": true,
+      "details": "Token length: 236 chars",
+      "timestamp": "2026-05-16T15:42:35.841024"
+    },
+    {
+      "name": "Readiness Endpoint Returns 200",
+      "passed": true,
+      "details": "Response size: 3974 bytes",
+      "timestamp": "2026-05-16T15:42:38.828264"
+    },
+    {
+      "name": "Readiness Response Valid JSON",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:38.828323"
+    },
+    {
+      "name": "Readiness Has Required Keys",
+      "passed": true,
+      "details": "Found: ['providers', 'summary', 'preflight_gate']",
+      "timestamp": "2026-05-16T15:42:38.828332"
+    },
+    {
+      "name": "Readiness Providers is Array",
+      "passed": true,
+      "details": "Count: 8",
+      "timestamp": "2026-05-16T15:42:38.828337"
+    },
+    {
+      "name": "Readiness Summary is Object",
+      "passed": true,
+      "details": "Keys: ['total', 'ready', 'blocked', 'api_apply_ready', 'manual_required', 'guarded', 'adapter_missing']",
+      "timestamp": "2026-05-16T15:42:38.828346"
+    },
+    {
+      "name": "Preflight Gate Has Checks Array",
+      "passed": true,
+      "details": "Checks count: 4",
+      "timestamp": "2026-05-16T15:42:38.828352"
+    },
+    {
+      "name": "Prepare Endpoint Returns 200",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:38.888361"
+    },
+    {
+      "name": "Prepare Response Valid JSON",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:38.888415"
+    },
+    {
+      "name": "Prepare Returns plan_id and approval_token",
+      "passed": true,
+      "details": "plan_id: keyrot_plan_799cadf288e2...",
+      "timestamp": "2026-05-16T15:42:38.888422"
+    },
+    {
+      "name": "Approve Endpoint Returns 200",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:38.980799"
+    },
+    {
+      "name": "Approve Response Valid JSON",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:38.980823"
+    },
+    {
+      "name": "Approve Sets Status to 'approved'",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:38.980827"
+    },
+    {
+      "name": "Apply Endpoint Returns 200",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:42.628487"
+    },
+    {
+      "name": "Apply Response Valid JSON",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:42.628515"
+    },
+    {
+      "name": "Apply Returns run_id",
+      "passed": true,
+      "details": "run_id: keyrot_run_2f6e7af2311c",
+      "timestamp": "2026-05-16T15:42:42.628521"
+    },
+    {
+      "name": "Evidence Endpoint Returns 200",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:42.710469"
+    },
+    {
+      "name": "Evidence Response Valid JSON",
+      "passed": true,
+      "details": "",
+      "timestamp": "2026-05-16T15:42:42.710574"
+    },
+    {
+      "name": "Evidence Has Required Sections",
+      "passed": true,
+      "details": "Found: ['run', 'steps', 'evidence', 'incidents', 'rollbacks']",
+      "timestamp": "2026-05-16T15:42:42.710593"
+    },
+    {
+      "name": "Evidence Steps is Array",
+      "passed": true,
+      "details": "Count: 8",
+      "timestamp": "2026-05-16T15:42:42.710599"
+    },
+    {
+      "name": "Evidence Steps Have adapter_result and Valid Status",
+      "passed": true,
+      "details": "payments_stripe: status=api_apply_failed; payments_paypal: status=api_apply_failed; payments_fedapay: status=api_apply_failed",
+      "timestamp": "2026-05-16T15:42:42.710608"
+    },
+    {
+      "name": "Preflight Gate Has Window/Refresh Behavior",
+      "passed": true,
+      "details": "No explicit window/refresh_behavior (may use policy prerequisite volatility)",
+      "timestamp": "2026-05-16T15:42:42.801120"
+    },
+    {
+      "name": "Preflight Window - Apply Does Not Hard-Block",
+      "passed": true,
+      "details": "Apply executed with status: completed_with_blocked_providers, run_id: keyrot_run_e098d389d36a",
+      "timestamp": "2026-05-16T15:42:45.617332"
+    }
+  ]
+}

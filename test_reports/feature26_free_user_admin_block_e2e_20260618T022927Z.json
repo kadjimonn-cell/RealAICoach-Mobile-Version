@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-06-18T02:28:53.971605Z",
+  "scope": "feature26_free_user_admin_block_e2e",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "accounts": {
+    "free_non_otp": "jobs.free.final.90705154@gmail.com",
+    "admin": "admin@realaicoach.app"
+  },
+  "results": {
+    "free_login_api_statuses": [
+      200
+    ],
+    "free_admin_attempt": {
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/",
+      "admin_route_testid_count": 0,
+      "admin_title_testid_count": 0,
+      "verdict": "blocked_from_admin_surface"
+    },
+    "free_allowed_route_check": {
+      "route": "/job-platform-candidate",
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate",
+      "candidate_route_testid_count": 1,
+      "verdict": "allowed_route_reachable"
+    },
+    "admin_login_api_statuses": [
+      200
+    ],
+    "admin_route_check": {
+      "route": "/job-platform-admin",
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+      "admin_route_testid_count": 1,
+      "admin_title_testid_count": 1,
+      "verdict": "admin_route_reachable"
+    },
+    "admin_login_control_status": 200
+  },
+  "overall_verdict": "pass",
+  "notes": [
+    "Validation executed on current codebase and global locked protocol context.",
+    "No legacy read route pruning/deletion executed."
+  ]
+}

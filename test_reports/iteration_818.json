@@ -1,0 +1,36 @@
+{
+  "summary": "Iter818 — Rich social sharing for public FPS match cards validated end-to-end. Backend (43/43 PASS in ~5.7s): new test_iter818_fps_social_share.py 16/16 PASS covering (a) PNG social-preview 1200x630 for valid id (image/png, ~37KB), (b) invalid id -> 200 placeholder PNG (1200x630) matching SVG/certificate pattern, (c) no-auth access, (d) JSON regression 200/404 preserved, (e) SVG regression 200 image/svg+xml preserved, (f) /fps-match/{id} raw HTML injects og:title 'FPS Match Card — RealAICoach Arena', og:image pointing to the /api PNG endpoint on the correct external domain, og:image:width=1200, og:image:height=630, og:url, twitter:card=summary_large_image, AND default og:image (realaicoach.app/og-image.png) STRIPPED, (g) /welcome regression retains the default og:image with unchanged og:title. Plus iter817_fps_public_match_card.py 7/7, checkpoint_b_public.py 8/8, feature22_games_station.py 12/12 all PASS. Frontend (Playwright, logged-out): /fps-match/fps_debb2b560228 renders VICTORY 2/0 card + fps-match-share-title ('Share this match') + fps-match-share-row with all 7 buttons (X, Facebook, LinkedIn, WhatsApp, Telegram, Reddit, Email). Popup verification: X -> x.com/intent/tweet with url=…/fps-match/fps_debb2b560228; Facebook -> facebook.com/sharer/sharer.php?u=…; LinkedIn -> linkedin.com sharing flow (login redirect includes shareArticle url); WhatsApp -> api.whatsapp.com/send/?text=…/fps-match/…. Email button present (mailto — no popup in headless, expected). fps-match-share-more absent in headless (expected — navigator.share undefined). Share hint text mentions TikTok, YouTube, Instagram AND 'device share menu'. No raw i18n keys visible anywhere. Regressions: /fps-match/fps_doesnotexist renders fps-match-not-found + signin-cta; signin-cta click navigates to /auth/login; RBAC redirects logged-out /features/fps-game to /welcome?return_to=%2Ffeatures&auth_reason=unauthenticated; fps-match-copy-link flips 'Copy link' -> 'Link copied'.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter818_fps_social_share.py",
+    "/app/test_reports/pytest/iter818_social_share.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "backend/routes/games_station.py _render_match_card_png: correctly returns 1200x630 image/png without auth; invalid id renders a placeholder PNG (200) matching the OG-friendly pattern used for SVG/certificate — good consistency.",
+    "frontend/serve-production.js injectFpsMatchOg: default site og:*/twitter:* meta tags are STRIPPED only for /fps-match/{id} paths (verified via curl on /welcome that defaults are preserved) — scope is correctly limited to dynamicRoutePrefixes.",
+    "SHARE_TARGETS array covers X, Facebook, LinkedIn, WhatsApp, Telegram, Reddit, Email; all use encoded url params containing the match public URL — correct.",
+    "'More' native-share button only renders when navigator.share exists; not present in headless Chromium — matches design intent.",
+    "Share row has clear hint text ('TikTok, YouTube, Instagram and other apps are available via your device share menu') — good UX communication for platforms without web share intents.",
+    "Email button uses mailto (no href attribute in DOM — likely bound via onclick to window.location); consider adding native href='mailto:?body=<url>' for progressive enhancement so right-click 'copy email link' works, though functional today.",
+    "No raw i18n keys visible on the public page — translation coverage complete for share row + hint text."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter818_fps_social_share.py (NEW — 16 tests, all PASS)"
+  ],
+  "success_rate": {"backend": "100% (43/43: 16 new + 7 iter817 + 8 checkpoint_b + 12 feature22)", "frontend": "100% (share row 7/7 buttons + 4/4 popup targets verified, hint text, no i18n keys, copy-link flip, 404 state, RBAC, signin CTA)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (not required — all tests run logged-out).",
+  "seed_data_creation": "None — reused existing match ids fps_debb2b560228 (VICTORY 2/0) and fps_caa911d0104e (DEFEAT 0/2).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iter818 social sharing feature is GREEN. Re-run backend regression: `REACT_APP_BACKEND_URL='https://visa-polish-v2.preview.emergentagent.com' TEST_ADMIN_PASSWORD='NewAdminPass2026!' python -m pytest backend/tests/test_iter818_fps_social_share.py backend/tests/test_iter817_fps_public_match_card.py backend/tests/test_checkpoint_b_public.py backend/tests/test_feature22_games_station.py -v` (43 tests, ~6s). Frontend re-test flow: (1) GET /fps-match/fps_debb2b560228 logged-out -> card + share row + all 7 testids present; (2) click X/Facebook/LinkedIn/WhatsApp -> popups to expected intent URLs containing /fps-match/fps_debb2b560228; (3) curl same URL raw HTML -> og:image=…/api/games-station/match-card/…/social-preview.png + twitter:card=summary_large_image + NO realaicoach.app/og-image.png; (4) curl /welcome -> default og:image STILL present. DO NOT restart supervisor services or run yarn export:web per main-agent note (would trigger 8-min rebuild + 502s). 'More' native-share button intentionally absent in headless — do not treat as failure.",
+  "rca of the issue": "N/A — no bugs found. The feature is fully wired: (1) new /api/games-station/match-card/{id}/social-preview.png endpoint uses Pillow + Liberation fonts to render 1200x630 PNG and gracefully falls back to a placeholder PNG for invalid ids (200 by design); (2) serve-production.js injectFpsMatchOg correctly strips existing og:*/twitter:* meta tags for /fps-match/{id} paths only, then injects per-match OG tags with the external public URL so social crawlers see the match image first; (3) frontend SHARE_TARGETS array + openShare/nativeShare wires up X/Facebook/LinkedIn/WhatsApp/Telegram/Reddit/Email with correctly-encoded url params; (4) Web Share API 'More' button conditionally rendered only when navigator.share exists (correct headless behavior)."
+}

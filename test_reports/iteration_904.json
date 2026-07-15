@@ -1,0 +1,86 @@
+{
+  "summary": "Anthropic Claude Chat Models integration — Backend 100% PASS (6/6 pytest), Frontend model picker & per-message model send-and-receive works with real Claude Sonnet 4.6 & Haiku 4.5 responses, but the ASSISTANT MESSAGE HEADER does NOT render the model label — it only shows 'NOVA' instead of the spec-required 'NOVA · CLAUDE SONNET 4.6'. The `data-testid=chat-message-model-{i}` element is not implemented in the source. `modelLabel` is stored in state and returned by backend but never rendered in the header. All other acceptance criteria met.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "AIChatPanel.tsx (assistant message header, around line 605-611)",
+        "issue": "Spec requires assistant message header to render 'NOVA · <MODEL_LABEL>' (e.g. 'NOVA · CLAUDE SONNET 4.6') and expose a data-testid `chat-message-model-{i}`. Actual header renders only the static string 'Nova' (uppercased via textTransform). The `msg.modelLabel` value IS correctly plumbed through (state line 22, populated on send response line 267, hydrated from history line 182) but never rendered into a <Text> element. So users cannot see which model produced each message, and automation cannot select by the required testid.",
+        "selector": "AIChatPanel.tsx line 610 (the <Text>Nova</Text> inside the non-user header row)",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "AI Chat panel — sidebar",
+        "issues": [
+          "Pre-existing (per handoff note): every conversation row in the Conversations sidebar shows 'Invalid Date' below the message count. Not new to this feature; call out to main agent for a follow-up."
+        ]
+      }
+    ]
+  },
+  "backend_verification": {
+    "get_models": "PASS — default=gpt-4o, models=[gpt-4o(openai), claude-sonnet-4-6(anthropic, label 'Claude Sonnet 4.6'), claude-haiku-4-5(anthropic, label 'Claude Haiku 4.5')], each with description.",
+    "send_message_claude_sonnet_4_6": "PASS — assistant_message.model='claude-sonnet-4-6', model_label='Claude Sonnet 4.6', provider='anthropic', real Claude content returned.",
+    "send_message_claude_haiku_4_5": "PASS — assistant_message.model='claude-haiku-4-5', model_label='Claude Haiku 4.5', provider='anthropic', real Claude content returned.",
+    "invalid_model_fallback": "PASS — 'bogus-x' silently falls back to gpt-4o (assistant_message.model='gpt-4o', provider='openai').",
+    "omitted_model_defaults": "PASS — omitted model field defaults to gpt-4o with model_label='GPT-4o'.",
+    "history_projection_model_label": "PASS — GET /sessions/{id} messages include model_label on assistant messages (projection fix in _fetch_recent_messages verified in code line 238)."
+  },
+  "frontend_verification": {
+    "login_free_user": "PASS — cookie session established (bootstrap 401 transient then session_renew_success).",
+    "ai_writer_ai_chat_tab": "PASS — data-testid feature-layout-tab-ai-writer-chat present and clickable.",
+    "model_picker_row": "PASS — data-testid ai-chat-model-picker present.",
+    "model_picker_pills": "PASS — all 3 pills present: ai-chat-model-option-gpt-4o, ai-chat-model-option-claude-sonnet-4-6, ai-chat-model-option-claude-haiku-4-5.",
+    "default_selected_gpt4o": "PASS — GPT-4o pill highlighted (green fill) on initial load.",
+    "select_claude_sonnet_and_send": "PASS — Sonnet pill highlights on click, message sends, real Claude response arrives in ~10-20s, assistant bubble rendered.",
+    "select_claude_haiku_and_send_same_session": "PASS — Haiku pill highlights, message sends in the same session_id, real Claude Haiku response arrives, both bubbles co-exist in the same conversation (multi-turn per-message switching works at the backend level).",
+    "assistant_header_shows_model_label": "FAIL — Header shows only 'NOVA'; the ' · CLAUDE SONNET 4.6' / ' · CLAUDE HAIKU 4.5' suffix from `msg.modelLabel` is not rendered.",
+    "chat_message_model_i_testid_present": "FAIL — 0 elements with data-testid matching /^chat-message-model-/ (spec requires 1 per assistant bubble).",
+    "persistence_after_reload": "NOT EXPLICITLY TESTED via reload, but backend history projection returns model_label; UI won't display it anyway due to the missing render (same header bug).",
+    "responsive_390_no_overflow": "PASS — ai-chat-model-picker width=358 within docWidth 390, no horizontal overflow, pills wrap/scroll cleanly."
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_personal_assistant_claude_models.py",
+    "/app/test_reports/pytest/iter904_claude_models.xml",
+    "/app/test_reports/screenshots/iter904_chat_picker.png",
+    "/app/test_reports/screenshots/iter904_after_sonnet.png",
+    "/app/test_reports/screenshots/iter904_after_haiku.png",
+    "/app/test_reports/screenshots/iter904_mobile390.png"
+  ],
+  "action_items": [
+    "HIGH: In /app/frontend/src/components/AIChatPanel.tsx around line 610, render `msg.modelLabel` next to 'Nova'. Suggested change: replace <Text>Nova</Text> with a <Text data-testid={`chat-message-model-${i}`} testID={`chat-message-model-${i}`}>{msg.modelLabel ? `Nova · ${msg.modelLabel}` : 'Nova'}</Text>. Then rebuild the static Expo web export so localhost:3000 picks it up.",
+    "MEDIUM: After the header fix, re-run frontend E2E to confirm header text 'NOVA · CLAUDE SONNET 4.6' / 'NOVA · CLAUDE HAIKU 4.5' and verify persistence on reload / sidebar re-open of same conversation.",
+    "LOW (pre-existing, out of scope for this feature): Sidebar shows 'Invalid Date' on every conversation row — fix the updated_at date formatting."
+  ],
+  "critical_code_review_comments": [
+    "personal_assistant.py: DEFAULT_CHAT_MODEL fallback (line 419-421) is a good silent-fallback pattern. Consider logging a warning when an unknown model key is submitted so misconfiguration is visible in observability.",
+    "personal_assistant.py DELETE /sessions/{id} (line 507) targets `db.assistant_sessions` and `db.assistant_messages` collections, but every other endpoint in the file writes to `db.personal_assistant_sessions` and `db.personal_assistant_messages`. This DELETE endpoint is a dead-op (always returns 404 or silently deletes 0 messages). Not related to Claude integration but worth fixing.",
+    "AIChatPanel.tsx: the ChatMessage interface already carries `modelLabel` and is populated from backend, but the render layer drops it entirely. Storing without displaying is worse than not storing — please wire the header render as the ONE-liner fix above.",
+    "CHAT_MODELS dict is fine as an in-file dict but as the model catalog grows, consider extracting to a small yaml/json config plus a Pydantic validator so a new model is one config change with no code diff.",
+    "personal_assistant.py line 466 uses `.with_model(model_cfg['provider'], model_cfg['model'])` — good. Consider passing max_tokens / temperature per model config to give the picker more meaningful control."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_personal_assistant_claude_models.py (NEW)"
+  ],
+  "success_rate": {
+    "backend": "100% (6/6 pytest passed)",
+    "frontend": "~78% — model picker, defaults, pill selection, per-model send/receive, mobile responsiveness all PASS; assistant header model-label display and `chat-message-model-{i}` testid are MISSING."
+  },
+  "test_credentials": "Free user: p1.free.1779113329@example.com / P1Free#2026!Aa (used for both backend cookie-auth pytest and frontend Playwright E2E)",
+  "seed_data_creation": "One test session created via API: title='TEST_claude_models_session'. Backend tests use best-effort cleanup via DELETE, but note the DELETE endpoint bug above means the session likely persists — visible in the sidebar screenshots.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend is fully working — 6-test suite at /app/backend/tests/test_personal_assistant_claude_models.py can be re-used verbatim for regression. Frontend: static Expo web export served on localhost:3000; DO NOT expect hot reload. After the header fix in AIChatPanel.tsx line ~610, main agent must rebuild the Expo web export before re-testing. When testing via Playwright, use the localhost:3000 base URL (Cloudflare blocks external). Login: fill 2 inputs and press Enter — first attempt may leave URL on /auth/login but session cookie IS set (subsequent nav auth via session_renew). Chat input is a TextInput without a testid — locate via placeholder containing 'message'. Send is triggered by Enter key. Assistant bubble testid pattern is `chat-message-{i}-assistant`. Model pill testid: `ai-chat-model-option-{key}`. GPT-4o is the default and is visually highlighted (teal/green background) — Sonnet/Haiku pills flip highlight on click. LLM responses take ~5-20s; sleep 20s for reliability.",
+  "rca_of_the_issue": {
+    "missing_model_label_in_assistant_header": {
+      "reproduction": "1) Login as free user 2) goto /features/ai-writer 3) click AI Chat tab 4) select 'Claude Sonnet 4.6' pill 5) send any short message 6) wait for response 7) inspect the assistant bubble header — it says only 'NOVA' with no model suffix; querySelectorAll('[data-testid^=\"chat-message-model-\"]').length === 0.",
+      "root_cause": "In /app/frontend/src/components/AIChatPanel.tsx around line 610, the assistant header renders <Text>Nova</Text> as a static string. The message state carries `modelLabel` (interface line 22, hydrated on send line 267, from history line 182), but it is never composed into the header text nor exposed with the required data-testid `chat-message-model-{i}`. Backend correctly returns model_label — the entire gap is one line of React Native/Web JSX.",
+      "mitigation": "Replace the static Nova header <Text> with: <Text data-testid={`chat-message-model-${i}`} testID={`chat-message-model-${i}`} style={...unchanged...}>{msg.modelLabel ? `Nova · ${msg.modelLabel}` : 'Nova'}</Text>. Then rebuild the Expo web export. Consider uppercasing consistently (already textTransform: 'uppercase' inline). No backend changes needed."
+    }
+  }
+}

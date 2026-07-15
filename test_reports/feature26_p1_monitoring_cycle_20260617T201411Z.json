@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-06-17T20:14:11Z",
+  "source": "/app/feature26_monitoring_results.json",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "monitoring_cycle_status": "pass",
+  "snapshot": {
+    "deprecation_total_events": 19,
+    "deprecation_active_legacy_users": 2,
+    "deprecation_migration_progress_pct": 92.0,
+    "retirement_phase": "observe",
+    "retirement_target_phase_gate_ready": true,
+    "strict_sustained_gate_met": false,
+    "strict_ready_for_legacy_code_removal": false,
+    "near_zero_sustained_gate_met": false,
+    "near_zero_ready_for_legacy_code_removal": false
+  },
+  "policy_decision": "continue_monitoring_no_pruning",
+  "legacy_read_pruning_executed": false
+}

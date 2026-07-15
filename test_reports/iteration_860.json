@@ -1,0 +1,26 @@
+{
+  "summary": "Iteration 860 verification of Global PDF v15 policy RETIREMENT and canonical subscription pricing on receipt PDF. Backend: 106/106 existing pytest tests pass (test_pdf_v15_global_overlay_contract, test_receipt_invoice_pro_pdf, test_receipt_email_v7_fingerprint, test_receipt_pdf_pro_e2e_iter857, test_receipt_pdf_pro_fixverify_iter858, test_job_search_documents_pdf, test_gtec_c5_executive_pdf_v2, test_offer_letter_pro_pdf). New live E2E suite test_iter860_v15_retirement_live.py 8/8 pass against the public preview URL as free user + admin, covering: (a) GET /api/r/f?d=r&p=txn_a98b73968e034fe7 -> 200 application/pdf, filename Content-Disposition contains NO '-v15-' token, PDF text contains ZERO occurrences of 'PDF v15' / 'RealAICoach PDF v15' / 'GLOBAL PDF V15 POLICY ACTIVE', branded header tokens present ('Enterprise Payment Confirmation', 'Official Enterprise Document', 'RECEIPT', 'PAYMENT TIMELINE', 'TOTAL YOU PAY', 'HASH', 'SIGN'), canonical pricing tokens found ('USD 5.99' + total 'USD 6.69'); (b) invoice via /api/r/f?d=i for free user -> 403; (c) /api/content/document receipt as free user -> 200 PDF, no v15 tokens; (d) /api/content/document unauth -> 401; (e) invalid doc_type -> 400/422; (f) /api/r/x?f=p payment-history export -> 200 PDF, no v15 tokens, no x-pdf-theme-policy=enforced-v15 header; (g) admin /api/id-checker/admin/export/pdf -> 200 PDF, no v15 tokens; (h) MongoDB subscription_plans confirmed Basic monthly_price=5.99, Premium monthly_price=15.99. Frontend: dist bundle grep confirms ZERO 'PDF v15' occurrences and 'Email Full PDF Suite' rename shipped; earlier iter_859 UI test on same PaymentHistoryV2 bundle already verified gating behavior. UI Playwright reproduction was truncated by a Cloudflare bot-verification challenge triggered by rapid retries during selector debugging (not a product bug); after successful login (P1 Free Sanity dashboard rendered) subsequent navigation was blocked by Cloudflare Ray a19d578aca270bc6 — retest via fresh session recommended if strictly required, but network/PDF verification via authenticated requests session covered all acceptance criteria.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_iter860_v15_retirement_live.py",
+    "/app/backend/tests/test_pdf_v15_global_overlay_contract.py",
+    "/app/test_reports/pytest/iteration_860_pytest.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "middleware_pdf_policy.enforce_pdf_v15_theme_bytes correctly returns ('policy_retired', payload) passthrough with unmodified bytes (verified by contract test).",
+    "utils/pdf_v15_export.enforce_pdf_v15_enterprise is a strict passthrough that still rejects non-PDF bytes with 'pdf-export-invalid-bytes' — good defense-in-depth.",
+    "server.py no longer mounts PdfVersionPolicyMiddleware (asserted in test_middleware_not_mounted_in_server).",
+    "Filename helper pdf_v15_filename.py no longer emits '-v15-' token; Content-Disposition observed on live receipt confirms clean naming.",
+    "Canonical pricing enforcement holds: PDF renders 'USD 5.99' base + 'USD 6.69' total consistent with subscription_plans.basic.monthly_price=5.99."
+  ],
+  "updated_files": ["/app/backend/tests/test_iter860_v15_retirement_live.py"],
+  "success_rate": {"backend": "100% (106 existing + 8 new = 114/114)", "frontend": "bundle-grep-verified; UI navigation partially blocked by Cloudflare bot-check but iter_859 flow validated"},
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa; Admin: admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md).",
+  "seed_data_creation": "None. Used existing txn_a98b73968e034fe7 payment for the free user.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Global PDF v15 policy is confirmed RETIRED across all live PDF endpoints tested (receipt via /api/r/f?d=r, content-document receipt, /api/r/x?f=p payment history export, /api/id-checker/admin/export/pdf admin export). Filenames no longer carry '-v15-'. Canonical pricing 5.99/15.99 verified both in mongo and PDF text. All 106 pre-existing pytest + 8 new live tests pass. Frontend production bundle contains no 'PDF v15' text and hiring label is 'Email Full PDF Suite'. If UI E2E is required in the future, avoid rapid re-navigation (Cloudflare bot-verification kicked in during this run) — use one login attempt then navigate and prefer test-id selectors: [data-testid=login-email-input], [data-testid=login-password-input], [data-testid=login-submit-button]. NO email endpoints were called (strict exactly-once policy respected).",
+  "rca of the issue": "Not applicable — verification pass only. Root cause of prior v15 overlay was PdfVersionPolicyMiddleware mounted in server.py wrapping every PDF response with overlay bytes; main agent unmounted the middleware and refactored enforce_pdf_v15_theme_bytes + enforce_pdf_v15_enterprise into validated passthroughs, which is now contract-locked by test_pdf_v15_global_overlay_contract.py."
+}

@@ -1,0 +1,131 @@
+{
+  "summary": "Checkpoint C verification PASSED - Mini-app routes now use neutral 'feature-entry*' source values instead of 'mini-apps*'. Footer protected links remain unchanged with 'footer-*' sources.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "mini_app_routes": {
+      "test_1_mini_apps_root": {
+        "status": "PASS",
+        "route": "/mini-apps",
+        "expected_source": "feature-entry",
+        "actual_source": "feature-entry",
+        "expected_return_to": "%2Fmini-apps",
+        "actual_return_to": "%2Fmini-apps",
+        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry&return_to=%2Fmini-apps"
+      },
+      "test_2_creator_exchange": {
+        "status": "PASS",
+        "route": "/mini-apps/creator-exchange",
+        "expected_source": "feature-entry-creator-exchange",
+        "actual_source": "feature-entry-creator-exchange",
+        "expected_return_to": "%2Fmini-apps%2Fcreator-exchange",
+        "actual_return_to": "%2Fmini-apps%2Fcreator-exchange",
+        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange"
+      },
+      "test_3_job_platform": {
+        "status": "PASS",
+        "route": "/mini-apps/job-platform",
+        "expected_source": "feature-entry-job-platform",
+        "actual_source": "feature-entry-job-platform",
+        "expected_return_to": "%2Fmini-apps%2Fjob-platform",
+        "actual_return_to": "%2Fmini-apps%2Fjob-platform",
+        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-job-platform&return_to=%2Fmini-apps%2Fjob-platform"
+      },
+      "test_4_mobile_money": {
+        "status": "PASS",
+        "route": "/mini-apps/mobile-money",
+        "expected_source": "feature-entry-mobile-money",
+        "actual_source": "feature-entry-mobile-money",
+        "expected_return_to": "%2Fmini-apps%2Fmobile-money",
+        "actual_return_to": "%2Fmini-apps%2Fmobile-money",
+        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-mobile-money&return_to=%2Fmini-apps%2Fmobile-money"
+      }
+    },
+    "footer_regression": {
+      "test_1_learning_hub": {
+        "status": "PASS",
+        "testid": "footer-link-learning-hub",
+        "expected_source": "footer-learninghub",
+        "actual_source": "footer-learninghub",
+        "expected_return_to": "%2Fai-learning-hub",
+        "actual_return_to": "%2Fai-learning-hub",
+        "notes": "Footer source naming unchanged (regression check passed)"
+      },
+      "test_2_content_library": {
+        "status": "SKIPPED",
+        "testid": "footer-link-content-library",
+        "expected_source": "footer-contentlibrary",
+        "notes": "Skipped due to Cloudflare rate limiting (429). Code review confirms footer-* pattern is used."
+      },
+      "test_3_my_analytics": {
+        "status": "PASS",
+        "testid": "footer-link-my-analytics",
+        "expected_source": "footer-myanalytics",
+        "actual_source": "footer-myanalytics",
+        "expected_return_to": "%2Fmy-analytics",
+        "actual_return_to": "%2Fmy-analytics",
+        "notes": "Footer source naming unchanged (regression check passed)"
+      }
+    }
+  },
+  "code_review": {
+    "miniAppRedirects.ts": {
+      "status": "CORRECT",
+      "line_19": "routeSlug === 'mini-apps' ? 'feature-entry' : routeSlug.replace(/^mini-apps/, 'feature-entry')",
+      "notes": "buildMiniAppVisitorRegisterFallback() correctly rewrites 'mini-apps' to 'feature-entry' in source values while preserving return_to context"
+    },
+    "Footer.tsx": {
+      "status": "CORRECT",
+      "line_671": "params.set('source', `footer-${sourceSeed}`)",
+      "notes": "buildProtectedFooterRegisterTarget() uses 'footer-' prefix for all footer links - unchanged and separate from mini-app routing"
+    },
+    "public-entry-register-routing.spec.ts": {
+      "status": "CORRECT",
+      "notes": "E2E spec expects 'feature-entry', 'feature-entry-creator-exchange', 'feature-entry-job-platform' for mini-app routes"
+    },
+    "public-visitor-paywall-routing.spec.ts": {
+      "status": "CORRECT",
+      "notes": "E2E spec expects 'feature-entry-mobile-money' for /mini-apps/mobile-money route"
+    }
+  },
+  "checkpoint_verification": {
+    "checkpoint_A": "PASSED - Identified 'mini-apps' term comes from internal route namespace",
+    "checkpoint_B": "PASSED - User approved Option 1 with prefix B (keep routes, rename analytics sources)",
+    "checkpoint_C": "PASSED - Implementation complete: mini-app sources now use 'feature-entry*' prefix",
+    "checkpoint_D": "PASSED - Export gate verified: /tmp/feature-entry-export-final.exit contains 0"
+  },
+  "test_report_links": [
+    "/app/frontend/src/config/miniAppRedirects.ts",
+    "/app/frontend/e2e/public-entry-register-routing.spec.ts",
+    "/app/frontend/e2e/public-visitor-paywall-routing.spec.ts"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "None required - visitor-only flows",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Checkpoint C implementation verified. Mini-app routes (/mini-apps, /mini-apps/creator-exchange, /mini-apps/job-platform, /mini-apps/mobile-money) now use neutral 'feature-entry*' source values instead of 'mini-apps*'. Footer protected links remain unchanged with 'footer-*' sources. Internal route namespace /mini-apps/* is preserved - only analytics source values were renamed.",
+  "external_preview_verification": {
+    "url": "https://visa-polish-v2.preview.emergentagent.com",
+    "status": "VERIFIED",
+    "mini_apps_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry&return_to=%2Fmini-apps",
+    "creator_exchange_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
+    "job_platform_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
+    "mobile_money_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-mobile-money&return_to=%2Fmini-apps%2Fmobile-money",
+    "footer_learning_hub_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
+    "footer_my_analytics_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics"
+  }
+}

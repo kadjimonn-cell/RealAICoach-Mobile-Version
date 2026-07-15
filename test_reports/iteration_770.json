@@ -1,0 +1,51 @@
+{
+  "summary": "Welcome footer 4-style responsive contract retest after follow-up patch. 4 of 5 target viewports PASS. 820px, 930px, 1024px, 1179px all FIXED. 700px still shows single-column-stacked (4 rows) instead of expected 2x2 grid. All regression checks pass (no horizontal overflow, centered disclaimer, bottom bar intact).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Footer.tsx",
+        "issue": "At 700px (compact tablet range 560-879px), footer link columns show single-column-stacked layout (4 rows) instead of expected 2x2 grid (2 rows). Column width is 310px which is too wide to fit 2 columns in the available space.",
+        "selector": "[data-testid='footer-link-columns-grid']",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_770.json"],
+  "action_items": [
+    "FIXED: 820px now shows 2x2 grid layout (was single-column-stacked)",
+    "FIXED: 1179px now shows 4-column single row (was 3+1 layout)",
+    "REGRESSION PASS: 930px and 1024px still show 4-column single row layout",
+    "REMAINING: 700px still shows single-column-stacked - compactTabletLinkColumnWidth calculation needs further adjustment for narrower compact tablet widths"
+  ],
+  "critical_code_review_comments": [
+    "compactTabletLinkColumnWidth at line 632-634 calculates column width as Math.max(184, Math.floor((Math.min(720, footerContentMaxWidth) - 44) / 2)). At 700px viewport, this results in ~310px columns which is too wide for 2x2 layout. Consider reducing the minimum or adjusting the formula for narrower viewports."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "80% (4/5 target viewports pass)"
+  },
+  "test_credentials": "N/A",
+  "seed_data_creation": "N/A",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Welcome footer 4-style responsive contract retest: (1) 700px FAIL - single-column-stacked instead of 2x2, (2) 820px PASS - now shows 2x2 grid (FIXED), (3) 930px PASS - 4-column single row (regression check), (4) 1024px PASS - 4-column single row (regression check), (5) 1179px PASS - 4-column single row (FIXED). All regression checks pass: no horizontal overflow, centered disclaimer, bottom bar intact.",
+  "viewport_test_results": [
+    {"width": 700, "expected": "2x2-grid", "actual": "single-column-stacked-4-rows", "status": "FAIL", "column_widths": [310, 310, 310, 310]},
+    {"width": 820, "expected": "2x2-grid", "actual": "2x2-grid", "status": "PASS", "column_widths": [338, 338, 338, 338]},
+    {"width": 930, "expected": "4-column-single-row", "actual": "4-column-single-row", "status": "PASS", "column_widths": [191, 191, 191, 191]},
+    {"width": 1024, "expected": "4-column-single-row", "actual": "4-column-single-row", "status": "PASS", "column_widths": [210, 210, 210, 210]},
+    {"width": 1179, "expected": "4-column-single-row", "actual": "4-column-single-row", "status": "PASS", "column_widths": [217, 217, 217, 217]}
+  ],
+  "regression_checks": {
+    "no_horizontal_overflow": "PASS at all 5 viewports",
+    "centered_disclaimer": "PASS at all 5 viewports",
+    "bottom_bar_intact": "PASS at all 5 viewports"
+  }
+}

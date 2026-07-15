@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-06-18T17:48:12.399149+00:00",
+  "scope": "feature26_employer_route_access_e2e",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "results": {
+    "free_user": {
+      "actor": "free_user",
+      "login_status": 200,
+      "is_admin": false,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer",
+      "employer_route_testid_count": 1,
+      "employer_title_testid_count": 1,
+      "redirecting_non_employer_testid_count": 0
+    },
+    "admin_user": {
+      "actor": "admin_user",
+      "login_status": 200,
+      "is_admin": true,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer",
+      "employer_route_testid_count": 1,
+      "employer_title_testid_count": 1,
+      "redirecting_non_employer_testid_count": 0
+    },
+    "employer_user": {
+      "actor": "employer_user",
+      "login_status": 200,
+      "is_admin": false,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer",
+      "employer_route_testid_count": 1,
+      "employer_title_testid_count": 1,
+      "redirecting_non_employer_testid_count": 0
+    }
+  },
+  "verdicts": {
+    "free_user_blocked": false,
+    "admin_user_allowed": true,
+    "employer_user_allowed": true
+  },
+  "overall_verdict": "fail"
+}

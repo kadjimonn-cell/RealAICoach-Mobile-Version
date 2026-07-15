@@ -1,0 +1,48 @@
+{
+  "summary": "Fix-verification retest of iteration_857. BACKEND: All 3 access-control fixes are LIVE and verified end-to-end. Free receipt via /api/content/document is now 200 PDF, invoice bypass via /api/r/f?d=i, /api/r/v?d=i, /api/asset/f?d=i is now 403 with structured JSON detail containing required_plan='basic' and upgrade_url, validation 400s (bogus doc_type / missing payment_id) now reachable, receipt via /api/r/f?d=r still returns 200 with all required content tokens, admin is NOT blocked by plan-gate. Pytest: iter857 suite 9/9, new fixverify iter858 suite 11/11, permanent pro-PDF suite 17/17 = 37/37 green. FRONTEND: CRITICAL blocker — source code correctly implements canAccessInvoice prop + payment-history-detail-invoice-upgrade-notice, but the production dist bundle at /app/frontend/dist/client/_expo/static/js/web/PaymentHistoryV2-*.js was last built 2026-07-12 00:56 while the source was last edited 2026-07-12 03:20, so the fix is NOT SHIPPED. Live UI check confirms: free user detail sheet shows invoice buttons ENABLED (opacity 1, aria-disabled=null) and the upgrade notice is completely absent from the DOM. Grep of the whole dist tree for `canAccessInvoice` / `invoiceUpgradeNotice` returns 0 matches.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "PaymentHistoryDetailSheet",
+        "issue": "Invoice buttons NOT disabled for free user in the shipped bundle. Runtime inspection shows aria-disabled=null, computed opacity=1.0, no upgrade notice in DOM. Root cause: frontend production build (/app/frontend/dist) is stale — main agent edited src/components/paymentHistory/PaymentHistoryDetailSheet.tsx and src/components/pages/PaymentHistoryV2.tsx (2026-07-12 03:20) but did NOT re-run `yarn export:web` (last build was 2026-07-12 00:56). Grep of dist/client/_expo/static/js/web/*.js for 'canAccessInvoice' or 'invoiceUpgradeNotice' returns 0 matches, whereas source has 8 matches. Fix is correctly implemented in source, just not built.",
+        "selector": "[data-testid='payment-history-detail-view-invoice-button'] / download-invoice-button / email-invoice-button / payment-history-detail-invoice-upgrade-notice",
+        "priority": "CRITICAL"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_receipt_pdf_pro_fixverify_iter858.py",
+    "/app/backend/tests/test_receipt_pdf_pro_e2e_iter857.py",
+    "/app/backend/tests/test_receipt_invoice_pro_pdf.py",
+    "/app/backend/tests/test_receipt_email_v7_fingerprint.py",
+    "/app/test_reports/pytest/iter858_fixverify.xml",
+    "/app/test_reports/pytest/iter858_e2e.xml"
+  ],
+  "action_items": [
+    "Rebuild the frontend production bundle: `cd /app/frontend && yarn export:web` (or the appropriate build command) so the canAccessInvoice + payment-history-detail-invoice-upgrade-notice fixes ship. Currently only the backend fixes are live; the frontend fix is present in source but not in dist/.",
+    "After rebuild, re-verify by loading /payment-history as free user, opening detail sheet for txn_a98b73968e034fe7, and confirming: (a) view/download/email invoice buttons have aria-disabled=true and opacity 0.45; (b) upgrade notice with testid payment-history-detail-invoice-upgrade-notice visible; (c) i18n key paymentHistory.detail.invoiceUpgradeNotice resolves."
+  ],
+  "critical_code_review_comments": [
+    "Deployment/build gap: main agent's source edits to .tsx components did not trigger a rebuild of the production bundle served by serve-production.js from /app/frontend/dist. Consider adding a build-artifact freshness gate that fails CI/handoff if any src/**/*.{ts,tsx} file is newer than dist/index.html (or the manifest.json).",
+    "canAccessInvoice expression `Boolean(user?.is_admin || user?.full_access || (user?.subscription_plan && user.subscription_plan !== 'free'))` will return TRUE for user with subscription_plan='basic'|'premium'|any-non-free string. This matches the backend gate compute_effective_plan admits {basic, full_access, admin}, so behaviorally aligned. Verified in code review — no logic issue, just build not applied."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_receipt_pdf_pro_fixverify_iter858.py (NEW — 11 tests covering all 3 fix scenarios)"
+  ],
+  "success_rate": {
+    "backend": "100% — 37/37 pytest tests green (iter857 e2e 9/9 + iter858 fixverify 11/11 + permanent 17/17). All 3 backend fixes verified: (a) receipt via /api/content/document 200 PDF, (b) invoice bypass closed on /api/r/f + /api/r/v + /api/asset/f (all 403 with required_plan=basic + upgrade), (c) validation 400s reachable, (d) receipt via /api/r/f?d=r still 200 with content tokens, (e) admin not plan-gated.",
+    "frontend": "0% on the invoice-gating fix — the fix code is present in TSX source but the production bundle is stale, so the running UI still shows invoice buttons enabled for the free user and the upgrade notice is missing from the DOM. Payment History page itself loads correctly, receipt-action Pending gating (which was already in the previous bundle) works. Ledger export button was regression-verified in iter_857 → skipped this round due to preview rate-limiting (429s)."
+  },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (txn_a98b73968e034fe7). Admin: admin@realaicoach.app / NewAdminPass2026!. Cookie-based session_token auth via POST /api/auth/login.",
+  "seed_data_creation": "None. Used existing free user + existing pending PayPal payment record.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend is FULLY green — do not re-open backend acceptance. Only remaining verification is the frontend UI once the production bundle is rebuilt. Repro of the frontend miss: (1) login p1.free.1779113329@example.com through /welcome → welcome-nav-signin, (2) navigate to /payment-history, (3) click [data-testid=payment-history-row-0] to open sheet, (4) inspect view-invoice/download-invoice/email-invoice buttons — they should be aria-disabled=true and opacity 0.45; the upgrade notice testid payment-history-detail-invoice-upgrade-notice should be in DOM. Currently all three buttons render with opacity 1 and the notice is absent, while receipt buttons correctly render with opacity 0.45 (proves SheetAction disabled prop is functional and the issue is only that canAccessInvoice value never reached the sheet because the fix isn't built).",
+  "rca of the issue": "Root cause of the frontend miss: build artifacts are stale. `/app/frontend/dist/client/_expo/static/js/web/PaymentHistoryV2-b3ef38bc861f57722586fdded1784c69.js` last modified 2026-07-12 00:56 UTC. Both PaymentHistoryDetailSheet.tsx and PaymentHistoryV2.tsx last modified 2026-07-12 03:20 UTC (~2h20m after the build). Grep of the entire dist tree: `grep -c \"canAccessInvoice\\|invoiceUpgradeNotice\" /app/frontend/dist/client/_expo/static/js/web/*.js` returns 0. Grep of source: 7 matches in PaymentHistoryDetailSheet.tsx + 1 match in PaymentHistoryV2.tsx. serve-production.js (pid 92) serves from dist/, so the app is running old JS. Mitigation: run `cd /app/frontend && yarn export:web` to rebuild, then the fix will be live. No other backend or frontend code changes required."
+}

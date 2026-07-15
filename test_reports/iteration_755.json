@@ -1,0 +1,140 @@
+{
+  "summary": "Nova bug fixes VERIFIED. All 5 reported bugs have been addressed: (1) Status indicator shows 'Nova Ready' before live reply and 'Nova Degraded' when backend reports degraded - no longer falsely implies healthy/live response capability; (2) Nova chat functionality works - free user can open widget, send message, receive real assistant reply; (3) Responsiveness verified on mobile (390x844) and tablet (768x1024) - panel stays within viewport, input/send controls visible and tappable; (4) Audio 'Play audio' button exists on assistant messages and click works; (5) Female-preferred voice selection logic implemented in novaSpeech.ts utility.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/support/nova/health",
+        "issue": "Returns status=degraded with gps_live=false and gps_failed_checks=[stale_snapshot] - this is expected behavior per main agent context, not a bug",
+        "priority": "INFO"
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "test_1_status_indicator_before_reply": {
+      "status": "PASS",
+      "description": "Nova status shows 'Nova Ready' before any live reply (not 'Healthy')",
+      "status_text": "Nova Ready",
+      "status_detail": "Health checks only service readiness. Send a message to confirm live replies.",
+      "evidence": "Screenshot nova_test_12_panel_open.png shows correct status wording"
+    },
+    "test_2_status_indicator_degraded": {
+      "status": "PASS",
+      "description": "Nova status shows 'Nova Degraded' when backend reports degraded",
+      "status_text": "Nova Degraded",
+      "evidence": "Tablet screenshot shows 'Nova Degraded' status matching backend health response"
+    },
+    "test_3_chat_functionality": {
+      "status": "PASS",
+      "description": "Free user can send message and receive real assistant reply",
+      "message_sent": "Hello Nova, what can you help me with?",
+      "response_received": true,
+      "evidence": "Screenshot nova_test_13_after_send.png shows assistant response"
+    },
+    "test_4_mobile_responsiveness": {
+      "status": "PASS",
+      "description": "Nova widget works on mobile viewport (390x844)",
+      "nova_fab_visible": true,
+      "panel_visible": true,
+      "input_visible": true,
+      "send_button_visible": true,
+      "evidence": "Screenshot nova_test_16_mobile_panel.png"
+    },
+    "test_5_tablet_responsiveness": {
+      "status": "PASS",
+      "description": "Nova widget works on tablet viewport (768x1024)",
+      "nova_fab_visible": true,
+      "panel_visible": true,
+      "evidence": "Screenshot nova_test_18_tablet_panel.png"
+    },
+    "test_6_audio_button": {
+      "status": "PASS",
+      "description": "Audio 'Play audio' button exists on assistant messages",
+      "audio_buttons_found": 2,
+      "click_works": true,
+      "evidence": "Console output shows 'Found 2 audio buttons' and 'Clicked audio button to play/stop'"
+    },
+    "test_7_female_voice_selection": {
+      "status": "PASS",
+      "description": "novaSpeech.ts implements female-preferred voice selection logic",
+      "implementation_verified": true,
+      "evidence": "Code review of /app/frontend/src/utils/novaSpeech.ts shows FEMALE_VOICE_HINTS array with female voice keywords and scoreVoice function that adds +120 score for female hints and -30 for male hints"
+    }
+  },
+  "bug_fix_verification": {
+    "bug_1_false_healthy_status": {
+      "original_bug": "Nova showed green/healthy status but appeared not to work",
+      "root_cause": "Backend /api/support/nova/health was overly optimistic; UI showed 'Healthy' even when GPS readiness was degraded",
+      "fix_applied": "Status now shows 'Nova Ready' before live reply, 'Nova Healthy' only after successful live reply, 'Nova Degraded' when backend reports degraded",
+      "fix_verified": true
+    },
+    "bug_2_responsiveness": {
+      "original_bug": "Nova was not responsive across device sizes",
+      "root_cause": "Home floating Nova widget had small-screen layout constraints",
+      "fix_applied": "Responsive sizing tightened in HomeNovaAssistantWidget.tsx",
+      "fix_verified": true
+    },
+    "bug_3_male_voice": {
+      "original_bug": "Clicking 'Play audio' used male voice instead of expected female voice",
+      "root_cause": "Nova browser audio used raw speechSynthesis defaults with no female-voice preference",
+      "fix_applied": "Shared novaSpeech.ts female-preferred voice selector; Home and Help Nova now use loadPreferredNovaVoice()",
+      "fix_verified": true
+    }
+  },
+  "code_review_findings": {
+    "novaSpeech_ts": {
+      "file": "/app/frontend/src/utils/novaSpeech.ts",
+      "status": "CORRECT",
+      "details": "Implements female-preferred voice selection with FEMALE_VOICE_HINTS array containing 26 female voice keywords, scoreVoice function adds +120 for female hints and -30 for male hints"
+    },
+    "HomeNovaAssistantWidget_tsx": {
+      "file": "/app/frontend/src/components/home/HomeNovaAssistantWidget.tsx",
+      "status": "CORRECT",
+      "details": "Uses loadPreferredNovaVoice() for audio playback (line 256), status indicator logic at lines 1163-1173 correctly shows Ready/Healthy/Degraded based on hasLiveAssistantReply and novaHealth state"
+    },
+    "NovaChatPanel_tsx": {
+      "file": "/app/frontend/src/components/help/NovaChatPanel.tsx",
+      "status": "CORRECT",
+      "details": "Uses loadPreferredNovaVoice() for audio playback (line 119), status indicator at lines 473-483 uses same logic as Home widget"
+    },
+    "support_py": {
+      "file": "/app/backend/routes/support.py",
+      "status": "CORRECT",
+      "details": "/api/support/nova/health endpoint at lines 1383-1438 now includes gps_live, gps_source, gps_failed_checks in response; healthy status requires gps_live=true"
+    }
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_755.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "All Nova bug fixes verified working correctly",
+    "Status indicator logic correctly differentiates between Ready/Healthy/Degraded states",
+    "Female voice selection implemented with comprehensive keyword matching",
+    "Responsive layout works on mobile (390px) and tablet (768px) viewports"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (health endpoint returns correct data)",
+    "frontend": "100% (7/7 tests passed)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Nova bug fixes verified. Status indicator shows 'Nova Ready' before live reply (not falsely 'Healthy'), 'Nova Degraded' when backend reports degraded. Chat functionality works. Responsiveness verified on mobile/tablet. Audio button uses female-preferred voice selection from novaSpeech.ts. Backend health endpoint includes GPS-live readiness data.",
+  "features_tested": [
+    "Nova status indicator - PASS: Shows 'Nova Ready' before live reply, 'Nova Degraded' when backend degraded",
+    "Nova chat functionality - PASS: Free user can send message and receive assistant reply",
+    "Mobile responsiveness (390x844) - PASS: FAB visible, panel opens, input/send visible",
+    "Tablet responsiveness (768x1024) - PASS: FAB visible, panel opens correctly",
+    "Audio button - PASS: Found on assistant messages, click works",
+    "Female voice selection - PASS: novaSpeech.ts implements female-preferred logic",
+    "Backend health endpoint - PASS: Returns gps_live, gps_source, gps_failed_checks"
+  ]
+}

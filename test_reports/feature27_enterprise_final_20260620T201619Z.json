@@ -1,0 +1,9 @@
+{
+  "feature": "27",
+  "suite": "feature27_id_checker_enterprise",
+  "timestamp": "2026-06-20T20:16:19.288454Z",
+  "exit_code": 0,
+  "stdout": "......                                                                   [100%]\n",
+  "stderr": "",
+  "status": "PASS"
+}

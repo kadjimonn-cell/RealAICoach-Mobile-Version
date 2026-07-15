@@ -1,0 +1,60 @@
+{
+  "summary": "Verified WCAG contrast palette rollout on static export. DARK MODE primary teal buttons now render dark-ink (#0B1220 / rgb(11,18,32)) on teal (#14B8A6 / rgb(20,184,166)) globally including both Generate Course buttons on /ai-learning-hub. LIGHT MODE primary teal buttons remain white on dark teal (#FFFFFF on #0F766E) as intended. LIGHT MODE muted text tokens updated correctly: textMuted #5D6C82 (rgb 93,108,130) and textDim #7B8BA1 (rgb 123,139,161) — no lingering rgb(100,116,139) or rgb(148,163,184) samples in light mode. Regression sweep: Weekly Achievement Loop badge label (testid ai-learning-hub-weekly-streak-badge-label) still present and amber (#B45309 in light). Smoke: landing, login, /notifications, /my-analytics all render with correct body backgrounds and content. No new console errors beyond pre-existing 429 rate limits on unrelated bootstrap endpoints.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/auth/login (light mode)", "issues": ["login-submit-button 'SIGN IN' uses text color rgb(15,23,42) (dark navy) on teal bg rgb(15,118,110) — inconsistent with other light-mode primary CTAs which use rgb(255,255,255). Contrast is fine (readable dark on teal), but it deviates from the documented light-mode primary spec (white text). Non-blocking — flagged for consistency review only. Not part of this iteration's fix scope."]}
+    ]
+  },
+  "verified_measurements": {
+    "dark_mode_primary_buttons_on_ai_learning_hub": {
+      "ai-learning-hub-quick-generate-course": {"textColor": "rgb(11, 18, 32)", "bgColor": "rgb(20, 184, 166)"},
+      "ai-learning-hub-generate-course-btn": {"textColor": "rgb(11, 18, 32)", "bgColor": "rgb(20, 184, 166)"},
+      "welcome-hero-signup-btn": {"textColor": "rgb(11, 18, 32)", "bgColor": "rgb(20, 184, 166)"},
+      "growth-plan-cta-button": {"textColor": "rgb(11, 18, 32)", "bgColor": "rgb(20, 184, 166)"},
+      "welcome-primary-cta-button": {"textColor": "rgb(11, 18, 32)", "bgColor": "rgb(20, 184, 166)"},
+      "newsletter-subscribe-btn": {"textColor": "rgb(11, 18, 32)", "bgColor": "rgb(20, 184, 166)"}
+    },
+    "light_mode_primary_buttons_on_ai_learning_hub": {
+      "ai-learning-hub-quick-generate-course": {"textColor": "rgb(255, 255, 255)", "bgColor": "rgb(15, 118, 110)"},
+      "ai-learning-hub-generate-course-btn": {"textColor": "rgb(255, 255, 255)", "bgColor": "rgb(15, 118, 110)"}
+    },
+    "light_mode_muted_text_new_palette": {
+      "textMuted_5D6C82_rgb(93,108,130)": ["EXECUTIVE WELCOME SUMMARY", "ENTERPRISE SUITE", "MAIN", "PLATFORM", "STREAK", "ACTIVE", "COMPLETED", "MINUTES"],
+      "textDim_7B8BA1_rgb(123,139,161)": ["ACTIVE USERS", "AI SESSIONS TODAY", "PERFORMANCE BOOST", "Goals Hit", "Growth", "Sessions"],
+      "legacy_100_116_139_or_148_163_184_in_light": "NOT DETECTED anywhere in light-mode DOM sampling — old palette fully replaced"
+    },
+    "regression": {
+      "ai-learning-hub-weekly-streak-badge-label_light": {"text": "No Badge Yet", "color": "rgb(180, 83, 9)"},
+      "ai-learning-hub-kpi-card-streak_present": true,
+      "ai-learning-hub-weekly-streak-badge-card_present": true,
+      "ai-learning-hub-momentum-streak_present": true
+    },
+    "body_backgrounds": {"light": "rgb(248, 250, 252)", "dark": "rgb(5, 10, 24)"},
+    "smoke_pages": {
+      "/notifications": {"bg": "rgb(5, 10, 24)", "innerText_len": 1991, "status": "rendered ok"},
+      "/my-analytics": {"bg": "rgb(5, 10, 24)", "innerText_len": 2216, "status": "rendered ok"}
+    }
+  },
+  "test_report_links": [],
+  "action_items": [
+    "OPTIONAL/non-blocking: consider aligning /auth/login SIGN IN button (testid login-submit-button) to use the tokenized primary-button text so it matches other light-mode primary CTAs (white on #0F766E) instead of hardcoded dark navy rgb(15,23,42). Contrast is still acceptable; flag only for token consistency."
+  ],
+  "critical_code_review_comments": [
+    "The theme-token-validity CI gate with WCAG contract is a strong quality lock — verified in the browser that the runtime CSS matches the documented spec exactly (0B1220 on 14B8A6 dark, 5D6C82 muted light, 7B8BA1 dim light).",
+    "Some components still hardcode #FFFFFF or dark hex values on buttons instead of going through the token layer (e.g. login-submit-button uses non-tokenized dark text in light mode). Per agent note this is acceptable if button is not on teal-primary in dark mode, but hardcoded colors long-term erode the palette guarantee."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped per request)", "frontend": "100% (all 5 review-request items verified passing)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Static export (dist mode) at https://visa-polish-v2.preview.emergentagent.com. Login flow: navigate to /welcome then click 'Sign In' header link -> /auth/login. Rate-limit noise on /api/features/* and /api/auth/me during bootstrap is pre-existing (429s), unrelated to this iteration's changes. Theme toggles at bottom of left sidebar rail: theme-toggle-light / theme-toggle-system / theme-toggle-dark (welcome-* prefixed variants exist on public landing). Generate Course button has TWO testids on /ai-learning-hub discover tab: ai-learning-hub-quick-generate-course (in Quick actions row) and ai-learning-hub-generate-course-btn — both verified using new dark-ink-on-teal in dark mode.",
+  "rca of the issue": "N/A — this iteration is a verification pass. Previous white-on-teal (rgb(255,255,255) on #14B8A6, 2.49:1) was fixed by changing V2_DARK primaryText token to #0B1220 in /app/frontend/src/theme/v2.ts and syncing FOUC vars in /app/frontend/app/+html.tsx. Runtime verification confirms all 8 sampled primary teal buttons in dark mode (including two Generate Course buttons and 6 landing CTAs) now use rgb(11,18,32) text on rgb(20,184,166) bg — WCAG 7.52:1 pass."
+}

@@ -1,0 +1,43 @@
+{
+  "run_id": "platform_integrity_20260518T002502Z_6fb137",
+  "generated_at": "2026-05-18T00:25:02.428868+00:00",
+  "source": "admin:user_4b5a68d2f7c6",
+  "gps_counts": {
+    "features": 6,
+    "plans": 3,
+    "faq": 3
+  },
+  "catalog_completeness": {
+    "plans_count": 3,
+    "faq_count": 3,
+    "missing_plan_ids": [],
+    "plan_ids": [
+      "basic",
+      "free",
+      "premium"
+    ],
+    "is_complete": true
+  },
+  "subscription_catalog": {
+    "count": 3,
+    "plan_ids": [
+      "free",
+      "basic",
+      "premium"
+    ]
+  },
+  "theme_gate": {
+    "grade": "B",
+    "warns": 6,
+    "fails": 1,
+    "files_scanned": 668,
+    "raw_excerpt": "\n\ud83d\udd12 Theme Compliance Build Gate (strict)\n\n   Running local V2 theme audit scanner...\n   Grade: B | Warns: 6 | Fails: 1 | Infos: 25 | Files: 668\n",
+    "exit_code": 1
+  },
+  "matrix64": {
+    "run_id": "matrix64_20260517T214526Z_289c43",
+    "status": "FAIL",
+    "strict_passed": false,
+    "failed_checks": 44
+  }
+}

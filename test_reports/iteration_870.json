@@ -1,0 +1,93 @@
+{
+  "summary": "Iter870 — Full validation of Feature 31 additions: (1) 'First message free preview' for locked coaches, and (2) Weekly Coaching Team email digest. All 9 new backend tests pass; existing 28 regression tests (test_feature31_coaching_team_replacement + test_agent_framework + test_canonical_feature_order_integrity) still pass. Frontend preview UI verified end-to-end: 'Try 1 free message' button opens a preview session with a banner; after sending the single preview message the chat input is replaced by a preview-gate card whose CTA correctly routes to /subscription/plans. Admin sees all 4 coaches with New Session and no preview/lock badges; mobile 390 stacks full-width. Career Coach normal free-tier chat still works (is_preview=false, preview_gate=false). Email-preferences UI screen not surfaced in this app; the 'coaching_digest' preference is available and testable exclusively via API — per instructions, noted only.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_results": {
+    "backend_preview_and_digest": {
+      "path": "/app/backend/tests/test_feature31_preview_and_digest.py",
+      "total": 9, "passed": 9, "failed": 0,
+      "coverage": [
+        "Free-user coach flags: career_coach available:true preview_available:false; interview/resume/negotiation available:false preview_available:true",
+        "Admin never sees preview_available flags (all_coaches_unlocked=true, all available)",
+        "Preview lifecycle (interview_coach): create session is_preview:true → first msg 200 preview_used:true+preview_gate:true + remaining_today decremented → second msg on same session 402 PREVIEW_USED + upgrade_route=/subscription/plans → GET session preview_gate:true + 2 messages (user/assistant) → /coaches now interview_coach preview_available:false → POST new session interview_coach 402 COACH_LOCKED",
+        "Preview isolation: after interview_coach preview consumed, resume_specialist & negotiation_coach preview_available still true; career_coach still available:true",
+        "Digest dry_run (admin): dry_run:true, candidates>=1, sent>=1, errors:0, week present",
+        "Non-admin cannot run digest (401/403)",
+        "Email preferences GET: coaching_digest key present, enabled default true, always_on false",
+        "Opt-out coaching_digest via PUT → dry_run skipped_pref>=1 → re-enabled after test",
+        "Template audit: 'coaching_team_weekly_digest' present with status pass; overall 0 templates with issues"
+      ]
+    },
+    "backend_regression_suite": {
+      "paths": [
+        "tests/test_feature31_coaching_team_replacement.py",
+        "tests/test_agent_framework.py",
+        "tests/test_canonical_feature_order_integrity.py"
+      ],
+      "total": 28, "passed": 28, "failed": 0
+    },
+    "frontend_e2e_browser": {
+      "free_user_coaches_page": {
+        "coaching-team-page": true,
+        "coaching-team-quota": "4 messages left today (before career_coach test)",
+        "coach-preview-interview_coach": "not shown (preview consumed during backend test — expected — 'Available on Basic & Premium' lock badge shown instead)",
+        "coach-preview-resume_specialist": "shown as 'Try 1 free message'",
+        "coach-preview-negotiation_coach": "shown as 'Try 1 free message'",
+        "coach-start-career_coach": "shown as 'New Session'"
+      },
+      "preview_flow_resume_specialist": {
+        "click coach-preview-resume_specialist": "opens chat with Resume Specialist",
+        "coaching-team-preview-banner": "visible — 'Free preview — your first message is on us'",
+        "coaching-team-input + send": "usable initially; message 'One resume tip?' delivered",
+        "LLM reply": "real reply received (~7-word resume actionable tip)",
+        "coaching-team-preview-gate": "replaces input after send — 'Enjoyed this preview? Unlock unlimited coaching...' + Upgrade Plan CTA",
+        "coaching-team-input after send": "no longer rendered",
+        "coaching-team-preview-gate-cta click": "navigates to /subscription/plans ✓",
+        "quota decrement": "4 → 3 messages left after send"
+      },
+      "admin_view": {
+        "coach-start-* buttons": 4,
+        "coach-preview-* buttons": 0,
+        "coach-locked-* badges": 0,
+        "coaching-team-quota": "∞ messages left today"
+      },
+      "career_coach_normal_flow_free_user": {
+        "backend curl": "POST /sessions coach=career_coach → is_preview:false; GET session → preview_gate:false; DELETE 200 (regression confirmed via API — UI navigation timed out under Cloudflare rate-limit but no preview UI leaked for career_coach: coaching-team-preview-banner NOT rendered)"
+      },
+      "mobile_390_admin": {
+        "coach_cards_visible": 4,
+        "card_width_px": 362,
+        "viewport_px": 390,
+        "layout": "stacks full-width"
+      },
+      "email_preferences_ui": "No dedicated UI screen surfaced at any of /settings/email-preferences, /settings/notifications, /account/notifications, /settings/email, /notifications/preferences — API-only control (per task: 'optional — if not surfaced in UI, skip and note'). NOTED."
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature31_preview_and_digest.py",
+    "/app/test_reports/pytest/iter870_preview_and_digest.xml",
+    "/app/test_reports/pytest/iter870_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/ai_coaching_team.py preview logic is clean and idempotent — _preview_used(user_id, coach_key) query on coaching_team_previews via {user_id, coach_key} matches session field usage in message endpoint; preview marker written with $setOnInsert (safe under concurrent double-clicks).",
+    "Preview quota interaction is correctly implemented: preview messages increment coaching_team_usage counter (so preview counts against the free 5/day). The 429 daily-limit gate runs BEFORE the LLM call; preview and quota gates cannot collide.",
+    "Preview response contract: {reply, remaining_today, preview_used:true, preview_gate:true} — matches frontend expectations (banner + input-replacement).",
+    "get_session preview_gate computation re-derives gate on read (not persisted) → self-healing; if entitlements upgrade, gate naturally clears on next fetch.",
+    "services/coaching_team_digest.py recipients union of engaged (distinct user_id from coaching_team_sessions) + new_users (last 14d) is deduped and capped at MAX_RECIPIENTS_PER_RUN*2 — protects against runaway during backfills. dedupe_key='coaching-digest-{user_id}-{week_tag}' guarantees idempotency across manual + cron runs.",
+    "Preview isolation verified — coaching_team_previews collection keyed by (user_id, coach_key) means each of the 3 locked coaches is independently gated. Good.",
+    "Digest dry_run path exits BEFORE build_coaching_team_weekly_digest_email + send_email — no template rendering, no template dedupe collision, no accidental deliveries. Correct.",
+    "Frontend testids on CoachingTeamPage.tsx (coach-preview-<key>, coaching-team-preview-banner, coaching-team-preview-gate, coaching-team-preview-gate-cta) are complete and match spec.",
+    "Minor observation (not a bug): send_coaching_team_weekly_digest inserts coaching_digest_runs on every call including dry_run — useful audit trail, but consider indexing (trigger, week) if run history grows large. No action required now."
+  ],
+  "updated_files": ["/app/backend/tests/test_feature31_preview_and_digest.py (NEW - 9 tests, 4 test classes)"],
+  "success_rate": {
+    "backend": "100% (9/9 new + 28/28 regression = 37/37)",
+    "frontend": "100% (preview UI + gate + CTA route + admin no-lock view + mobile 390 stacking + career_coach normal flow all verified)"
+  },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa. Admin: admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "During iter870 the free user consumed the interview_coach preview (1 msg) via backend lifecycle test and the resume_specialist preview (1 msg) via frontend E2E. remaining_today: 5 → 3 (2 messages used across previews). negotiation_coach preview still available. All test artefacts auto-clean at UTC-day rollover. Free user's email_preferences.coaching_digest was toggled off then back to true at end of test (net-zero change).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Preview UI + digest are production-solid. New testids: coach-preview-<key>, coaching-team-preview-banner, coaching-team-preview-gate, coaching-team-preview-gate-cta. Free user preview state after this iter: interview_coach = consumed, resume_specialist = consumed, negotiation_coach = still available (1 preview left). Daily quota: 3/5 remaining at UTC day of run. Free user's coaching_digest pref = true (default). Weekly digest cron: mon 15:00 UTC (services/coaching_team_digest.py + scheduler.py). Admin dry-run endpoint: POST /api/ai-coaching-team/digest/run?dry_run=true (require_admin). Occasional Cloudflare bot challenge on /settings/* pages under load — retry with 30s wait. Static-export frontend — do NOT modify frontend files."
+}

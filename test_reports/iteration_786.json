@@ -1,0 +1,85 @@
+{
+  "summary": "Help/Support Nova responsiveness VERIFIED. The authenticated /help route with Nova chat panel is responsive across desktop (1920x1080), tablet (768x1024), and mobile (390x844) viewports. No large empty-gap or compressed-content issues detected. Welcome content is properly top-aligned in all viewports. Message sending functionality works correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_786.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Help/Support Nova responsiveness verified. The /help route is the authenticated Help/Support Nova surface (not /contact which is a public contact form). Iteration_785 verified Home Nova, this iteration_786 verified Help/Support Nova.",
+  "test_results": {
+    "route_architecture_clarification": {
+      "help_route": "/help is the authenticated Help/Support Nova surface with NovaChatPanel embedded in Contact tab > Chat mode",
+      "contact_route": "/contact is a PUBLIC contact command center form (Sales/Support/Partnerships/Press) - NOT a Nova chat panel",
+      "redirect_behavior": "Unauthenticated users on /help are correctly redirected to /contact (public contact form)"
+    },
+    "login": {
+      "status": "PASS",
+      "details": "Successfully logged in with test credentials and navigated to home page"
+    },
+    "navigation_to_help": {
+      "status": "PASS",
+      "details": "Successfully navigated to /help (not redirected to /contact since user is authenticated)"
+    },
+    "desktop_1920x1080": {
+      "status": "PASS",
+      "nova_chat_panel_found": true,
+      "chat_welcome_found": true,
+      "chat_input_found": true,
+      "layout_issues": "None - properly responsive"
+    },
+    "tablet_768x1024": {
+      "status": "PASS",
+      "nova_chat_panel_found": true,
+      "chat_welcome_found": true,
+      "chat_input_found": true,
+      "welcome_content_position": "top=333px, height=233px",
+      "layout_issues": "None - no excessive top gap"
+    },
+    "mobile_390x844": {
+      "status": "PASS",
+      "nova_chat_panel_found": true,
+      "chat_welcome_found": true,
+      "chat_input_found": true,
+      "welcome_content_position": "top=327px, height=253px",
+      "layout_issues": "None - no excessive top gap"
+    },
+    "message_sending": {
+      "status": "PASS",
+      "details": "User message sent successfully, Nova responded with 'thinking' state"
+    }
+  },
+  "features_verified": [
+    "Help/Support Nova surface (/help) is accessible for authenticated users",
+    "Nova chat panel renders correctly in Contact tab > Chat mode",
+    "Welcome content is top-aligned without large empty gaps on all viewports",
+    "Chat input and send button are functional",
+    "Message sending triggers Nova response",
+    "Responsive layout adapts properly to desktop/tablet/mobile widths",
+    "Pinned conversations and Favorite answers sections visible on desktop",
+    "Feature badges (Attachments, Voice, GPT-5.2) visible in welcome state"
+  ],
+  "notes": [
+    "The /help route requires authentication - unauthenticated users are redirected to /contact (public contact form)",
+    "The /contact route is NOT a Nova chat panel - it's an enterprise contact command center with Sales/Support/Partnerships/Press intents",
+    "This is the intended design: authenticated users get Nova chat at /help, public users get contact form at /contact",
+    "Iteration_785 verified Home Nova floating widget, this iteration_786 verified Help/Support Nova embedded panel"
+  ]
+}

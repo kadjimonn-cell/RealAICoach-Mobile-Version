@@ -1,0 +1,127 @@
+{
+  "timestamp": "2026-06-19T15:12:23.283796+00:00",
+  "scope": "feature26_monitoring_hold_continued_burndown",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "backend_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "cycle_runs": [
+    {
+      "cycle_index": 1,
+      "exit_code": 0,
+      "stdout_tail": "\": null,\\n        \\\"organization_id\\\": null,\\n        \\\"company_id\\\": null,\\n        \\\"workspace_id\\\": null,\\n        \\\"tenant_disclaimer_profile\\\": \\\"default\\\",\\n        \\\"risk_level\\\": \\\"low\\\",\\n        \\\"risk_score\\\": 8,\\n        \\\"risk_engine_status\\\": \\\"ACTIVE\\\",\\n        \\\"risk_output\\\": \\\"RISK_ENGINE_STATUS: ACTIVE\\\\nRISK_SCORE: 8\\\\nRISK_LEVEL: LOW\\\\nTRIGGER: NO_FRICTION\\\\nFALSE_POSITIVE_RATE: 11.55%\\\\nSESSION_PROTECTION: STANDARD_MONITORING\\\\nCONFIDENCE: 61.5%\\\",\\n        \\\"e2e_otp_bypass_applied\\\": false\\n      }\\n    }\\n  }\\n}\\n\",\n      \"stderr_tail\": \"\",\n      \"attempt\": 1\n    },\n    \"free_user_admin_block_e2e\": {\n      \"base_url\": \"https://visa-polish-v2.preview.emergentagent.com\",\n      \"artifact\": \"/app/test_reports/feature26_free_user_admin_block_e2e_20260619T151136Z.json\",\n      \"overall_verdict\": \"pass\",\n      \"details\": {\n        \"free_blocked\": true,\n        \"free_candidate_ok\": true,\n        \"admin_ok\": true\n      }\n    }\n  },\n  \"policy_guardrails\": {\n    \"legacy_read_pruning_executed\": false,\n    \"allowed_action\": \"monitoring_and_evidence_generation\",\n    \"blocked_action\": \"legacy_read_prune_or_delete_without_signoff_and_sustained_governance_gates\"\n  }\n}\n",
+      "stderr_tail": "",
+      "timestamp": "2026-06-19T15:11:52.758036+00:00"
+    },
+    {
+      "cycle_index": 2,
+      "exit_code": 0,
+      "stdout_tail": "\": null,\\n        \\\"organization_id\\\": null,\\n        \\\"company_id\\\": null,\\n        \\\"workspace_id\\\": null,\\n        \\\"tenant_disclaimer_profile\\\": \\\"default\\\",\\n        \\\"risk_level\\\": \\\"low\\\",\\n        \\\"risk_score\\\": 8,\\n        \\\"risk_engine_status\\\": \\\"ACTIVE\\\",\\n        \\\"risk_output\\\": \\\"RISK_ENGINE_STATUS: ACTIVE\\\\nRISK_SCORE: 8\\\\nRISK_LEVEL: LOW\\\\nTRIGGER: NO_FRICTION\\\\nFALSE_POSITIVE_RATE: 11.55%\\\\nSESSION_PROTECTION: STANDARD_MONITORING\\\\nCONFIDENCE: 61.5%\\\",\\n        \\\"e2e_otp_bypass_applied\\\": false\\n      }\\n    }\\n  }\\n}\\n\",\n      \"stderr_tail\": \"\",\n      \"attempt\": 1\n    },\n    \"free_user_admin_block_e2e\": {\n      \"base_url\": \"https://visa-polish-v2.preview.emergentagent.com\",\n      \"artifact\": \"/app/test_reports/feature26_free_user_admin_block_e2e_20260619T151206Z.json\",\n      \"overall_verdict\": \"pass\",\n      \"details\": {\n        \"free_blocked\": true,\n        \"free_candidate_ok\": true,\n        \"admin_ok\": true\n      }\n    }\n  },\n  \"policy_guardrails\": {\n    \"legacy_read_pruning_executed\": false,\n    \"allowed_action\": \"monitoring_and_evidence_generation\",\n    \"blocked_action\": \"legacy_read_prune_or_delete_without_signoff_and_sustained_governance_gates\"\n  }\n}\n",
+      "stderr_tail": "",
+      "timestamp": "2026-06-19T15:12:20.517120+00:00"
+    }
+  ],
+  "login": {
+    "status": 0,
+    "response_keys": [
+      "company_id",
+      "currency_preference",
+      "e2e_otp_bypass_applied",
+      "email",
+      "email_verified",
+      "full_access",
+      "is_admin",
+      "language_preference",
+      "last_active_at",
+      "last_active_route",
+      "name",
+      "organization_id",
+      "profile_image",
+      "risk_engine_status",
+      "risk_level",
+      "risk_output",
+      "risk_score",
+      "role",
+      "roles",
+      "subscription_plan",
+      "subscription_status",
+      "tenant_disclaimer_profile",
+      "tenant_id",
+      "theme_preference",
+      "user_id",
+      "welcome_back",
+      "workspace_id"
+    ],
+    "is_admin": true
+  },
+  "health_contract": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal",
+    "status": null
+  },
+  "governance_gates": {
+    "strict_include_synthetic": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false
+    },
+    "near_include_synthetic": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "gate_divergence_detected": true
+    },
+    "near_excluding_synthetic": {
+      "sustained_gate_met": true,
+      "ready_for_legacy_code_removal": true
+    }
+  },
+  "residual_burndown_focus": {
+    "remaining_legacy_operations": [
+      "candidate_save_job",
+      "employers_reverify"
+    ],
+    "top_operations": [
+      {
+        "operation": "candidate_save_job",
+        "count": 17
+      },
+      {
+        "operation": "employers_reverify",
+        "count": 2
+      }
+    ],
+    "top_paths": [],
+    "active_legacy_users": null,
+    "migration_progress_pct": null
+  },
+  "retirement_readiness_72h": {
+    "strict_sustained_gate_met": null,
+    "near_zero_sustained_gate_met": null,
+    "operational_near_zero_excluding_synthetic_sustained_gate_met": null,
+    "gate_divergence_detected": null,
+    "ready_for_legacy_code_removal": null
+  },
+  "parity_pack_latest": {
+    "total_routes": 10,
+    "pass_routes": 10,
+    "pass_with_warning_routes": 0,
+    "fail_routes": 0,
+    "overall_verdict": "pass",
+    "next_action": "Use this parity pack for explicit v2 read parity sign-off decision."
+  },
+  "cycle_runner_latest": {
+    "timestamp": "2026-06-19T15:11:56.881483+00:00",
+    "monitoring_exit_code": 0,
+    "parity_exit_code": 0,
+    "admin_block_overall": "pass"
+  },
+  "policy_guardrails": {
+    "legacy_read_pruning_executed": false,
+    "retirement_action_executed": false,
+    "explicit_parity_signoff_required_to_retire": true
+  },
+  "next_focus_operations": [
+    "candidate_save_job",
+    "employers_reverify"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "summary": "Verified Enterprise Reality Validation Guardian noise-suppression fix in /app/backend/scheduler.py. Static code checks confirm: (a) 15-min startup grace period with early return + INFO log, (b) no notify_autoheal variable anywhere in scheduler.py, (c) notify_breach + notify_recovery still send via send_catalog_template(template_key='automation_alert'), (d) self-heal-within-cycle branch is logger.info-only (no email send), audit insert into enterprise_autonomous_engine_audit preserved, (e) last_alert_at only mutated inside notify_breach/notify_recovery blocks. Runtime verification: backend restarted cleanly, APScheduler started, guardian job 'enterprise_reality_validation_guardian' is registered, and the grace-period log fired as expected at ~150s after start ('[enterprise-guardian] startup grace period active — skipping validation cycle'). No enterprise-guardian automation_alert emails were emitted during grace period. Decision-logic simulation covers all 6 scenarios (self-heal→no email, breach→email, recovery→email, healthy-no-action→no email, degraded-within-cooldown→no email, degraded-after-cooldown→re-emit). Regression: /api/health 200, admin cookie-based login OK (is_admin=true), /api/autonomous-engine/status 200 dict body. 17/17 pytest cases pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "startup", "issue": "Pre-existing MongoDB IndexOptionsConflict on expires_at_1 and session_token_1 at startup (server.py:2914, db_security_hardening:61) and '[db-hardening] startup pass failed: modify immutable field _id' (server.py:2926). Unrelated to this fix — noted for main agent as separate cleanup."},
+      {"endpoint": "startup", "issue": "Redis rate-limiter cannot connect to 127.0.0.1:6379 (api_rate_limiter:136). Pre-existing environment issue, unrelated to guardian fix."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_enterprise_guardian_noise_suppression.py",
+    "/app/test_reports/pytest/guardian_noise_suppression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix is minimal, targeted, and correct: notify_autoheal removed, grace-period early return added at top of guardian, self-heal branch is log-only, audit persistence intact.",
+    "Guardian body is ~350 lines nested inside a larger scheduler.py (4496 lines). Recommend main agent split scheduler.py into scheduler_jobs/ modules in a future refactor — current file is well above the 700-line threshold.",
+    "The 30 historical self-heal audit rows in enterprise_autonomous_engine_audit that previously triggered mystery emails should ideally be back-annotated with a 'legacy_noisy_alert=true' flag or left as-is with a comment — cosmetic only, not blocking.",
+    "Optional hardening: consider making the 15-min grace window a named constant (GUARDIAN_STARTUP_GRACE_SECONDS = 15 * 60) for readability and future tuning."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_enterprise_guardian_noise_suppression.py (new)",
+    "/app/test_reports/pytest/guardian_noise_suppression.xml (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "not tested (backend-only request)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (cookie-based /api/auth/login — response has no bearer token; session cookie carries auth)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Guardian noise-suppression fix is verified end-to-end (code + runtime + logic simulation + regression). Reusable test file: /app/backend/tests/test_enterprise_guardian_noise_suppression.py — includes 8 static-code assertions, 6 decision-logic scenarios, 3 regression API checks. Admin login is cookie-based, not JWT bearer — reuse `admin_session` fixture pattern. Guardian job first real fire happens ~15 min after backend start; to observe the notify_breach/recovery path in a live system, main agent would need to either (i) wait past grace and manually stale a heartbeat, or (ii) monkey-patch guardian_process_started_at to a past timestamp in a follow-up test. Pre-existing IndexOptionsConflict + Redis rate-limiter warnings at startup are unrelated environment noise.",
+  "rca of the issue": "Root cause (pre-fix): guardian ran every 5 min; transient heartbeat staleness after any backend restart (e.g., zero_trust_auto_mitigation) was auto-recovered in one cycle, but the code path still emitted notify_autoheal → send_catalog_template(template_key='automation_alert') to all admins. Result: 30 audit rows in enterprise_autonomous_engine_audit each accompanied by a '[RECOVERED] Enterprise Autonomous Engine — guardian_status=healthy / fix=triggered_zero_trust_auto_mitigation' email. Mitigation applied by main agent (verified here): (1) 15-min startup grace-period early return in scheduled_enterprise_reality_validation_guardian; (2) removed notify_autoheal entirely; (3) self-heal-within-cycle path now only logger.info + audit insert; (4) email branches restricted to true breach (healthy→degraded) and true recovery (degraded→healthy). Verified: grace-period log observed live; no notify_autoheal residue anywhere; audit insert untouched; last_alert_at only updates on real breach/recovery."
+}

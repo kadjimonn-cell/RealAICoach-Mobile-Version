@@ -1,0 +1,44 @@
+{
+  "summary": "Verified i18n pre-warm cache admin endpoints (auth, validation, status, idempotency) and cache-effect on /api/i18n/auto-translate. All 6 pytest cases pass. Frontend EN->FR language switch renders French UI promptly (~1.45s, no stuck overlay, no pageerrors) confirming warm cache is being served. FR->EN reverse switch could not be automated cleanly (selector ambiguity in picker), but this is a test-authoring issue — same underlying API/code path is exercised by EN->FR.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Rapid successive language changes / language-picker reload",
+        "issue": "Under repeated back-to-back language switches within seconds, browser console showed a burst of ~100 HTTP 429 responses (rate-limited i18n API calls) and a MIME-type error while loading /_expo/static/js/web/fr-<hash>.js (server returned text/html SPA fallback for locale bundle chunk). Did not manifest during a single, natural EN->FR switch; only reproduced when the test drove multiple switches quickly. Likely pre-existing, unrelated to the pre-warm feature itself.",
+        "affected_selectors": ["[data-testid=\"language-switcher\"]"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_i18n_prewarm_cache.py",
+    "/app/test_reports/pytest/i18n_prewarm_results.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: Investigate whether locale-chunked JS bundles like /_expo/static/js/web/fr-*.js are supposed to exist statically. Currently server returns SPA HTML, causing MIME-type refusal — harmless for API-based translation but noisy in devtools.",
+    "OPTIONAL: Rate-limit response 429 on /api/i18n/auto-translate can be triggered by rapid switches; consider client-side debounce or increased burst window for admin/session-scoped calls."
+  ],
+  "critical_code_review_comments": [
+    "/app/backend/routes/i18n.py opens locale files with plain open() inside async _collect_prewarm_candidates and _run_prewarm_sweep — blocking I/O in the event loop. Fine here (small files, admin-only), but should be aiofiles for full async purity.",
+    "_collect_prewarm_candidates is called both inline in POST /pre-warm-cache (to build preview) and again inside the background sweep — two file reads per lang per request. Cache the parse or pass the candidates set into the background task to save work.",
+    "/app/backend/routes/i18n.py is 3350 lines — well over the 700-line guideline. Split into submodules (auto_translate, prewarm, locales, preferences)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_i18n_prewarm_cache.py"
+  ],
+  "success_rate": {
+    "backend": "100% (6/6)",
+    "frontend": "EN->FR verified; FR->EN not automated"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (used). Post-run admin language_preference was reset back to 'en' via POST /api/i18n/user-preference so subsequent tests start clean.",
+  "seed_data_creation": "None. Pre-warm run doc `i18n_prewarm_runs` gained a new entry (attempted=0, warmed=0) from the idempotency test — that is the intended no-op idempotency verification.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend suite /app/backend/tests/test_i18n_prewarm_cache.py runs in ~1s and does NOT consume LLM calls (all seed strings are already cached). Do NOT invoke test_i18n_auto_translate_perf_fix.py — that costs ~90 LLM calls. Latest admin prewarm run in db.i18n_prewarm_runs was fr-only, attempted=0.",
+  "rca of the issue": "N/A — no functional bug found. The pre-warm endpoints correctly enforce admin auth, reject unsupported languages, and the FR/ES/DE cache is fully warmed (idempotency preview.to_warm=0 for fr; latest run status=done with all langs done). Auto-translate /api/i18n/auto-translate returns 10 varied seed strings in <1.5s (~600ms observed), confirming cache-hit fast path."
+}

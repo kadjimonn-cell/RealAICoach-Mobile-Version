@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-06-19T15:02:00.000000+00:00",
+  "scope": "feature26_approved_non_admin_employer_full_access_e2e",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "fixture_account": {
+    "email": "feature26.approved.employer.e2e@realaicoach.app",
+    "is_admin_expected": false,
+    "approved_non_admin_expected": true
+  },
+  "result": {
+    "login_status": 200,
+    "login_is_admin": false,
+    "login_is_employer": true,
+    "full_employer_route_visible": 1,
+    "full_employer_title_visible": 1,
+    "premium_panel_visible": 1,
+    "onboarding_route_visible": 0,
+    "permissions_api_status": 200,
+    "permissions_api": {
+      "permissions": {
+        "can_post_jobs": true,
+        "can_view_candidates": true,
+        "employer_status": "approved"
+      }
+    },
+    "admin_route_visible": 0,
+    "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate"
+  },
+  "verdicts": {
+    "login_success": true,
+    "fixture_is_non_admin": true,
+    "permissions_report_approved": true,
+    "full_employer_portal_visible": true,
+    "onboarding_not_visible": true,
+    "admin_surface_blocked": true
+  },
+  "overall_verdict": "pass",
+  "test_details": {
+    "employer_workspace_title": "Employer Workspace",
+    "employer_workspace_subtitle": "Dedicated Feature 26 module for employer pipeline, offers, and hiring operations.",
+    "company_name": "Fixture Hiring Labs",
+    "approval_status": "APPROVED",
+    "premium_badge_visible": true,
+    "admin_redirect_target": "/job-platform-candidate"
+  },
+  "guardrail": "No legacy read-route retirement/pruning executed."
+}

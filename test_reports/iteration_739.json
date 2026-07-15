@@ -1,0 +1,109 @@
+{
+  "summary": "Public entry register-first routing verification PASSED - All mini-app aliases and footer protected links correctly redirect unauthenticated visitors to /auth/register with proper source tracking and return_to context",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "test_1_mini_apps_redirect": {
+      "status": "PASS",
+      "route": "/mini-apps",
+      "expected": "/auth/register?source=mini-apps&return_to=%2Fmini-apps",
+      "actual": "/auth/register?source=mini-apps&return_to=%2Fmini-apps",
+      "notes": "Unauthenticated visitor correctly redirected to register page"
+    },
+    "test_2_mini_apps_creator_exchange_redirect": {
+      "status": "PASS",
+      "route": "/mini-apps/creator-exchange",
+      "expected": "/auth/register?source=mini-apps-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
+      "actual": "/auth/register?source=mini-apps-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
+      "notes": "Unauthenticated visitor correctly redirected to register page with source tracking"
+    },
+    "test_3_mini_apps_job_platform_redirect": {
+      "status": "PASS",
+      "route": "/mini-apps/job-platform",
+      "expected": "/auth/register?source=mini-apps-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
+      "actual": "/auth/register?source=mini-apps-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
+      "notes": "Unauthenticated visitor correctly redirected to register page with source tracking"
+    },
+    "test_4_footer_learning_hub_redirect": {
+      "status": "PASS",
+      "testid": "footer-link-learning-hub",
+      "expected": "/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
+      "actual": "/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
+      "notes": "Footer Learning Hub link correctly redirects visitors to register"
+    },
+    "test_5_footer_content_library_redirect": {
+      "status": "PASS",
+      "testid": "footer-link-content-library",
+      "expected": "/auth/register?source=footer-contentlibrary&return_to=%2Fcontent-library",
+      "actual": "/auth/register?source=footer-contentlibrary&return_to=%2Fcontent-library",
+      "notes": "Footer Content Library link correctly redirects visitors to register"
+    },
+    "test_6_footer_my_analytics_redirect": {
+      "status": "PASS",
+      "testid": "footer-link-my-analytics",
+      "expected": "/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics",
+      "actual": "/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics",
+      "notes": "Footer My Analytics link correctly redirects visitors to register"
+    },
+    "test_7_regression_protected_routes": {
+      "status": "PASS",
+      "notes": "Protected routes (/my-analytics, /content-library, /ai-learning-hub) still redirect unauthenticated visitors to /welcome with return_to context - RBAC guardrails intact"
+    },
+    "test_8_regression_public_routes": {
+      "status": "PASS",
+      "notes": "Public routes (/pricing, /welcome) remain accessible without authentication"
+    }
+  },
+  "code_review": {
+    "miniAppRedirects.ts": {
+      "status": "CORRECT",
+      "notes": "Uses resolveVisitorCtaPath() with isAuthenticated flag and buildMiniAppVisitorRegisterFallback() for proper source/return_to context"
+    },
+    "visitorCtaPolicy.ts": {
+      "status": "CORRECT",
+      "notes": "Correctly blocks protected prefixes (/subscription, /my-analytics, /content-library, etc.) for unauthenticated visitors and returns fallback path"
+    },
+    "_layout.tsx": {
+      "status": "CORRECT",
+      "notes": "MiniAppRouteRedirector passes isAuthenticated to resolveMiniAppRedirect()"
+    },
+    "mini-apps/_layout.tsx": {
+      "status": "CORRECT",
+      "notes": "Mini-apps layout passes isAuthenticated to resolveMiniAppRedirect()"
+    },
+    "Footer.tsx": {
+      "status": "CORRECT",
+      "notes": "buildProtectedFooterRegisterTarget() generates proper register URLs with source and return_to for non-public footer links when visitor is unauthenticated"
+    }
+  },
+  "test_report_links": ["/app/frontend/e2e/public-entry-register-routing.spec.ts"],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "None required - visitor-only flows",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Public entry register-first routing is working correctly. Mini-app aliases (/mini-apps, /mini-apps/creator-exchange, /mini-apps/job-platform) and footer protected links (Learning Hub, Content Library, My Analytics) all redirect unauthenticated visitors to /auth/register with proper source tracking and return_to context. RBAC guardrails remain intact - this is only a public pre-auth routing hygiene fix that does not introduce any protected-route bypass.",
+  "external_preview_verification": {
+    "url": "https://visa-polish-v2.preview.emergentagent.com",
+    "status": "VERIFIED",
+    "mini_apps_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps&return_to=%2Fmini-apps",
+    "creator_exchange_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
+    "job_platform_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
+    "footer_learning_hub_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
+    "footer_content_library_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-contentlibrary&return_to=%2Fcontent-library",
+    "footer_my_analytics_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics"
+  }
+}

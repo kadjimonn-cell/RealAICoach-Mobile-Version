@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-06-18T12:52:29.609658Z",
+  "source": "/app/test_reports/feature26_p1_monitoring_cycle_20260618T125229Z.json",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "monitoring_cycle_status": "pass",
+  "snapshot": {
+    "deprecation_total_events": 19,
+    "deprecation_active_legacy_users": 2,
+    "deprecation_migration_progress_pct": 92.0,
+    "retirement_phase": "observe",
+    "retirement_target_phase_gate_ready": true,
+    "strict_sustained_gate_met": false,
+    "strict_ready_for_legacy_code_removal": false,
+    "near_zero_sustained_gate_met": false,
+    "near_zero_ready_for_legacy_code_removal": false,
+    "operational_near_zero_excluding_synthetic_sustained_gate_met": true,
+    "operational_near_zero_excluding_synthetic_ready_for_legacy_code_removal": true,
+    "gate_divergence_detected": true
+  },
+  "policy_decision": "continue_monitoring_no_pruning",
+  "legacy_read_pruning_executed": false,
+  "notes": [
+    "Current codebase only.",
+    "Global system-level locked protocol validation.",
+    "Mandatory free-user admin-block check executed in same cycle.",
+    "No legacy read pruning/deletion executed."
+  ]
+}

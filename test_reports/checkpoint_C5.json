@@ -1,0 +1,35 @@
+{
+  "checkpoint": "C5",
+  "goal": "Realtime metrics contract with explicit source metadata",
+  "public_metric_source": {
+    "vanity": "synthetic_generator",
+    "kpis": "vanity_public",
+    "realtime_kpis": "unavailable_without_auth"
+  },
+  "public_has_kpis_realtime": false,
+  "auth_metric_source": {
+    "vanity": "synthetic_generator",
+    "kpis": "database_aggregates",
+    "realtime_kpis": "database_aggregates"
+  },
+  "auth_kpis_keys": [
+    "active_users",
+    "ai_sessions_today",
+    "global_coaches",
+    "goals_completed_today",
+    "performance_boost",
+    "system_health",
+    "total_users",
+    "users_online"
+  ],
+  "auth_kpis_realtime_keys": [
+    "active_users",
+    "ai_sessions_today",
+    "global_coaches",
+    "goals_completed_today",
+    "performance_boost",
+    "system_health",
+    "total_users",
+    "users_online"
+  ]
+}

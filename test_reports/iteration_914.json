@@ -1,0 +1,41 @@
+{
+  "summary": "Pre-Production Entitlement Lock verified backend-only. 15/16 tests pass. Admin GET/POST /api/platform-control/entitlement-lock works and lock is left active=true. Free user cannot read lock (401/403). /api/auth/me correctly resolves formerly-premium user (watchvideos.premium.4dc6ab84@example.com) and free user to subscription_plan='free'; admin retains admin flag. Stripe /api/subscriptions/create-checkout, PayPal /api/paypal/create-order, and FedaPay /api/subscriptions/mobile-money/pay all return 403 with exact detail 'Subscriptions are disabled until production launch.' for both plan_id=basic and plan_id=premium. Admin toggle off/on flow succeeds; lock ends active=true (VERIFIED). DB integrity via /api/admin/subscription-analytics: total_users=857, distribution={free:855, basic:0, premium:2} — 0 non-admin basic/premium users; the 2 remaining premium accounts are admin actors. Regression smoke: admin + free login and authenticated /api/auth/me OK with lock active.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/revenue/upgrade",
+        "issue": "Returns 403 as required BUT the response body does NOT match the mandated preprod-lock detail. A global subscription-gate/middleware intercepts free users first and returns {\"error\":\"Subscription Required\",\"message\":\"This feature requires a Basic plan or higher. Upgrade now to unlock access.\",\"current_plan\":\"free\",\"required_plan\":\"basic\",\"upgrade_url\":\"/subscription/plans\"} before the explicit is_preprod_lock_active() check at routes/revenue_analytics.py L237 can fire. Functional protection (block upgrade for non-admin) is intact, but the strict 403 detail string 'Subscriptions are disabled until production launch.' contract is not met on this specific route."
+      },
+      {
+        "endpoint": "GET /api/admin/users?subscription_plan=<plan>",
+        "issue": "The subscription_plan/plan query-string filter is silently ignored — endpoint returns users of all plans (200 rows, all plan=free). Not blocking for this verification but breaks admin drill-down UX and any test relying on the filter. Recommend enforcing filter or documenting behavior."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_preprod_entitlement_lock.py",
+    "/app/test_reports/pytest/preprod_entitlement_lock_results.xml"
+  ],
+  "action_items": [
+    "In routes/revenue_analytics.py `upgrade_subscription`, move the `is_preprod_lock_active()` 403 check ABOVE (or ensure it runs before) the global subscription-required access-gate, so free users hit HTTPException(status_code=403, detail='Subscriptions are disabled until production launch.') per contract. Alternatively, register /api/revenue/upgrade as an exempt path in the global access gate so the endpoint's own lock check runs first.",
+    "(Optional/minor) Honor `subscription_plan` filter in GET /api/admin/users to enable strict DB-integrity drill-down."
+  ],
+  "critical_code_review_comments": [
+    "utils/preprod_entitlement_lock.py: `_CACHE` is a module-level singleton; safe here because it's a simple bool + updated inside a single-writer POST path. OK.",
+    "routes/platform_control.py L1434-1450: GET/POST /api/platform-control/entitlement-lock are correctly `require_admin`-guarded. Response shape matches spec: {active: bool, env_default: bool}.",
+    "routes/revenue_analytics.py L231-238: lock check is written correctly but is unreachable for free users because a global paid-plan access-gate short-circuits first, causing the response body to diverge from the mandated detail. See action_items."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_preprod_entitlement_lock.py"
+  ],
+  "success_rate": {"backend": "94% (15/16)", "frontend": "n/a (skipped per request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026!  |  Free: p1.free.1779113329@example.com / P1Free#2026!Aa  |  Formerly-premium (now free): watchvideos.premium.4dc6ab84@example.com / WatchVideos#2026Aa",
+  "seed_data_creation": "None. No new users or data created.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Lock is currently active=true (verified via GET /api/platform-control/entitlement-lock after suite). CSRF header 'X-Requested-With: XMLHttpRequest' is required on all state-changing requests. FedaPay checkout entry is /api/subscriptions/mobile-money/pay (needs plan_id+gateway+phone_number+currency). PayPal is /api/paypal/create-order. Stripe is /api/subscriptions/create-checkout. The one remaining failure is a response-detail mismatch on /api/revenue/upgrade — status is 403 but body message comes from the global subscription-required gate, not the preprod lock. After main agent fix, re-run: `pytest /app/backend/tests/test_preprod_entitlement_lock.py -v`.",
+  "rca of the issue": "For /api/revenue/upgrade: request enters, authenticates, then a globally-registered access-control layer (subscription-required gate) checks the user's stored plan==free vs required==basic and raises 403 with a plan-upsell payload BEFORE control reaches the endpoint body where `if is_preprod_lock_active() and not user.is_admin: raise HTTPException(403, detail='Subscriptions are disabled until production launch.')` is defined. Reproduction: login as free user, POST /api/revenue/upgrade {\"plan\":\"pro\"} with X-Requested-With header — you get 403 with {error:'Subscription Required', ...}. Mitigation options: (a) exempt /api/revenue/upgrade from the global paid-plan gate (or check lock first at gate level), or (b) apply the preprod-lock 403 check inside a FastAPI dependency that runs before other gates, or (c) update the global gate to prefer the preprod-lock 403 message when the lock is active."
+}

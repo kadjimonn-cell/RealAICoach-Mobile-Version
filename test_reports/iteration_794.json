@@ -1,0 +1,36 @@
+{
+  "summary": "Verified Home page trust strip refactor: trust-logos now renders PILL CHIPS via canonical welcome_testimonials source, matches Welcome strip 8/8, no forbidden fabricated brand names remain, styling matches Welcome exactly (rounded-999 pills, uppercase 11px 800 weight muted text, token bg/border), French i18n heading applied, mobile 390 wraps cleanly with no horizontal overflow.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Home trust strip (French locale)", "issues": ["Auto-translated heading is missing diacritics: 'Approuve par les principales organisations du monde entier' should be 'Approuvé par les principales organisations du monde entier' (missing é and è). This is a pre-existing i18n auto-translation limitation, NOT caused by the chip refactor. Chips themselves render correct proper nouns."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "HomeSocialProof.tsx (line 20): FALLBACK_TRUST_COMPANIES derives from FALLBACK_WELCOME_TESTIMONIALS — good single-source design; ensures parity with Welcome fallback.",
+    "index.tsx (lines 88-95): homeTrustCompanies memo passes buildCanonicalWelcomeTestimonials(gpsState.messaging.welcome_testimonials, 10) then dedupes and slices to 8 — same canonical source as WelcomeSocial. Confirmed identical company set live.",
+    "Chip visual styling on Home (borderRadius:999, fontSize:11, fontWeight:800, textTransform:uppercase, letterSpacing:0.6) exactly matches Welcome logoChip spec."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100%"},
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (French, dark)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Home page uses virtualized list — social-proof-section renders lazily at ~scrollY 3200px; must scroll iteratively to trigger render before locating [data-testid='trust-logos'] and 'home-trust-chip-0..7'. Login flow: /auth/login with role=button Sign In. Biometric modal may or may not appear. French locale is auto-selected for p1.free user.",
+  "verification_evidence": {
+    "home_chips_mobile_390": ["TechCorp", "GrowthLab", "Fortune 500", "Northbridge Financial", "Vertex Systems", "Aquila Commerce", "Brightwell Cloud", "Stratos Health"],
+    "home_chips_desktop_1440": ["TechCorp", "GrowthLab", "Fortune 500", "Northbridge Financial", "Vertex Systems", "Aquila Commerce", "Brightwell Cloud", "Stratos Health"],
+    "welcome_chips_desktop_1440": ["TechCorp", "GrowthLab", "Fortune 500", "Northbridge Financial", "Vertex Systems", "Aquila Commerce", "Brightwell Cloud", "Stratos Health"],
+    "set_match_home_vs_welcome": "8/8 (100%)",
+    "forbidden_names_check": {"searched_for": ["Microsoft", "Google", "Amazon", "Meta", "Apple", "IBM", "Oracle", "Salesforce"], "hits_on_home_desktop": 0, "hits_on_home_mobile": 0},
+    "chip_computed_styles_mobile": {"borderRadius": "999px", "fontWeight": "800", "fontSize": "11px", "textTransform": "uppercase"},
+    "mobile_overflow_check": {"viewport": "390x844", "container_width": 350, "scroll_width": 348, "overflow_x": false, "chip_wrap": "4 rows x 2 chips clean wrap"},
+    "i18n_french_heading": "'Approuve par les principales organisations du monde entier' (translated key home.social.trustedBy — not raw English)",
+    "regression_check": {"testimonial_carousel": "present with Sarah Chen (French quote) + dots", "impact_stats": "45+/10K+/94%/200+ rendering", "console_errors_specific_to_home": "none (only unrelated 401/403 from auth-session bootstrap probes)"}
+  }
+}

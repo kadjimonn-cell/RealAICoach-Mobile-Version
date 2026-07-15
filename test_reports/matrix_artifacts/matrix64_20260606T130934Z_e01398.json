@@ -1,0 +1,344 @@
+{
+  "run_id": "matrix64_20260606T130934Z_e01398",
+  "status": "FAIL",
+  "strict_passed": false,
+  "triggered_by": "scheduler_nightly_global_system",
+  "generated_at": "2026-06-06T13:09:34.280595+00:00",
+  "stored_at": "2026-06-06T13:09:34.280600+00:00",
+  "artifact_schema_version": "gtec_c5_matrix64.v1",
+  "scheduler": {
+    "job_id": "gtec_c5_matrix64_nightly",
+    "cron_utc": "0 1 * * *",
+    "timezone": "UTC",
+    "hour_utc": 1,
+    "minute_utc": 0
+  },
+  "base_url": "http://127.0.0.1:3000",
+  "dimensions": {
+    "routes": [
+      "/welcome",
+      "/auth/login",
+      "/executive-dashboard",
+      "/route-health-report"
+    ],
+    "viewports": [
+      "mobile_compact",
+      "tablet",
+      "laptop",
+      "desktop"
+    ],
+    "languages": [
+      "en",
+      "fr",
+      "es",
+      "ar"
+    ],
+    "required_total_checks": 64
+  },
+  "counts": {
+    "total_checks": 60,
+    "passed_checks": 35,
+    "failed_checks": 25,
+    "coverage_complete": false,
+    "pass_rate_pct": 58.33
+  },
+  "route_source": "dynamic_inventory",
+  "matrix_summary": {
+    "mobile": {
+      "pass": 18,
+      "fail": 2,
+      "total": 20
+    },
+    "tablet": {
+      "pass": 17,
+      "fail": 3,
+      "total": 20
+    },
+    "desktop": {
+      "pass": 0,
+      "fail": 20,
+      "total": 20
+    }
+  },
+  "matrix_summary_by_language": {
+    "mobile": {
+      "en": {
+        "pass": 18,
+        "fail": 2,
+        "total": 20
+      }
+    },
+    "tablet": {
+      "en": {
+        "pass": 17,
+        "fail": 3,
+        "total": 20
+      }
+    },
+    "desktop": {
+      "en": {
+        "pass": 0,
+        "fail": 20,
+        "total": 20
+      }
+    }
+  },
+  "white_screen_sentry": {
+    "run_id": "wss_20260605T222028Z",
+    "white_screen_gate_passed": false,
+    "failure_reason": "blank_loader_or_fatal_surface_detected_over_5s"
+  },
+  "failed_artifacts": [
+    {
+      "route": "/executive-dashboard",
+      "probe_url": "/executive-dashboard",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "navigation_error: Page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3000/executive-dashboard?lang=en&locale=en&hl=en\nCall log:\n  - navigating to \"http://127.0.0.1:3000/e",
+      "status_code": 0,
+      "final_url": "about:blank",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/executive-dashboard__mobile__en.png"
+    },
+    {
+      "route": "/route-health-report",
+      "probe_url": "/route-health-report",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "navigation_error: Page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en\nCall log:\n  - navigating to \"http://127.0.0.1:3000/r",
+      "status_code": 0,
+      "final_url": "about:blank",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/route-health-report__mobile__en.png"
+    },
+    {
+      "route": "/admin",
+      "probe_url": "/admin",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/admin__tablet__en.png"
+    },
+    {
+      "route": "/admin-console",
+      "probe_url": "/admin-console",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/admin-console__tablet__en.png"
+    },
+    {
+      "route": "/route-health-report",
+      "probe_url": "/route-health-report",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/route-health-report__tablet__en.png"
+    },
+    {
+      "route": "/admin",
+      "probe_url": "/admin",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/admin__desktop__en.png"
+    },
+    {
+      "route": "/admin-activity-log",
+      "probe_url": "/admin-activity-log",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "navigation_error: Page.goto: Timeout 20000ms exceeded.\nCall log:\n  - navigating to \"http://127.0.0.1:3000/admin-activity-log?lang=en&locale=en&hl=en\", waiting until \"domcontentlo",
+      "status_code": 0,
+      "final_url": "about:blank",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/admin-activity-log__desktop__en.png"
+    },
+    {
+      "route": "/admin-console",
+      "probe_url": "/admin-console",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/admin-console__desktop__en.png"
+    },
+    {
+      "route": "/admin-system",
+      "probe_url": "/admin-system",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/admin-system?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/admin-system__desktop__en.png"
+    },
+    {
+      "route": "/executive-dashboard",
+      "probe_url": "/executive-dashboard",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/executive-dashboard?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/executive-dashboard__desktop__en.png"
+    },
+    {
+      "route": "/route-health-report",
+      "probe_url": "/route-health-report",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/route-health-report__desktop__en.png"
+    },
+    {
+      "route": "/system-status",
+      "probe_url": "/system-status",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/system-status?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/system-status__desktop__en.png"
+    },
+    {
+      "route": "/careers",
+      "probe_url": "/careers",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/careers?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/careers__desktop__en.png"
+    },
+    {
+      "route": "/achievements",
+      "probe_url": "/achievements",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/achievements?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/achievements__desktop__en.png"
+    },
+    {
+      "route": "/careers/portal/[token]",
+      "probe_url": "/careers/portal/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/careers/portal/SAMPLE_TOKEN_gtec_probe?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/careers-portal-SAMPLE_TOKEN_gtec_probe__desktop__en.png"
+    },
+    {
+      "route": "/careers/schedule/[token]",
+      "probe_url": "/careers/schedule/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/careers/schedule/SAMPLE_TOKEN_gtec_probe?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__desktop__en.png"
+    },
+    {
+      "route": "/careers/track/[id]",
+      "probe_url": "/careers/track/gtec_probe",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/careers/track/gtec_probe?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/careers-track-gtec_probe__desktop__en.png"
+    },
+    {
+      "route": "/",
+      "probe_url": "/",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/root__desktop__en.png"
+    },
+    {
+      "route": "/welcome",
+      "probe_url": "/welcome",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/welcome?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/welcome__desktop__en.png"
+    },
+    {
+      "route": "/auth/login",
+      "probe_url": "/auth/login",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/auth/login?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/auth-login__desktop__en.png"
+    },
+    {
+      "route": "/features/travel-visa",
+      "probe_url": "/features/travel-visa",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/features/travel-visa?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/features-travel-visa__desktop__en.png"
+    },
+    {
+      "route": "/features/daily-meditation",
+      "probe_url": "/features/daily-meditation",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/features/daily-meditation?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/features-daily-meditation__desktop__en.png"
+    },
+    {
+      "route": "/pricing",
+      "probe_url": "/pricing",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/pricing?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/pricing__desktop__en.png"
+    },
+    {
+      "route": "/contact",
+      "probe_url": "/contact",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/contact?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/contact__desktop__en.png"
+    },
+    {
+      "route": "/about",
+      "probe_url": "/about",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "http_500_error",
+      "status_code": 500,
+      "final_url": "http://127.0.0.1:3000/about?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260605T222028Z/about__desktop__en.png"
+    }
+  ],
+  "artifact_path": "/app/test_reports/matrix_artifacts/matrix64_20260606T130934Z_e01398.json"
+}

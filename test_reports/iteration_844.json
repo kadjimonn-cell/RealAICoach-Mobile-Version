@@ -1,0 +1,79 @@
+{
+  "summary": "iteration_844: E2E validation of the redesigned WelcomeHero (enterprise/commercial-grade rebuild). Backend smoke and full frontend hero coverage across light/dark, EN/FR i18n, desktop (1920px) + mobile (390px), CTA navigation, and admin login flow all PASSED.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "curl_evidence": {
+    "POST /api/auth/login (admin, X-Requested-With: XMLHttpRequest)": "200 (cookie session issued for admin@realaicoach.app)",
+    "GET /api/i18n/health (admin cookie)": "200 status=healthy, supported_languages=23, dom_engine_version=v2-global",
+    "GET /api/admin/i18n/adoption": "200 summary.adoption_pct=100.0, files_scanned=721 (no hardcoded-copy regression from WelcomeHero rebuild)"
+  },
+  "frontend_evidence": {
+    "hero_light_desktop_1920": {
+      "all_testids_present_and_visible": ["welcome-hero","welcome-hero-badge","welcome-hero-title","welcome-hero-feature-pill","welcome-hero-subtitle","welcome-hero-highlights (3 chips)","welcome-hero-signal-grid","welcome-hero-signal-card-0/1/2","welcome-hero-nova-intro","welcome-hero-signup-btn","welcome-hero-signin-btn","welcome-hero-stats (4 stat values)","welcome-hero-mockup","welcome-hero-mockup-live-tag","welcome-hero-mockup-typing"],
+      "title": "'Elevate Your Professional Trajectory' (title2 rendered in accent color)",
+      "subtitle_v2": "AI-driven coaching, live performance intelligence, and precision growth plans \u2014 engineered for professionals who turn ambition into measurable, compounding results.",
+      "subtitle_em_dash": "Real em-dash char (\u2014) present; literal escape '\\u2014' NOT present",
+      "value_cards": {"card-0": "Precision Intelligence + copy", "card-1": "Measurable ROI + copy", "card-2": "Global Scale + copy"},
+      "mockup_live_tag_text": "'Live session'",
+      "mockup_typing_text": "'Nova is preparing your next milestone\u2026'",
+      "feature_pill_text": "'AI coaching tools live today' (graceful fallback because featureCount hasn't resolved; NO '0+' shown)",
+      "stats": {"active_users": "3,800+", "ai_sessions": "2,026+", "perf_boost": "34%", "coaches": "420+"},
+      "delta_pill_seen": "+5 pill visible on AI Sessions Today (SpringIn animation working)",
+      "raw_i18n_key_leaks": []
+    },
+    "hero_dark_desktop_1920": {
+      "theme_toggle_testid": "welcome-theme-toggle-dark (present, clicked, dark applied)",
+      "hero_title_color": "rgb(230, 234, 242) on body bg rgb(5, 10, 24) \u2014 fully legible",
+      "value_cards_and_mockup": "visible with dark surfaces, no invisible text",
+      "hero_title_preserved": "'Elevate Your Professional Trajectory'"
+    },
+    "hero_fr_desktop": {
+      "language_selector_testid": "welcome-language-selector (found and used)",
+      "card-0_fr": "Intelligence de Pr\u00e9cision (translated)",
+      "title_fr": "Acc\u00e9l\u00e9rez Votre Croissance Professionnelle",
+      "subtitle_fr": "Coaching pilot\u00e9 par AI, intelligence de performance en direct et plans de croissance pr\u00e9cis \u2014 con\u00e7us pour les professionnels...",
+      "mockup_live_tag_fr": "'S\u00e9ance en direct'",
+      "mockup_typing_fr": "'Nova pr\u00e9pare votre prochaine \u00e9tape...'",
+      "brand_untranslated": "'RealAICoach' remains untranslated (verified in body text)",
+      "raw_i18n_key_leaks": []
+    },
+    "hero_mobile_390": {
+      "testids_visible": "title, subtitle, feature-pill, signal-grid, signal-card-0/1/2, signup, signin, stats all present+visible",
+      "layout": "single centered column",
+      "signal_grid_horizontal_scroll": {"overflowX": "auto", "grid_visible_width": 320, "scrollWidth": 910, "confirms_horizontal_snap_scroll": true},
+      "mockup_hidden_on_mobile": "welcome-hero-mockup absent at 390px (expected \u2014 desktop-only per WELCOME_CENTERED_LAYOUT_BREAKPOINT)",
+      "horizontal_page_overflow": false
+    },
+    "cta_navigation": {
+      "welcome-hero-signin-btn": "http://localhost:3000/auth/login",
+      "welcome-hero-signup-btn": "http://localhost:3000/auth/register"
+    },
+    "welcome_below_hero_regression": {
+      "welcome-trust-languages-badge": "present on welcome page"
+    },
+    "login_flow": "admin@realaicoach.app / NewAdminPass2026! \u2192 landed on / with 'Executive Operations Command Center' visible (dashboard renders end-to-end)",
+    "console_errors_related_to_WelcomeHero": "NONE. The captured console errors are pre-existing 401s on SSE/live-metrics polling endpoints and one ERR_SSL_PROTOCOL_ERROR on a background asset \u2014 unchanged from prior iterations and unrelated to the hero rebuild."
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_844.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "WelcomeHero.tsx (643 lines) is over the 700-line soft cap only marginally, but the file already mixes 4 sub-components (useStagger, PulseDot, SpringIn, TypingDots) plus makeStyles. Consider extracting the animation helpers to /components/welcome/heroAnimations.ts and the value-card renderer to a small child component to keep the file <500 lines. Not a bug \u2014 tech-debt suggestion for maintainability.",
+    "All new content uses tx(key, fallback) with English fallbacks embedded in code (subtitleV2, value.*.title/copy, featurePill, mock.liveSession, mock.typing). This is safe because the adoption endpoint reported 100% adoption and no hardcoded regressions were detected \u2014 the tx() wrapper is recognised by the scanner. Fallbacks act as double insurance if a locale file loses a key.",
+    "Delta pill (+N since you landed) worked in practice: observed +5 badge on AI Sessions Today after the SSE snapshot updated \u2014 SpringIn spring animation renders cleanly.",
+    "useStagger currently disables useNativeDriver on web (correct); however the effect has an empty deps array with an eslint-disable. Acceptable since values ref is stable, but the comment could be replaced with an explicit lint suppression scoped to just the exhaustive-deps rule.",
+    "Feature pill graceful behavior verified: when featureCount is 0/undefined, it renders as just 'AI coaching tools live today' (no leading '0+'). Confirmed on live page."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (i18n health + adoption 100.0% + admin login all 200)",
+    "frontend": "100% (all 16 hero testids present in light+dark, EN+FR content correct, subtitle em-dash correct, 390px mobile responsive with horizontal snap scroll, both CTAs navigate correctly, admin login end-to-end reaches dashboard, no raw i18n keys leak, no console errors caused by WelcomeHero)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (session cookie via POST /api/auth/login with X-Requested-With: XMLHttpRequest)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "WelcomeHero uses tx(key, fallback) wrapper so English fallbacks are baked in for the 10 new keys (welcome.hero.value.precision/roi/global .title/.copy, welcome.hero.featurePill, welcome.hero.subtitleV2, welcome.hero.mock.liveSession, welcome.hero.mock.typing, welcome.hero.highlights.one/two/three). Testids for hero: welcome-hero, welcome-hero-badge, welcome-hero-title, welcome-hero-feature-pill, welcome-hero-subtitle, welcome-hero-highlights, welcome-hero-highlight-{0,1,2}, welcome-hero-signal-grid, welcome-hero-signal-card-{0,1,2}, welcome-hero-nova-intro, welcome-hero-signup-btn, welcome-hero-signin-btn, welcome-hero-stats, welcome-hero-stat-active-users/ai-sessions/perf-boost/coaches, welcome-hero-delta-active-users/ai-sessions/coaches (SpringIn conditional), welcome-hero-mockup, welcome-hero-mockup-live-tag, welcome-hero-mockup-typing. Mockup panel only renders at width >= WELCOME_CENTERED_LAYOUT_BREAKPOINT (~ desktop). At 390px the signal-grid becomes a horizontal ScrollView with snap-to-interval on phoneCardWidth. Entrance animations take ~1s; wait 8-10s after load before asserting. Theme toggle testids: welcome-theme-toggle-light / welcome-theme-toggle-dark / welcome-theme-toggle-system (auto). Language selector testid: welcome-language-selector.",
+  "rca of the issue": "N/A \u2014 no defect. Redesigned WelcomeHero verified end-to-end against every requirement in the review request: all 16 hero testids render in light+dark modes with correct copy; subtitle contains a real em-dash and NOT a literal '\\\\u2014'; 3 buyer-value cards (Precision Intelligence / Measurable ROI / Global Scale) render with accent icons and hover state on web; FR switch translates all hero copy including value cards, mockup live tag, and typing message while keeping the brand 'RealAICoach' untranslated; 390px mobile viewport shows centered single column with the value cards as a horizontal snap-scroll row (overflowX=auto, scrollWidth=910 > visible width 320), no horizontal page overflow, mockup correctly desktop-only; welcome-hero-signup-btn navigates to /auth/register and welcome-hero-signin-btn navigates to /auth/login; welcome-trust-languages-badge still present below the hero (no regression); admin login flow reaches Executive Operations Command Center; backend smoke confirms i18n adoption still 100.0% \u2014 the rebuild did not introduce hardcoded-copy regressions."
+}

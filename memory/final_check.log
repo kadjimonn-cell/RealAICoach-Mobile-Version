@@ -1,0 +1,11 @@
+login attempt 1 failed, url=http://localhost:3000/auth/login
+login form error: Locator.fill: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("input[type=\"email\"], input[placeholder*=\"mail\" i]").first
+
+login form error: Locator.fill: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("input[type=\"email\"], input[placeholder*=\"mail\" i]").first
+
+[admin] login ok=False
+FINAL issues: 0

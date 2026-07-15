@@ -1,0 +1,4 @@
+total_429_count: 25
+flood_present: no
+interactive: yes
+top_endpoints: ['https://visa-polish-v2.preview.emergentagent.com/api/gps/state (8)', 'https://visa-polish-v2.preview.emergentagent.com/assets/assets/images/logo.84ad9ba5161f6422c0d86fb5750542f8.png (2)', 'https://visa-polish-v2.preview.emergentagent.com/api/system/live-metrics (2)', 'https://visa-polish-v2.preview.emergentagent.com/ (1)', 'https://visa-polish-v2.preview.emergentagent.com/api/auth/session-bootstrap-telemetry (1)']

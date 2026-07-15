@@ -1,0 +1,43 @@
+{
+  "summary": "Iteration 803 — RE-TEST of the 3 iteration_802 action items on the Home rebuild. Backend regression /api/home/today-pulse: 3/3 pytest PASS (unauth 401, auth 200 with all fields, streak stable within same UTC day). Frontend (FR/dark, free plan, 1920px, logged in as p1.free.1779113329@example.com): (1) PRIMARY 1 FIXED — Trophy Case now renders EXACTLY ONE next-up chip on the unearned badge with the highest progress ratio: `[data-testid=badge-champion-next-up]` with FR text 'À venir' (champion at 1/5 = 20% correctly beats streak_master at 1/7 = 14%). All 6 FR badges present. (2) PRIMARY 2 FIXED — Testimonial carousel next arrow works with a REAL mouse click (no force): counter incremented 1/13 → 2/13, content changed Sarah Chen (TechCorp, 42% faster onboarding readiness) → Marcus Johnson (GrowthLab, 35% uplift in ramp consistency). Bounding boxes verified NO intersection between `[data-testid=home-progress-rail]` (x=1736..1906) and `[data-testid=testimonial-next]` (x=1611..1655, gap 81px). elementFromPoint at next-arrow center resolves to closest testid `testimonial-next` (rail no longer intercepts). (3) PRIMARY 3 FIXED — hero-stats-grid now filters out zero-value stats: only 1 non-zero card renders ('Utilisateurs actifs 735+'). No '0+' / '0%' dead platform stats in [data-testid=hero-stats-grid]. Regression PASS: home-hero-pulse-card shows 4 personal signals (streak/sessions/badges/setup) with FR labels + real values (Série de Jours 1 Jours · Sessions en cours 0 Aujourd'hui · badges gagnés 1/6 · Progression de la configuration 20%); getting-started-checklist has 5 FR items with checklist-start-here + checklist-reward-hint; home-progress-rail present with title 'Carte de progression' (localized) — testimonial count is 13 (canonical fallback + GPS messaging combined). Now the primary fixes are all verified. Testimonial count 13 (up from 10 previously — canonical set expanded).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Home progress rail (right sidebar) & hero-description",
+        "issues": [
+          "The Progress-map RAIL TITLE is localized ('Carte de progression') as required, but the individual RAIL ITEM labels are still English: 'Hero', 'Command', 'Checklist', 'Charts', 'Features', 'Trophies', 'Social', 'CTA' (see SectionProgressRail.tsx — item text likely hard-coded per anchor id). Not part of iteration 803 scope but visible in the same component just fixed.",
+          "Hero title 'Bienvenue, P1 Free Sanity' is FR but the hero DESCRIPTION under it is still English ('Your dashboard now behaves like an AI operating room: it highlights what changed, what matters next, and how Nova can accelerate the next win.'). Same for the top Résumé card kicker/subtitle. Translation coverage gap in home-hero-description (falls back through tx() default). Minor i18n polish.",
+          "The environment banner 'La langue détectée suggère EN. Appuyez pour aligner les préférences linguistiques.' persistently overlays the top of the dashboard — expected persistent nudge, not a bug, but visually noisy."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter802_home_today_pulse.py",
+    "/app/test_reports/pytest/iter803_today_pulse.xml"
+  ],
+  "action_items": [
+    "OPTIONAL (not blocking) — Localize individual SectionProgressRail item labels (Hero/Command/Checklist/Charts/Features/Trophies/Social/CTA) to FR to match the newly-localized rail title.",
+    "OPTIONAL (not blocking) — Provide FR translations for home.hero.description and any remaining EN-fallback strings on the hero (top résumé subtitle, kicker) so the primary command centre reads fully in FR for FR users."
+  ],
+  "critical_code_review_comments": [
+    "HomeTrophyCase.tsx:134 fix confirmed — `isNextUp={b.id === nextUpId}` correctly threaded; exactly one chip renders. Recommend adding an integration snapshot test asserting `document.querySelectorAll('[data-testid$=\\'-next-up\\']').length === 1` so this regression cannot silently return.",
+    "HomeSocialProof.tsx goTo() now restarts the 8s auto-cycle after manual navigation (verified counter changes on click). Good UX debt fix. Note testimonial pool grew to 13 (canonical + GPS `messaging.welcome_testimonials` combined) — any test hard-coded to `/10` will fail; update to derive from `[data-testid=testimonial-counter]` at runtime.",
+    "HomeHero.tsx statCards .filter((s) => Number(s.value) > 0) plus `statCards.length > 0 ? <hero-stats-grid/> : null` correctly hides both the individual dead stat cards and the whole grid when everything is zero. Nice defensive rendering.",
+    "index.tsx contentContainerStyle paddingRight:196 when width>=1450 verified — testimonial-next bounding box now sits 81px LEFT of the rail's left edge (nextBox.right=1655, railBox.x=1736) so clicks land on the intended target."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (3/3 pytest)",
+    "frontend": "100% on the 3 iteration_802 action items (Trophy next-up chip PASS, Testimonial real-click PASS, Zero-value stats filtered PASS); regression PASS (Pulse 4 signals, Checklist FR + start-here + reward-hint, Progress rail present + title localized)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free / FR / dark) — verified working",
+  "seed_data_creation": "None; used existing free-plan fixture user.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All 3 iteration_802 action items are verified fixed at 1920px FR dark. Environment notes reconfirmed: (1) Home page is a virtualized React-Native FlatList — trophy-case-section and testimonial-carousel are NOT in the DOM at initial mount; you MUST scroll the inner scroller (biggest overflow-y:auto div with scrollHeight ~4862+) programmatically to lazy-mount them. The document.documentElement.scrollHeight stays at ~1080, so window.scrollTo won't work — target the RN FlatList div directly. (2) 'Checking your secure session' loader still appears on first load — one reload suffices. (3) Testimonials count is now 13, not 10; do not hard-code '/10'. (4) Free user is redirected /auth/login → /dashboard (which serves the home view). (5) Rail item labels (Hero/Command/etc.) are still EN — minor untranslated leaf strings.",
+  "rca_of_the_issue": "PRIMARY 1 (trophy next-up) — Original bug: HomeTrophyCase.tsx computed nextUpId with useMemo but never passed it to <BadgeCard/>. Fix: pass `isNextUp={b.id === nextUpId}` on line 134. Verified: exactly 1 chip with data-testid=`badge-champion-next-up` (champion has highest ratio 20% among unearned). PRIMARY 2 (testimonial next click occluded) — Original bug: right-side floating progress rail overlapped the next chevron at 1920px, intercepting real mouse clicks; force=True bypassed actionability but the click still targeted the overlay. Fix: home FlatList contentContainerStyle paddingRight:196 when showProgressRail (width>=1450) shifts the whole content 196px to the LEFT, moving the testimonial card (and its next arrow at right-edge x=1655) safely away from the rail (rail starts at x=1736). Verified: rail vs next bounding boxes no longer intersect, elementFromPoint at next-btn center closest-testid resolves to `testimonial-next`, real mouse click advances counter 1/13→2/13 and swaps the testimonial content. PRIMARY 3 (zero-value hero stats) — Original bug: platform stats (0+ active users, 0% perf boost, 0+ AI sessions today, 0+ global coaches) rendered as dead values in the hero. Fix: `.filter((s) => Number(s.value) > 0)` on statCards + conditional render of hero-stats-grid only when statCards.length > 0. Verified: only 1 non-zero card ('Utilisateurs actifs 735+') renders inside [data-testid=hero-stats-grid]."
+}

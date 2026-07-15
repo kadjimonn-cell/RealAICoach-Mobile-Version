@@ -1,0 +1,136 @@
+{
+  "project_context": "RealAICoach Enterprise Welcome Hero Redesign",
+  "tech_stack": "React Native Web (Expo), Animated API, StyleSheet.create, Theme Tokens, i18n",
+  "theme_strategy": {
+    "strict_token_enforcement": "CRITICAL: Never use hardcoded hex values for colors. All colors MUST map through the `WC` theme context.",
+    "color_mappings": {
+      "primary_text": "WC.text",
+      "accent_text": "WC.accent",
+      "surface_bg": "WC.surface",
+      "border_default": "WC.border",
+      "success_indicator": "WC.success",
+      "glass_overlay": "withAlpha(WC.surface, 0.75)",
+      "subtle_border": "withAlpha(WC.border, 0.3)",
+      "faded_text": "withAlpha(WC.text, 0.6)"
+    },
+    "surface_treatment": {
+      "light_mode": "Crisp borders, stark contrast. Heavy use of subtle inset shadows to pop cards off the background.",
+      "dark_mode": "True deep surface. Use `withAlpha(WC.surface, 0.8)` combined with web-only `backdropFilter: 'blur(16px)'` for floating elements to avoid muddy grays."
+    }
+  },
+  "typography_and_copy": {
+    "hierarchy": {
+      "h1": "Aggressive scaling. Web: `clamp(40px, 6vw, 72px)`. Mobile: scaled down via RN Dimensions. Tight tracking, strong weight.",
+      "h2": "Accent color applied to the second line of the headline to create immediate visual tension.",
+      "subtitle": "High legibility, leading/line-height set to 1.6 for readability. Feature count ('37+') wrapped in a distinct pill.",
+      "microcopy": "Uppercase, wide tracking for eyebrow badges."
+    },
+    "i18n_keys": {
+      "badge": "tx('welcome.hero.badge_enterprise')",
+      "headline_line1": "tx('welcome.hero.headline_l1')",
+      "headline_line2_accent": "tx('welcome.hero.headline_l2_accent')",
+      "subtitle": "tx('welcome.hero.subtitle')",
+      "cta_primary": "tx('welcome.hero.cta_start_trial')",
+      "cta_ghost": "tx('welcome.hero.cta_explore')"
+    },
+    "card_replacements": [
+      {
+        "old_concept": "Plan-state guidance",
+        "new_value_prop": "Precision Intelligence",
+        "title_key": "tx('welcome.cards.precision.title')",
+        "desc_key": "tx('welcome.cards.precision.desc')",
+        "icon": "TargetIcon",
+        "value": "Focuses on hyper-personalized AI fit scores & career calibration."
+      },
+      {
+        "old_concept": "Light/dark fidelity",
+        "new_value_prop": "Measurable ROI",
+        "title_key": "tx('welcome.cards.roi.title')",
+        "desc_key": "tx('welcome.cards.roi.desc')",
+        "icon": "TrendingUpIcon",
+        "value": "Highlights 3x faster promotion trajectories and live growth analytics."
+      },
+      {
+        "old_concept": "Localization-safe messaging",
+        "new_value_prop": "Global Scale",
+        "title_key": "tx('welcome.cards.global.title')",
+        "desc_key": "tx('welcome.cards.global.desc')",
+        "icon": "GlobeIcon",
+        "value": "Emphasizes 23-language support and worldwide active coach streaks."
+      }
+    ]
+  },
+  "layout_hierarchy": {
+    "mobile_phone_under_480": {
+      "structure": "Single column. High-density vertical stack.",
+      "sequence": "Badge -> Headline -> Subtitle -> Value Cards (horizontal scroll snap) -> CTAs -> Live Stats Row (stacked) -> Ticker Tape.",
+      "mockup_panel": "Hidden or heavily simplified into a small floating widget to save vertical space."
+    },
+    "tablet": {
+      "structure": "Generous single column. Wider cards.",
+      "sequence": "Same as mobile but Value Cards are in a 3-column grid."
+    },
+    "desktop_wide": {
+      "structure": "Asymmetric Side-by-Side. Left: 55% Content. Right: 45% Mockup Panel.",
+      "alignment": "Left-aligned text for aggressive reading efficiency.",
+      "mockup_panel": "Sticky right-side, large, interactive 'Live Coach' chat representation overlaid with performance metric widgets."
+    }
+  },
+  "components": {
+    "badge": {
+      "style": "Pill-shaped, uppercase, `withAlpha(WC.accent, 0.1)` background, `WC.accent` text color. Add a pulsating dot indicator (using `Animated`) next to the text to signify 'Live / Active Platform'."
+    },
+    "hero_cards_bento": {
+      "style": "Replace the boring linear layout with a mini 'Bento' setup for the 3 value cards. Web: `display: grid`. RN Web polyfill: flex wrap with specific percentages.",
+      "surface": "Glassmorphic overlay. `borderWidth: StyleSheet.hairlineWidth`, `borderColor: withAlpha(WC.border, 0.5)`."
+    },
+    "live_stats_row": {
+      "style": "Horizontal flex container containing 4 data points. Add dynamic '+N since landing' pill next to stats.",
+      "pills_style": "`backgroundColor: withAlpha(WC.success, 0.15)`, `color: WC.success`. Small, bold text."
+    },
+    "mockup_panel_desktop": {
+      "style": "Floating glass terminal. Render an AI Coach Chat interface.",
+      "elements": [
+        "Header: Coach Avatar + 'Nova AI - Active'",
+        "Body: 2-3 chat bubbles fading in to simulate active conversation.",
+        "Overlays: 3 floating widgets overlapping the chat container (Goals Hit %, Growth %, Sessions)."
+      ]
+    }
+  },
+  "motion_and_interaction": {
+    "animated_api_rn": {
+      "entrance": "Staggered fade-up for left-column elements using `Animated.sequence` and `Animated.timing`. Transform `translateY` from 20 to 0.",
+      "delta_pills": "On mount, delay 2s, then pop in the '+N' delta pills using `Animated.spring` to simulate live data arriving."
+    },
+    "css_injected_web": {
+      "ticker_tape": "Inject a `<style>` tag dynamically that defines `@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`. Apply this to the ticker tape wrapper for buttery smooth infinite scroll.",
+      "glass_blur": "Add a raw CSS class via `<style>` for `backdrop-filter: blur(12px)` to apply to the mockup panel and value cards on web."
+    }
+  },
+  "image_urls": {
+    "ai_coach_avatar": {
+      "url": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtZW50b3IlMjBwb3J0cmFpdHxlbnwwfHx8fDE3ODM3OTkyNDd8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Professional confident male mentor portrait for the Nova AI coach avatar."
+    },
+    "ambient_texture": {
+      "url": "https://images.unsplash.com/photo-1635151227785-429f420c6b9d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGVsZWdhbnQlMjB0ZXh0dXJlfGVufDB8fHx8MTc4Mzc5OTI0N3ww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract elegant wavy texture used as a subtle background layer for the right-side mockup panel (masked with low opacity)."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Build the solution completely in React Native Web (Expo) using `StyleSheet.create`. No Tailwind, no raw CSS files.",
+    "Do NOT use `framer-motion`. Utilize `Animated.Value`, `Animated.timing`, and `Animated.spring` for interactive moments.",
+    "For the infinite ticker tape, create a React component that renders a `<style>` block containing the `@keyframes` and applies it via `className` or DOM injection.",
+    "Strictly pass all color assignments through the theme context variables (e.g., `theme.WC.text`, `theme.WC.surface`). Do NOT hardcode colors.",
+    "Replace the placeholder 3 cards with the new Buyer-Value proposition cards. Ensure they utilize the i18n structure provided.",
+    "On desktop (`width >= WELCOME_CENTERED_LAYOUT_BREAKPOINT`), mount the right-side mockup panel. Make it look like a premium, active dashboard chat with the provided mentor avatar.",
+    "Integrate `data-testid` on all CTAs, cards, and interactive mockup widgets."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Ensure dark mode and light mode are equally polished. Rely on `withAlpha()` for creating depth without breaking the token system.",
+    "Never use raw hex colors on elements.",
+    "Ensure the hero section does not look generic. Use layered `Animated.View` elements to create a z-index hierarchy and visual interest.",
+    "Make the 'Live Data' feel real: The '+N' delta pills should literally animate in after a delay to give a feeling of active platform usage.",
+    "Maintain high spacing multiples (e.g., padding/margin values of 24, 32, 48, 64) to ensure an enterprise 'pro-grade' breathing room."
+  ]
+}

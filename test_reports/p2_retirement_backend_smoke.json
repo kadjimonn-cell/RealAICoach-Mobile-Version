@@ -1,0 +1,13 @@
+{
+  "admin_login": 200,
+  "free_login": 200,
+  "canary_controls_status": 401,
+  "retirement_readiness_status": 401,
+  "retirement_readiness_excerpt": {},
+  "apply_phase2_status": 401,
+  "jobs_write_block_status": 401,
+  "jobs_write_block_detail": "Authentication required",
+  "employers_write_block_status": 401,
+  "employers_write_block_detail": "Authentication required",
+  "restore_status": 401
+}

@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-06-18T11:21:53.984142Z",
+  "scope": "feature26_admin_surface_visibility_hardening",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "requirement": "Non-admin users must never see Feature 26 admin-only tab/surface; admin-only surface remains visible for admins.",
+  "implementation": {
+    "frontend_access_control_redirect_override": "non-admin /job-platform-admin -> /job-platform-candidate",
+    "admin_route_non_admin_render": "removed access-denied card, replaced with immediate redirecting state (no admin content)"
+  },
+  "validation": {
+    "testing_agent": "auto_frontend_testing_agent",
+    "non_admin": {
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/",
+      "job-platform-admin-route": 0,
+      "job-platform-admin-title": 0,
+      "job-platform-admin-events": 0,
+      "verdict": "admin_surface_hidden"
+    },
+    "admin": {
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+      "job-platform-admin-route": 1,
+      "job-platform-admin-title": 1,
+      "job-platform-admin-events": 1,
+      "verdict": "admin_surface_visible"
+    },
+    "overall_verdict": "pass"
+  },
+  "guardrail": {
+    "legacy_read_pruning_executed": false,
+    "policy_decision": "continue_monitoring_no_pruning"
+  },
+  "notes": [
+    "Current codebase only.",
+    "Global system-level locked protocol applied.",
+    "Feature 26 monitoring hold unchanged."
+  ]
+}

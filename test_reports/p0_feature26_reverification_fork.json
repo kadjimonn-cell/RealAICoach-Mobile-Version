@@ -1,0 +1,166 @@
+{
+  "timestamp": "2026-06-17T12:19:40Z",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "feature_lock_expected": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "checks": [
+    {
+      "name": "auth_login_admin",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "body_excerpt": "{\"user_id\":\"user_4b5a68d2f7c6\",\"email\":\"admin@realaicoach.app\",\"name\":\"RealAICoach\",\"subscription_plan\":\"premium\",\"subscription_status\":\"active\",\"is_admin\":true,\"full_access\":true,\"roles\":[\"admin\",\"premium\",\"user\"],\"role\":\"admin\",\"email_verified\":fal"
+      }
+    },
+    {
+      "name": "auth_login_free",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "body_excerpt": "{\"user_id\":\"user_798c19018cad\",\"email\":\"p1.free.1779113329@example.com\",\"name\":\"P1 Free Sanity\",\"subscription_plan\":\"free\",\"subscription_status\":\"active\",\"is_admin\":false,\"full_access\":false,\"roles\":[\"user\"],\"role\":\"user\",\"email_verified\":false,\"prof"
+      }
+    },
+    {
+      "name": "auth_login_employer",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "body_excerpt": "{\"user_id\":\"user_e2e_employer_feature26\",\"email\":\"e2e.employer.feature26@realaicoach.app\",\"name\":\"Feature 26 E2E Employer\",\"subscription_plan\":\"premium\",\"subscription_status\":\"active\",\"is_admin\":false,\"full_access\":false,\"roles\":[\"premium\",\"user\"],\"r"
+      }
+    },
+    {
+      "name": "v2_health_lock_contract",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"ok\":true,\"service\":\"hiring-v2\",\"version\":\"v2\",\"feature_id\":\"jobs-portal\",\"feature_number\":26}",
+        "assertion": {
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "version": "v2"
+        }
+      }
+    },
+    {
+      "name": "free_dashboard_summary_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"total_active_jobs\":0,\"my_applications\":0,\"saved_jobs\":1}"
+      }
+    },
+    {
+      "name": "free_candidate_search_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"jobs\":[],\"total\":0,\"page\":1,\"pages\":0}"
+      }
+    },
+    {
+      "name": "free_admin_workflow_events_forbidden",
+      "pass": true,
+      "details": {
+        "status": 403,
+        "expected_status": 403,
+        "body_excerpt": "{\"detail\":\"Admin access required\"}"
+      }
+    },
+    {
+      "name": "employer_pipeline_board_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:43.821347+00:00\",\"stages\":[\"applied\",\"viewed\",\"interview\",\"offer\",\"hired\",\"rejected\"],\"counts\":{\"applied\":0,\"viewed\":0,\"interview\":0,\"offer\":0,\"hired\":0,\"rejected\":0},\"jobs\":[],\"applications\":[],\"total\":0}"
+      }
+    },
+    {
+      "name": "employer_offers_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"offers\":[],\"total\":0}"
+      }
+    },
+    {
+      "name": "admin_workflow_events_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:43.958577+00:00\",\"lookback_hours\":72,\"filters\":{\"event_type\":null,\"user_id\":null},\"include_metadata\":false,\"total\":0,\"events\":[]}"
+      }
+    },
+    {
+      "name": "admin_deprecation_telemetry_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:44.051170+00:00\",\"lookback_days\":14,\"total_events\":19,\"active_legacy_users\":2,\"remaining_legacy_operations\":[\"candidate_save_job\",\"employers_reverify\"],\"migration_progress_pct\":92.0,\"top_operations\":[{\"operation\":\"candidate_save_job\",\"count\":17},{\"operation\":\"employers_reverify\",\"count\":2}],\"top_legacy_endpoints\":["
+      }
+    },
+    {
+      "name": "admin_canary_controls_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:44.141324+00:00\",\"controls\":{\"key\":\"feature26_legacy_write_rollout\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"canary_enabled\":false,\"legacy_allow_pct\":100,\"auto_rollback_enabled\":true,\"rollback_window_hours\":6,\"rollback_legacy_event_threshold\":500,\"soft_disable_operations\":[],\"admin_override_user_ids\":[],\"leg"
+      }
+    },
+    {
+      "name": "admin_premium_cohorts_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:44.229083+00:00\",\"lookback_days\":30,\"activation_users\":0,\"repeat_users\":0,\"repeat_rate_pct\":0.0,\"churn_signal_users\":0,\"churn_signal_pct\":0.0,\"events_by_plan\":{},\"total_events\":0}"
+      }
+    },
+    {
+      "name": "admin_legacy_retirement_readiness_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:44.321304+00:00\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"lookback_hours\":72,\"controls\":{\"key\":\"feature26_legacy_write_rollout\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"canary_enabled\":false,\"legacy_allow_pct\":100,\"auto_rollback_enabled\":true,\"rollback_window_hours\":6,\"rollback_legacy_event_threshold\""
+      }
+    },
+    {
+      "name": "admin_legacy_removal_readiness_allowed",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T12:19:44.408242+00:00\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"mode\":\"strict_zero\",\"exclude_synthetic\":false,\"thresholds\":{\"strict_zero\":{\"max_events\":0,\"max_active_users\":0},\"near_zero\":{\"max_events\":5,\"max_active_users\":2}},\"controls_snapshot\":{\"legacy_retirement_enabled\":false,\"retirement_phase\":\"observe\",\"ret"
+      }
+    },
+    {
+      "name": "legacy_jobs_write_gone",
+      "pass": true,
+      "details": {
+        "status": 410,
+        "expected_status": 410,
+        "body_excerpt": "{\"detail\":{\"message\":\"Legacy /api/jobs write endpoint is permanently retired. Use v2 routes.\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"route_family\":\"jobs\",\"retirement_mode\":\"hard_retired\",\"retirement_phase\":\"hard_retired_cleanup\",\"replacement_hint\":\"/api/hiring/v2/candidate/save/{job_id}\"}}"
+      }
+    },
+    {
+      "name": "legacy_employers_write_gone",
+      "pass": true,
+      "details": {
+        "status": 410,
+        "expected_status": 410,
+        "body_excerpt": "{\"detail\":{\"message\":\"Legacy /api/employers write endpoint is permanently retired. Use v2 routes.\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"route_family\":\"employers\",\"retirement_mode\":\"hard_retired\",\"retirement_phase\":\"hard_retired_cleanup\",\"replacement_hint\":\"/api/hiring/v2/*\"}}"
+      }
+    }
+  ],
+  "overall_pass": true
+}

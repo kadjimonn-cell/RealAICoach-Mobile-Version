@@ -1,0 +1,105 @@
+{
+  "timestamp": "2026-06-17T15:47:39Z",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "locked_protocol_expected": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "checks": [
+    {
+      "name": "admin_login",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "body_excerpt": "{\"user_id\":\"user_4b5a68d2f7c6\",\"email\":\"admin@realaicoach.app\",\"name\":\"RealAICoach\",\"subscription_plan\":\"premium\",\"subscription_status\":\"active\",\"is_admin\":true,\"full_access\":true,\"roles\":[\"admin\",\"premium\",\"user\"],\"role"
+      }
+    },
+    {
+      "name": "v2_health_lock",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"ok\":true,\"service\":\"hiring-v2\",\"version\":\"v2\",\"feature_id\":\"jobs-portal\",\"feature_number\":26}"
+      }
+    },
+    {
+      "name": "deprecation_telemetry_14d",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T15:47:42.073837+00:00\",\"lookback_days\":14,\"total_events\":19,\"active_legacy_users\":2,\"remaining_legacy_operations\":[\"candidate_save_job\",\"employers_reverify\"],\"migration_progress_pct\":92.0,\"top_operations\":[{\"operation\":\"candidate_save_job\",\"count\":17},{\"operation\":\"employers_reverify\",\"count\":2}],\"top_legacy_endpoints\":[{\"endpoint\":\"/api/jobs/save/test_job_nonexistent_12345\",\"count\":5},{\"e"
+      }
+    },
+    {
+      "name": "retirement_readiness_72h",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T15:47:42.120820+00:00\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"lookback_hours\":72,\"controls\":{\"key\":\"feature26_legacy_write_rollout\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"canary_enabled\":false,\"legacy_allow_pct\":100,\"auto_rollback_enabled\":true,\"rollback_window_hours\":6,\"rollback_legacy_event_threshold\":500,\"soft_disable_operations\":[],\"admin_override_user_ids\":[],\"legacy"
+      }
+    },
+    {
+      "name": "removal_readiness_strict",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T15:47:42.207766+00:00\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"mode\":\"strict_zero\",\"exclude_synthetic\":false,\"thresholds\":{\"strict_zero\":{\"max_events\":0,\"max_active_users\":0},\"near_zero\":{\"max_events\":5,\"max_active_users\":2}},\"controls_snapshot\":{\"legacy_retirement_enabled\":false,\"retirement_phase\":\"observe\",\"retired_legacy_route_families\":[]},\"sustained_gate_met\":false,\"ready_for_"
+      }
+    },
+    {
+      "name": "removal_readiness_near_zero",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T15:47:42.300721+00:00\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"mode\":\"near_zero\",\"exclude_synthetic\":false,\"thresholds\":{\"strict_zero\":{\"max_events\":0,\"max_active_users\":0},\"near_zero\":{\"max_events\":5,\"max_active_users\":2}},\"controls_snapshot\":{\"legacy_retirement_enabled\":false,\"retirement_phase\":\"observe\",\"retired_legacy_route_families\":[]},\"sustained_gate_met\":false,\"ready_for_le"
+      }
+    },
+    {
+      "name": "canary_controls",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "expected_status": 200,
+        "body_excerpt": "{\"generated_at\":\"2026-06-17T15:47:42.394202+00:00\",\"controls\":{\"key\":\"feature26_legacy_write_rollout\",\"feature_number\":26,\"feature_id\":\"jobs-portal\",\"canary_enabled\":false,\"legacy_allow_pct\":100,\"auto_rollback_enabled\":true,\"rollback_window_hours\":6,\"rollback_legacy_event_threshold\":500,\"soft_disable_operations\":[],\"admin_override_user_ids\":[],\"legacy_retirement_enabled\":false,\"retirement_phase\":\"observe\",\"retired_le"
+      }
+    },
+    {
+      "name": "lock_contract_validated",
+      "pass": true,
+      "details": {
+        "feature_number": 26,
+        "feature_id": "jobs-portal",
+        "version": "v2"
+      }
+    },
+    {
+      "name": "hard_prune_gate_open",
+      "pass": false,
+      "details": {
+        "expected_for_safe_pruning": true,
+        "actual": false,
+        "note": "This check must be TRUE before any legacy read-route hard deletion."
+      }
+    }
+  ],
+  "overall_pass": false,
+  "p1_gate_snapshot": {
+    "deprecation_total_events": 19,
+    "deprecation_active_legacy_users": 2,
+    "deprecation_migration_progress_pct": 92.0,
+    "retirement_phase": "observe",
+    "retirement_recommended_phase": "phase2_jobs_employers_writes",
+    "retirement_target_phase_gate_ready": true,
+    "removal_strict_sustained_gate_met": false,
+    "removal_strict_ready_for_code_removal": false,
+    "removal_near_zero_sustained_gate_met": false,
+    "removal_near_zero_ready_for_code_removal": false,
+    "strict_recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+    "near_zero_recommended_action": "Continue monitoring legacy telemetry windows before hard route removal."
+  }
+}

@@ -1,0 +1,74 @@
+================================================================================
+Watch Videos Backend Validation - Deep Scan Fixes
+Base URL: https://visa-polish-v2.preview.emergentagent.com
+Started: 2026-05-11T21:07:30.992534
+================================================================================
+
+TEST 1: Login and Token Issuance
+--------------------------------------------------------------------------------
+✅ Login (free): PASS
+   Token length: 271 chars
+✅ Login (basic): PASS
+   Token length: 272 chars
+✅ Login (premium): PASS
+   Token length: 275 chars
+
+TEST 2: Bootstrap Endpoint - Plan/Quotas/Catalog
+--------------------------------------------------------------------------------
+✅ Bootstrap (free): PASS
+   Plan: free, Catalog: 374, Categories: 9, Quota: 0/5
+✅ Bootstrap (basic): PASS
+   Plan: basic, Catalog: 374, Categories: 9, Quota: 0/120
+✅ Bootstrap (premium): PASS
+   Plan: premium, Catalog: 374, Categories: 9, Quota: 1/-1
+
+TEST 3: Gating Checks
+--------------------------------------------------------------------------------
+✅ Gating: Free -> Basic video: PASS
+   Correctly blocked with 403: This video requires a higher subscription plan.
+✅ Gating: Basic -> Premium video: PASS
+   Correctly blocked with 403: This video requires a higher subscription plan.
+
+TEST 4: Hybrid Catalog Fields
+--------------------------------------------------------------------------------
+✅ Hybrid Fields (free): PASS
+   Sample: {"playback_type": "youtube", "has_fallback": true, "has_youtube_embed": true, "source_label": "YouTube"}
+✅ Hybrid Fields (basic): PASS
+   Sample: {"playback_type": "youtube", "has_fallback": true, "has_youtube_embed": true, "source_label": "YouTube"}
+✅ Hybrid Fields (premium): PASS
+   Sample: {"playback_type": "mp4", "has_fallback": true, "has_youtube_embed": false, "source_label": "Direct Stream"}
+
+TEST 5: Watchlist Endpoints
+--------------------------------------------------------------------------------
+✅ Watchlist Toggle (free): PASS
+   Add: watchlisted=True, Remove: watchlisted=False
+✅ Watchlist Sorting (free): PASS
+   Asc: 3 items, Desc: 3 items
+✅ Watchlist Toggle (basic): PASS
+   Add: watchlisted=True, Remove: watchlisted=False
+✅ Watchlist Sorting (basic): PASS
+   Asc: 3 items, Desc: 3 items
+✅ Watchlist Toggle (premium): PASS
+   Add: watchlisted=True, Remove: watchlisted=False
+✅ Watchlist Sorting (premium): PASS
+   Asc: 3 items, Desc: 3 items
+
+TEST 6: Preferences Persistence
+--------------------------------------------------------------------------------
+✅ Preferences Persistence (free): PASS
+   All preferences persisted correctly
+✅ Preferences Persistence (basic): PASS
+   All preferences persisted correctly
+✅ Preferences Persistence (premium): PASS
+   All preferences persisted correctly
+
+================================================================================
+SUMMARY
+================================================================================
+Total Tests: 20
+✅ Passed: 20
+❌ Failed: 0
+⏭️  Skipped: 0
+
+Results saved to: /app/watch_videos_deep_scan_results.json
+

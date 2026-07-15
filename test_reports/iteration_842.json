@@ -1,0 +1,36 @@
+{
+  "summary": "E2E validation of CLIENT VERSION ENFORCEMENT (iteration_842). Backend pytest 15/15 pass on test_client_version_enforcement.py plus 40/40 pass on the two v1 architecture regression suites (55/55 total). Independent curl matrix confirms the 426 gate, exemptions (/api/health, /api/v1/client/bootstrap), fail-open behavior for web/missing/malformed versions, X-API-Version:1 response header on 426, admin auth gating (401/403/403/200), invalid platform+semver rejection (400), full policy lifecycle including PUT enforced:false, and final restore of android policy to {min:1.0.0, latest:1.0.0, enforced:true} — verified via bootstrap. Frontend regression: homepage loads cleanly (RealAICoach hero, theme toggle, EN language switcher, Sign In / Start Free Trial), no 5xx, ZERO 426 responses on any browser request (32x 200 + 2x 401 unauth /me — pre-existing). Web is fully unaffected by the outermost enforcement middleware.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_client_version_enforcement.py",
+    "/app/test_reports/pytest/iter842_client_version_enforcement.xml",
+    "/app/test_reports/pytest/iter842_regression_v1.xml"
+  ],
+  "curl_evidence": {
+    "web_no_header": "200",
+    "android_outdated_0.0.1": "426 code=CLIENT_UPDATE_REQUIRED platform=android min=1.0.0 latest=1.0.0 update_url='' + X-API-Version:1",
+    "android_current_1.0.0": "200",
+    "android_missing_version": "200",
+    "android_malformed_version_banana": "200 (fail-open)",
+    "bootstrap_outdated_native": "200 version_enforcement.blocked_status=426 blocked_code=CLIENT_UPDATE_REQUIRED platforms.android.min_supported_version=1.0.0 platforms.android.enforced=true",
+    "health_outdated_native": "200",
+    "legacy_unversioned_path_enforced": "426 (no X-API-Version header)"
+  },
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Enforcement middleware is correctly placed as outermost with clear exempt list (/api/health, /api/v1/client/bootstrap) — verified experimentally with all curl matrix.",
+    "Fail-open semantics for web/missing/malformed version + DB errors are respected; no accidental web regression observed (zero 426 on browser navigation of homepage).",
+    "Policy PUT correctly rejects unknown platform ('windows' → 400) and invalid semver ('banana' → 400) with proper 400 status; audit collection client_version_policy_audit is written (indirectly evidenced by lifecycle passing).",
+    "Cache invalidation is immediate — same-process PUT is visible without waiting for 60s TTL (lifecycle test 2.0.0 → immediate 426 for 1.5.0 → immediate 200 for 2.1.0).",
+    "Android policy restored to default at the end of the lifecycle test — verified via bootstrap read after teardown."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (55/55 pytest)", "frontend": "100% (no 5xx, no 426 on web, homepage + hero + theme + i18n switcher render)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! ; p1.free.1779113329@example.com / P1Free#2026!Aa (native login with X-Client-Platform: native returns session_token)",
+  "seed_data_creation": "none — no seed added; lifecycle test mutates and restores android policy in a try/finally block.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "CLIENT VERSION ENFORCEMENT lives in APIVersionRewriteMiddleware; exempt paths are /api/health and /api/v1/client/bootstrap. Admin API: GET/PUT /api/v1/admin/client-version-policy[/{platform}]. Native login (X-Client-Platform: native) exposes session_token in JSON body — required to obtain a bearer for admin ops. The 60s in-memory policy cache is invalidated in-process on PUT so lifecycle tests do not need to wait. Legacy unversioned /api/i18n/languages is ALSO enforced (X-API-Version header only added on /api/v1/* paths).",
+  "rca of the issue": "N/A — no defect found. All 15 enforcement tests + 40 v1 regression tests pass; independent curl matrix and browser regression confirm zero web impact."
+}

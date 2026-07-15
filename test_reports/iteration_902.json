@@ -1,0 +1,118 @@
+{
+  "summary": "Frontend-only responsive verification of Travel Visa, Daily Meditation, AI Writer/Fitness regression, and /admin-system after the global responsive fixes. Tested at 390 / 768 / 1280 / 1920 breakpoints via localhost:3000 (per instructions). Login works for both free and admin users. Most responsive goals are met — Travel Visa header is de-duplicated (2 occurrences, not 4), no horizontal overflow at any breakpoint, content is centered at max-width ~1240 on 1920, tab switching works for tv-v2-tab-progress/certificates/quiz/embassy, Daily Meditation & AI Writer & Fitness render cleanly, and admin pages render at both mobile & desktop with no teal-border corruption. Found ONE clear responsive bug at 768px on the Travel Visa READINESS KPI card and ONE static-export staleness issue where the tv-v2-kpi-* data-testids are not present in the served DOM (source has them but the built Expo static export was not rebuilt with the latest changes).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "TravelVisaMain.tsx (Explore panel KPI row)",
+        "issue": "At tablet width 768px the READINESS KPI card is crushed to a very narrow width, causing the 'READINESS' label to render vertically (one letter per line) and '0%' to wrap. The PLAN card also wraps to a second row alone. Root cause: on line 293 the readiness card uses inline style { flex: 1, ... } (flex-basis 0) while the other 3 KPI cards use kpiCard which sets flexBasis '22%'. With flex-wrap enabled the basis-0 card gets whatever tiny space is leftover after the 22%-basis siblings claim theirs. Fix: give the readiness card the same kpiCard style (drop the ad-hoc { flex: 1, ... } inline style), so all 4 cards share flexBasis '22%' and wrap symmetrically to 2x2 at narrow widths.",
+        "selector": "TravelVisaMain.tsx line 293 (the readiness View)",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "/features/travel-visa @ 1920px",
+        "issues": [
+          "Content container tv-v2-explore-panel is centered with width=1240px (x=340) as intended - PASS.",
+          "Only 2 'Travel Visa' occurrences on page (top-bar chip + hero card) — de-duplication PASS.",
+          "No horizontal overflow at 390/768/1280/1920 — PASS."
+        ]
+      },
+      {
+        "screen": "/features/daily-meditation",
+        "issues": [
+          "Renders correctly at 390 and 1280 — no blank page, no duplicate header, single-scroll, content readable. PASS."
+        ]
+      },
+      {
+        "screen": "/features/fitness, /features/ai-writer (regression)",
+        "issues": [
+          "Both render correctly at 390 and 1920. Tab pills (Smart Writing Studio/Scan/AI Chat, Fitness Planner Pro/Scan/AI Chat) render and are clickable. No overflow. PASS."
+        ]
+      },
+      {
+        "screen": "/admin-system",
+        "issues": [
+          "Renders correctly at 390 (single-column KPI stack, hamburger collapsed) and 1280 (full sidebar + 4-up + 5-up KPI grids). No teal row-divider corruption observed on Integrity Scans / Payments-Tax visible rows — PASS."
+        ]
+      }
+    ]
+  },
+  "static_export_stale_issue": {
+    "issue": "The four KPI data-testids (tv-v2-kpi-countries, tv-v2-kpi-categories, tv-v2-kpi-readiness, tv-v2-kpi-plan) that exist in /app/frontend/src/components/travel-visa/TravelVisaMain.tsx (lines 285/289/293/297) are NOT present in the served static export DOM. Enumerated only 15 tv-v2 testids on the rendered page (tv-v2-root, tv-v2-search-bar/search-input, all tv-v2-tab-*, tv-v2-explore-panel). The KPI cards render visually with correct content (Countries 30 / Categories 480 / Readiness 0% / Plan FREE) but automation cannot select them by data-testid. Since REACT_APP_BACKEND_URL is served by a static Expo web export (frontend supervisor process is intentionally 'no such process'), the source code was updated but the export was NOT rebuilt. Main agent must run 'yarn export:web' (per the reviewer note: '~5 min') to publish the new testids.",
+    "priority": "MEDIUM"
+  },
+  "testid_naming_mismatch": {
+    "issue": "The review-request expects testid 'tv-v2-refresh' and 'tv-v2-search', but the source uses 'tv-v2-refresh-button' and 'tv-v2-search-bar' / 'tv-v2-search-input'. Not a bug, but flagging so main agent aligns spec with code (either rename source or update spec).",
+    "priority": "LOW"
+  },
+  "verification_matrix": {
+    "travel_visa": {
+      "header_dup_count_all_viewports": 2,
+      "overflow_390": false, "overflow_768": false, "overflow_1280": false, "overflow_1920": false,
+      "explore_panel_width_at_1920": 1240,
+      "explore_panel_x_at_1920": 340,
+      "tabs_clicked_ok": ["tv-v2-tab-progress","tv-v2-tab-certificates","tv-v2-tab-quiz","tv-v2-tab-embassy"],
+      "tab_click_overflow_at_1920": false,
+      "tab_click_overflow_at_390": false,
+      "kpi_testids_found_in_dom": 0,
+      "kpi_testids_expected": 4,
+      "readiness_kpi_layout_bug_at_768": true
+    },
+    "daily_meditation": {"overflow_390": false, "overflow_1280": false, "renders": true},
+    "ai_writer_390": {"renders": true, "tabs_visible": ["Smart Writing Studio","Scan","AI Chat"]},
+    "ai_writer_1920": {"overflow": false, "renders": true},
+    "fitness_390": {"overflow": false, "renders": true, "tabs_visible": ["Fitness Planner Pro","Scan","AI Chat"]},
+    "fitness_1920": {"overflow": false, "renders": true},
+    "admin_system_390": {"overflow": false, "renders": true, "layout": "single-column-collapsed"},
+    "admin_system_1280": {"overflow": false, "renders": true, "sidebar_visible": true, "teal_row_dividers": "none observed"},
+    "theme_toggle_on_travel_visa": "theme-toggle-dark / theme-toggle-light testids NOT reachable from the free-user Travel Visa route (no sidebar in that layout). Verified from admin-system screenshot that theme toggles exist at bottom-left of sidebar (sun/moon/system icons). Not able to spot-check theme on TV via toggle — TV rendered in light mode (body bg light, search input text rgb(15,23,42) on white input, readable)."
+  },
+  "critical_code_review_comments": [
+    "TravelVisaMain.tsx line 293: readiness card uses inline { flex: 1, ... } instead of shared kpiCard style. This breaks the flex-wrap 2x2 grid at narrow widths because it defaults to flex-basis 0 while its siblings use flex-basis 22%. Please reuse kpiCard for all 4 KPI cards, and either move the shared style into a StyleSheet.create or into a memoized const to avoid re-computation.",
+    "TravelVisaMain.tsx maintains two parallel testID + data-testid attributes on some elements but only data-testid on others (e.g. KPI cards). Recommend consistency: either always dual-emit or centralize via a helper (React Native Web already maps testID -> data-testid so dual-emit is redundant but harmless). This will remove confusion when writing E2E.",
+    "The static Expo web export deployment breaks the normal hot-reload contract that most reviewers assume — please make sure CI publishes the export on every source change so testids added in the working tree are actually testable end-to-end.",
+    "review-request spec references testid names 'tv-v2-refresh' and 'tv-v2-search' that don't exist in the source ('tv-v2-refresh-button', 'tv-v2-search-bar', 'tv-v2-search-input'). Sync the spec with the code or rename."
+  ],
+  "updated_files": [],
+  "test_report_links": [
+    "/app/test_reports/screenshots/iter902/tv_dash_mobile-390.png",
+    "/app/test_reports/screenshots/iter902/tv_dash_tablet-768.png",
+    "/app/test_reports/screenshots/iter902/tv_dash_desktop-1280.png",
+    "/app/test_reports/screenshots/iter902/tv_dash_wide-1920.png",
+    "/app/test_reports/screenshots/iter902/tv_dash_768_focus.png",
+    "/app/test_reports/screenshots/iter902/meditation_390.png",
+    "/app/test_reports/screenshots/iter902/meditation_1280.png",
+    "/app/test_reports/screenshots/iter902/aiwriter_390.png",
+    "/app/test_reports/screenshots/iter902/aiwriter_1920.png",
+    "/app/test_reports/screenshots/iter902/fitness_390.png",
+    "/app/test_reports/screenshots/iter902/fitness_1920.png",
+    "/app/test_reports/screenshots/iter902/admin_system_390.png",
+    "/app/test_reports/screenshots/iter902/admin_system_1280.png"
+  ],
+  "action_items": [
+    "HIGH: Fix Travel Visa READINESS KPI card responsive layout at 768px — change TravelVisaMain.tsx line 293 style from `{ flex: 1, borderRadius: 12, ... }` to use the shared `kpiCard` style (flexBasis '22%'), so all 4 KPI cards wrap 2x2 symmetrically at tablet width instead of the readiness card being crushed to a vertical single-column of letters.",
+    "MEDIUM: Rebuild the Expo static web export ('yarn export:web' or equivalent) so the newly-added tv-v2-kpi-* data-testids (source lines 285/289/293/297), tv-v2-refresh-button, and any other recent testid additions actually reach production DOM. Right now automation cannot select the KPI cards.",
+    "LOW: Reconcile testid naming — review-request expected 'tv-v2-refresh' and 'tv-v2-search' but code uses '-button' / '-bar' / '-input' suffixes."
+  ],
+  "success_rate": {"backend": "N/A - frontend-only", "frontend": "~85% (responsive header dedup, overflow, max-width centering, tab switching, meditation/ai-writer/fitness/admin regression all pass; 1 responsive bug at 768 on TV readiness card; 1 static export staleness issue blocks KPI-testid automation)"},
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa ; Admin: admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The frontend is a STATIC EXPO WEB EXPORT served on localhost:3000 — supervisor shows 'no such process' for the frontend service, but the export is served (nginx/expo-serve). NEVER assume hot-reload; any code fix in /app/frontend/**/*.tsx MUST be followed by a rebuild before re-testing. Login flow: POST via cookie-session; first login attempt may briefly appear to fail (URL still shows /auth/login) but subsequent nav still authenticates via session_renew — retry navigation and it works. Onboarding wizard: first visit to /features/travel-visa shows a 3-step wizard — click text='Skip' (there is only one Skip control at a time) to jump into the KPI dashboard. Theme-toggle testids (theme-toggle-light/dark/system) live in the desktop sidebar and are only visible on layouts that include the sidebar (e.g. /admin-system); the free-user Travel Visa route uses a header-only layout and doesn't render them.",
+  "rca of the issue": {
+    "readiness_kpi_at_768px": {
+      "reproduction": "1) Login as free user 2) goto /features/travel-visa 3) Skip onboarding 4) resize browser to 768x1024 5) observe first KPI row: Countries (~230px) | Categories (~230px) | READINESS (vertically-crushed, ~40px wide) then PLAN wraps to a second row alone.",
+      "root_cause": "TravelVisaMain.tsx line 293 gives the readiness card `style={{ flex: 1, borderRadius: 12, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.card, padding: 12 }}`, whereas its 3 siblings use `kpiCard` (line 79: `{ flexGrow: 1, flexBasis: (isMobile ? '45%' : '22%'), ... }`). With flex-wrap enabled the sibling cards claim 22% flex-basis each, leaving the readiness card (which has flex-basis 0 because `flex:1` expands to `flex:1 1 0%`) to grab only leftover space — at 768px that leftover is too narrow for the 'READINESS' label and value.",
+      "mitigation": "Replace the inline style on line 293 with `style={kpiCard}` (identical to siblings). Optionally also drop `isMobile ? '45%' : '22%'` in favor of a 3-way breakpoint (e.g. `<=480: '45%'`, `481-1024: '30%'`, `>1024: '22%'`) to give tablets a cleaner 3-column or 2x2 layout."
+    },
+    "kpi_testids_missing_from_dom": {
+      "reproduction": "1) Login as free user 2) goto /features/travel-visa 3) Skip onboarding 4) In devtools console run: document.querySelectorAll('[data-testid^=\"tv-v2-kpi-\"]').length -> 0. Compare with grep in /app/frontend/src/components/travel-visa/TravelVisaMain.tsx which shows 4 KPI data-testid attributes.",
+      "root_cause": "Static Expo web export served on localhost:3000 was not rebuilt after the KPI-testid additions. Frontend supervisor is intentionally 'no such process' so there is no automatic rebuild.",
+      "mitigation": "Run the export rebuild pipeline (yarn export:web / expo export -p web) then serve the newly generated /dist to localhost:3000."
+    }
+  }
+}

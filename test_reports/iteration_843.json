@@ -1,0 +1,39 @@
+{
+  "summary": "iteration_843: E2E validation of Frontend i18n adoption remediation (51 hardcoded-copy files converted to t()/tx()). BACKEND: /api/admin/i18n/adoption returns summary.adoption_pct=100.0 and files_with_hardcoded_copy_without_t=0 (files_scanned=721, files_using_t=721, routes_scored=207). Pytest 18/18 passed (3 skipped are optional evidence artifacts not present in this env) across test_i18n_structural_coverage_gate.py + test_i18n_localization_rollout.py — global production gate status=pass with 0 blockers, aggregate_coverage_pct >= 90 across all 22 non-source locales (Batch1/2/3), structural_coverage_pct=100, missing_keys_total=0. FRONTEND regression (http://localhost:3000): /contact renders brand+Back+Sign up free with intake form and 4 intent cards, /pricing renders 3 tiers + CTAs, /about-us, /talent-network, /blog all render clean — ZERO raw i18n key leaks (no 'adopt.', 'authGate.', or 'common.decorativeImage' literals on any page). Login flow via [data-testid=login-email-input/login-password-input/login-submit-button] with admin@realaicoach.app succeeds and lands on dashboard 'Executive Operations Command Center' with home-activity-pulse, home-job-hunt-pulse, home-arcade-challenge testids each rendering (count=1) — no blank cards, no raw keys. Language switch EN→FR from the navbar language selector works instantly: hero copy translates to 'Accélérez Votre Croissance Professionnelle', nav becomes Fonctionnalités/Analytique/Sécurité/Tarifs, CTAs 'Se connecter' + 'Essai gratuit', brand 'RealAICoach' remains untranslated, no stuck overlay. Protected route /home while logged out redirects to /welcome?return_to=%2Fdashboard&auth_reason=unauthenticated without crash and without raw key leaks.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_i18n_structural_coverage_gate.py",
+    "/app/backend/tests/test_i18n_localization_rollout.py",
+    "/app/test_reports/pytest/iter843_i18n.xml"
+  ],
+  "curl_evidence": {
+    "POST /api/auth/login (admin)": "200 (session_token JWT issued via cookie for admin@realaicoach.app)",
+    "GET /api/admin/i18n/adoption": "200 summary.adoption_pct=100.0 files_with_hardcoded_copy_without_t=0 files_scanned=721 files_using_t=721 routes_scored=207"
+  },
+  "frontend_evidence": {
+    "contact_page": "brand 'RealAICoach' + 'Back' + 'Sign up free' visible; intake form + intent cards render; 0 raw i18n keys",
+    "pricing_page": "3-tier pricing + CTAs render; 0 raw i18n keys",
+    "about_us_page": "renders; 0 raw i18n keys",
+    "talent_network_page": "renders; 0 raw i18n keys",
+    "blog_page": "renders 'RealAICoach Pro Blog' + post cards + BookmarkList; 0 raw i18n keys",
+    "login_dashboard_flow": "admin login → dashboard Executive Operations Command Center with home-activity-pulse (1), home-job-hunt-pulse (1), home-arcade-challenge (1) testids rendering non-blank",
+    "language_switch_en_fr": "instant switch — Accélérez Votre Croissance Professionnelle / Fonctionnalités / Se connecter / Essai gratuit / Tableau de Bord Coach IA; brand 'RealAICoach' untranslated; no stuck overlay; 0 raw keys",
+    "protected_route_logged_out": "GET /home → redirects to /welcome?return_to=%2Fdashboard&auth_reason=unauthenticated (no crash, no raw keys). The dedicated secure-session-loading-screen testid was not observed on desktop web because redirect fires immediately; behaviour matches 'shows loader and/or redirects to login' per spec."
+  },
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Adoption scanner change (I18N_T_CALL_RE now matches t|tx|tr|strictLabel and SKIP_FILES includes app/_layout.tsx) is respected end-to-end — 721/721 files show translation-call usage and 0 files retain hardcoded copy without t(). Regex is intentionally permissive; if desired, tighten with a word boundary before the call to avoid matching identifiers like 'getIt(' — currently not observed as false-positive because filenames + code fragments filters catch the remaining edge cases.",
+    "Language switch on FR shows the marketing hero copy 'Accélérez Votre Croissance Professionnelle' + full nav translated correctly. Brand token 'RealAICoach' correctly held out of translation as expected.",
+    "No visual/functional breakage detected from the t() conversions on the highest-risk touched surfaces (Contact nav, ProtectedRouteGate/SecureSessionLoadingScreen redirect path, HomeActivityPulse/HomeJobHuntPulse/HomeArcadeChallenge dashboard cards, BlogPostCard listing).",
+    "Note (advisory, not a regression from this batch): the auth-login page also embeds a footer newsletter <input type=email data-testid=newsletter-email-input> ABOVE the actual login-email-input in DOM. It's non-visible/blocked from user interaction on that layout, but it can trip naive selectors. Not caused by i18n batch; flagging only for future test hygiene."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (18/18 pytest passed, 3 skipped for optional artifacts)", "frontend": "100% (5 public routes + login + dashboard + FR language switch + protected-route redirect all clean, zero raw i18n key leaks)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (session cookie auth); free user p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "For login flow, use exact data-testids: login-email-input, login-password-input, login-submit-button on /auth/login. Landing '/' after admin login is the dashboard (Executive Operations Command Center). Home cards use testids without '-card' suffix: home-activity-pulse, home-job-hunt-pulse, home-arcade-challenge. Language switcher lives in navbar with [data-testid*='language'] (single element). Protected routes redirect to /welcome?return_to=...&auth_reason=unauthenticated rather than showing the secure-session-loading-screen inline on desktop web — this is expected. Backend admin session auth: POST /api/auth/login with X-Requested-With XMLHttpRequest header; session_token is returned in cookie AND is present via session cookie for subsequent /api/admin/* GETs (or extract Authorization Bearer if used).",
+  "rca of the issue": "N/A — no defect. i18n remediation change verified: adoption endpoint reports 100.0% with 0 hardcoded-copy files, global production gate status=pass with 0 blockers, aggregate locale coverage >= 90% for all 22 non-source locales, and no raw translation keys leak on any of the tested public/authenticated surfaces (contact, pricing, about, talent-network, blog, dashboard home, FR mode, protected-route redirect)."
+}

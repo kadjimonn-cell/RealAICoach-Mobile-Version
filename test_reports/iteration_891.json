@@ -1,0 +1,38 @@
+{
+  "summary": "Validated non-blocking geo currency prefill on POST /api/auth/register (iteration 891). 8/8 pytest cases PASS. UK signup (X-Forwarded-For=81.2.69.142) → user.currency_preference resolves to 'GBP' within ~1-2s via /api/auth/me (polled). Private-IP signup (10.0.0.5) → currency_preference stays null (USD default preserved). Benin signup (154.66.135.1) → currency_preference='XOF'. Manual override wins: PUT /api/auth/profile with currency_preference=CAD on the UK user persists to CAD and is returned by /auth/me — the guard filter {currency_preference: {$in: [null, '']}} correctly prevents the background prefill from overwriting a user-chosen value. Regressions confirmed: duplicate email → 400, weak password → 400, rate limit 5/hour is still active (observed 429 within 6 rapid attempts). /api/geo/detect anonymous public endpoint still returns 200 with correct GB/GBP mapping. Registration latency measured at ~1.6s (welcome + verification emails included) — geo prefill runs on a fire-and-forget asyncio task and does NOT block the response.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_signup_geo_currency_prefill_iter891.py",
+    "/app/test_reports/pytest/iter891_signup_geo_prefill.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "routes/auth.py L1767-1768: _prefill_asyncio.create_task(...) is fire-and-forget with no add_done_callback for exception surfacing (only the inner try/except logs). A stronger pattern already exists two functions below (_schedule_non_blocking_task at L1849) which attaches add_done_callback for guarded logging. Consider using it here for consistency (currently the inner try/except is broad, so this is cosmetic — no runtime impact observed).",
+    "routes/auth.py L1748: `country = await detect_country_from_ip(ip)` is called even when ip is 'unknown'; detect_country_from_ip already treats that as private→'US' so no harm, but flagging that the elif branch will then write signup_country='US' for users we couldn't geolocate at all — that's fine but worth documenting.",
+    "routes/auth.py L1755-1756: the elif clause fires for ANY resolved country whose currency isn't supported OR is USD, and stores signup_country. This includes private IPs (US) and unsupported-currency countries — good UX signal for analytics.",
+    "routes/geo_detection.py COUNTRIES map: PL (PLN) and TH (THB) still missing from previous iteration 890's finding. Not related to this iteration, but visitors from Poland/Thailand who sign up will get signup_country=PL/TH (nice) but no currency_preference because currency is falsy for those countries (they're not in COUNTRIES). Same 91% coverage gap noted in iteration 890 still holds. LOW priority.",
+    "PUT /api/auth/profile (L7990) accepts arbitrary currency_preference string with only .upper() normalization — no validation against SUPPORTED_CURRENCIES set. A client could set currency_preference='ZZZ' and it would persist. Consider adding: `if request.currency_preference.upper() not in SUPPORTED_CURRENCIES: raise HTTPException(400, ...)`. Not blocking this iteration but worth an enhancement ticket.",
+    "Signup response body (L1820-1827) does NOT include currency_preference or signup_country; the frontend must call /auth/me after register to see the prefilled currency. Acceptable because prefill is async, but if the frontend wants to reflect the geo-detected currency immediately in a post-signup toast/UI without polling, consider returning `signup_country_hint` in the register response (based on synchronous geo lookup) — future enhancement, not a bug."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_signup_geo_currency_prefill_iter891.py (new)"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 pytest)",
+    "frontend": "N/A (backend-only per review request)"
+  },
+  "test_credentials": "None new — fresh @example.com users created per test (geo.iter891.<tag>.<uuid>@example.com).",
+  "seed_data_creation": "Test creates ~10 fresh users in db.users during a run (UK, private-IP, Benin, plus 6 rate-limit attempts). Emails prefixed with geo.iter891 / geo.lat for easy cleanup if desired. IP cache entries in db.ip_geolocation for 81.2.69.142 and 154.66.135.1 already existed from iteration 890.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Test file: /app/backend/tests/test_signup_geo_currency_prefill_iter891.py — 8 tests. Uses shared module-level base_url fixture. UK test stashes user session on request.config._iter891_uk so the manual-override + duplicate-email tests can reuse it. Rate-limit test observes a 429 within 6 attempts (rate limiter appears keyed on the X-Forwarded-For value at the proxy layer, so distinct XFF per attempt still triggered a 429 in our run — the 5/hour limit is enforced). Registration latency measured ~1.6s (welcome + verification emails synchronous; geo prefill is on a background task). If rerunning, be aware that welcome/verify emails are sent to @example.com — that's intended per the review request. Iteration 890's PLN/THB coverage gap is unrelated and still open.",
+  "rca of the issue": "N/A — enhancement works as designed. All 8 verification cases pass."
+}

@@ -1,0 +1,51 @@
+{
+  "user_login_status": 200,
+  "admin_login_status": 200,
+  "checks": [
+    {
+      "role": "user",
+      "path": "/api/accessibility/wcag-report/pdf",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "pdf_size": 534044,
+      "page_count": 2,
+      "has_new_title": true,
+      "has_new_badge": true,
+      "has_new_footer": true,
+      "has_old_badge": false,
+      "metadata_theme": "pdf-v15-global-runtime-visual-stamp-v2",
+      "metadata_visual_mode": "global_visual_overlay",
+      "sample_text": "RealAICoach Accessibility Compliance\nWCAG 2.1 Report  \u007f  Enterprise Governance Artifact\nnoreply@realaicoach.app\n2026-05-20 04:29:02\n[WCAG 2.1 \u007f SCORE 65%] pass=13 available=7 not_met=0\nRealAICoach  \u007f  Global Accessibility Compliance\nPage 1\nAccessibility Compliance Snapshot\nWCAG 2.1 Level AA \u007f Generated 2026-05-20 04:29 UTC\nCompliance Score 65% \u007f 13/20 criteria passing\nSummary Metrics\nTotal Criteria Evaluated:\n20\nPassing:\n13\nAvailable (needs adoption):\n7\nNot Met:\n0\nWCAG Target:\n2.1 Level AA\nUser "
+    },
+    {
+      "role": "user",
+      "path": "/api/payments/tax-statement/pdf?scope=monthly&year=2026&month=5",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "pdf_size": 175143,
+      "page_count": 1,
+      "has_new_title": true,
+      "has_new_badge": true,
+      "has_new_footer": true,
+      "has_old_badge": false,
+      "metadata_theme": "pdf-v15-global-runtime-visual-stamp-v2",
+      "metadata_visual_mode": "global_visual_overlay",
+      "sample_text": "RealAICoach Tax Statement (Monthly)\nPeriod: 2026-05\nUser: FedaPay Prod Notify Done User (fedapay.prod.notify.done.2f8da905@gmail.com)\nBase Price 13298.00 Tax 1095.00\nProvider Fee 518.00 Customer Total 14911.00\nNet Settlement 14393.00\nDate Provider Currency Tax Cust Total Net Jurisdiction\n2026-05-20 fedapay XOF 296.00 4061.00 3920.00 NL\n2026-05-20 fedapay XOF 799.00 10850.00 10473.00 NL\nRealAICoach PDF v15\nGlobal runtime enterprise visual standard\nPolicy: PDF v15\n2026-05-20 04:29 UTC\nGLOBAL PDF V"
+    },
+    {
+      "role": "admin",
+      "path": "/api/admin/data/audit-log/export/pdf",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "pdf_size": 345472,
+      "page_count": 1,
+      "has_new_title": true,
+      "has_new_badge": true,
+      "has_new_footer": true,
+      "has_old_badge": false,
+      "metadata_theme": "pdf-v15-global-runtime-visual-stamp-v2",
+      "metadata_visual_mode": "global_visual_overlay",
+      "sample_text": "Data Management Audit Log\nGenerated: 2026-05-20 04:29:02 UTC  |  Total entries: 0\nTimestamp Admin Email Admin Name Action Collection Target ID Changes\nData Audit Log\nAdministrative data governance export\nEntries: 0\n2026-05-20 04:29 UTC\nRealAICoach Data Management \u007f PDF v15 enterprise profile\nPage 1\nRealAICoach PDF v15\nGlobal runtime enterprise visual standard\nPolicy: PDF v15\n2026-05-20 04:29 UTC\nGLOBAL PDF V15 POLICY ACTIVE\nRealAICoach \u007f Global PDF v15 enterprise runtime stamp\nPage 1\n"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "summary": "P1 Testing: Preview Freshness card and buildAnalyticsSource refactor. Found CRITICAL bug in /talent-network causing runtime crash. Fixed locally but preview not rebuilt yet.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "/talent-network page",
+        "issue": "CRITICAL: Page crashes with 'Cannot access Le before initialization' - analytics source variables used before definition",
+        "selector": "data-testid='talent-network-page'",
+        "priority": "CRITICAL"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Admin console access",
+        "issue": "Could not test Preview Freshness card - admin console redirects to login without authentication",
+        "affected_selectors": ["data-testid='preview-freshness-card'", "data-testid='admin-console-page'"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_744.json"],
+  "action_items": [
+    "CRITICAL: Rebuild preview environment to deploy the fix for /talent-network analytics source variable ordering",
+    "Verify Preview Freshness card after admin authentication is working"
+  ],
+  "critical_code_review_comments": [
+    "FIXED: In /app/frontend/app/talent-network.tsx, moved talentNetworkPageSource, talentNetworkProHubSource, talentNetworkHubSource, talentNetworkTimelineSource useMemo declarations from line 555-558 to line 149-153 (before callbacks that use them)",
+    "PreviewFreshnessCard.tsx implementation looks correct with all required data-testid attributes",
+    "buildAnalyticsSource.ts helper correctly normalizes source values with hyphen consistency"
+  ],
+  "updated_files": ["/app/frontend/app/talent-network.tsx"],
+  "success_rate": {
+    "backend": "N/A (skipped per request)",
+    "frontend": "33% (1/3 routes working - /careers passes, /talent-network crashes, /admin-console needs auth)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The /talent-network crash was caused by analytics source variables being used in useCallback/useEffect dependency arrays before they were defined. Fix applied locally by moving useMemo declarations earlier in the component. Preview environment needs rebuild to test. Admin console testing blocked by authentication - need to verify Preview Freshness card after login works.",
+  "rca_of_the_issue": {
+    "root_cause": "In talent-network.tsx, the useMemo declarations for talentNetworkPageSource, talentNetworkProHubSource, talentNetworkHubSource, and talentNetworkTimelineSource were placed at lines 555-558, but they were referenced in useCallback hooks (loadHub at line 219) and useEffect (line 251) that were defined earlier in the component. This caused a 'Cannot access before initialization' error because JavaScript hoisting doesn't apply to const/let declarations.",
+    "reproduction_steps": [
+      "1. Navigate to https://visa-polish-v2.preview.emergentagent.com/talent-network",
+      "2. Page crashes immediately with error: 'Cannot access Le before initialization'"
+    ],
+    "mitigation": "Moved the analytics source useMemo declarations from lines 555-558 to lines 149-153, before any callbacks that reference them. This follows the same pattern used in careers.tsx where analytics sources are defined early in the component."
+  }
+}

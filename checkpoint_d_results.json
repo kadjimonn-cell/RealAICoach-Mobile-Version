@@ -1,0 +1,67 @@
+{
+  "checkpoint": "D",
+  "timestamp": "2026-06-18T10:35:27.670992Z",
+  "feature_number": 26,
+  "feature_id": "jobs-portal",
+  "tests": [
+    {
+      "test": "health_feature_lock",
+      "endpoint": "/api/hiring/v2/health",
+      "status": "PASS",
+      "http_status": 200,
+      "details": {
+        "feature_number": 26,
+        "feature_id": "jobs-portal"
+      }
+    },
+    {
+      "test": "legacy_retirement_readiness",
+      "endpoint": "/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
+      "status": "PASS",
+      "http_status": 200,
+      "details": {
+        "retirement_phase": "observe",
+        "target_phase_gate_ready": true
+      }
+    },
+    {
+      "test": "legacy_removal_readiness_strict_zero",
+      "endpoint": "/api/hiring/v2/admin/legacy-removal-readiness?mode=strict_zero&exclude_synthetic=false",
+      "status": "PASS",
+      "http_status": 200,
+      "details": {
+        "sustained_gate_met": false,
+        "ready_for_legacy_code_removal": false
+      }
+    },
+    {
+      "test": "legacy_removal_readiness_near_zero",
+      "endpoint": "/api/hiring/v2/admin/legacy-removal-readiness?mode=near_zero&exclude_synthetic=false",
+      "status": "PASS",
+      "http_status": 200,
+      "details": {
+        "sustained_gate_met": false,
+        "ready_for_legacy_code_removal": false,
+        "operational_near_zero_excluding_synthetic_sustained_gate_met": true,
+        "gate_divergence_detected": true
+      }
+    },
+    {
+      "test": "free_user_admin_block_e2e",
+      "endpoint": "/job-platform-admin",
+      "status": "PASS",
+      "http_status": 200,
+      "details": {
+        "free_admin_verdict": "blocked_from_admin_surface",
+        "candidate_route_verdict": "allowed_route_reachable",
+        "admin_route_verdict": "admin_route_reachable"
+      }
+    }
+  ],
+  "outcome": {
+    "monitoring_operational": true,
+    "sustained_governance_gate_met": false,
+    "policy_decision": "continue_monitoring_no_pruning",
+    "legacy_read_pruning_executed": false
+  }
+}

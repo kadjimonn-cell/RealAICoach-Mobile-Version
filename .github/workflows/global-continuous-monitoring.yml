@@ -1,0 +1,74 @@
+name: Global Continuous Monitoring
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+jobs:
+  monitor-platform-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Collect runtime trust snapshots
+        env:
+          BASE_URL: ${{ secrets.REALAICOACH_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.REALAICOACH_ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.REALAICOACH_ADMIN_PASSWORD }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          import requests
+
+          base = (os.environ.get('BASE_URL') or '').strip().rstrip('/')
+          out = {
+            'generated_at': datetime.now(timezone.utc).isoformat(),
+            'base_url_present': bool(base),
+          }
+
+          if not base:
+            out['status'] = 'skipped'
+            out['reason'] = 'Missing BASE_URL secret'
+            open('continuous_monitoring_snapshot.json', 'w').write(json.dumps(out, indent=2))
+            raise SystemExit(0)
+
+          s = requests.Session()
+          login = s.post(
+            f"{base}/api/auth/login",
+            json={'email': os.environ.get('ADMIN_EMAIL', ''), 'password': os.environ.get('ADMIN_PASSWORD', '')},
+            timeout=25,
+          )
+          out['login_status'] = login.status_code
+          if login.status_code == 200:
+            tok = (login.json() or {}).get('session_token') or (login.json() or {}).get('token')
+            if tok:
+              s.headers.update({'Authorization': f'Bearer {tok}'})
+
+          checks = {}
+          for ep in [
+            '/api/admin/gtec-scan-v2/trust-gates',
+            '/api/admin/gtec-scan-v2/release-certificate',
+            '/api/admin/gtec-scan-v2/pipeline/enforcement-state',
+            '/api/system/status',
+          ]:
+            try:
+              r = s.get(f"{base}{ep}", timeout=25)
+              checks[ep] = {'status': r.status_code, 'body': r.json() if 'application/json' in r.headers.get('content-type', '') else r.text[:400]}
+            except Exception as exc:
+              checks[ep] = {'status': 'error', 'error': str(exc)}
+
+          out['checks'] = checks
+          out['status'] = 'ok'
+          open('continuous_monitoring_snapshot.json', 'w').write(json.dumps(out, indent=2))
+          print(json.dumps(out, indent=2))
+          PY
+      - name: Upload monitoring snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: continuous-monitoring-snapshot
+          path: continuous_monitoring_snapshot.json
+          retention-days: 7

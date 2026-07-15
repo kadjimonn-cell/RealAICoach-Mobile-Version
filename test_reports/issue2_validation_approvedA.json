@@ -1,0 +1,14 @@
+{
+  "task": "Issue 2 validation-only (Approved A)",
+  "timestamp_utc": "2026-05-25T02:12:52.093355Z",
+  "checkpoint_c": "No code changes executed; validation-only run per approval.",
+  "backend_tests": {
+    "command": "pytest -q backend/tests/test_metro_cache_version_no_status_rewrite_p1_08.py backend/tests/test_stale_url_ci_guard.py backend/tests/test_theme_prehydration_css_vars_p1_06.py backend/tests/test_theme_first_paint_contract.py backend/tests/test_app_store_persist_hydration_guard_p1_04.py backend/tests/test_scheduler_all_jobs_max_instances_contract.py backend/tests/test_scheduler_max_instances_p0_18.py",
+    "result": "18 passed"
+  },
+  "frontend_tests": {
+    "command": "E2E_BASE_URL=https://visa-polish-v2.preview.emergentagent.com playwright test e2e/theme-first-paint.spec.ts --grep \"@component\" --project=desktop-chromium --workers=1 --retries=1",
+    "result": "2 passed"
+  },
+  "conclusion": "Issue 2 requested controls are present and currently passing guardrails."
+}

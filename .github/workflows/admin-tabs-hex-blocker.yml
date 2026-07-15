@@ -1,0 +1,33 @@
+name: Frontend Hardcoded Hex Blocker
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+      - "frontend/scripts/theme_hex_guard.py"
+      - ".github/workflows/admin-tabs-hex-blocker.yml"
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - "frontend/scripts/theme_hex_guard.py"
+
+jobs:
+  block-new-frontend-hex:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Enforce zero hardcoded hex in full frontend scope
+        run: |
+          python frontend/scripts/theme_hex_guard.py \
+            --scope all \
+            --mode scan \
+            --fail-on-findings

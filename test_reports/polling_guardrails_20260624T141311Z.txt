@@ -1,0 +1,38 @@
+[Polling Guardrails Locked Protocol Check]
+timestamp_utc=20260624T141311Z
+window_lines=3000
+max_429_total=120
+max_429_gps=60
+max_429_non_gps=60
+\n[1/3] Running locked-protocol contracts...
+..............                                                           [100%]
+14 passed in 0.06s
+\n[2/4] Recent backend endpoint counters and threshold gate...
+     1  GET /api/gps/state 200
+
+[Threshold Evaluation]
+total_429=0 (max=120)
+gps_429=0 (max=60)
+non_gps_429=0 (max=60)
+GATE_STATUS=PASS
+\n[3/4] Guardrail source anchors
+/app/frontend/src/components/RenewalBanner.tsx:119:      return window.sessionStorage.getItem(`renewal:banner:fetched:${userId}`) === '1';
+/app/frontend/src/components/RenewalBanner.tsx:128:      window.sessionStorage.setItem(`renewal:banner:fetched:${userId}`, '1');
+/app/frontend/src/components/SmartOnboarding.tsx:109:      return window.sessionStorage.getItem(`onboarding:ab:assigned:${userId}`) === '1';
+/app/frontend/src/components/SmartOnboarding.tsx:118:      window.sessionStorage.setItem(`onboarding:ab:assigned:${userId}`, '1');
+/app/frontend/src/hooks/useGlobalPlatformState.ts:26:const GPS_MAX_POLL_INTERVAL_MS = 300_000;
+/app/frontend/src/hooks/useGlobalPlatformState.ts:27:const GPS_MIN_POLL_INTERVAL_MS = 45_000;
+/app/frontend/src/hooks/useGlobalPlatformState.ts:570:    const fallbackIntervalMs = shouldRunFastFallback
+/app/frontend/src/hooks/useGlobalPlatformState.ts:571:      ? Math.max(GPS_MIN_POLL_INTERVAL_MS, retryDelayMs)
+/app/frontend/src/hooks/useGlobalPlatformState.ts:572:      : Math.max(GPS_MAX_POLL_INTERVAL_MS, retryDelayMs);
+/app/frontend/src/hooks/useGlobalPlatformState.ts:574:    const id = setInterval(fetchState, fallbackIntervalMs);
+/app/frontend/src/components/admin/PerformanceGuardianPanel.tsx:7:import { getHybridPollingInterval } from '../../utils/hybridPolling';
+/app/frontend/src/components/admin/PerformanceGuardianPanel.tsx:165:    const intervalMs = getHybridPollingInterval({
+/app/frontend/src/utils/hybridPolling.ts:8:export function getHybridPollingInterval(config: HybridPollingConfig): number {
+/app/frontend/src/services/api.ts:339:const HARD_429_COOLDOWN_RULES: { match: string; methods: string[]; cooldownMs: number }[] = [
+/app/frontend/src/services/api.ts:367:  const rule = HARD_429_COOLDOWN_RULES.find((candidate) => (
+/app/frontend/src/components/AppShell.tsx:711:  const enableHeavyBackgroundPollers = [
+/app/frontend/src/components/AppShell.tsx:717:  const shouldShowRenewalBanner = showNonCriticalBanners && enableHeavyBackgroundPollers;
+/app/frontend/src/components/AppShell.tsx:718:  const shouldShowOnboarding = deferNonCriticalReady && !whatsNewVisible && enableHeavyBackgroundPollers;
+\n[4/4] Writing latest report pointer
+\nDONE. report=/app/test_reports/polling_guardrails_20260624T141311Z.txt

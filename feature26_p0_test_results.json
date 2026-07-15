@@ -1,0 +1,717 @@
+{
+  "test_run_timestamp": "2026-06-17T23:01:15.286964",
+  "feature_number": 26,
+  "feature_id": "jobs-portal",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "tests": [
+    {
+      "test_name": "Health Endpoint",
+      "status": "PASS",
+      "timestamp": "2026-06-17T23:01:17.377121",
+      "details": {
+        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/health",
+        "status_code": 200,
+        "response": {
+          "ok": true,
+          "service": "hiring-v2",
+          "version": "v2",
+          "feature_id": "jobs-portal",
+          "feature_number": 26
+        },
+        "extracted_fields": {
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "service": "hiring-v2",
+          "version": "v2",
+          "ok": true
+        }
+      }
+    },
+    {
+      "test_name": "Legacy Retirement Readiness (lookback_hours=72)",
+      "status": "PASS",
+      "timestamp": "2026-06-17T23:01:17.455971",
+      "details": {
+        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
+        "status_code": 200,
+        "response": {
+          "generated_at": "2026-06-17T23:01:17.406322+00:00",
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "lookback_hours": 72,
+          "controls": {
+            "key": "feature26_legacy_write_rollout",
+            "feature_number": 26,
+            "feature_id": "jobs-portal",
+            "canary_enabled": false,
+            "legacy_allow_pct": 100,
+            "auto_rollback_enabled": true,
+            "rollback_window_hours": 6,
+            "rollback_legacy_event_threshold": 500,
+            "soft_disable_operations": [],
+            "admin_override_user_ids": [],
+            "legacy_retirement_enabled": false,
+            "retirement_phase": "observe",
+            "retired_legacy_route_families": [],
+            "retirement_gate_lookback_hours": 72,
+            "retirement_gate_max_events": 100000,
+            "retirement_gate_max_active_users": 100000,
+            "retirement_force_apply": true,
+            "retirement_override_user_ids": [],
+            "updated_at": "2026-06-16T20:30:43.997243+00:00",
+            "updated_by": "user_4b5a68d2f7c6",
+            "retirement_last_gate_snapshot": {
+              "jobs": {
+                "route_family": "jobs",
+                "lookback_hours": 72,
+                "since": "2026-06-13T20:30:41.499187+00:00",
+                "total_events": 17,
+                "active_users": 2,
+                "gate_thresholds": {
+                  "max_events": 100000,
+                  "max_active_users": 100000
+                },
+                "gate_met": true,
+                "readiness_score": 100.0,
+                "top_operations": [
+                  {
+                    "operation": "candidate_save_job",
+                    "count": 17
+                  }
+                ]
+              },
+              "employers": {
+                "route_family": "employers",
+                "lookback_hours": 72,
+                "since": "2026-06-13T20:30:41.499714+00:00",
+                "total_events": 2,
+                "active_users": 1,
+                "gate_thresholds": {
+                  "max_events": 100000,
+                  "max_active_users": 100000
+                },
+                "gate_met": true,
+                "readiness_score": 100.0,
+                "top_operations": [
+                  {
+                    "operation": "employers_reverify",
+                    "count": 2
+                  }
+                ]
+              }
+            },
+            "retirement_updated_at": "2026-06-16T20:30:41.500083+00:00",
+            "retirement_updated_by": "user_4b5a68d2f7c6"
+          },
+          "retirement_phase": "observe",
+          "target_route_families": [],
+          "target_phase_gate_ready": true,
+          "recommended_phase": "phase2_jobs_employers_writes",
+          "family_readiness": [
+            {
+              "route_family": "jobs",
+              "lookback_hours": 72,
+              "since": "2026-06-14T23:01:17.405062+00:00",
+              "total_events": 17,
+              "active_users": 2,
+              "gate_thresholds": {
+                "max_events": 100000,
+                "max_active_users": 100000
+              },
+              "gate_met": true,
+              "readiness_score": 100.0,
+              "top_operations": [
+                {
+                  "operation": "candidate_save_job",
+                  "count": 17
+                }
+              ]
+            },
+            {
+              "route_family": "employers",
+              "lookback_hours": 72,
+              "since": "2026-06-14T23:01:17.405854+00:00",
+              "total_events": 2,
+              "active_users": 1,
+              "gate_thresholds": {
+                "max_events": 100000,
+                "max_active_users": 100000
+              },
+              "gate_met": true,
+              "readiness_score": 100.0,
+              "top_operations": [
+                {
+                  "operation": "employers_reverify",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        "extracted_fields": {
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "retirement_phase": "observe",
+          "target_phase_gate_ready": true,
+          "lookback_hours": 72,
+          "target_route_families": [],
+          "recommended_phase": "phase2_jobs_employers_writes"
+        }
+      }
+    },
+    {
+      "test_name": "Legacy Removal Readiness (strict_zero, exclude_synthetic=false)",
+      "status": "PASS",
+      "timestamp": "2026-06-17T23:01:17.535725",
+      "details": {
+        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-removal-readiness?mode=strict_zero&exclude_synthetic=false",
+        "status_code": 200,
+        "response": {
+          "generated_at": "2026-06-17T23:01:17.486572+00:00",
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "mode": "strict_zero",
+          "exclude_synthetic": false,
+          "thresholds": {
+            "strict_zero": {
+              "max_events": 0,
+              "max_active_users": 0
+            },
+            "near_zero": {
+              "max_events": 5,
+              "max_active_users": 2
+            }
+          },
+          "controls_snapshot": {
+            "legacy_retirement_enabled": false,
+            "retirement_phase": "observe",
+            "retired_legacy_route_families": []
+          },
+          "sustained_gate_met": false,
+          "ready_for_legacy_code_removal": false,
+          "recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+          "windows": [
+            {
+              "window_label": "72h",
+              "lookback_hours": 72,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 72,
+                  "since": "2026-06-14T23:01:17.482606+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 0.0,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 72,
+                  "since": "2026-06-14T23:01:17.483264+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": false,
+                  "readiness_score": 29.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "window_label": "7d",
+              "lookback_hours": 168,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 168,
+                  "since": "2026-06-10T23:01:17.483711+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 0.0,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 168,
+                  "since": "2026-06-10T23:01:17.484146+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": false,
+                  "readiness_score": 29.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "window_label": "14d",
+              "lookback_hours": 336,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 336,
+                  "since": "2026-06-03T23:01:17.484562+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 0.0,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 336,
+                  "since": "2026-06-03T23:01:17.484973+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": false,
+                  "readiness_score": 29.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "window_label": "30d",
+              "lookback_hours": 720,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 720,
+                  "since": "2026-05-18T23:01:17.485309+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 0.0,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 720,
+                  "since": "2026-05-18T23:01:17.485748+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": false,
+                  "readiness_score": 29.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "failing_windows": [
+            {
+              "window_label": "72h",
+              "lookback_hours": 72,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                },
+                {
+                  "route_family": "employers",
+                  "total_events": 2,
+                  "active_users": 1
+                }
+              ]
+            },
+            {
+              "window_label": "7d",
+              "lookback_hours": 168,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                },
+                {
+                  "route_family": "employers",
+                  "total_events": 2,
+                  "active_users": 1
+                }
+              ]
+            },
+            {
+              "window_label": "14d",
+              "lookback_hours": 336,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                },
+                {
+                  "route_family": "employers",
+                  "total_events": 2,
+                  "active_users": 1
+                }
+              ]
+            },
+            {
+              "window_label": "30d",
+              "lookback_hours": 720,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                },
+                {
+                  "route_family": "employers",
+                  "total_events": 2,
+                  "active_users": 1
+                }
+              ]
+            }
+          ]
+        },
+        "extracted_fields": {
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "mode": "strict_zero",
+          "exclude_synthetic": false,
+          "sustained_gate_met": false,
+          "ready_for_legacy_code_removal": false,
+          "recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+          "windows_count": 4,
+          "failing_windows_count": 4
+        }
+      }
+    },
+    {
+      "test_name": "Legacy Removal Readiness (near_zero, exclude_synthetic=false)",
+      "status": "PASS",
+      "timestamp": "2026-06-17T23:01:17.575550",
+      "details": {
+        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-removal-readiness?mode=near_zero&exclude_synthetic=false",
+        "status_code": 200,
+        "response": {
+          "generated_at": "2026-06-17T23:01:17.566536+00:00",
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "mode": "near_zero",
+          "exclude_synthetic": false,
+          "thresholds": {
+            "strict_zero": {
+              "max_events": 0,
+              "max_active_users": 0
+            },
+            "near_zero": {
+              "max_events": 5,
+              "max_active_users": 2
+            }
+          },
+          "controls_snapshot": {
+            "legacy_retirement_enabled": false,
+            "retirement_phase": "observe",
+            "retired_legacy_route_families": []
+          },
+          "sustained_gate_met": false,
+          "ready_for_legacy_code_removal": false,
+          "recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+          "windows": [
+            {
+              "window_label": "72h",
+              "lookback_hours": 72,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 72,
+                  "since": "2026-06-14T23:01:17.562656+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 64.71,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 72,
+                  "since": "2026-06-14T23:01:17.563244+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": true,
+                  "readiness_score": 100.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "window_label": "7d",
+              "lookback_hours": 168,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 168,
+                  "since": "2026-06-10T23:01:17.563771+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 64.71,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 168,
+                  "since": "2026-06-10T23:01:17.564218+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": true,
+                  "readiness_score": 100.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "window_label": "14d",
+              "lookback_hours": 336,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 336,
+                  "since": "2026-06-03T23:01:17.564620+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 64.71,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 336,
+                  "since": "2026-06-03T23:01:17.565059+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": true,
+                  "readiness_score": 100.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "window_label": "30d",
+              "lookback_hours": 720,
+              "gate_met": false,
+              "family_readiness": [
+                {
+                  "route_family": "jobs",
+                  "lookback_hours": 720,
+                  "since": "2026-05-18T23:01:17.565431+00:00",
+                  "raw_total_events": 17,
+                  "total_events": 17,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 2,
+                  "gate_met": false,
+                  "readiness_score": 64.71,
+                  "top_operations": [
+                    {
+                      "operation": "candidate_save_job",
+                      "count": 17
+                    }
+                  ]
+                },
+                {
+                  "route_family": "employers",
+                  "lookback_hours": 720,
+                  "since": "2026-05-18T23:01:17.565816+00:00",
+                  "raw_total_events": 2,
+                  "total_events": 2,
+                  "synthetic_excluded_count": 0,
+                  "active_users": 1,
+                  "gate_met": true,
+                  "readiness_score": 100.0,
+                  "top_operations": [
+                    {
+                      "operation": "employers_reverify",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "failing_windows": [
+            {
+              "window_label": "72h",
+              "lookback_hours": 72,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                }
+              ]
+            },
+            {
+              "window_label": "7d",
+              "lookback_hours": 168,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                }
+              ]
+            },
+            {
+              "window_label": "14d",
+              "lookback_hours": 336,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                }
+              ]
+            },
+            {
+              "window_label": "30d",
+              "lookback_hours": 720,
+              "failing_families": [
+                {
+                  "route_family": "jobs",
+                  "total_events": 17,
+                  "active_users": 2
+                }
+              ]
+            }
+          ]
+        },
+        "extracted_fields": {
+          "feature_number": 26,
+          "feature_id": "jobs-portal",
+          "mode": "near_zero",
+          "exclude_synthetic": false,
+          "sustained_gate_met": false,
+          "ready_for_legacy_code_removal": false,
+          "recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+          "windows_count": 4,
+          "failing_windows_count": 4
+        }
+      }
+    },
+    {
+      "test_name": "Monitoring-Only Mode Verification",
+      "status": "PASS",
+      "timestamp": "2026-06-17T23:01:17.616610",
+      "details": {
+        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
+        "status_code": 200,
+        "controls_snapshot": {
+          "legacy_retirement_enabled": false,
+          "retirement_phase": "observe",
+          "target_route_families": []
+        },
+        "monitoring_mode_indicators": {
+          "retirement_phase": "observe",
+          "is_observe_mode": true,
+          "note": "Monitoring endpoints are read-only and do not trigger pruning actions"
+        }
+      }
+    }
+  ],
+  "overall_status": "PASS"
+}

@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-06-18T02:28:53.971605Z",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "status": "pending",
+  "checklist": [
+    {
+      "item": "Sustained governance gate pass (approved policy mode across windows)",
+      "status": "pending",
+      "evidence": {
+        "strict_sustained_gate_met": false,
+        "near_zero_sustained_gate_met": false
+      }
+    },
+    {
+      "item": "Explicit v2 read parity sign-off",
+      "status": "pending",
+      "evidence": "Awaiting user sign-off"
+    },
+    {
+      "item": "Feature tracker row #26 move to Done",
+      "status": "pending",
+      "evidence": "Tracker currently Pending Verification"
+    },
+    {
+      "item": "Mandatory non-OTP free-user admin-block check in this cycle",
+      "status": "pass",
+      "evidence": {
+        "overall_verdict": "pass",
+        "free_admin_verdict": "blocked_from_admin_surface",
+        "admin_route_verdict": "admin_route_reachable"
+      }
+    }
+  ],
+  "guardrail": {
+    "legacy_read_pruning_executed": false,
+    "policy_decision": "continue_monitoring_no_pruning"
+  }
+}

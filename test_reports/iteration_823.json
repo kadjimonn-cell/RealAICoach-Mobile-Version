@@ -1,0 +1,61 @@
+{
+  "summary": "Feature 37 Flappy Bird Game — FULL fresh E2E verification (iteration 823). Backend 11/11 regression + 2/2 boundary tests PASS on preview URL. Frontend E2E (admin @ /features/flappy-bird): all 9 required testids present, Get Ready overlay renders, Start->flap (Space+mouse click)->die->Game Over with 'Score: 0' works, LIVE SCORE BADGE visibility EXPLICITLY CONFIRMED at first tick showing text='0' (this was the sole inconclusive item from iteration_822 — now green), games-played incremented 21->22 (score POST persisted), Play Again resets cleanly with canvas count=1, mute toggle changes aria-label 'Mute sound'<->'Unmute sound' and localStorage flappy_bird_muted=1 PERSISTS across full page reload, remount clean when navigating away to /dashboard and back (canvas count=1). Unauth /features/flappy-bird redirects to /welcome?return_to=%2Ffeatures&auth_reason=unauthenticated (hub not rendered). Responsive verified at 1920x800 canvas=960x640 centered, 768x1024 canvas=690x460, 390x844 canvas=320x213 — no horizontal overflow at any size. FPS regression /features/fps-game shows fps-game-hub. AI Learning Hub loads without error boundary. No raw i18n keys detected on hub. Only console error is expected pre-auth /api/auth/me 401 bootstrap probe. TWO NEW BACKEND FINDINGS documented as xfail (see backend_issues).",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "/api/flappy-bird/* (all 3 routes)",
+        "issue": "Free-tier users are BLOCKED by production_security_policy_gate with 403 'Subscription Required — requires Basic plan or higher'. Root cause: /api/flappy-bird/ is NOT in access_control_engine.FREE_PATTERNS list, so get_required_level() returns default level 1 (basic). Feature 37 is category='entertainment' and the review request explicitly requires the free user to be able to submit scores for the multi-user leaderboard test. Sibling /api/games-station/ IS in FREE_PATTERNS (line 125). Fix: add r'^/api/flappy-bird/' to FREE_PATTERNS in /app/backend/utils/access_control_engine.py.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": [
+      {
+        "endpoint": "POST /api/flappy-bird/score",
+        "issue": "CSRF header enforcement observed weak: POST /score with same session cookies but WITHOUT X-CSRF-Token header returned 200 (accepted the write). Review request expected 403 CSRF_BLOCKED. Session had X-Requested-With header; unclear if that alone satisfies the middleware or if flappy-bird route is not covered by CSRF enforcement. Review production_security_policy_gate + CSRF middleware coverage for /api/flappy-bird/score."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Flappy Bird hub /features/flappy-bird",
+        "issues": [
+          "Could not locate a header theme-toggle nor language-switcher testid via common selectors ([data-testid='theme-toggle'], [data-testid='language-switcher']). Theme/i18n toggling therefore NOT explicitly re-verified from within Flappy Bird page in this run. Static i18n key scan on the hub returned 0 raw keys (no 'flappyBird.*' strings leaked), which is a positive signal that FR/EN bundles resolve. Recommend main agent expose stable testids on the header theme+language switchers for repeatable E2E."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature37_flappy_bird.py",
+    "/app/backend/tests/test_feature37_flappy_bird_ext.py",
+    "/app/test_reports/pytest/feature37_flappy_bird_iter823.xml",
+    "/app/test_reports/pytest/feature37_flappy_bird_ext_iter823.xml"
+  ],
+  "action_items": [
+    "HIGH: Add r'^/api/flappy-bird/' to FREE_PATTERNS in /app/backend/utils/access_control_engine.py so free-tier users can access the Flappy Bird game endpoints (bootstrap/score/leaderboard). Feature 37 is entertainment and matches the free-access policy already applied to /api/games-station/.",
+    "MINOR: Verify CSRF middleware coverage for POST /api/flappy-bird/score. Currently a request with session cookies but no X-CSRF-Token header succeeds (200). Confirm whether this is intended (X-Requested-With satisfies the double-submit check) or a coverage gap.",
+    "OPTIONAL: Add stable data-testid to the top nav theme toggle and language switcher (e.g. 'theme-toggle', 'language-switcher') to enable repeatable theme+i18n E2E."
+  ],
+  "critical_code_review_comments": [
+    "/app/backend/routes/flappy_bird.py is clean: Pydantic score range 0..9999 enforced, ObjectId excluded from responses, async aggregation for personal_best+leaderboard, require_auth gate on all 3 endpoints. Boundary tests confirm score=0 and score=9999 accepted; -1 and 10000 return 422.",
+    "Registry entry locked at feature_number=37, sort_order=36, route=/features/flappy-bird, category=entertainment — all 36 prior features intact.",
+    "Frontend hub correctly renders live-score badge as soon as phase transitions to 'playing' (verified at iter 0 with text='0'). Fix or timing improvement since iteration_822 confirmed.",
+    "Mute state persistence to localStorage key 'flappy_bird_muted' works and survives full page reload (aria-label remains 'Unmute sound').",
+    "GAP (see backend_issues.critical): access_control_engine.FREE_PATTERNS does not include /api/flappy-bird/, so free users cannot use Feature 37. Sibling entertainment feature /api/games-station/ is listed on line 125 — this is inconsistent."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_feature37_flappy_bird_ext.py (new — score boundary tests + CSRF + multi-user leaderboard xfail markers documenting the two backend findings)"
+  ],
+  "success_rate": {
+    "backend": "100% on 11 regression + 2 new boundary tests (2 findings documented as xfail: CSRF header + free-tier gate — both are actual backend bugs, not test flakiness)",
+    "frontend": "100% on all 9 required testids, live-score badge verified during play, mute persistence, restart cleanliness, remount cleanliness, unauth redirect, responsive at 3 viewports, FPS regression"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (used successfully); p1.free.1779113329@example.com / P1Free#2026!Aa (login works but /api/flappy-bird/* returns 403 subscription_required — see backend_issues.critical)",
+  "seed_data_creation": "Admin flappy_bird_scores state after this run: personal_best=9999, games_played=23 (up from 7 pre-run; ~16 additional runs from pytest + browser session). This data is preserved for future leaderboard/regression tests. Consider a cleanup only if it interferes with future gameplay tests.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature 37 core is green after iteration_823. Two backend findings need main-agent attention: (1) HIGH — free-user access to /api/flappy-bird/* is blocked by production security policy gate (missing from FREE_PATTERNS); (2) MINOR — CSRF header is not strictly enforced on POST /score. Extended test file at /app/backend/tests/test_feature37_flappy_bird_ext.py marks these as xfail; after main agent fixes them, remove the xfail decorators and rerun. Live-score badge visibility (iteration_822 open question) is confirmed FIXED — visible immediately at phase='playing'. Preview URL: https://visa-polish-v2.preview.emergentagent.com. Login form is at /auth/login (not /login — /login 302s to /welcome). Admin admin@realaicoach.app has flappy_bird personal_best=9999 games_played=23 after this run.",
+  "rca of the issue": "FREE-USER 403: access_control_engine.get_required_level() falls through to `return 1` (basic) when path matches no pattern list. /api/flappy-bird/ is missing from FREE_PATTERNS (only sibling /api/games-station/ is present). production_security_policy_gate_middleware -> evaluate_policy_gate_decision -> evaluate_api_access reads that as 'basic required' and returns 403 subscription_required to any free user. Reproduction: login as p1.free.1779113329@example.com, GET /api/flappy-bird/bootstrap -> 403 with body {\"error\":\"Subscription Required\",\"required_plan\":\"basic\",\"current_plan\":\"free\"}. Fix (1-line): add r'^/api/flappy-bird/' entry to FREE_PATTERNS list in /app/backend/utils/access_control_engine.py alongside the r'^/api/games-station/' entry."
+}

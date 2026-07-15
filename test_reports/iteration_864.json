@@ -1,0 +1,47 @@
+{
+  "summary": "Smart Weekly Digest (iteration 864) backend verification. 12/14 E2E tests pass; 2 failures traced to a middleware regression where `/api/weekly-digest/*` is not listed in FREE_PATTERNS, causing subscription-enforcement middleware to return 403 'Subscription Required' before the route's self-or-admin auth guard runs. All other requirements (idempotency, admin auth, opt-out logic in route code, template preview markers, V7 gate 203/203, unit tests 5/5, scheduler wiring, regression suites) verified green.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "POST /api/weekly-digest/send-email/{user_id}",
+        "issue": "Free user calling send-email for THEIR OWN user_id returns 403 Subscription Required (expected 200 success/skipped per review spec). Middleware `subscription_enforcement.py` has no /api/weekly-digest/ entry in FREE_PATTERNS, so it defaults to basic+ and blocks before the in-route self-or-admin check.",
+        "priority": "HIGH"
+      },
+      {
+        "endpoint": "PUT /api/weekly-digest/preferences",
+        "issue": "Same middleware regression — free user cannot update THEIR OWN digest preferences (403 Subscription Required). Required by opt-out flow in the review spec.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_smart_weekly_digest_e2e_iter864.py",
+    "/app/test_reports/pytest/iter864_smart_weekly_digest.xml"
+  ],
+  "action_items": [
+    "Add `r\"^/api/weekly-digest/\"` (and/or matching prefix) to FREE_PATTERNS in /app/backend/routes/subscription_enforcement.py so the per-user smart digest self/PUT-prefs flows are not blocked by the subscription middleware. In-route self-or-admin guard already provides correct authorization; middleware pre-block is what breaks free-user self-send + opt-out.",
+    "After fix, re-run tests/test_smart_weekly_digest_e2e_iter864.py — expect 14/14 pass."
+  ],
+  "critical_code_review_comments": [
+    "routes/digest.py `_send_smart_digest_for_user` — good idempotency (weekly_digest_sends upsert) and correct opt-out short-circuit. Auth guard (self-or-admin) is correct but never reached for free users due to middleware ordering (see critical bug).",
+    "routes/digest.py `send_weekly_digest_to_all` correctly gated by require_admin; unauthenticated returns 401 and free returns 403 as expected.",
+    "utils/email_templates.py `build_smart_weekly_digest_email` renders all v7 chrome markers (email-header-wordmark, em-footer-chip, DAY STREAK, Coaching Sessions, Your Coach, Keep Your Streak Alive) in both light/dark themes and passes V7 gate 203/203.",
+    "scheduler.py registers `smart_weekly_digest_dispatch` with CronTrigger(day_of_week='mon', hour=8, minute=0). Import of `scheduled_smart_weekly_digest` from scheduler_jobs is clean.",
+    "AI smart tip uses Emergent LLM key with a static FALLBACK_SMART_TIP — verified non-empty string in produced digest payload."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_smart_weekly_digest_e2e_iter864.py (new)"
+  ],
+  "success_rate": {
+    "backend": "86% (12/14 e2e) — v7 gate 203/203, unit 5/5, regression 77/77",
+    "frontend": "skipped per review request"
+  },
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! (user_4b5a68d2f7c6); Free p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "None. Test uses existing seeded admin + free users. weekly_digest_sends doc for admin/current-week was written by the admin self-send test (idempotency verified).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Real Resend emails ARE sent when admin self-sends with force=true (expected). Do NOT hit /api/weekly-digest/send-all as admin — it would bulk-email. Reuse cookie sessions to avoid brute-force 429s on /api/auth/login. Re-run `pytest tests/test_smart_weekly_digest_e2e_iter864.py -v` after the FREE_PATTERNS fix to confirm 14/14. Preview endpoint returns JSON envelope {template_type, subject, html, theme, footer_version, ...}; parse .html for chrome markers.",
+  "rca of the issue": "RCA: `subscription_enforcement.py` uses regex-based FREE_PATTERNS to allow any authenticated user (including free tier). The new digest routes (/api/weekly-digest/send-email/{user_id}, /api/weekly-digest/preferences PUT, etc.) are not present in FREE_PATTERNS. The middleware therefore evaluates them as basic+ endpoints and returns HTTP 403 with body {error:'Subscription Required', current_plan:'free', required_plan:'basic'} BEFORE the route handler runs. This defeats the intentional in-route self-or-admin guard in digest.py `send_weekly_digest_email`. Reproduction: (1) login as p1.free.1779113329@example.com and grab user_id; (2) POST /api/weekly-digest/send-email/<own-id> with cookies + X-Requested-With → observe 403. Mitigation: add `r'^/api/weekly-digest/'` to FREE_PATTERNS in subscription_enforcement.py (or route those sub-paths that must remain self-scoped, e.g. send-email/{user_id} and preferences PUT). send-all is already admin-gated in the route via require_admin, so having it in FREE_PATTERNS is safe. Alternative narrower fix: allow only self-scoped subpaths and keep bulk endpoints subscription-gated."
+}

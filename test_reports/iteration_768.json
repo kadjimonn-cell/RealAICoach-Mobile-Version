@@ -1,0 +1,62 @@
+{
+  "summary": "Welcome Footer 4-style responsive contract retest - CRITICAL FIX VERIFIED. The 875px viewport issue from iteration_767 is now FIXED. Footer link columns correctly display 2x2 layout (PRODUCT+RESOURCES on row 1, COMPANY+LEGAL on row 2) at 875px. All regression checks pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Welcome Footer at 768px",
+        "issues": ["Footer link columns display single-column stacked layout instead of 2x2. This may be intentional design for narrower tablet widths, but differs from 875px behavior. The compactTabletLinkColumnWidth (346px) is too wide for two columns to fit in the 656px grid width at 768px."],
+        "priority": "LOW",
+        "note": "This was NOT part of the original bug report (iteration_767) which specifically targeted 875px. May be by design."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/frontend/e2e/welcome-responsive-contract.spec.ts"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% for targeted fix (875px), 80% overall (4/5 viewports)"
+  },
+  "test_credentials": "N/A",
+  "seed_data_creation": "N/A",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The 875px fix is verified and working. The 768px viewport shows a stacked single-column layout which may be intentional design. The original bug (3+1 layout at 875px) is now fixed with proper 2x2 layout.",
+  "rca_of_the_issue": {
+    "original_problem": "At 875px, footer link columns showed 3+1 layout (PRODUCT+RESOURCES+COMPANY on row 1, LEGAL alone on row 2) instead of expected 2x2",
+    "root_cause": "The fallback footer style used 'width' from useGLSBreakpoint instead of 'footerResponsiveWidth', causing incorrect flex-basis calculation at 875px",
+    "fix_applied": "Updated Footer.tsx to use footerResponsiveWidth consistently for all responsive calculations",
+    "verification": {
+      "875px_layout": "2x2 (PRODUCT+RESOURCES on row 1, COMPANY+LEGAL on row 2) - FIXED",
+      "875px_flex_basis": "370px per column - allows 2 columns per row",
+      "no_horizontal_overflow": true,
+      "social_section_centered": true,
+      "disclaimer_centered": true,
+      "careers_banner_centered": true,
+      "bottom_bar_intact": true
+    }
+  },
+  "viewport_test_results": {
+    "phone_390": {"status": "PASS", "layout": "2x2", "rows": 2},
+    "tablet_768": {"status": "OBSERVATION", "layout": "stacked (1 column per row)", "rows": 4, "note": "May be intentional design - not part of original bug"},
+    "critical_875": {"status": "PASS", "layout": "2x2", "rows": 2, "note": "MAIN FIX TARGET - VERIFIED"},
+    "balanced_1120": {"status": "PASS", "layout": "4-col", "rows": 1},
+    "desktop_1440": {"status": "PASS", "layout": "4-col", "rows": 1}
+  },
+  "regression_check": {
+    "social_section_centered": true,
+    "disclaimer_centered": true,
+    "careers_banner_centered": true,
+    "no_horizontal_overflow": true,
+    "bottom_bar_intact": true
+  }
+}

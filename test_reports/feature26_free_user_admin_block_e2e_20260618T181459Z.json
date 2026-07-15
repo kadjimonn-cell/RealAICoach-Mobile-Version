@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-06-18T18:14:59.331061+00:00",
+  "scope": "feature26_free_user_admin_block_e2e",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "http://127.0.0.1:3000",
+  "accounts": {
+    "free_non_otp": "jobs.free.final.90705154@gmail.com",
+    "admin": "admin@realaicoach.app"
+  },
+  "results": {
+    "free_login_api_statuses": [
+      0
+    ],
+    "free_admin_attempt": {
+      "final_url": "http://127.0.0.1:3000/job-platform-admin",
+      "admin_route_testid_count": 0,
+      "admin_title_testid_count": 0,
+      "admin_events_testid_count": 0,
+      "verdict": "blocked_from_admin_surface"
+    },
+    "free_allowed_route_check": {
+      "route": "/job-platform-candidate",
+      "final_url": "http://127.0.0.1:3000/welcome?return_to=%2Fjob-platform-candidate&auth_reason=unauthenticated",
+      "candidate_route_testid_count": 0,
+      "verdict": "candidate_route_not_reachable"
+    },
+    "admin_login_api_statuses": [
+      0
+    ],
+    "admin_route_check": {
+      "route": "/job-platform-admin",
+      "final_url": "http://127.0.0.1:3000/welcome?return_to=%2Fjob-platform-admin&auth_reason=unauthenticated",
+      "admin_route_testid_count": 0,
+      "admin_title_testid_count": 0,
+      "admin_events_testid_count": 0,
+      "verdict": "admin_route_not_reachable"
+    },
+    "admin_login_control_status": 0,
+    "notes": [
+      "Cycle-runner probe uses Playwright browser route checks with data-testid validation."
+    ]
+  },
+  "overall_verdict": "fail",
+  "notes": [
+    "Validation executed on current codebase and global locked protocol context.",
+    "No legacy read route pruning/deletion executed."
+  ]
+}

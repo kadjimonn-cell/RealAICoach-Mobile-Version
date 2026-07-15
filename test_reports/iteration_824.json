@@ -1,0 +1,51 @@
+{
+  "summary": "Iteration_823 fix verification (Feature 37 Flappy Bird — free user access). Backend fix in access_control_engine.py FREE_PATTERNS is CONFIRMED working: free user gets 200 on /api/flappy-bird/bootstrap, /score (with X-Requested-With), and /leaderboard; admin at rank #1 (best=9999), free user at #2 (best=15). All access-gate regressions pass: unauth->401, POST without custom header->403 CSRF_BLOCKED, sibling /api/games-station/bootstrap free user->200. Both backend test suites pass 17/17 (11 core + 6 extended) with ZERO xfails after one small pre-existing test-script assertion was corrected (admin already at 9999 ceiling). HOWEVER — CRITICAL FRONTEND MIRROR-GAP DETECTED: the UI route guard in /app/frontend/src/context/AccessControlContext.tsx has a hard-coded FREE_TIER_FEATURE_PREFIXES list (lines 49-53) that is missing /features/flappy-bird. Free user attempting to visit /features/flappy-bird in the browser is client-side-redirected to /subscription/plans?upgrade_reason=basic_required BEFORE any backend call is made, so none of the flappy-bird testids ever render. The backend fix is CORRECT and complete; the frontend allow-list must be updated in parallel to actually deliver the free-tier gameplay to users.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "AccessControlContext.tsx (RouteAccessGuard)",
+        "issue": "FREE_TIER_FEATURE_PREFIXES missing '/features/flappy-bird' — free user hitting /features/flappy-bird gets client-side redirected to /subscription/plans?upgrade_reason=basic_required before backend is even called. Backend now allows the route but frontend still gates it. Same class of mirror-list bug as the original backend FREE_PATTERNS miss.",
+        "selector": "n/a (route guard)",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Free user → /features/flappy-bird",
+        "issue": "Frontend RouteAccessGuard blocks navigation despite backend allowing it. None of the required testids (flappy-bird-hub, flappy-bird-best-score-card, flappy-bird-games-played-card, flappy-bird-canvas, flappy-bird-get-read, flappy-bird-leaderboard-card) rendered because the page never loaded — redirected to /subscription/plans instead.",
+        "affected_selectors": ["flappy-bird-hub", "flappy-bird-canvas", "flappy-bird-best-score-card", "flappy-bird-games-played-card", "flappy-bird-get-ready", "flappy-bird-leaderboard-card"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature37_flappy_bird.py",
+    "/app/backend/tests/test_feature37_flappy_bird_ext.py",
+    "/app/test_reports/pytest/iter824_flappy.xml"
+  ],
+  "action_items": [
+    "Add '/features/flappy-bird' to FREE_TIER_FEATURE_PREFIXES in /app/frontend/src/context/AccessControlContext.tsx (around line 50, alongside '/features/fps-game'). This is the frontend mirror of the backend FREE_PATTERNS addition and completes the fix.",
+    "After the frontend fix, re-run the UI spot-check: login as p1.free.1779113329@example.com, navigate to /features/flappy-bird, verify flappy-bird-hub loads, personal_best card shows 15 (or higher — user has already submitted scores), games_played >= 8, flappy-bird-error is absent, canvas + get-ready overlay render."
+  ],
+  "critical_code_review_comments": [
+    "Route access control has two mirror lists (backend access_control_engine.FREE_PATTERNS and frontend AccessControlContext.FREE_TIER_FEATURE_PREFIXES) that must be kept in sync manually — this is a fragile pattern that already caused this bug twice (iter823 for backend, iter824 for frontend). Consider serving the free-tier route allow-list from the backend session bootstrap so the frontend consumes it dynamically.",
+    "Test test_submit_and_persist made an implicit assumption that prev_best < 9999. Fixed defensively to handle the ceiling case (admin already at 9999). Consider seeding a dedicated non-admin test user for score-progression tests to avoid interference with the shared admin account state."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_feature37_flappy_bird.py (fixed test_submit_and_persist to handle prev_best==9999 ceiling case)"
+  ],
+  "success_rate": {
+    "backend": "100% (17/17)",
+    "frontend": "0% (route guard blocks page load — 0/6 testids visible)"
+  },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (login 200, personal_best=15 after tests); Admin: admin@realaicoach.app / NewAdminPass2026! (personal_best=9999, games_played=38+)",
+  "seed_data_creation": "None new — free user personal_best incremented from 12 -> 15 by test_admin_top_after_free_submit; admin games_played increased by test runs (best remains at 9999 ceiling).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend Feature 37 flappy-bird is 100% green and fix verified. Only remaining blocker is one frontend allow-list line in /app/frontend/src/context/AccessControlContext.tsx — add '/features/flappy-bird' to FREE_TIER_FEATURE_PREFIXES array (around line 53). After that, re-run the frontend spot-check with the free user credentials above. Backend suites test_feature37_flappy_bird.py and test_feature37_flappy_bird_ext.py are stable regression tests, 17/17 pass, no xfails.",
+  "rca of the issue": "The original bug (iter823) was a missing entry in the BACKEND access_control_engine.FREE_PATTERNS regex list. Main agent added r'^/api/flappy-bird/' — backend now correctly serves the free user (verified via curl: bootstrap 200, score POST 200, leaderboard 200 with correct ranking). But the platform has a PARALLEL frontend allow-list (FREE_TIER_FEATURE_PREFIXES in AccessControlContext.tsx) that must mirror the backend, and that list was NEVER updated. Reproduction: 1) login as free user 2) visit /features/flappy-bird 3) frontend RouteAccessGuard evaluates canAccessRoute() → not in FREE_TIER_FEATURE_PREFIXES and under /features/* which is in BASIC_UI_PREFIXES → redirect to /subscription/plans with upgrade_reason=basic_required. Mitigation: add '/features/flappy-bird' to FREE_TIER_FEATURE_PREFIXES list in AccessControlContext.tsx (1-line change, exact mirror of the backend fix)."
+}

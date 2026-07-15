@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-06-19T14:53:51.467540+00:00",
+  "scope": "feature26_approved_non_admin_employer_full_access_e2e",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "fixture_account": {
+    "email": "feature26.approved.employer.e2e@realaicoach.app",
+    "is_admin_expected": false,
+    "is_employer_expected": true
+  },
+  "result": {
+    "login_status": 200,
+    "login_is_employer": false,
+    "login_is_admin": false,
+    "employer_tab_visible": 1,
+    "full_employer_route_visible": 0,
+    "full_employer_title_visible": 0,
+    "premium_panel_visible": 0,
+    "onboarding_route_visible": 1,
+    "admin_route_visible": 0,
+    "permissions_api_status": 200,
+    "permissions_api": {
+      "permissions": {
+        "can_post_jobs": true,
+        "can_view_candidates": true,
+        "employer_status": "approved"
+      }
+    },
+    "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate"
+  },
+  "verdicts": {
+    "login_success": true,
+    "is_non_admin_employer": false,
+    "employer_tab_visible": true,
+    "full_employer_portal_access": false,
+    "onboarding_not_shown": false,
+    "admin_surface_still_blocked": true,
+    "permissions_api_ok": true
+  },
+  "overall_verdict": "fail",
+  "guardrail": "No legacy read route retirement action executed."
+}

@@ -1,0 +1,449 @@
+{
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "generated_at": "2026-06-20T15:22:25.458092Z",
+  "logins": {
+    "free": {
+      "status_code": 200,
+      "ok": true,
+      "detail": {
+        "user_id": "user_798c19018cad",
+        "email": "p1.free.1779113329@example.com",
+        "name": "P1 Free Sanity",
+        "subscription_plan": "free",
+        "subscription_status": "active",
+        "is_admin": false,
+        "full_access": false,
+        "roles": [
+          "user"
+        ],
+        "role": "user",
+        "email_verified": false,
+        "profile_image": "",
+        "welcome_back": false,
+        "last_active_route": "",
+        "last_active_at": "",
+        "theme_preference": null,
+        "language_preference": "en",
+        "currency_preference": null,
+        "tenant_id": null,
+        "organization_id": null,
+        "company_id": null,
+        "workspace_id": null,
+        "tenant_disclaimer_profile": "default",
+        "risk_level": "low",
+        "risk_score": 8,
+        "risk_engine_status": "ACTIVE",
+        "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 8\nRISK_LEVEL: LOW\nTRIGGER: NO_FRICTION\nFALSE_POSITIVE_RATE: 11.55%\nSESSION_PROTECTION: STANDARD_MONITORING\nCONFIDENCE: 61.5%",
+        "e2e_otp_bypass_applied": true
+      }
+    },
+    "basic": {
+      "status_code": 200,
+      "ok": true,
+      "detail": {
+        "user_id": "user_5fcb70720a40",
+        "email": "f21.basic.1781338672@example.com",
+        "name": "F21 Basic Tier User",
+        "subscription_plan": "basic",
+        "subscription_status": "active",
+        "is_admin": false,
+        "full_access": false,
+        "roles": [
+          "basic",
+          "user"
+        ],
+        "role": "basic",
+        "email_verified": false,
+        "profile_image": "",
+        "welcome_back": false,
+        "last_active_route": "",
+        "last_active_at": "",
+        "theme_preference": null,
+        "language_preference": "en",
+        "currency_preference": null,
+        "tenant_id": null,
+        "organization_id": null,
+        "company_id": null,
+        "workspace_id": null,
+        "tenant_disclaimer_profile": "default",
+        "risk_level": "low",
+        "risk_score": 8,
+        "risk_engine_status": "ACTIVE",
+        "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 8\nRISK_LEVEL: LOW\nTRIGGER: NO_FRICTION\nFALSE_POSITIVE_RATE: 11.55%\nSESSION_PROTECTION: STANDARD_MONITORING\nCONFIDENCE: 61.5%",
+        "e2e_otp_bypass_applied": true
+      }
+    },
+    "premium_admin": {
+      "status_code": 200,
+      "ok": true,
+      "detail": {
+        "user_id": "user_4b5a68d2f7c6",
+        "email": "admin@realaicoach.app",
+        "name": "RealAICoach",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "is_admin": true,
+        "full_access": true,
+        "roles": [
+          "admin",
+          "premium",
+          "user"
+        ],
+        "role": "admin",
+        "email_verified": false,
+        "profile_image": "",
+        "welcome_back": true,
+        "last_active_route": "/dashboard",
+        "last_active_at": "2026-05-16T23:41:42.947005+00:00",
+        "theme_preference": "light",
+        "language_preference": "es",
+        "currency_preference": null,
+        "tenant_id": null,
+        "organization_id": null,
+        "company_id": null,
+        "workspace_id": null,
+        "tenant_disclaimer_profile": "default",
+        "risk_level": "medium",
+        "risk_score": 46,
+        "risk_engine_status": "ACTIVE",
+        "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 46\nRISK_LEVEL: MEDIUM\nTRIGGER: STEP_UP_MFA\nFALSE_POSITIVE_RATE: 1.0%\nSESSION_PROTECTION: MFA_CHALLENGE\nCONFIDENCE: 98.0%",
+        "e2e_otp_bypass_applied": false
+      }
+    },
+    "approved_employer": {
+      "status_code": 200,
+      "ok": true,
+      "detail": {
+        "user_id": "user_feature26_employer_fixture",
+        "email": "feature26.approved.employer.e2e@realaicoach.app",
+        "name": "Feature 26 Approved Employer E2E",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "is_admin": false,
+        "full_access": false,
+        "roles": [
+          "premium",
+          "user"
+        ],
+        "role": "premium",
+        "email_verified": true,
+        "profile_image": "",
+        "welcome_back": false,
+        "last_active_route": "",
+        "last_active_at": "",
+        "theme_preference": null,
+        "language_preference": "en",
+        "currency_preference": null,
+        "tenant_id": null,
+        "organization_id": null,
+        "company_id": null,
+        "workspace_id": null,
+        "tenant_disclaimer_profile": "default",
+        "risk_level": "low",
+        "risk_score": 10,
+        "risk_engine_status": "ACTIVE",
+        "risk_output": "RISK_ENGINE_STATUS: ACTIVE\nRISK_SCORE: 10\nRISK_LEVEL: LOW\nTRIGGER: NO_FRICTION\nFALSE_POSITIVE_RATE: 10.5%\nSESSION_PROTECTION: STANDARD_MONITORING\nCONFIDENCE: 65.0%",
+        "e2e_otp_bypass_applied": true
+      }
+    }
+  },
+  "checks": {
+    "free": {
+      "health": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "service": "hiring-v2",
+          "version": "v2",
+          "feature_id": "jobs-portal",
+          "feature_number": 26
+        }
+      },
+      "dashboard_summary": {
+        "status": 200,
+        "body": {
+          "open_roles": 0,
+          "candidate": {
+            "applications": 0,
+            "saved_jobs": 3,
+            "interviews": 0,
+            "offers": 0
+          },
+          "employer": {
+            "open_roles": 0,
+            "pipeline_candidates": 0,
+            "offers_sent": 0
+          },
+          "last_sync": "2026-06-20T15:22:27.058182+00:00",
+          "last_sync_at": "2026-06-20T15:22:27.058182+00:00",
+          "candidate_applications": 0,
+          "total_active_jobs": 0,
+          "my_applications": 0,
+          "saved_jobs": 3,
+          "interview_applications": 0,
+          "offer_applications": 0
+        }
+      },
+      "admin_workflow_events": {
+        "status": 403,
+        "body": {
+          "detail": "Admin access required"
+        }
+      },
+      "candidate_jobs_search": {
+        "status": 200,
+        "body": {
+          "jobs": [],
+          "total": 0,
+          "page": 1,
+          "pages": 0
+        }
+      },
+      "employer_conversion_funnel": {
+        "status": 403,
+        "body": {
+          "detail": "Admin access required"
+        }
+      },
+      "candidate_boost_profile": {
+        "status": 403,
+        "body": {
+          "detail": "Boosted profile is available on Basic and Premium plans"
+        }
+      }
+    },
+    "basic": {
+      "health": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "service": "hiring-v2",
+          "version": "v2",
+          "feature_id": "jobs-portal",
+          "feature_number": 26
+        }
+      },
+      "dashboard_summary": {
+        "status": 200,
+        "body": {
+          "open_roles": 0,
+          "candidate": {
+            "applications": 0,
+            "saved_jobs": 0,
+            "interviews": 0,
+            "offers": 0
+          },
+          "employer": {
+            "open_roles": 0,
+            "pipeline_candidates": 0,
+            "offers_sent": 0
+          },
+          "last_sync": "2026-06-20T15:22:27.806623+00:00",
+          "last_sync_at": "2026-06-20T15:22:27.806623+00:00",
+          "candidate_applications": 0,
+          "total_active_jobs": 0,
+          "my_applications": 0,
+          "saved_jobs": 0,
+          "interview_applications": 0,
+          "offer_applications": 0
+        }
+      },
+      "admin_workflow_events": {
+        "status": 403,
+        "body": {
+          "detail": "Admin access required"
+        }
+      },
+      "candidate_jobs_search": {
+        "status": 200,
+        "body": {
+          "jobs": [],
+          "total": 0,
+          "page": 1,
+          "pages": 0
+        }
+      },
+      "employer_conversion_funnel": {
+        "status": 403,
+        "body": {
+          "detail": "Admin access required"
+        }
+      },
+      "candidate_boost_profile": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "boosted_profile": true,
+          "boosted_until": "2026-06-21T15:22:28.290978+00:00"
+        }
+      }
+    },
+    "premium_admin": {
+      "health": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "service": "hiring-v2",
+          "version": "v2",
+          "feature_id": "jobs-portal",
+          "feature_number": 26
+        }
+      },
+      "dashboard_summary": {
+        "status": 200,
+        "body": {
+          "open_roles": 0,
+          "candidate": {
+            "applications": 0,
+            "saved_jobs": 1,
+            "interviews": 0,
+            "offers": 0
+          },
+          "employer": {
+            "open_roles": 0,
+            "pipeline_candidates": 0,
+            "offers_sent": 0
+          },
+          "last_sync": "2026-06-20T15:22:30.615205+00:00",
+          "last_sync_at": "2026-06-20T15:22:30.615205+00:00",
+          "candidate_applications": 0,
+          "total_active_jobs": 0,
+          "my_applications": 0,
+          "saved_jobs": 1,
+          "interview_applications": 0,
+          "offer_applications": 0
+        }
+      },
+      "admin_workflow_events": {
+        "status": 200,
+        "body": {
+          "generated_at": "2026-06-20T15:22:30.707355+00:00",
+          "lookback_hours": 72,
+          "filters": {
+            "event_type": null,
+            "user_id": null
+          },
+          "include_metadata": false,
+          "total": 0,
+          "events": []
+        }
+      },
+      "candidate_jobs_search": {
+        "status": 200,
+        "body": {
+          "jobs": [],
+          "total": 0,
+          "page": 1,
+          "pages": 0
+        }
+      },
+      "employer_conversion_funnel": {
+        "status": 200,
+        "body": {
+          "generated_at": "2026-06-20T15:22:31.033378+00:00",
+          "lookback_days": 30,
+          "funnel": {
+            "trial_started": 2,
+            "approved_employer": 2,
+            "first_hire": 0
+          },
+          "conversion_rates_pct": {
+            "trial_to_approved": 100.0,
+            "approved_to_first_hire": 0.0,
+            "trial_to_first_hire": 0.0
+          },
+          "dropoff": {
+            "trial_to_approved": 0,
+            "approved_to_first_hire": 2
+          },
+          "insights": [
+            "100.0% of trial employers reached approved status.",
+            "0.0% of approved employers reached first-hire milestone.",
+            "2 approved employers have not reached first hire yet."
+          ]
+        }
+      },
+      "candidate_boost_profile": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "boosted_profile": true,
+          "boosted_until": "2026-06-21T15:22:31.079443+00:00"
+        }
+      }
+    },
+    "approved_employer": {
+      "health": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "service": "hiring-v2",
+          "version": "v2",
+          "feature_id": "jobs-portal",
+          "feature_number": 26
+        }
+      },
+      "dashboard_summary": {
+        "status": 200,
+        "body": {
+          "open_roles": 0,
+          "candidate": {
+            "applications": 0,
+            "saved_jobs": 0,
+            "interviews": 0,
+            "offers": 0
+          },
+          "employer": {
+            "open_roles": 0,
+            "pipeline_candidates": 0,
+            "offers_sent": 0
+          },
+          "last_sync": "2026-06-20T15:22:31.516089+00:00",
+          "last_sync_at": "2026-06-20T15:22:31.516089+00:00",
+          "candidate_applications": 0,
+          "total_active_jobs": 0,
+          "my_applications": 0,
+          "saved_jobs": 0,
+          "interview_applications": 0,
+          "offer_applications": 0
+        }
+      },
+      "admin_workflow_events": {
+        "status": 403,
+        "body": {
+          "detail": "Admin access required"
+        }
+      },
+      "candidate_jobs_search": {
+        "status": 200,
+        "body": {
+          "jobs": [],
+          "total": 0,
+          "page": 1,
+          "pages": 0
+        }
+      },
+      "employer_conversion_funnel": {
+        "status": 403,
+        "body": {
+          "detail": "Admin access required"
+        }
+      },
+      "candidate_boost_profile": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "boosted_profile": true,
+          "boosted_until": "2026-06-21T15:22:31.776097+00:00"
+        }
+      }
+    }
+  },
+  "governance_readiness": {
+    "status": 429,
+    "body": {
+      "_non_json": true,
+      "text": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+    }
+  }
+}

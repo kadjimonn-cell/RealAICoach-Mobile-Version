@@ -1,0 +1,37 @@
+{
+  "summary": "Verified floating Feature Quota Pill end-to-end. Backend: 5/5 new contract tests + baseline 4/4 pill-related tests pass. Frontend: all 6 pill scenarios pass (normal state, limit-reached + upgrade nav, self-enforced hidden, premium hidden, dismiss + persist, regression smoke).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_iteration_872_quota_pill_backend.py",
+    "/app/test_reports/pytest/iteration_872_quota_pill.xml",
+    "/app/backend/tests/test_feature37_free_limited_access_policy.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "FeatureQuotaPill.tsx (72 lines): sound implementation. Uses ui_routes from session policy to auto-match current pathname, respects self_enforced flag, and honors localStorage per-feature-per-day dismissal. Live 429 hook via onFeatureQuotaLimit correctly flips to limit state instantly. No changes needed.",
+    "access_control.py route /api/access-control/feature-meter/{feature_key} correctly returns 404 for unknown keys, -1 for premium (unlimited), and computes remaining as max(0, limit-used). Uses db.feature_usage_meter.count_documents scoped to user_id + feature_key + day (UTC). Contract stable.",
+    "Minor: /features/ai-writer body_len at ~1333 chars looks light vs coaching-team (1862) - likely lazy-loaded content, but page renders without errors. Not a blocker."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration_872_quota_pill_backend.py"
+  ],
+  "success_rate": {"backend": "100% (5/5 new + 4/4 baseline pill tests)", "frontend": "100% (6/6 scenarios)"},
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa | Premium: f22.premium.20260613@example.com / F22Premium#2026Aa",
+  "seed_data_creation": "None. feature_usage_meter for user_798c19018cad (free) cleared before and after the FRONTEND-2 exhaustion test (video-creator-studio: 5 docs removed post-test).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Pill mounts inside app/_layout.tsx and reads canonical_feature_policy.ui_routes from /api/access-control/session. To test manually: (1) POST /api/auth/login with X-Requested-With: XMLHttpRequest and Content-Type: application/json, grab session_token cookie; (2) inject cookie into browser context (form-based login was flaky in this iteration). To reset a user's quota, delete matching docs from mongo feature_usage_meter collection. FRONTEND 2 requires exhausting via POST /api/video-studio/quota-probe (5 x 404 metered + 6th 429). Frontend is a static export (serve-production.js) — DO NOT restart the expo_manual supervisor; changes will not hot-reload.",
+  "verification_matrix": {
+    "BACKEND_1_feature_meter_free": "PASS (200, plan=free, limit=5, self_enforced=false, policy_version=2026-06.v3.free-limited-37, remaining=max(0,limit-used))",
+    "BACKEND_1_feature_meter_unknown": "PASS (404 for /api/access-control/feature-meter/not-a-real-feature)",
+    "BACKEND_1_feature_meter_premium": "PASS (limit=-1, remaining=-1)",
+    "BACKEND_2_session_ui_routes": "PASS (canonical_feature_policy has 37 entries, all with non-empty ui_routes; video-creator-studio maps to /features/ai-video)",
+    "FRONTEND_1_pill_normal_state": "PASS (/features/ai-video shows [data-testid=feature-quota-pill] with label '5 free actions left today' bottom-center, verified via screenshot)",
+    "FRONTEND_2_limit_reached_upgrade": "PASS (5 POSTs to /api/video-studio/quota-probe returned 404 metered, 6th returned 429; /features/ai-video then shows [data-testid=feature-quota-limit-pill] with 'Daily free limit reached' + [data-testid=feature-quota-upgrade-cta]; click navigates to /subscription/plans)",
+    "FRONTEND_3_self_enforced_hidden": "PASS (/features/bill-generator has no quota-pill and no limit-pill elements)",
+    "FRONTEND_4_premium_hidden": "PASS (premium user on /features/ai-video: pill count=0, limit-pill count=0)",
+    "FRONTEND_5_dismiss_persist": "PASS (/features/ai-photo pill visible → dismiss hides pill → localStorage set to fqp_dismiss_image-design-studio=2026-07-13 → after reload pill still hidden)",
+    "FRONTEND_6_regression": "PASS (/features/ai-writer and /ai-coaching-team both load without layout breakage; ai-coaching-team shows its own self-enforced '5 messages left today' indicator as expected)"
+  }
+}

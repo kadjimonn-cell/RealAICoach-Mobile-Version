@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-06-18T00:06:37.294720Z",
+  "free": {
+    "login": 429,
+    "admin_attempt_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+    "admin_route_testid_count": 0,
+    "admin_title_testid_count": 0,
+    "candidate_url": "https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fjob-platform-candidate&auth_reason=unauthenticated",
+    "candidate_route_testid_count": 0
+  },
+  "admin": {
+    "login": 200,
+    "admin_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+    "admin_route_testid_count": 1,
+    "admin_title_testid_count": 1,
+    "auth_me_status": 200
+  },
+  "verdict": "fail"
+}

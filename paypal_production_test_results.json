@@ -1,0 +1,92 @@
+{
+  "login": true,
+  "transactions": {
+    "1UW49833CW014203Y": {
+      "found": true,
+      "status": "completed",
+      "completed": true,
+      "payment_id": "1UW49833CW014203Y",
+      "plan": "basic",
+      "amount": 5.99
+    },
+    "7WR35562CP5880350": {
+      "found": true,
+      "status": "completed",
+      "completed": true,
+      "payment_id": "7WR35562CP5880350",
+      "plan": "premium",
+      "amount": 15.99
+    }
+  },
+  "notifications": {
+    "premium": {
+      "found": true,
+      "title": "Payment Confirmed - Premium Plan",
+      "type": "payment_confirmation",
+      "created_at": "2026-05-20T13:06:48.882617+00:00"
+    },
+    "basic": {
+      "found": true,
+      "title": "Payment Confirmed - Basic Plan",
+      "type": "payment_confirmation",
+      "created_at": "2026-05-20T13:06:47.012691+00:00"
+    }
+  },
+  "receipt_delivery": {
+    "1UW49833CW014203Y": {
+      "user_receipt_sent": false,
+      "admin_receipt_sent": false,
+      "receipt_delivery_ok": false,
+      "all_ok": false
+    },
+    "7WR35562CP5880350": {
+      "user_receipt_sent": false,
+      "admin_receipt_sent": false,
+      "receipt_delivery_ok": false,
+      "all_ok": false
+    }
+  },
+  "receipt_pdfs": {
+    "1UW49833CW014203Y": {
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "content_length": 320001,
+      "success": true
+    },
+    "7WR35562CP5880350": {
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "content_length": 319934,
+      "success": true
+    }
+  },
+  "webhook_endpoints": {
+    "/api/webhook/paypal": {
+      "status_code": 200,
+      "publicly_accessible": true,
+      "response": "{\"received\":true,\"event_type\":\"PAYMENT.CAPTURE.COMPLETED\"}"
+    },
+    "/api/payments/paypal/webhook": {
+      "status_code": 200,
+      "auth_gated": false,
+      "response": "{\"received\":true,\"event_type\":\"PAYMENT.CAPTURE.COMPLETED\"}"
+    }
+  },
+  "summary": {
+    "passed": [
+      "Login successful",
+      "Transaction 1UW49833CW014203Y completed",
+      "Transaction 7WR35562CP5880350 completed",
+      "Both payment notifications found",
+      "Receipt PDF 1UW49833CW014203Y OK",
+      "Receipt PDF 7WR35562CP5880350 OK",
+      "Webhook /api/webhook/paypal accessible"
+    ],
+    "failed": [],
+    "warnings": [
+      "Receipt delivery 1UW49833CW014203Y incomplete",
+      "Receipt delivery 7WR35562CP5880350 incomplete",
+      "Webhook /api/payments/paypal/webhook NOT auth-gated"
+    ]
+  }
+}

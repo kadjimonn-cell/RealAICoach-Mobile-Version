@@ -1,0 +1,21 @@
+{
+  "checkpoint": "C1",
+  "goal": "Single canonical plan authority",
+  "admin_plan_ids": [
+    "free",
+    "basic",
+    "premium"
+  ],
+  "user_plan_ids": [
+    "free",
+    "basic",
+    "premium"
+  ],
+  "analytics_plan_ids": [
+    "basic",
+    "free",
+    "premium"
+  ],
+  "canonical_present": true,
+  "consistent_admin_user": true
+}

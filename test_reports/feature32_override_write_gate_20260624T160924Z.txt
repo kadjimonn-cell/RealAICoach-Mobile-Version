@@ -1,0 +1,9 @@
+[Feature32 Override Write Gate]
+timestamp_utc=20260624T160924Z
+\n[1/3] Scanning for direct email_subject_overrides writes...
+/app/backend/scripts/remediate_protected_subject_overrides.py:38:    result = await db.email_subject_overrides.update_many(
+/app/backend/services/email_override_service.py:39:    await db.email_subject_overrides.update_one(
+/app/backend/services/email_override_service.py:73:    result = await db.email_subject_overrides.update_one(
+\n[2/3] Enforcing allowlist...
+\n[3/3] Final gate verdict
+FEATURE32_OVERRIDE_WRITE_GATE=PASS

@@ -1,0 +1,264 @@
+{
+  "run_id": "matrix64_20260527T103712Z_b0d99b",
+  "status": "FAIL",
+  "strict_passed": false,
+  "triggered_by": "scheduler_nightly_global_system",
+  "generated_at": "2026-05-27T10:37:12.916235+00:00",
+  "stored_at": "2026-05-27T10:37:12.916241+00:00",
+  "artifact_schema_version": "gtec_c5_matrix64.v1",
+  "scheduler": {
+    "job_id": "gtec_c5_matrix64_nightly",
+    "cron_utc": "0 1 * * *",
+    "timezone": "UTC",
+    "hour_utc": 1,
+    "minute_utc": 0
+  },
+  "base_url": "http://127.0.0.1:3000",
+  "dimensions": {
+    "routes": [
+      "/welcome",
+      "/auth/login",
+      "/executive-dashboard",
+      "/route-health-report"
+    ],
+    "viewports": [
+      "mobile_compact",
+      "tablet",
+      "laptop",
+      "desktop"
+    ],
+    "languages": [
+      "en",
+      "fr",
+      "es",
+      "ar"
+    ],
+    "required_total_checks": 64
+  },
+  "counts": {
+    "total_checks": 60,
+    "passed_checks": 43,
+    "failed_checks": 17,
+    "coverage_complete": false,
+    "pass_rate_pct": 71.67
+  },
+  "route_source": "dynamic_inventory",
+  "matrix_summary": {
+    "mobile": {
+      "pass": 15,
+      "fail": 5,
+      "total": 20
+    },
+    "tablet": {
+      "pass": 14,
+      "fail": 6,
+      "total": 20
+    },
+    "desktop": {
+      "pass": 14,
+      "fail": 6,
+      "total": 20
+    }
+  },
+  "matrix_summary_by_language": {
+    "mobile": {
+      "en": {
+        "pass": 15,
+        "fail": 5,
+        "total": 20
+      }
+    },
+    "tablet": {
+      "en": {
+        "pass": 14,
+        "fail": 6,
+        "total": 20
+      }
+    },
+    "desktop": {
+      "en": {
+        "pass": 14,
+        "fail": 6,
+        "total": 20
+      }
+    }
+  },
+  "white_screen_sentry": {
+    "run_id": "wss_20260527T043423Z",
+    "white_screen_gate_passed": false,
+    "failure_reason": "blank_loader_or_fatal_surface_detected_over_5s"
+  },
+  "failed_artifacts": [
+    {
+      "route": "/admin-console",
+      "probe_url": "/admin-console",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/admin-console__mobile__en.png"
+    },
+    {
+      "route": "/route-health-report",
+      "probe_url": "/route-health-report",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/route-health-report__mobile__en.png"
+    },
+    {
+      "route": "/careers/portal/[token]",
+      "probe_url": "/careers/portal/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-portal-SAMPLE_TOKEN_gtec_probe__mobile__en.png"
+    },
+    {
+      "route": "/careers/schedule/[token]",
+      "probe_url": "/careers/schedule/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__mobile__en.png"
+    },
+    {
+      "route": "/careers/track/[id]",
+      "probe_url": "/careers/track/gtec_probe",
+      "viewport": "mobile",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-track-gtec_probe__mobile__en.png"
+    },
+    {
+      "route": "/admin",
+      "probe_url": "/admin",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/admin__tablet__en.png"
+    },
+    {
+      "route": "/admin-console",
+      "probe_url": "/admin-console",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/admin-console__tablet__en.png"
+    },
+    {
+      "route": "/route-health-report",
+      "probe_url": "/route-health-report",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/route-health-report__tablet__en.png"
+    },
+    {
+      "route": "/careers/portal/[token]",
+      "probe_url": "/careers/portal/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-portal-SAMPLE_TOKEN_gtec_probe__tablet__en.png"
+    },
+    {
+      "route": "/careers/schedule/[token]",
+      "probe_url": "/careers/schedule/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__tablet__en.png"
+    },
+    {
+      "route": "/careers/track/[id]",
+      "probe_url": "/careers/track/gtec_probe",
+      "viewport": "tablet",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-track-gtec_probe__tablet__en.png"
+    },
+    {
+      "route": "/admin",
+      "probe_url": "/admin",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/admin__desktop__en.png"
+    },
+    {
+      "route": "/admin-console",
+      "probe_url": "/admin-console",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/admin-console__desktop__en.png"
+    },
+    {
+      "route": "/route-health-report",
+      "probe_url": "/route-health-report",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "loader_persisted_over_5s",
+      "status_code": 200,
+      "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/route-health-report__desktop__en.png"
+    },
+    {
+      "route": "/careers/portal/[token]",
+      "probe_url": "/careers/portal/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-portal-SAMPLE_TOKEN_gtec_probe__desktop__en.png"
+    },
+    {
+      "route": "/careers/schedule/[token]",
+      "probe_url": "/careers/schedule/SAMPLE_TOKEN_gtec_probe",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__desktop__en.png"
+    },
+    {
+      "route": "/careers/track/[id]",
+      "probe_url": "/careers/track/gtec_probe",
+      "viewport": "desktop",
+      "language": "en",
+      "reason": "fatal_ui_surface_detected",
+      "status_code": 404,
+      "final_url": "http://127.0.0.1:3000/+not-found",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260527T043423Z/careers-track-gtec_probe__desktop__en.png"
+    }
+  ],
+  "artifact_path": "/app/test_reports/matrix_artifacts/matrix64_20260527T103712Z_b0d99b.json"
+}

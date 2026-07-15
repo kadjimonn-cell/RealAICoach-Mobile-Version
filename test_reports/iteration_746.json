@@ -1,0 +1,92 @@
+{
+  "summary": "Register page (/auth/register) background image fix verified. All Checkpoint A-D requirements passed: background image is now visible across the FULL page (both left brand panel AND right form side) in both light and dark themes. The form pane no longer uses opaque background that was hiding the image treatment.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_746.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Background image fix verified: FloatingImageShowcase now receives isDarkTheme={darkMode} prop for theme-aware filtering",
+    "Root style uses transparent background on web (line 455): backgroundColor: Platform.OS === 'web' ? 'transparent' : T.bg",
+    "formPane uses semi-transparent background (lines 477-485): __alphaColor(T.bg, T.isDark ? '36' : '40') with backdrop blur",
+    "formScroll no longer paints opaque T.bg background - allows image to show through",
+    "Light theme overlay: linear-gradient(135deg, rgba(248,250,252,0.38) 0%, rgba(241,245,249,0.24) 40%, rgba(248,250,252,0.36) 100%)",
+    "Dark theme overlay: linear-gradient(135deg, rgba(15,23,42,0.52) 0%, rgba(15,23,42,0.36) 42%, rgba(15,23,42,0.50) 100%)",
+    "Form card, labels, inputs, CTA, and brand panel all remain legible with proper contrast in both themes"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "N/A - public /auth/register route tested",
+  "seed_data_creation": "N/A",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Register page background image fix verified. The fix made root/formPane transparent on web and passed isDarkTheme to FloatingImageShowcase. Background image now visible across full page in both themes.",
+  "tests_executed": {
+    "test_1_register_loads": {
+      "status": "PASS",
+      "description": "/auth/register loads successfully in preview",
+      "details": "Register screen loaded with no blank page or errors"
+    },
+    "test_2_background_image_layer_exists": {
+      "status": "PASS",
+      "description": "Background image layer with data-testid='register-background-image-layer' exists",
+      "details": "Full-page FloatingImageShowcase component mounted correctly"
+    },
+    "test_3_floating_image_showcase_present": {
+      "status": "PASS",
+      "description": "FloatingImageShowcase component renders correctly",
+      "details": "Component with data-testid='floating-image-showcase' found and visible"
+    },
+    "test_4_light_theme_background_visible": {
+      "status": "PASS",
+      "description": "Background image visible across full page in light theme",
+      "details": "Overlay uses semi-transparent gradient rgba(248,250,252,0.38-0.36), image clearly visible behind form card on right side"
+    },
+    "test_5_dark_theme_background_visible": {
+      "status": "PASS",
+      "description": "Background image visible across full page in dark theme",
+      "details": "Overlay uses semi-transparent gradient rgba(15,23,42,0.52-0.50), image clearly visible behind form card on right side"
+    },
+    "test_6_form_pane_transparent": {
+      "status": "PASS",
+      "description": "Form pane uses transparent/semi-transparent background",
+      "details": "parentBg: rgba(0, 0, 0, 0), grandparentBg: rgba(247, 249, 252, 0.25) - no opaque background blocking image"
+    },
+    "test_7_form_readability": {
+      "status": "PASS",
+      "description": "Form card, labels, inputs, CTA remain readable in both themes",
+      "details": "All form elements visible with proper contrast, inputs accessible"
+    }
+  },
+  "background_image_verification": {
+    "light_theme": {
+      "overlay_gradient": "linear-gradient(135deg, rgba(248, 250, 252, 0.38) 0%, rgba(241, 245, 249, 0.24) 40%, rgba(248, 250, 252, 0.36) 100%)",
+      "form_pane_background": "transparent with backdrop blur",
+      "image_visible_on_right_side": true,
+      "form_readable": true
+    },
+    "dark_theme": {
+      "overlay_gradient": "linear-gradient(135deg, rgba(15, 23, 42, 0.52) 0%, rgba(15, 23, 42, 0.36) 42%, rgba(15, 23, 42, 0.50) 100%)",
+      "form_pane_background": "transparent with backdrop blur",
+      "image_visible_on_right_side": true,
+      "form_readable": true
+    }
+  },
+  "checkpoint_verification": {
+    "checkpoint_A": "PASS - Root cause identified: formScroll used opaque backgroundColor: T.bg, hiding image on right side",
+    "checkpoint_B": "PASS - Fix applied: transparent root, semi-transparent formPane with __alphaColor, isDarkTheme passed to FloatingImageShowcase",
+    "checkpoint_C": "PASS - yarn export:web passed (per handoff context)",
+    "checkpoint_D": "PASS - Preview verification complete, background image visible across full page in both themes"
+  }
+}

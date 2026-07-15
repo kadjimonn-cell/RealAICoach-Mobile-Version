@@ -1,0 +1,188 @@
+{
+  "started_at": "2026-05-20T03:30:22.137108+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "fedapay.prod.notify.a16b238d@example.com",
+    "password": "FedapayLive#2026Aa!",
+    "name": "FedaPay Prod Notify User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_88353835d4ed",
+        "email": "fedapay.prod.notify.a16b238d@example.com",
+        "name": "FedaPay Prod Notify User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_88353835d4ed",
+        "email": "fedapay.prod.notify.a16b238d@example.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "pay_basic",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "status": "pending",
+        "payment_id": "fedapay_2296e5861598",
+        "ticket_id": "MMSUB_1BF0ECCCB9",
+        "payment_url": "https://process.fedapay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExMTA5MDQ3OCwiZXhwIjoxNzc5MzM0MjI0fQ.MfxUZHHMkQj_8l7CgEXS8rcJ1aKI1kCLjU0Sf8h5xNM"
+      }
+    },
+    {
+      "step": "pay_premium",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "status": "pending",
+        "payment_id": "fedapay_2b39f548a8e4",
+        "ticket_id": "MMSUB_2931C180DF",
+        "payment_url": "https://process.fedapay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExMTA5MDQ3OSwiZXhwIjoxNzc5MzM0MjI1fQ.MElrX3ye5sw9_VlF3iPIbGyFGsCHtpRmPcOFxylzxD4"
+      }
+    },
+    {
+      "step": "db_before_webhook_basic",
+      "doc": {
+        "transaction_id": "txn_ccb685c0942e473c",
+        "session_id": "MMSUB_1BF0ECCCB9",
+        "plan_id": "basic",
+        "payment_status": "pending",
+        "payment_id": "fedapay_2296e5861598",
+        "fedapay_tx_id": 111090478,
+        "fedapay_reference": "trx_S0A_1779247822795"
+      }
+    },
+    {
+      "step": "db_before_webhook_premium",
+      "doc": {
+        "transaction_id": "txn_347ebc5f597c4dd3",
+        "session_id": "MMSUB_2931C180DF",
+        "plan_id": "premium",
+        "payment_status": "pending",
+        "payment_id": "fedapay_2b39f548a8e4",
+        "fedapay_tx_id": 111090479,
+        "fedapay_reference": "trx_5Uk_1779247824485"
+      }
+    },
+    {
+      "step": "webhook_basic",
+      "status_code": 200,
+      "body": {
+        "received": true,
+        "ack_id": "fedapay_ack_6c983c89854b48",
+        "queued_status": "accepted"
+      }
+    },
+    {
+      "step": "webhook_premium",
+      "status_code": 200,
+      "body": {
+        "received": true,
+        "ack_id": "fedapay_ack_4fe49bc3b92f40",
+        "queued_status": "accepted"
+      }
+    },
+    {
+      "step": "status_basic",
+      "status_code": 200,
+      "body": {
+        "payment_id": "fedapay_2296e5861598",
+        "status": "completed",
+        "amount_local": 4061.0,
+        "currency": "XOF",
+        "gateway": "FedaPay",
+        "created_at": "2026-05-20T03:30:24.253897+00:00"
+      }
+    },
+    {
+      "step": "status_premium",
+      "status_code": 200,
+      "body": {
+        "payment_id": "fedapay_2b39f548a8e4",
+        "status": "completed",
+        "amount_local": 10850.0,
+        "currency": "XOF",
+        "gateway": "FedaPay",
+        "created_at": "2026-05-20T03:30:25.734563+00:00"
+      }
+    },
+    {
+      "step": "auth_me_after_webhooks",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_88353835d4ed",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "last_payment_id": null
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "unread_count": 1,
+      "payment_notification_count": 0,
+      "latest_payment_notifications": []
+    },
+    {
+      "step": "db_after_webhook_basic",
+      "doc": {
+        "plan_id": "basic",
+        "payment_status": "completed",
+        "payment_id": "fedapay_2296e5861598",
+        "status": "completed",
+        "fedapay_status": "approved",
+        "webhook_received_at": "2026-05-20T03:30:25.877600+00:00"
+      }
+    },
+    {
+      "step": "db_after_webhook_premium",
+      "doc": {
+        "plan_id": "premium",
+        "payment_status": "completed",
+        "payment_id": "fedapay_2b39f548a8e4",
+        "status": "completed",
+        "fedapay_status": "approved",
+        "webhook_received_at": "2026-05-20T03:30:25.958392+00:00"
+      }
+    },
+    {
+      "step": "payments_collection_basic",
+      "doc": {
+        "user_id": "user_88353835d4ed",
+        "plan_id": "basic",
+        "amount": 5.99,
+        "currency": "XOF",
+        "payment_method": "mobile_money_fedapay",
+        "payment_id": "fedapay_2296e5861598",
+        "status": "completed",
+        "created_at": "2026-05-20 03:30:24.253000"
+      }
+    },
+    {
+      "step": "payments_collection_premium",
+      "doc": {
+        "user_id": "user_88353835d4ed",
+        "plan_id": "premium",
+        "amount": 15.99,
+        "currency": "XOF",
+        "payment_method": "mobile_money_fedapay",
+        "payment_id": "fedapay_2b39f548a8e4",
+        "status": "completed",
+        "created_at": "2026-05-20 03:30:25.734000"
+      }
+    }
+  ],
+  "finished_at": "2026-05-20T03:30:29.230355+00:00"
+}

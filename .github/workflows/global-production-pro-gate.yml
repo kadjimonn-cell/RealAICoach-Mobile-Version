@@ -1,0 +1,171 @@
+name: Global Production Pro Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  backend-trust-certification:
+    runs-on: ubuntu-latest
+    outputs:
+      exit_code: ${{ steps.run-tests.outputs.exit_code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install backend deps
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run backend trust certification pack
+        id: run-tests
+        run: |
+          set +e
+          cd backend
+          pytest -q tests/test_gtec_c5_trust_grade.py tests/test_gtec_c5_internal_migration.py tests/test_gtec_legacy_cleanup_window.py
+          CODE=$?
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          exit 0
+
+  frontend-platform-quality:
+    runs-on: ubuntu-latest
+    outputs:
+      exit_code: ${{ steps.run-checks.outputs.exit_code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install frontend deps
+        run: |
+          cd frontend
+          yarn install --frozen-lockfile || yarn install
+      - name: Run frontend + theme + i18n checks
+        id: run-checks
+        run: |
+          set +e
+          FAIL=0
+          node frontend/scripts/runtime-crash-sentinel.js --scope=full || FAIL=1
+          node frontend/scripts/i18n-zero-lock.js || FAIL=1
+          python scripts/theme_regression_guard.py || FAIL=1
+          cd backend
+          python scripts/email_v7_theme_gate.py || FAIL=1
+          echo "exit_code=$FAIL" >> "$GITHUB_OUTPUT"
+          exit 0
+
+  security-database-hard-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      exit_code: ${{ steps.run-security.outputs.exit_code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps for security gate
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pip-audit bandit
+      - name: Run security hard gate
+        id: run-security
+        run: |
+          set +e
+          FAIL=0
+          cd backend
+          bandit -q -r . || FAIL=1
+          pip-audit --local || FAIL=1
+          CODE=$FAIL
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          exit 0
+
+  release-certificate-gate:
+    runs-on: ubuntu-latest
+    needs:
+      - backend-trust-certification
+      - frontend-platform-quality
+      - security-database-hard-gate
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build global release certificate + enforce mode
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone, timedelta
+          from pathlib import Path
+
+          policy_path = Path('.github/trust-gate-policy.json')
+          policy = json.loads(policy_path.read_text()) if policy_path.exists() else {
+              'mode': 'soft-block',
+              'soft_block_started_at': datetime.now(timezone.utc).isoformat(),
+              'hard_block_after_hours': 48,
+          }
+
+          def parse_iso(v):
+            if not v:
+              return None
+            try:
+              return datetime.fromisoformat(str(v).replace('Z', '+00:00'))
+            except Exception:
+              return None
+
+          now = datetime.now(timezone.utc)
+          declared = str(policy.get('mode', 'soft-block')).lower()
+          started = parse_iso(policy.get('soft_block_started_at')) or now
+          hard_after = int(policy.get('hard_block_after_hours', 48))
+          hard_at = started + timedelta(hours=max(1, hard_after))
+          effective = 'hard-block' if declared == 'hard-block' or now >= hard_at else 'soft-block'
+
+          backend_code = int('${{ needs.backend-trust-certification.outputs.exit_code || 1 }}')
+          frontend_code = int('${{ needs.frontend-platform-quality.outputs.exit_code || 1 }}')
+          security_code = int('${{ needs.security-database-hard-gate.outputs.exit_code || 1 }}')
+
+          stages = {
+            'backend_trust_certification': {'exit_code': backend_code, 'passed': backend_code == 0},
+            'frontend_platform_quality': {'exit_code': frontend_code, 'passed': frontend_code == 0},
+            'security_database_hard_gate': {'exit_code': security_code, 'passed': security_code == 0},
+          }
+          all_passed = all(s['passed'] for s in stages.values())
+
+          cert = {
+            'certificate_type': 'global_production_pro_gate',
+            'generated_at': now.isoformat(),
+            'policy': {
+              'declared_mode': declared,
+              'effective_mode': effective,
+              'soft_block_started_at': started.isoformat(),
+              'hard_block_after_hours': hard_after,
+              'hard_block_at': hard_at.isoformat(),
+            },
+            'stages': stages,
+            'all_stages_passed': all_passed,
+            'release_decision': 'go' if (all_passed or effective == 'soft-block') else 'no-go',
+          }
+
+          Path('global_release_certificate.json').write_text(json.dumps(cert, indent=2), encoding='utf-8')
+          print(json.dumps(cert, indent=2))
+
+          if effective == 'hard-block' and not all_passed:
+            raise SystemExit(1)
+          PY
+      - name: Upload release certificate artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-release-certificate
+          path: global_release_certificate.json
+          retention-days: 14

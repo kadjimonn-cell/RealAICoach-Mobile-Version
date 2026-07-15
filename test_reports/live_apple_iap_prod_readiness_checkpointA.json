@@ -1,0 +1,154 @@
+{
+  "started_at": "2026-05-20T14:33:15.808720+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "appleiap.prod.retest.b2191d07@gmail.com",
+    "password": "AppleIAP#2026Aa!",
+    "name": "Apple IAP Prod User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_e57e0830704a",
+        "email": "appleiap.prod.retest.b2191d07@gmail.com",
+        "name": "Apple IAP Prod User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_e57e0830704a",
+        "email": "appleiap.prod.retest.b2191d07@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "simulate_basic",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "checks": {
+          "fee_accuracy": true,
+          "notification_latency_under_2s": true,
+          "subscription_active": true,
+          "api_integrity": true
+        },
+        "pricing_breakdown": {
+          "base_plan_price": 5.99,
+          "platform_fee": 1.93,
+          "platform_fee_rate_pct": 30.0,
+          "taxes": 0.43,
+          "final_total": 8.35,
+          "currency": "USD"
+        }
+      }
+    },
+    {
+      "step": "simulate_premium",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "checks": {
+          "fee_accuracy": true,
+          "notification_latency_under_2s": true,
+          "subscription_active": true,
+          "api_integrity": true
+        },
+        "pricing_breakdown": {
+          "base_plan_price": 15.99,
+          "platform_fee": 5.15,
+          "platform_fee_rate_pct": 30.0,
+          "taxes": 1.16,
+          "final_total": 22.3,
+          "currency": "USD"
+        }
+      }
+    },
+    {
+      "step": "auth_me_after",
+      "body": {
+        "user_id": "user_e57e0830704a",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "iap_platform": null
+      }
+    },
+    {
+      "step": "notifications",
+      "count": 2,
+      "items": [
+        {
+          "title": "Payment Successful \u2014 Premium Plan Activated",
+          "message": "Your payment of $22.30 via App Store has been processed. You're now subscribed to the Premium plan. eTicket: IAP-20260520-4A709DC4"
+        },
+        {
+          "title": "Payment Successful \u2014 Basic Plan Activated",
+          "message": "Your payment of $8.35 via App Store has been processed. You're now subscribed to the Basic plan. eTicket: IAP-20260520-AF8158F4"
+        }
+      ]
+    },
+    {
+      "step": "db_iap_transactions",
+      "count": 2,
+      "rows": [
+        {
+          "transaction_id": "sim_apple_81cf1578cc0147",
+          "amount": 15.99,
+          "amount_gross": 17.15,
+          "base_plan_price": 15.99,
+          "notification_sent": true,
+          "payment_status": "completed",
+          "plan_id": "premium",
+          "total_amount": 22.3,
+          "admin_receipt_sent": true,
+          "receipt_delivery_ok": true,
+          "receipt_number": "RCT-20260520-204A709DC4",
+          "user_receipt_sent": true
+        },
+        {
+          "transaction_id": "sim_apple_180025829cdd40",
+          "amount": 5.99,
+          "amount_gross": 6.42,
+          "base_plan_price": 5.99,
+          "notification_sent": true,
+          "payment_status": "completed",
+          "plan_id": "basic",
+          "total_amount": 8.35,
+          "admin_receipt_sent": true,
+          "receipt_delivery_ok": true,
+          "receipt_number": "RCT-20260520-20AF8158F4",
+          "user_receipt_sent": true
+        }
+      ]
+    },
+    {
+      "step": "receipt_pdf_sim_apple_81cf1578cc0147",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320046,
+      "body": "binary"
+    },
+    {
+      "step": "receipt_pdf_sim_apple_180025829cdd40",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320042,
+      "body": "binary"
+    }
+  ],
+  "finished_at": "2026-05-20T14:33:23.828372+00:00"
+}

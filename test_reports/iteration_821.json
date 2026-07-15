@@ -1,0 +1,46 @@
+{
+  "summary": "Feature 24 Learning Hub 25-category catalog expansion validated end-to-end. Backend: 14/14 pytest cases passed - 72 courses across exactly 25 required categories (>=2 per category, all 72 titles unique, difficulties beginner+intermediate+advanced present), category filter (Finance) and search filter (photography) both work, per-course JPEG covers return HTTP 200 for Finance/Music/Photography/DevOps/HR & Talent, two Photography covers have different bytes (unique covers confirmed), enroll+progress flow on a new seeded course succeeds and progress_pct is stable/increases, GET /courses idempotent (72 same ids across 2 calls). Frontend: admin login OK, all 25 category chips render on desktop and mobile in the 'Generate Custom Course' card (data-testid ai-learning-hub-category-<slug>) and wrap responsively; course grid (data-testid ai-learning-hub-course-grid) exposes 80 course-cover images and all 80 load (naturalWidth>0, 0 broken); category rails visible (Entrepreneurship, Project Management, Product Management, Finance, Sales rails observed with unique per-category cover art).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "EnterpriseLearningHubScreen course card",
+        "issue": "Course title text appears 'doubled' on covers - looks like a text-shadow / duplicated title layer offset by a few pixels, creating a subtle ghost outline over the cover image. Titles remain readable but the effect is visually noisy on the storefront rails.",
+        "selector": "[data-testid=\"ai-learning-hub-course-grid\"] card title",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Learning Hub Discover",
+        "issues": [
+          "Category chip click on the 'Generate Custom Course' card selects the chip for AI course generation only; it does NOT filter the storefront rails/grid below. If the review intent was chip=grid-filter, that binding is missing. Currently only the top search input filters rails."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature24_learning_hub_25_categories.py",
+    "/app/test_reports/pytest/feature24_25cats.xml"
+  ],
+  "action_items": [
+    "(Low) Fix the doubled-title/ghost text rendering on course cards in the storefront grid (likely a text-shadow or double-render inside CourseCard).",
+    "(Optional) If category chips are meant to filter the storefront grid, wire the chip selection into the rails filter; today they only feed the 'Generate Custom Course' composer."
+  ],
+  "critical_code_review_comments": [
+    "Backend catalog exposes 72 courses (24 in AI category, 2 in each of the other 24). Meets the >=25 categories / >=2 per category requirement, but the AI over-representation (24) may skew search relevance and storefront balance - consider capping AI at ~4-6 seeded courses to match the peer categories.",
+    "GET /api/ai-learn/courses does not expose per-course detail endpoint (GET /api/ai-learn/courses/{id} returns 404). Since the list already ships modules[], this is fine, but ensure clients that expect a detail endpoint are updated.",
+    "CSRF middleware requires X-Requested-With / X-CSRF-Token / Authorization for mutating requests - documented and consistent."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_feature24_learning_hub_25_categories.py (new pytest module)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "95%"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (used)",
+  "seed_data_creation": "None - relied on existing seeded catalog (build_seed_catalog + AI category set). Test only enrolls/records progress against an existing course.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend suite is at /app/backend/tests/test_feature24_learning_hub_25_categories.py - run with REACT_APP_BACKEND_URL=http://localhost:8001 and admin credentials from /app/memory/test_credentials.md. It covers catalog size, 25 required categories, per-category >=2, unique titles, mixed difficulties, category filter (Finance), search filter (photography), cover HTTP 200 image/jpeg + unique bytes across two Photography courses, enroll+progress round-trip, and idempotency of GET /courses. Frontend: use http://localhost:3000 (preview URL is CF-challenged). Category chips have data-testid ai-learning-hub-category-<kebab-slug>; grid has data-testid ai-learning-hub-course-grid.",
+  "rca of the issue": "N/A - no failing feature. Cosmetic doubled-title on course cards is likely a text-shadow style leftover; grep CourseCard title style block in EnterpriseLearningHubScreen.tsx around line 1047+ to confirm."
+}

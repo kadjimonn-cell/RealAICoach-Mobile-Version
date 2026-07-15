@@ -1,0 +1,58 @@
+{
+  "summary": "Iteration 796 validated the three approved Nova bug fixes on RealAICoach. FIX 3 backend confirmed via pytest: GET /api/gps/state (authenticated free user AND anonymous) returns messaging.quick_questions with all 3 seeded defaults exactly as specified. FIX 1 (i18n GPS strings) verified via grep across all 23 locale files — help.chat.gpsLive/gpsDegraded/gpsSource/gpsFreshness keys exist in en.ts and fr.ts with proper French translations (e.g., 'GPS DÉGRADÉ', 'fraîcheur', 'GPS EN DIRECT'). FIX 2 verified via code review: NovaFeedbackCard.tsx line 30 no longer contains the `!isEmbedded && !isFloating` suppression (condition now `showFeedback && !feedbackSent`), and NovaChatPanel.tsx lines 411-424 render NovaFeedbackCard inside the ScrollView after the messages loop, so the panel will now open inline on /help embedded when thumbs-up is tapped. Frontend browser E2E was blocked mid-run by a Cloudflare human-verification challenge triggered by the frontend's own auth-session 429 retry storm (unrelated to fixes); code paths were verified statically as an equivalent evidence path — the identical send/reply/action-pill flow was proven live in iteration_795.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter796_gps_quick_questions.py",
+    "/app/test_reports/pytest/iter796_gps_quick_questions.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: The frontend auth-session route-guard probe generated a large burst of 429 responses on /api/auth/me after login, which then triggered a Cloudflare human-verification interstitial for the automated browser session. Consider adding exponential backoff or single-flight coalescing to the route_guard_session_probe/auth_me pipeline to reduce 429s and improve E2E stability."
+  ],
+  "critical_code_review_comments": [
+    "FIX 1 (NovaStatusStrip.tsx line 59) correctly threads tx('help.chat.gpsLive'|'gpsDegraded'|'gpsSource'|'gpsFreshness', fallback). Rendered only on default surface variant on non-phone with gps_context present, matching request scope.",
+    "FIX 2 (NovaFeedbackCard.tsx line 30) suppression correctly reduced to `showFeedback && !feedbackSent` — the embedded/floating gate has been removed as specified. Compact padding retained via `isEmbedded || isFloating ? 12 : 16`. Rendered inside ScrollView by NovaChatPanel.tsx lines 411-424 so scroll-with-messages behavior is preserved.",
+    "FIX 3 backend (gps_state_core.py lines 471-482) correctly self-repairs `messaging.quick_questions`: when the field is missing/empty/invalid it seeds `WELCOME_MESSAGING_DEFAULTS['quick_questions']`. Verified live against production preview URL — both authenticated (p1.free) and anonymous requests to /api/gps/state return exactly the 3 default strings.",
+    "FIX 3 frontend (help.tsx lines 197-200 + NovaChatPanel.tsx lines 283-288) correctly maps `gpsState.messaging.quick_questions` → chips with testIDs `quick-q-{i}`. Guarded with Array.isArray + non-empty string filter, so a corrupt payload will simply hide chips rather than crash.",
+    "Minor: NovaFeedbackCard.tsx line 60 uses `(globalThis as any).__alphaColor(...)` without a defined-check; if the theme bootstrap ever runs after this component mounts (e.g. Fast Refresh) this will throw. Non-blocking, low probability."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter796_gps_quick_questions.py"
+  ],
+  "success_rate": { "backend": "100% (3/3 pytest)", "frontend": "code-review verified (E2E chip/feedback panel click flow blocked by Cloudflare human-check; identical send/reply flow proven in iteration_795)" },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free, French locale, dark theme)",
+  "seed_data_creation": "none (backend self-repair seeds defaults on read)",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "1) Backend fix (Fix 3) is fully proven — /api/gps/state now returns the 3 seeded quick_questions for empty state. Regression suite lives at /app/backend/tests/test_iter796_gps_quick_questions.py. 2) Frontend fixes (Fix 1, 2, 3) all confirmed present in source code and wired correctly to render/toggle in /help embedded surface variant. 3) During Playwright login the frontend fires many /api/auth/me probes, and hitting the rate limit trips Cloudflare's bot-challenge page — retry with a fresh browser context after >2min if you need live UI verification. Alternatively test on the desktop `default` (non-embedded) surface for the GPS status strip (chat-gps-live-indicator) which requires a live gps_context on the last assistant message.",
+  "verification_evidence": {
+    "backend": {
+      "endpoint": "GET /api/gps/state",
+      "authenticated_response_quick_questions": [
+        "What can you help me with?",
+        "How does AI coaching work?",
+        "How do I upgrade or manage my plan?"
+      ],
+      "anonymous_response_matches_defaults": true,
+      "pytest": "3 passed in 0.92s (test_login_free_user_ok, test_gps_state_quick_questions_populated_authenticated, test_gps_state_quick_questions_unauthenticated)"
+    },
+    "i18n_keys": {
+      "keys_checked": ["help.chat.gpsLive", "help.chat.gpsDegraded", "help.chat.gpsSource", "help.chat.gpsFreshness"],
+      "en.ts": {"gpsLive": "GPS LIVE", "gpsDegraded": "GPS DEGRADED", "gpsSource": "source", "gpsFreshness": "freshness"},
+      "fr.ts": {"gpsLive": "GPS EN DIRECT", "gpsDegraded": "GPS DÉGRADÉ", "gpsSource": "source", "gpsFreshness": "fraîcheur"},
+      "locales_covered": "23/23 (grep -l 'help.chat.gpsLive' /app/frontend/src/i18n/locales/*.ts = 23 files)"
+    },
+    "code_review_points": {
+      "NovaFeedbackCard.tsx_L30_condition": "showFeedback && !feedbackSent (previous variant gate removed)",
+      "NovaChatPanel.tsx_L411-424": "NovaFeedbackCard rendered inside ScrollView after messages loop",
+      "NovaChatPanel.tsx_L283-288": "quickQuestions.map renders quick-q-{i} chips with sendMessage on tap",
+      "help.tsx_L197-200": "quickQuestions = gpsState.messaging.quick_questions (Array + non-empty filter)",
+      "NovaStatusStrip.tsx_L59": "tx('help.chat.gpsLive'/'gpsDegraded'/'gpsSource'/'gpsFreshness', fallback) — no hardcoded English"
+    },
+    "browser_e2e_blocked_by": "Cloudflare 'Verify you are human' interstitial triggered after frontend's /api/auth/me route-guard probes returned bursts of 429. Login itself completed successfully (redirected to /) prior to challenge."
+  }
+}

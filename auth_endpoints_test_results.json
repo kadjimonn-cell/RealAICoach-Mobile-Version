@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-05-20T16:36:54.577136",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "total_tests": 4,
+  "passed": 4,
+  "failed": 0,
+  "all_passed": true,
+  "results": [
+    {
+      "test": "Password Reset Request - Proper Status Code",
+      "passed": true,
+      "status_code": 200,
+      "detail": "Returned acceptable status code: 200",
+      "expected_codes": [
+        200,
+        429,
+        503
+      ],
+      "response_data": {
+        "success": true,
+        "message": "Password reset email sent"
+      },
+      "timestamp": "2026-05-20T16:36:53.742703"
+    },
+    {
+      "test": "OTP Request - Proper Status Code",
+      "passed": true,
+      "status_code": 200,
+      "detail": "Returned acceptable status code: 200",
+      "expected_codes": [
+        200,
+        404,
+        429,
+        503
+      ],
+      "response_data": {
+        "message": "OTP sent",
+        "expires_in": 10,
+        "code_reused": false,
+        "otp_delivery_status": "sent"
+      },
+      "timestamp": "2026-05-20T16:36:54.371466"
+    },
+    {
+      "test": "Login Invalid Credentials - Proper Error Code",
+      "passed": true,
+      "status_code": 401,
+      "detail": "Correctly returned 401 for invalid credentials",
+      "expected_codes": [
+        401,
+        400
+      ],
+      "response_data": {
+        "detail": "Invalid credentials"
+      },
+      "timestamp": "2026-05-20T16:36:54.479279"
+    },
+    {
+      "test": "OTP Verify Invalid Code - Proper Error Code",
+      "passed": true,
+      "status_code": 401,
+      "detail": "Correctly returned 401 for invalid code",
+      "expected_codes": [
+        400,
+        401,
+        404
+      ],
+      "response_data": {
+        "detail": "Invalid code. 4 attempts remaining."
+      },
+      "timestamp": "2026-05-20T16:36:54.576234"
+    }
+  ]
+}

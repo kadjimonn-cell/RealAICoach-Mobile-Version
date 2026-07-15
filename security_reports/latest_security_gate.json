@@ -1,0 +1,1410 @@
+{
+  "generated_at": "2026-04-07T22:59:30.219498+00:00",
+  "policy": {
+    "fail_on": [
+      "critical",
+      "high"
+    ],
+    "warn_on": [
+      "medium",
+      "low",
+      "unknown"
+    ]
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "scans": {
+    "dependencies": {
+      "python": {
+        "tool": "pip-audit --local --format json",
+        "scan_error": null,
+        "high_or_critical": [],
+        "warnings": [
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34515",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-p998-jp59-783m"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34513",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-hcc4-c3v8-rx92"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34516",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-m5qp-6w8w-w647"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34517",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-3wq7-rqq7-wx6j"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34519",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-mwh4-6h8g-pg8w"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34518",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-966j-vmvw-g2g9"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34520",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-63hf-3vf5-4wqf"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34525",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-c427-h43c-vf67"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-22815",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-w2fm-2cpv-w7v5"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "aiohttp",
+            "version": "3.13.3",
+            "vuln_id": "CVE-2026-34514",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-2vrm-gr82-f7m5"
+            ],
+            "fix_versions": [
+              "3.13.4"
+            ]
+          },
+          {
+            "package": "black",
+            "version": "26.1.0",
+            "vuln_id": "CVE-2026-32274",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-3936-cmfr-pm3m"
+            ],
+            "fix_versions": [
+              "26.3.1"
+            ]
+          },
+          {
+            "package": "cryptography",
+            "version": "46.0.4",
+            "vuln_id": "CVE-2026-26007",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-r6ph-v2qm-q3c2"
+            ],
+            "fix_versions": [
+              "46.0.5"
+            ]
+          },
+          {
+            "package": "cryptography",
+            "version": "46.0.4",
+            "vuln_id": "CVE-2026-34073",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-m959-cc7f-wv43"
+            ],
+            "fix_versions": [
+              "46.0.6"
+            ]
+          },
+          {
+            "package": "ecdsa",
+            "version": "0.19.1",
+            "vuln_id": "CVE-2024-23342",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-wj6h-64fc-37mp"
+            ],
+            "fix_versions": []
+          },
+          {
+            "package": "ecdsa",
+            "version": "0.19.1",
+            "vuln_id": "CVE-2026-33936",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-9f5j-8jwj-x28g"
+            ],
+            "fix_versions": [
+              "0.19.2"
+            ]
+          },
+          {
+            "package": "idna",
+            "version": "2.8",
+            "vuln_id": "PYSEC-2024-60",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2024-3651",
+              "GHSA-jjg7-2v4v-x38h"
+            ],
+            "fix_versions": [
+              "3.7"
+            ]
+          },
+          {
+            "package": "idna",
+            "version": "2.8",
+            "vuln_id": "PYSEC-2024-60",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2024-3651"
+            ],
+            "fix_versions": [
+              "3.7"
+            ]
+          },
+          {
+            "package": "litellm",
+            "version": "1.80.0",
+            "vuln_id": "CVE-2026-35029",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-53mr-6c8q-9789"
+            ],
+            "fix_versions": [
+              "1.83.0"
+            ]
+          },
+          {
+            "package": "litellm",
+            "version": "1.80.0",
+            "vuln_id": "CVE-2026-35030",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-jjhc-v7c2-5hh6"
+            ],
+            "fix_versions": [
+              "1.83.0"
+            ]
+          },
+          {
+            "package": "pillow",
+            "version": "12.1.0",
+            "vuln_id": "CVE-2026-25990",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-cfh3-3jmp-rvhc",
+              "BIT-pillow-2026-25990"
+            ],
+            "fix_versions": [
+              "12.1.1"
+            ]
+          },
+          {
+            "package": "pyasn1",
+            "version": "0.6.2",
+            "vuln_id": "CVE-2026-30922",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-jr27-m4p2-rc6r"
+            ],
+            "fix_versions": [
+              "0.6.3"
+            ]
+          },
+          {
+            "package": "pygments",
+            "version": "2.19.2",
+            "vuln_id": "CVE-2026-4539",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-5239-wwwm-4pmq"
+            ],
+            "fix_versions": [
+              "2.20.0"
+            ]
+          },
+          {
+            "package": "pyjwt",
+            "version": "2.11.0",
+            "vuln_id": "CVE-2026-32597",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-752w-5fwx-jx9f"
+            ],
+            "fix_versions": [
+              "2.12.0"
+            ]
+          },
+          {
+            "package": "pymongo",
+            "version": "4.5.0",
+            "vuln_id": "CVE-2024-5629",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-m87m-mmvp-v9qm"
+            ],
+            "fix_versions": [
+              "4.6.3"
+            ]
+          },
+          {
+            "package": "pypdf",
+            "version": "6.9.1",
+            "vuln_id": "CVE-2026-33699",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-87mj-5ggw-8qc3"
+            ],
+            "fix_versions": [
+              "6.9.2"
+            ]
+          },
+          {
+            "package": "requests",
+            "version": "2.32.5",
+            "vuln_id": "CVE-2026-25645",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-gc5v-m9x4-r6x2"
+            ],
+            "fix_versions": [
+              "2.33.0"
+            ]
+          },
+          {
+            "package": "setuptools",
+            "version": "69.5.1",
+            "vuln_id": "PYSEC-2025-49",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2025-47273",
+              "BIT-setuptools-2025-47273",
+              "GHSA-5rjg-fvgr-3xxf"
+            ],
+            "fix_versions": [
+              "78.1.1"
+            ]
+          },
+          {
+            "package": "setuptools",
+            "version": "69.5.1",
+            "vuln_id": "PYSEC-2025-49",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2025-47273",
+              "GHSA-5rjg-fvgr-3xxf"
+            ],
+            "fix_versions": [
+              "78.1.1"
+            ]
+          },
+          {
+            "package": "setuptools",
+            "version": "69.5.1",
+            "vuln_id": "CVE-2024-6345",
+            "severity": "unknown",
+            "aliases": [
+              "BIT-setuptools-2024-6345",
+              "GHSA-cx63-2mw6-8hw5"
+            ],
+            "fix_versions": [
+              "70.0.0"
+            ]
+          },
+          {
+            "package": "starlette",
+            "version": "0.37.2",
+            "vuln_id": "CVE-2024-47874",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-f96h-pmfr-66vw"
+            ],
+            "fix_versions": [
+              "0.40.0"
+            ]
+          },
+          {
+            "package": "starlette",
+            "version": "0.37.2",
+            "vuln_id": "CVE-2025-54121",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-2c2j-9gv5-cj73"
+            ],
+            "fix_versions": [
+              "0.47.2"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "PYSEC-2021-108",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2021-33503",
+              "GHSA-q2q7-5pp4-w6pg"
+            ],
+            "fix_versions": [
+              "1.26.5"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "PYSEC-2021-108",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2021-33503",
+              "GHSA-q2q7-5pp4-w6pg"
+            ],
+            "fix_versions": [
+              "1.26.5"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "PYSEC-2023-192",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2023-43804",
+              "GHSA-v845-jxx5-vc9f"
+            ],
+            "fix_versions": [
+              "1.26.17",
+              "2.0.6"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "PYSEC-2023-192",
+            "severity": "unknown",
+            "aliases": [
+              "CVE-2023-43804",
+              "GHSA-v845-jxx5-vc9f"
+            ],
+            "fix_versions": [
+              "1.26.17",
+              "2.0.6"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "PYSEC-2023-212",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-g4mx-q9vg-27p4",
+              "CVE-2023-45803"
+            ],
+            "fix_versions": [
+              "1.26.18",
+              "2.0.7"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "PYSEC-2023-212",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-g4mx-q9vg-27p4",
+              "CVE-2023-45803"
+            ],
+            "fix_versions": [
+              "1.26.18",
+              "2.0.7"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "CVE-2024-37891",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-34jh-p97f-mpxf"
+            ],
+            "fix_versions": [
+              "1.26.19",
+              "2.2.2"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "CVE-2025-50181",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-pq67-6m6q-mj2v"
+            ],
+            "fix_versions": [
+              "2.5.0"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "CVE-2025-66418",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-gm62-xv2j-4w53"
+            ],
+            "fix_versions": [
+              "2.6.0"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "CVE-2025-66471",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-2xpw-w6gg-jr37"
+            ],
+            "fix_versions": [
+              "2.6.0"
+            ]
+          },
+          {
+            "package": "urllib3",
+            "version": "1.25.11",
+            "vuln_id": "CVE-2026-21441",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-38jv-5279-wg99"
+            ],
+            "fix_versions": [
+              "2.6.3"
+            ]
+          },
+          {
+            "package": "werkzeug",
+            "version": "3.1.5",
+            "vuln_id": "CVE-2026-27199",
+            "severity": "unknown",
+            "aliases": [
+              "GHSA-29vq-49wr-vm6x"
+            ],
+            "fix_versions": [
+              "3.1.6"
+            ]
+          }
+        ],
+        "summary": {
+          "passed": true,
+          "high_or_critical_count": 0,
+          "warning_count": 43,
+          "severity_counts": {
+            "unknown": 43
+          }
+        }
+      },
+      "frontend": {
+        "tool": "yarn audit --groups dependencies --level high --json",
+        "scan_error": null,
+        "high_or_critical": [],
+        "warnings": [],
+        "resolution_warnings": [
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^9.0.0\"",
+          "Resolution field \"picomatch@4.0.4\" is incompatible with requested version \"picomatch@^3.0.1\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^9.0.0\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^9.0.0\"",
+          "Resolution field \"picomatch@4.0.4\" is incompatible with requested version \"picomatch@^2.3.1\"",
+          "Resolution field \"picomatch@4.0.4\" is incompatible with requested version \"picomatch@^2.2.3\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.1.1\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.0.4\"",
+          "Resolution field \"picomatch@4.0.4\" is incompatible with requested version \"picomatch@^2.0.4\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.1.2\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.1.2\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.1.2\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.1.2\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^3.1.2\"",
+          "Resolution field \"minimatch@10.2.4\" is incompatible with requested version \"minimatch@^5.0.1\""
+        ],
+        "summary": {
+          "passed": true,
+          "high_or_critical_count": 0,
+          "warning_count": 0,
+          "resolution_warning_count": 15
+        }
+      }
+    },
+    "auth_bypass": {
+      "static": {
+        "high_or_critical": [],
+        "warnings": [
+          {
+            "file": "/app/backend/routes/fraud_engine.py",
+            "function": "fraud_dashboard",
+            "route": "/admin/fraud/dashboard",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/fraud_engine.py",
+            "function": "trigger_fraud_scan",
+            "route": "/admin/fraud/run-scan",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/page_performance.py",
+            "function": "page_performance_dashboard",
+            "route": "/admin/page-performance/dashboard",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/page_performance.py",
+            "function": "page_performance_alerts",
+            "route": "/admin/page-performance/alerts",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/page_performance.py",
+            "function": "clear_page_perf",
+            "route": "/admin/page-performance/clear",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/page_performance.py",
+            "function": "get_autofix_log",
+            "route": "/admin/page-performance/autofix-log",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/page_performance.py",
+            "function": "revert_autofix",
+            "route": "/admin/page-performance/autofix-revert",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_list_approvals",
+            "route": "/admin/approvals",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_decide_approval",
+            "route": "/admin/approvals/decide",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_get_approval_detail",
+            "route": "/admin/approvals/{approval_id}",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_list_jobs",
+            "route": "/admin/listings",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_job_stats",
+            "route": "/admin/stats",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_list_tickets",
+            "route": "/admin/support/tickets",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/job_platform.py",
+            "function": "admin_respond_ticket",
+            "route": "/admin/support/respond",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/i18n.py",
+            "function": "admin_global_adaptation_overview",
+            "route": "/admin/global-adaptation/overview",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/i18n.py",
+            "function": "admin_global_adaptation_remediate",
+            "route": "/admin/global-adaptation/remediate",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/i18n.py",
+            "function": "admin_global_adaptation_effectiveness",
+            "route": "/admin/global-adaptation/effectiveness",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/i18n.py",
+            "function": "get_admin_language_quality_dashboard",
+            "route": "/admin/language-quality-dashboard",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/i18n.py",
+            "function": "get_admin_multilingual_smoke_report",
+            "route": "/admin/multilingual-smoke-report",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/i18n.py",
+            "function": "run_admin_multilingual_smoke_report",
+            "route": "/admin/multilingual-smoke-report/run",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/self_repair_engine.py",
+            "function": "self_repair_status_alias",
+            "route": "/admin/self-repair/status",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/cia_trust.py",
+            "function": "cia_trust_widget_alias",
+            "route": "/admin/cia-trust/widget",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/config.py",
+            "function": "update_config",
+            "route": "/config/admin/update",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/payments.py",
+            "function": "recover_missed_payment_notifications",
+            "route": "/admin/payments/recover-missed-notifications",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/payments.py",
+            "function": "admin_refresh_fedapay_policy",
+            "route": "/admin/payments/fedapay-policy/refresh",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/payments.py",
+            "function": "get_fedapay_policy_timeline",
+            "route": "/admin/payment-analytics/fedapay-policy/timeline",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/payments.py",
+            "function": "trigger_renewal_reminders",
+            "route": "/admin/trigger-renewal-reminders",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/payments.py",
+            "function": "run_tax_compliance_audit",
+            "route": "/admin/payments/tax-compliance/audit",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/push_notifications.py",
+            "function": "send_push_notification",
+            "route": "/admin/push/send",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/push_notifications.py",
+            "function": "list_subscribers",
+            "route": "/admin/push/subscribers",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "web_vitals_dashboard",
+            "route": "/admin/web-vitals/dashboard",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "get_vitals_alerts",
+            "route": "/admin/web-vitals/alerts",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "update_vitals_alert_settings",
+            "route": "/admin/web-vitals/alerts/settings",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "seo_analytics",
+            "route": "/admin/seo/analytics",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "run_lighthouse_audit",
+            "route": "/admin/seo/lighthouse/run",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "lighthouse_history",
+            "route": "/admin/seo/lighthouse/history",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "lighthouse_latest",
+            "route": "/admin/seo/lighthouse/latest",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "aso_analytics",
+            "route": "/admin/seo/aso/analytics",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "run_mobile_indexing_analysis",
+            "route": "/admin/seo/mobile-indexing/analyze",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "get_mobile_indexing_latest",
+            "route": "/admin/seo/mobile-indexing/latest",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "run_global_performance_analysis",
+            "route": "/admin/seo/global-performance/analyze",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "get_global_performance_latest",
+            "route": "/admin/seo/global-performance/latest",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "run_responsiveness_audit",
+            "route": "/admin/seo/responsiveness/audit",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/seo_analytics.py",
+            "function": "get_responsiveness_latest",
+            "route": "/admin/seo/responsiveness/latest",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/auth.py",
+            "function": "admin_sso_status",
+            "route": "/admin/sso-status",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "admin_subscription_transition",
+            "route": "/admin/access-control/subscription-transition",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "policy_console_bootstrap",
+            "route": "/admin/access-control/policy-console/bootstrap",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "policy_console_pending_transitions",
+            "route": "/admin/access-control/policy-console/pending-transitions",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "policy_console_approve_transition",
+            "route": "/admin/access-control/policy-console/pending-transitions/{user_id}/approve",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "policy_console_reject_transition",
+            "route": "/admin/access-control/policy-console/pending-transitions/{user_id}/reject",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "access_control_observability",
+            "route": "/admin/access-control/observability",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/access_control.py",
+            "function": "admin_access_control_audit",
+            "route": "/admin/access-control/audit",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "guardian_status",
+            "route": "/admin/performance-guardian/status",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "get_available_fixes",
+            "route": "/admin/performance-guardian/available-fixes",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "run_auto_fix",
+            "route": "/admin/performance-guardian/auto-fix",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "get_guardian_settings",
+            "route": "/admin/performance-guardian/settings",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "update_guardian_settings",
+            "route": "/admin/performance-guardian/settings",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "get_performance_alerts",
+            "route": "/admin/performance-guardian/alerts",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "get_performance_budgets",
+            "route": "/admin/performance-guardian/budgets",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "create_performance_budget",
+            "route": "/admin/performance-guardian/budgets",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "delete_performance_budget",
+            "route": "/admin/performance-guardian/budgets/{route_encoded:path}",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/performance_guardian.py",
+            "function": "get_budget_violations",
+            "route": "/admin/performance-guardian/budget-violations",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          },
+          {
+            "file": "/app/backend/routes/admin_console.py",
+            "function": "admin_console_overview_alias",
+            "route": "/admin/console/overview",
+            "issue": "admin route missing explicit require_admin guard",
+            "severity": "medium",
+            "confidence": "low"
+          }
+        ],
+        "summary": {
+          "passed": true,
+          "issue_count": 63
+        }
+      },
+      "runtime": {
+        "checks": [
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/autonomous-engine/failure-memory/dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/activity-log?limit=1",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/system/metrics",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/overview",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/fraud/dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/infra/metrics",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/sla/dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/page-performance/dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/page-performance/alerts",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/page-performance/autofix-log",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/stats",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/approvals",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/listings",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/support/tickets",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/config/admin",
+            "status": 404
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/config/admin",
+            "status": 404,
+            "warning": "unexpected status for unauthenticated admin probe"
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/global-adaptation/overview",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/global-adaptation/effectiveness",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/language-quality-dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/multilingual-smoke-report",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/emails",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/system/health-deep",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/self-repair/status",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/system/repair-history",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/support/faq/admin/list",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/submissions",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/cia-trust/overview",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/cia-trust/widget",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/cia-trust/self-heal/logs",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/status",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/rules",
+            "status": 500
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/rules",
+            "status": 500,
+            "warning": "unexpected status for unauthenticated admin probe"
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/history",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/ai-history",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin-tab-integrity",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin-tab-e2e",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/ai-support/dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/ai-support/log",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/link-host-self-heal/history",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/payment-analytics/fedapay-policy/timeline",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/subscriptions/expiry-overview",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/subscriptions/analytics",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/payments/executive-billing-pack",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/payment-history-export-settings",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/receipt-branding",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/push/subscribers",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/web-vitals/dashboard",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/web-vitals/alerts",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/analytics",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/lighthouse/history",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/lighthouse/latest",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/aso/analytics",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/mobile-indexing/latest",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/global-performance/latest",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/responsiveness/latest",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/otp-dashboard",
+            "status": 401
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/fallback-links/health",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/sso-redirect-drift-sentinel",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/multi-region-auth-probe/status",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/sso-status",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/sso-debug",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/session-timeout-config",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/session-timeout-config/history",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/media-storage/stats",
+            "status": 403
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/feature-access/matrix",
+            "status": 403
+          }
+        ],
+        "failures": []
+      }
+    },
+    "injection": {
+      "static": {
+        "high_or_critical": [],
+        "warnings": [],
+        "summary": {
+          "passed": true,
+          "issue_count": 0
+        }
+      },
+      "runtime": {
+        "checks": [
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/login",
+            "status": 422,
+            "payload_type": "string_sqli_like"
+          },
+          {
+            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/login",
+            "status": 422,
+            "payload_type": "nosql_like"
+          }
+        ],
+        "failures": []
+      }
+    }
+  },
+  "summary": {
+    "passed": true,
+    "blocker_count": 0,
+    "blockers": [],
+    "notes": [
+      "Frontend dependency gate uses production-only yarn audit high/critical advisories.",
+      "Python dependency gate uses pip-audit local environment scan; unknown severities are warnings."
+    ]
+  }
+}

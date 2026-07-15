@@ -1,0 +1,26 @@
+{
+  "summary": "Iteration 887 — FedaPay production-e2e simulator (Kiriakou / Premium monthly / BJ XOF) validated end-to-end. All 14 pytest cases passed (100%) including the previously-untested postal_code preservation fix. Regression checks for Stripe (168.12) and PayPal (63.57) simulators also green.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_fedapay_production_e2e_iter887.py",
+    "/app/test_reports/pytest/iter887_fedapay.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "payments_fedapay_routes.py is 2301 lines — approaching the >700-line split threshold; the new simulator (~330 lines) at end of file is well-scoped but the module overall should be considered for modularization (checkout, policy resolver, admin sim can be separate files).",
+    "The postal-code preservation branch (line ~2074-2075) only merges body.postal_code when tax_quote's jurisdiction omits it; verified working for BJ where the tax engine returns no postal metadata. Consider a small unit test in fedapay policy module to guard against regression.",
+    "_resolve_fedapay_fee_pct falls back to card fee if mobile fee resolves to 0 — worth documenting inline (currently only implicit).",
+    "Notification pipeline correctly detects French locale from BJ jurisdiction — verified via Resend log 'Reçu de paiement - Offre Premium' and '[Admin] Payment Confirmed via Mobile Money (FedaPay)'."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_fedapay_production_e2e_iter887.py (new)"
+  ],
+  "success_rate": {"backend": "100% (14/14)", "frontend": "N/A (backend-only per request)"},
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! (cookie login + X-Requested-With). Non-admin gate check reused p1.free.1779113329@example.com / P1Free#2026!Aa. Fresh disposable users: fedapay.e2e.iter887.<uuid>@example.com (never emailed real personal accounts).",
+  "seed_data_creation": "Each pytest run creates ~5 disposable @example.com users + payment_transactions/payments/service_fees rows and one admin_wallet increment per happy-path/regression call. No touching of realaicoach@gmail.com / kadjimonn@gmail.com / hypoduchrist@gmail.com.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Endpoint POST /api/admin/payments/simulate-fedapay-production-e2e is stable at commit under test. All four checks (fee_accuracy, notification_latency_under_2s, subscription_active, api_integrity) return true. Ticket prefix 'MM-'. Pricing invariants: base_usd=15.99, fx=605, subtotal_local=9674, tax_local=799 (tax_rate 0.0825), fee_pct=2.9 BJ, fee_local=304, final_total_local=10777, currency=XOF. jurisdiction.postal_code IS PRESERVED as '300271' (postal fix verified live). service_fees fee_usd = 0.4637 (15.99 * 2.9%). Notification pipeline emits FRENCH locale for BJ (Resend subject 'Reçu de paiement - Offre Premium | RCT-...' and admin '[Admin] Payment Confirmed via Mobile Money (FedaPay) — RCT-...') — confirmed via /var/log/supervisor/backend.err.log during test run. Validation matrix: period 'weekly' → 400; plan 'platinum' → 404; country_code 'NG' → 400 (unsupported policy country); currency 'NGN' → 400. Regression sims (Stripe premium/yearly/TX 168.12 and PayPal basic/yearly/KY 63.57) still return all-true checks. Reuse the file for future iterations by parametrizing pricing expectations.",
+  "rca of the issue": "No bugs to RCA. The single untested change (postal_code preservation when tax engine returns empty postal metadata) is now explicitly asserted via test_all_db_records_and_postal_fix: jurisdiction.postal_code == '300271' after a live run — passing."
+}

@@ -1,0 +1,27 @@
+{
+  "summary": "Backend-only validation of the 'Offer Letter Pro' PDF redesign (OFFER_PDF_THEME_SIGNATURE=pdf-v15-offer-letter-pro-v5) in /app/backend/routes/careers_offers.py. Wrote a permanent pytest module (/app/backend/tests/test_offer_letter_pro_pdf.py, 26 tests, 8 classes) covering theme signature constant, all 4 lifecycle variants rendering (original/accepted/declined/rescinded), PDF text extraction via PyMuPDF for hero card / countdown ribbon / chips / QR / CEO signature block, strict OfferDataValidationError regression, ink-cropped signature + QR helpers, _ensure_offer_pdf_current_theme stale-signature regeneration (monkeypatched _persist_pdf + db + branding), and a live admin cookie-session smoke on GET /api/careers/offers/off_ddb1e393a694/pdf. All 26 tests PASS. Regression suite tests/test_offer_lifecycle_guardrails.py (3/3) also PASS. /api/health returns 200. No stored DB doc was modified (in-memory enrichment only). No real emails sent.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_offer_letter_pro_pdf.py",
+    "/app/backend/tests/test_offer_lifecycle_guardrails.py",
+    "/app/test_reports/pytest/iter854_offer_letter_pro.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "careers_offers.py is 1820 lines; consider splitting the PDF generator (_generate_offer_pdf + helpers _StackedBar/_cropped_signature_png_buffer/_offer_qr_png_buffer + _header_footer + branding loader) into a routes/careers/offer_pdf.py module to satisfy the >700-line guideline and improve testability.",
+    "In _generate_offer_pdf (line ~462) the return value of branding.get('signer_signature_image') is discarded and later re-read from branding['signer_signature_image'] at line ~965 — remove the dangling accessor for clarity.",
+    "'Terms & Conditions' is rendered via HTML entity (&amp;) in Paragraph — passes text extraction as 'Terms & Conditions' but consumers scanning the raw HTML string should be aware.",
+    "The endpoint GET /api/careers/offers/{offer_id}/pdf raises 422 with a clean DATA_VALIDATION_ERROR body when settings.receipt_branding/offer_branding do not supply brand_name/company_info — expected strict behavior, but the error message string could optionally surface which top-level source (settings.receipt_branding vs offer_branding) is missing to speed up admin remediation."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_offer_letter_pro_pdf.py"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "n/a (backend-only per request)"},
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! (cookie session via POST /api/auth/login with X-Requested-With). Live login verified 200.",
+  "seed_data_creation": "None. Offer doc off_ddb1e393a694 was enriched in memory only (candidate_address/department/start_date/work_city/public_token/expires_at/signing_bonus_usd/equity_shares) — DB was not modified. Branding loaded from settings + certificate signer constants and augmented in-memory with brand_name='RealAICoach' and company_info='noreply@realaicoach.app' as required.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Permanent pytest module /app/backend/tests/test_offer_letter_pro_pdf.py has full offer-letter-pro coverage. To rerun: cd /app/backend && python -m pytest tests/test_offer_letter_pro_pdf.py -v. The endpoint smoke test relies on admin credentials from /app/memory/test_credentials.md and is tolerant of both 200 (branding fully configured) and 422 (BRANDING_INCOMPLETE / OFFER_INCOMPLETE) responses — both are considered pass provided the JSON detail shape is correct. When exercising the endpoint end-to-end, note that stored offer off_ddb1e393a694 has empty candidate_address/department/start_date so 422 is expected until Offer Studio → Branding is admin-configured with brand_name + company_info AND the offer draft candidate fields are completed. PyMuPDF image count check uses >=2 threshold (logo + QR + handwritten signature). Motor loop-binding pattern: fresh AsyncIOMotorClient inside asyncio.run() to avoid 'attached to different loop' errors; do not reuse routes.careers_offers.db at test time.",
+  "rca of the issue": "N/A — no bugs detected. The 422 response from GET /api/careers/offers/off_ddb1e393a694/pdf is expected strict behavior: the stored offer draft is incomplete (empty candidate_address/department/start_date) and settings.receipt_branding/offer_branding are not populated with brand_name + company_info in this environment, so _generate_offer_pdf raises OfferDataValidationError which the endpoint translates into a well-formed 422 JSON body (code=BRANDING_INCOMPLETE, missing=[...], message, fix_url). No traceback, no crash."
+}

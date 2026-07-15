@@ -1,0 +1,47 @@
+{
+  "summary": "Independent verification of the seed-demo canonical key + live Job Offer PDF fix (bug: 422 BRANDING_INCOMPLETE / OFFER_INCOMPLETE). Created permanent tests/test_offer_branding_seed.py (11 tests: 10 pass + 1 gracefully skipped for missing public_token). Verified live GET /api/careers/offers/off_ddb1e393a694/pdf returns 200 %PDF-1.4 on BOTH localhost:8001 and the external REACT_APP_BACKEND_URL, with PyMuPDF-extracted text containing every mandated string ('YEAR-1 TOTAL COMPENSATION VALUE', 'security@realaicoach.app', '11501 Domain Dr, Suite 200, Austin, TX 78758, USA', 'RealAICoach LLC', 'Engineering', '2026-08-03') and NONE of the forbidden strings ('Cotonou'). seed-demo canonical key contract validated (keys == exactly {brand_name, legal_name, hq_address, company_info, signer_name, signer_title} with company_info='security@realaicoach.app', legal_name='RealAICoach LLC', hq matches _PLATFORM_HQ_ADDRESS). PUT accepts new brand_name+company_info fields. Zero-Assumptions guard rejects fabricated legal_name ('RealAICoach, Inc.') and signer_name ('Samir Patel') with 422 ZERO_ASSUMPTIONS_VIOLATION and non-persistence verified. Unit-level _generate_offer_pdf regression: missing candidate_address still raises OfferDataValidationError. Regression suites all green: test_offer_letter_pro_pdf.py (42/42) + test_offer_lifecycle_guardrails.py (3/3). /api/health 200. settings.offer_branding restored to canonical after tests.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "PUT /api/careers/offer-branding",
+        "issue": "Endpoint REPLACES the entire settings.offer_branding value doc rather than merging with the existing value. A partial PUT (e.g. only company_info) will drop previously seeded fields like brand_name / signer_name / signer_title unless the caller re-sends them. Layer-2/Layer-3 fallbacks (platform constants) mask this for legal_name/hq_address/signer_*, but brand_name and company_info have no Layer-3 default and will disappear until seed-demo is re-run. Recommendation: change the $set to merge fields inside `value.<field>` (e.g. `{'$set': {f'value.{k}': v for k,v in value.items()}, '$set': {'updated_at': ...}}`) or fetch existing value and shallow-merge before write."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_offer_branding_seed.py",
+    "/app/backend/tests/test_offer_letter_pro_pdf.py",
+    "/app/backend/tests/test_offer_lifecycle_guardrails.py",
+    "/app/test_reports/pytest/iter856_seed_results.xml",
+    "/app/test_reports/pytest/iter856_regression_results.xml"
+  ],
+  "action_items": [
+    "OPTIONAL (minor): Make PUT /api/careers/offer-branding a partial merge instead of a full-value replace so single-field admin edits do not clobber the rest of the branding doc. Currently masked by seed-demo self-healing, but would surface if brand_name or company_info fields were ever PUT alone."
+  ],
+  "critical_code_review_comments": [
+    "seed-demo now correctly seeds ONLY the six keys _load_offer_branding + _generate_offer_pdf actually read (brand_name, legal_name, hq_address, company_info, signer_name, signer_title). Legacy garbage keys (legal_business_name / registered_hq_address / ceo_full_legal_name / ceo_title) are gone. Boot-time _scrub_fabricated_branding remains in place as an additional safety net.",
+    "OfferBrandingBody now exposes brand_name + company_info — matches the seed doc + PUT surface. Zero-Assumptions guard in PUT rejects all 5 canonical fabricated tokens and does not persist them (verified via re-GET after failed PUT).",
+    "careers_offers.py is 1966 lines; splitting the PDF renderer + branding admin routes into their own modules would improve maintainability (repeated feedback from iteration_855).",
+    "PUT endpoint replaces the entire `value` doc rather than merging — see minor backend_issues above.",
+    "Strict validation regression preserved: candidate.address missing still raises OfferDataValidationError with 'candidate.address' in .missing."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_offer_branding_seed.py"
+  ],
+  "success_rate": {
+    "backend": "100% (10/10 new seed-demo + PDF E2E tests, plus 42/42 offer PDF + 3/3 guardrail regression, plus /api/health 200; 1 test gracefully skipped because offer has no public_token — expected)",
+    "frontend": "n/a (backend-only run)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (cookie-session via X-Requested-With: XMLHttpRequest)",
+  "seed_data_creation": "None. Tests re-invoke the existing seed-demo endpoint for its idempotency contract and restore the canonical doc at end of each write-touching test. No emails sent, no offer mutations. settings.offer_branding verified canonical after full run.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "tests/test_offer_branding_seed.py is the single source of truth for the seed-demo canonical contract + live Job-Offer PDF E2E. It talks to LOCAL_URL (localhost:8001) for admin-cookie flows and hits REACT_APP_BACKEND_URL only for the second PDF fetch. It uses pymongo (sync) to peek at db.career_offers when it needs data outside the FastAPI event loop — avoid re-introducing motor+asyncio.run() there or you'll hit 'Event loop is closed'. Every write-touching test re-seeds via /careers/offer-branding/seed-demo to restore canonical state; do NOT insert tests that PUT junk without restoring afterwards (the environment guardrail _scrub_fabricated_branding will drop the whole doc if forbidden tokens ever land). PUT is destructive-replace (not merge) — see the minor bug in action_items. External REACT_APP_BACKEND_URL PDF E2E is proven to return 200 + valid %PDF-1.4 with all mandated strings.",
+  "rca_of_the_issue": "Original bug: seed-demo endpoint seeded WRONG keys (legal_business_name / registered_hq_address / ceo_full_legal_name / ceo_title) that _load_offer_branding + _generate_offer_pdf never read, omitted brand_name and company_info, and used a contradictory Cotonou HQ — leaving strict validation with missing company.brand_name / company.official_email / company.registered_address at PDF-render time. Fix (verified): canonical seed writes exactly the 6 keys the renderer reads {brand_name, legal_name, hq_address, company_info, signer_name, signer_title}, values wired to _PLATFORM_LEGAL_NAME / _PLATFORM_HQ_ADDRESS constants and certificate signer, and OfferBrandingBody was widened to accept brand_name + company_info. Live GET /api/careers/offers/off_ddb1e393a694/pdf now returns 200 %PDF-1.4 (~720KB) on both localhost and the external REACT_APP_BACKEND_URL with all expected content strings verified via PyMuPDF text extraction."
+}

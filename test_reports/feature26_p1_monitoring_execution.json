@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-06-17T16:08:42Z",
+  "task": "feature26_p1_non_destructive_monitoring_execution",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "checkpoint_a_artifact": "/app/test_reports/feature26_p1_retirement_monitoring_checkpointA.json",
+  "gate_snapshot": {
+    "deprecation_total_events": 19,
+    "deprecation_active_legacy_users": 2,
+    "deprecation_migration_progress_pct": 92.0,
+    "retirement_phase": "observe",
+    "retirement_recommended_phase": "phase2_jobs_employers_writes",
+    "retirement_target_phase_gate_ready": true,
+    "removal_strict_sustained_gate_met": false,
+    "removal_strict_ready_for_code_removal": false,
+    "removal_near_zero_sustained_gate_met": false,
+    "removal_near_zero_ready_for_code_removal": false,
+    "strict_recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+    "near_zero_recommended_action": "Continue monitoring legacy telemetry windows before hard route removal."
+  },
+  "checkpoint_c_backend_verification": {
+    "status": "pass_critical_requirements",
+    "source": "deep_testing_backend_v2",
+    "notes": "Monitoring endpoints operational; removal gate not open; no destructive action performed."
+  },
+  "checkpoint_d_frontend_verification": {
+    "status": "pass",
+    "source": "auto_frontend_testing_agent",
+    "notes": "Admin monitoring panels visible to admin; free user blocked; candidate/employer routes render; no legacy write calls."
+  },
+  "destructive_changes_executed": false,
+  "legacy_read_pruning_executed": false,
+  "policy_compliance": {
+    "requires_explicit_v2_read_parity_signoff_before_pruning": true,
+    "current_action": "monitoring_only_continue"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "total": 3,
+    "passed": 2,
+    "failed": 1,
+    "has_500_errors": false
+  },
+  "tests": [
+    {
+      "test": "GET /api/videos/health (unauth)",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "details": "Correctly returned 401"
+    },
+    {
+      "test": "GET /api/videos/bootstrap (unauth)",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "details": "Correctly returned 401"
+    },
+    {
+      "test": "POST /api/auth/login",
+      "status": "\u274c FAIL",
+      "passed": false,
+      "details": "Login request failed: HTTPSConnectionPool(host='watch-videos-portal.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)"
+    }
+  ]
+}

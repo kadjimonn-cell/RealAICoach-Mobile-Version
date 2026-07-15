@@ -1,0 +1,46 @@
+{
+  "summary": "Focused retest of the iteration_904 HIGH issue (assistant message header must render model label with data-testid chat-message-model-{i}) — PASS. Persistence check: opening the 'Haiku test' conversation surfaces two historical assistant messages whose headers now correctly read 'NOVA · CLAUDE HAIKU 4.5' (chat-message-model-1) and 'NOVA · GPT-4O' (chat-message-model-3). Live send check: selecting the ai-chat-model-option-claude-sonnet-4-6 pill and sending 'Say OK' produced a fresh assistant bubble with header 'NOVA · CLAUDE SONNET 4.6' at data-testid chat-message-model-5. The HIGH issue from iteration_904 is fully resolved. No new regressions detected.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "AI Chat panel — sidebar",
+        "issues": [
+          "PRE-EXISTING (already flagged in iteration_904, out of scope): every conversation row still shows 'Invalid Date' below the message count. Not related to the Claude models feature."
+        ]
+      }
+    ]
+  },
+  "frontend_verification": {
+    "history_headers_render_model_label": "PASS — 'Haiku test' conversation shows chat-message-model-1 = 'Nova · Claude Haiku 4.5' and chat-message-model-3 = 'Nova · GPT-4o' via document.querySelectorAll('[data-testid^=\"chat-message-model-\"]').",
+    "live_send_sonnet_4_6": "PASS — After clicking ai-chat-model-option-claude-sonnet-4-6 and sending 'Say OK', a new assistant bubble was appended with chat-message-model-5 = 'Nova · Claude Sonnet 4.6' (real Claude response body). The pill visibly toggled from GPT-4o to Sonnet 4.6.",
+    "budget_used": "1 LLM call (Sonnet 4.6, ~2s → ~15s latency)."
+  },
+  "test_report_links": [
+    "/app/test_reports/screenshots/iter905_history_headers.png",
+    "/app/test_reports/screenshots/iter905_final2.png"
+  ],
+  "action_items": [
+    "None for the retested feature. Optional follow-up (pre-existing, not blocking): fix the 'Invalid Date' formatting in the Conversations sidebar rows (updated_at) — same note as iteration_904.",
+    "Optional cleanup (also pre-existing): the DELETE /api/personal-assistant/sessions/{id} endpoint in backend/personal_assistant.py targets the wrong collections (db.assistant_sessions / db.assistant_messages instead of db.personal_assistant_sessions / db.personal_assistant_messages), so test sessions accumulate in the sidebar."
+  ],
+  "critical_code_review_comments": [
+    "AIChatPanel.tsx line 610 fix is minimal and correct: single-Text render composing 'Nova · {msg.modelLabel}' with proper data-testid/testID keyed by index. Behaves correctly when modelLabel is undefined (legitimately older messages) — falls back to plain 'Nova'. No regressions in the render pipeline."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped per request)", "frontend": "100% for the retested scope (2/2 checks: historical header rendering + live-send header rendering)"},
+  "test_credentials": "Free user: p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "None new. Existing 'Haiku test' session was reused for history check; one new user+assistant pair appended to it during the live send (message index 4 = user 'Say OK', message index 5 = assistant Sonnet 4.6 response). Backend still shows leaked TEST_ sessions from iter904 due to the DELETE endpoint bug — noted but out of scope.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "AIChatPanel model-label header is now fully working. If you need to send a message via automation on this app, note that Enter key inside the chat textarea inserts a newline (does NOT submit) — you must click the send button. Reliable locator strategy used here: find the textarea, walk up ~3 parents to the input row container, then pick the first [role='button'] whose bounding box is to the right of the textarea. That button is the send button and clicking it via page.mouse.click(cx, cy) at its center reliably fires the submit handler. Model pill testids: ai-chat-model-option-gpt-4o / -claude-sonnet-4-6 / -claude-haiku-4-5. Header testids: chat-message-model-{i} where i is the message index (0-based, including user messages). Login flow unchanged: 2 inputs + Enter, first URL may stay /auth/login but session cookie is set — subsequent navigations authenticate via session_renew.",
+  "rca_of_the_issue": {
+    "prior_bug_verified_fixed": {
+      "root_cause_recap": "iteration_904: AIChatPanel.tsx line ~610 rendered a static <Text>Nova</Text> even though msg.modelLabel was plumbed through state.",
+      "fix_applied_by_main_agent": "Line 610 now renders: <Text ... data-testid={`chat-message-model-${i}`} testID={`chat-message-model-${i}`}>{msg.modelLabel ? `Nova · ${msg.modelLabel}` : 'Nova'}</Text>. Static Expo web export was rebuilt so localhost:3000 picks it up.",
+      "verification_evidence": "1) document.querySelectorAll('[data-testid^=\"chat-message-model-\"]').length == 2 on 'Haiku test' load (indexes 1 and 3, matching the two assistant messages of that session) with correct labels. 2) After sending one message with Sonnet 4.6, count grew to 3 with the new header text 'Nova · Claude Sonnet 4.6' at index 5 (the assistant reply). 3) Screenshot iter905_final2.png shows the header visually rendered above the fresh assistant bubble."
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "summary": "Feature 26 Job Search 'Download .Word' (docx) replacement of 'Download .md' verified end-to-end. Backend pytest suite /app/backend/tests/test_job_search_documents_docx.py 9/9 PASSED covering: (a) GET /api/job-search/documents/job_principal-fullstack-engineer/docx?view=cv returns 200 with content-type application/vnd.openxmlformats-officedocument.wordprocessingml.document, Content-Disposition attachment filename=cv-<job>.docx, body starts with PK (zip); (b) python-docx re-opens the body successfully — contains Heading paragraphs and bold runs, and NO raw '**' or '# ' markdown symbols leak into visible text (>100 chars); (c) view=cover returns 200 with cover-letter-<job>.docx filename; (d) unauth → 401; (e) nonexistent job → 404; (f) view=bogus → 400; (g) regression /pdf still 200 for both cv and cover; (h) regression /documents/{id}/email kit endpoint still 200. Frontend Playwright on preview URL admin cookie-login (paced to avoid 429): /job-search → Documents tab (job-search-step-documents). Documents tab shows 2 doc chips, Copy + Download .Word + Download .pdf buttons; OLD job-search-doc-download-btn (.md) confirmed ABSENT. Clicked Download .Word for BOTH views — real browser download events fired with expected filenames cv-ext_0dde9fd57602.docx and cover-letter-ext_0dde9fd57602.docx. Mark-as-applied prompt (job-search-mark-applied-prompt with confirm + dismiss buttons) appears after Word download. All 7 step tabs (profile/find-jobs/fit-scores/documents/ats-check/tracker/salary-interview) still render.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_job_search_documents_docx.py",
+    "/app/test_reports/pytest/job_search_documents_docx.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "job_search.py:606-654 _markdown_to_docx is straightforward and correct; handles headings (# / ## / ###), unordered list bullets (- and *), horizontal-rule stripping, and inline **bold**/*italic* runs. Consider extending to also support ordered lists (`1. …`) and inline code (`code`) for future kits — currently they render as body text.",
+    "job_search.py is now 994 lines (was 918); still over the 700-line guideline. Recommend splitting docx/pdf builders into a dedicated /app/backend/routes/job_search_export.py module to keep the router file focused on API endpoints.",
+    "_add_docx_inline_runs regex re.split(r'(\\*\\*(?:[^*]|\\*(?!\\*))+\\*\\*|(?<!\\*)\\*[^*\\n]+\\*(?!\\*))', text) — good, but a single '*' at start of line for bullets is already stripped earlier so this is fine. Non-critical: consider trimming stray whitespace tokens between runs.",
+    "DocumentsTab.tsx:56-74 downloadWord uses `Platform.OS !== 'web'` early return — good, docx export is web-only. Blob type header matches the server MIME. i18n key `jobSearch.docs.downloadWord` and `wordFailed` correctly seeded (per main agent notes)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_job_search_documents_docx.py (NEW - 9 pytest cases covering docx MIME/headers, python-docx readback with heading + bold runs + no raw markdown leakage, cover-letter view, 401/404/400 guards, regression on /pdf x2 + /email kit)"
+  ],
+  "success_rate": {
+    "backend": "100% (9/9 docx suite passed; pdf + email kit regressions still green)",
+    "frontend": "100% (Word button present, .md button gone, real .docx downloads for cv + cover, mark-as-applied prompt fires, 7-tab structure intact)"
+  },
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (cookie-login via /api/auth/login with X-Requested-With header). Rate-limiter tip: used single API-login + cookie context in Playwright to avoid preview 429s.",
+  "seed_data_creation": "None. Reused pre-seeded admin kits for job_principal-fullstack-engineer and ext_0dde9fd57602. No cleanup required.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Feature 26 Word (.docx) export is fully verified. Backend suite reusable at /app/backend/tests/test_job_search_documents_docx.py — covers docx happy paths, python-docx readback content assertions, 401/404/400 guards, and /pdf + /email regressions. Frontend Playwright pattern: API cookie-login then navigate /job-search → click job-search-step-documents → click job-search-doc-view-cv or job-search-doc-view-cover → job-search-doc-download-word-btn triggers a real page.expect_download event with expected filename shape ({cv|cover-letter}-<job_id>.docx). Old data-testid job-search-doc-download-btn (.md variant) is completely removed. Preserve pacing (60-75s between phases) if re-running heavy suites — preview URL 429s on rapid re-logins and Cloudflare shows bot-check periodically.",
+  "rca_of_the_issue": "N/A — no bugs found in this iteration; feature works as specified."
+}

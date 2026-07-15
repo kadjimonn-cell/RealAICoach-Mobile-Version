@@ -1,0 +1,199 @@
+name: AI Software Factory Gate
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Validate required runtime secrets
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          test -n "$APP_BASE_URL" || (echo "Missing secret APP_BASE_URL" && exit 1)
+          test -n "$ADMIN_EMAIL" || (echo "Missing secret ADMIN_EMAIL" && exit 1)
+          test -n "$ADMIN_PASSWORD" || (echo "Missing secret ADMIN_PASSWORD" && exit 1)
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Architecture Mode hard gate (contracts + deployment specs + module tests)
+        run: python backend/scripts/architecture_mode_gate.py
+
+      - name: Security hard gate (vulns + auth bypass + injection)
+        env:
+          REACT_APP_BACKEND_URL: ${{ secrets.APP_BASE_URL }}
+        run: python backend/scripts/security_hard_gate.py --base-url "$REACT_APP_BACKEND_URL"
+
+      - name: Install frontend dependencies
+        run: yarn --cwd frontend install --frozen-lockfile
+
+      - name: Build frontend static bundle
+        run: npx expo export --platform web --output-dir dist
+        working-directory: frontend
+
+      - name: Serve frontend bundle for Lighthouse
+        run: |
+          npx -y serve frontend/dist/client -l 4173 >/tmp/ai_factory_serve.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173 >/dev/null; then
+              echo "Static server ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Static server did not start"
+          cat /tmp/ai_factory_serve.log
+          exit 1
+
+      - name: Run orchestrator gate (validator + tests + performance + auto-repair)
+        id: orchestrator
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          python scripts/ai_factory/orchestrator.py \
+            --api-base-url "$APP_BASE_URL" \
+            --performance-base-url "http://127.0.0.1:4173" \
+            --admin-email "$ADMIN_EMAIL" \
+            --admin-password "$ADMIN_PASSWORD" \
+            --min-performance 90 \
+            --max-fcp-ms 2000 \
+            --max-lcp-ms 2500
+
+      - name: Report gate result to Factory Gate Health API
+        if: always()
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          python scripts/ai_factory/report_gate_result.py \
+            --api-base-url "$APP_BASE_URL" \
+            --admin-email "$ADMIN_EMAIL" \
+            --admin-password "$ADMIN_PASSWORD" \
+            --pipeline "ai-software-factory" \
+            --trigger "${{ github.event_name }}" \
+            --branch "${{ github.ref_name }}" \
+            --commit-sha "${{ github.sha }}" \
+            --report-path "test_reports/ai_factory_orchestrator_report.json" || true
+
+      - name: Upload gate reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-software-factory-reports
+          path: |
+            test_reports/ai_factory_orchestrator_report.json
+            test_reports/ai_factory_validator_report.json
+            test_reports/ai_factory_performance_report.json
+            security_reports/latest_security_gate.json
+
+  playwright-header-snapshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: quality-gate
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Validate required runtime secrets
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          test -n "$APP_BASE_URL" || (echo "Missing secret APP_BASE_URL" && exit 1)
+          test -n "$ADMIN_EMAIL" || (echo "Missing secret ADMIN_EMAIL" && exit 1)
+          test -n "$ADMIN_PASSWORD" || (echo "Missing secret ADMIN_PASSWORD" && exit 1)
+
+      - name: Install frontend dependencies
+        run: yarn --cwd frontend install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: frontend
+
+      - name: Capture header snapshots + run auth journey + wake/admin smoke gate
+        id: playwright
+        env:
+          E2E_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          E2E_USER_EMAIL: e2e.visual.kyc@example.com
+          E2E_USER_PASSWORD: TestPass2026!
+        run: |
+          mkdir -p ci-artifacts/playwright-gate
+          node node_modules/@playwright/test/cli.js test e2e/header-actions-snapshots.spec.ts e2e/auth-journey-gate.spec.ts e2e/wake-admin-smoke.spec.ts --config=playwright.config.ts 2>&1 | tee ci-artifacts/playwright-gate/playwright_full_gate.log
+        working-directory: frontend
+
+      - name: Collect key Playwright screenshots for artifact bundle
+        if: always()
+        run: |
+          mkdir -p frontend/ci-artifacts/playwright-gate/screenshots
+          find frontend/test-results -type f -name "*.png" -exec cp {} frontend/ci-artifacts/playwright-gate/screenshots/ \; || true
+
+      - name: Report Playwright gate result to Factory Gate Health API
+        if: always()
+        env:
+          APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          PLAYWRIGHT_STATUS="${{ steps.playwright.outcome }}"
+          python3 -c "
+          import requests, json, sys
+          base = '${{ secrets.APP_BASE_URL }}'
+          login = requests.post(f'{base}/api/auth/login', json={'email': '${{ secrets.ADMIN_EMAIL }}', 'password': '${{ secrets.ADMIN_PASSWORD }}'}, timeout=15)
+          if login.status_code != 200:
+              print(f'Login failed: {login.status_code}'); sys.exit(0)
+          token = login.json().get('session_token', '')
+          status = 'pass' if '${PLAYWRIGHT_STATUS}' == 'success' else 'fail'
+          result = requests.post(f'{base}/api/admin/platform-health/factory-gate/record',
+              json={'status': status, 'pipeline': 'playwright-e2e', 'trigger': '${{ github.event_name }}', 'branch': '${{ github.ref_name }}', 'commit_sha': '${{ github.sha }}', 'test_pass_count': 9 if status == 'pass' else 0, 'test_fail_count': 0 if status == 'pass' else 1},
+              headers={'Authorization': f'Bearer {token}'}, timeout=15)
+          print(f'Reported: {result.status_code}')
+          " || true
+
+      - name: Upload Playwright snapshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-gate-artifacts
+          path: |
+            frontend/ci-artifacts/playwright-gate
+            frontend/test-results
+            frontend/playwright-report

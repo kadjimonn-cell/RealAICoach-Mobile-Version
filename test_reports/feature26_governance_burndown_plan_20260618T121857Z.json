@@ -1,0 +1,67 @@
+{
+  "timestamp": "2026-06-18T12:18:57.324102Z",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "gate_status": {
+    "strict_sustained_gate_met": false,
+    "near_zero_sustained_gate_met": false,
+    "operational_near_zero_excluding_synthetic_sustained_gate_met": true,
+    "gate_divergence_detected": true
+  },
+  "root_cause": [
+    "Governance gates still include synthetic + residual traffic windows and remain unsustained.",
+    "Residual legacy operations keep sustained_gate_met=false in strict and near-zero governance modes."
+  ],
+  "top_operations": [
+    {
+      "operation": "candidate_save_job",
+      "count": 17
+    },
+    {
+      "operation": "employers_reverify",
+      "count": 2
+    }
+  ],
+  "top_legacy_endpoints": [
+    {
+      "endpoint": "/api/jobs/save/test_job_nonexistent_12345",
+      "count": 5
+    },
+    {
+      "endpoint": "/api/jobs/save/test_telemetry_job_12345",
+      "count": 4
+    },
+    {
+      "endpoint": "/api/jobs/save/job_admin_test_123",
+      "count": 3
+    },
+    {
+      "endpoint": "/api/jobs/save/job_metadata_test",
+      "count": 2
+    },
+    {
+      "endpoint": "/api/employers/reverify",
+      "count": 2
+    },
+    {
+      "endpoint": "/api/jobs/save/job_test_p2_123",
+      "count": 2
+    },
+    {
+      "endpoint": "/api/jobs/save/test_job_12345",
+      "count": 1
+    }
+  ],
+  "proposal_execution_next": [
+    "Continue periodic monitoring cycles with mandatory non-OTP free-user admin-block E2E.",
+    "Burn down recurring legacy endpoints from top_legacy_endpoints list.",
+    "Prepare v2 read parity sign-off evidence pack for explicit approval.",
+    "Do not prune legacy reads until sustained governance gates pass + explicit sign-off."
+  ],
+  "guardrail": {
+    "legacy_read_pruning_executed": false,
+    "policy_decision": "continue_monitoring_no_pruning"
+  }
+}

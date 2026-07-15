@@ -1,0 +1,36 @@
+{
+  "summary": "Frontend theme regression testing on RealAICoach static export (preview URL). Verified primary bug fix: /ai-briefing '7-day performance comparison' card and daily autoprompt cards are now fully readable in DARK mode (fg rgb(230,234,242) / rgb(148,163,184) / rgb(153,246,228) on dark card bg) and LIGHT mode (fg rgb(15,23,42) / rgb(93,108,130) / rgb(15,118,110) on light bg). Content Library /content-library '7-day comparison ribbon' verified readable in both modes (fg readable on rgb(17,24,39) dark card and rgb(238,244,247) light card). FeatureQuotaPill ('5 free actions left today') and SuggestedSpecialistsStrip render with proper token colors on /ai-briefing (both modes). Spot-checked /gdpr, /messages, /hiring-hub, /language-selector, /privacy-request in dark and light modes - text is readable in visual screenshots. Home dashboard renders normally after login.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/messages (or inbox)", "issue": "Messages page shows 'Unable to load inbox right now' due to backend 401/403; not a theme issue but noted for main agent"}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/language-selector and /privacy-request", "issues": ["These standalone routes render in light mode regardless of the sidebar theme toggle (no toggle present on-page). Content is readable in the default light mode, but this is a minor theme-consistency gap. Consider having them subscribe to the app theme provider."]},
+      {"screen": "/gdpr", "issues": ["Public-facing GDPR trust-center page appears to have a fixed dark styling (bg rgb(5,10,24)) that does not respond to sidebar toggle. Text and cards render readably, so no bug, but flagged for parity with the v2 theme system."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "PRIMARY BUG CONFIRMED FIXED: '7-day performance comparison' on /ai-briefing now readable in both dark and light modes (dark: rgb(230,234,242) / rgb(148,163,184) / rgb(153,246,228) tokens; light: rgb(15,23,42) / rgb(93,108,130) / rgb(15,118,110) tokens).",
+    "Content Library /content-library '7-day comparison ribbon' also verified readable in both modes with proper token colors.",
+    "FeatureQuotaPill and SuggestedSpecialistsStrip render correctly in both modes.",
+    "Optional follow-up (minor, non-blocking): /gdpr, /language-selector, /privacy-request are standalone routes that do not track sidebar theme toggle. If v2 palette-contract goal is full parity, consider hooking them into the theme provider. Not part of the reported primary bug."
+  ],
+  "critical_code_review_comments": [
+    "Theme token cleanup on SevenDayComparisonRibbon and enterprise pages (palette C now spreads ...colors) is a clean approach and works as intended.",
+    "The theme-palette-prop-gate build gate (frontend/scripts/theme-palette-prop-gate.js) is a solid guardrail for preventing future hex regressions."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only test)", "frontend": "100% for primary bug + spot-checks"},
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (used)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Preview URL https://visa-polish-v2.preview.emergentagent.com serves a static export - no hot reload. Theme toggles at bottom of sidebar via data-testid=theme-toggle-light|dark|system with aria-label 'Light theme'/'Dark theme'/'System theme'. Login flow: /auth/login with email+password (Sign In button). App defaults to dark; theme persists across navigation and sessions in local storage. Some routes (/gdpr, /language-selector, /privacy-request) are standalone and do not display the sidebar theme toggle.",
+  "rca of the issue": "Primary bug was hardcoded palette C values (dark hex fallbacks) leaking into SevenDayComparisonRibbon on /ai-briefing (and /content-library) so dark-mode text stayed as light-mode dark colors, producing dark-on-dark. Fix: palette C now spreads ...colors from the v2 theme provider (see AIBriefingEnterprisePage.tsx line ~71 and ContentLibraryEnterprise.tsx line ~199), and SevenDayComparisonRibbon.tsx uses textMuted/bgSoft/successTone/errorTone tokens (lines 40-44). Verified via computed style inspection in both dark (rgb(230,234,242) foreground on rgb(17,24,39) card) and light (rgb(15,23,42) foreground on rgb(238,244,247) card)."
+}

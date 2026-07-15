@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-06-18T02:12:49.266396Z",
+  "scope": "feature26_root_cause_checkpointC_global_locked_protocol",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "admin_login_status": 200,
+  "gate_comparison": {
+    "strict_zero_exclude_synthetic_false": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "gate_divergence_detected": true,
+      "failing_windows_count": 4,
+      "jobs_72h": {
+        "raw_total_events": 17,
+        "total_events": 17,
+        "synthetic_excluded_count": 0,
+        "active_users": 2,
+        "gate_met": false
+      },
+      "employers_72h": {
+        "raw_total_events": 2,
+        "total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": false
+      },
+      "operational_signal": {
+        "sustained_gate_met": true,
+        "ready_for_legacy_code_removal": true,
+        "failing_windows_count": 0
+      }
+    },
+    "strict_zero_exclude_synthetic_true": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "gate_divergence_detected": true,
+      "failing_windows_count": 4,
+      "jobs_72h": {
+        "raw_total_events": 17,
+        "total_events": 2,
+        "synthetic_excluded_count": 15,
+        "active_users": 1,
+        "gate_met": false
+      },
+      "employers_72h": {
+        "raw_total_events": 2,
+        "total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": false
+      },
+      "operational_signal": {
+        "sustained_gate_met": true,
+        "ready_for_legacy_code_removal": true,
+        "failing_windows_count": 0
+      }
+    },
+    "near_zero_exclude_synthetic_false": {
+      "sustained_gate_met": false,
+      "ready_for_legacy_code_removal": false,
+      "gate_divergence_detected": true,
+      "failing_windows_count": 4,
+      "jobs_72h": {
+        "raw_total_events": 17,
+        "total_events": 17,
+        "synthetic_excluded_count": 0,
+        "active_users": 2,
+        "gate_met": false
+      },
+      "employers_72h": {
+        "raw_total_events": 2,
+        "total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": true
+      },
+      "operational_signal": {
+        "sustained_gate_met": true,
+        "ready_for_legacy_code_removal": true,
+        "failing_windows_count": 0
+      }
+    },
+    "near_zero_exclude_synthetic_true": {
+      "sustained_gate_met": true,
+      "ready_for_legacy_code_removal": true,
+      "gate_divergence_detected": false,
+      "failing_windows_count": 0,
+      "jobs_72h": {
+        "raw_total_events": 17,
+        "total_events": 2,
+        "synthetic_excluded_count": 15,
+        "active_users": 1,
+        "gate_met": true
+      },
+      "employers_72h": {
+        "raw_total_events": 2,
+        "total_events": 2,
+        "synthetic_excluded_count": 0,
+        "active_users": 1,
+        "gate_met": true
+      },
+      "operational_signal": {
+        "sustained_gate_met": true,
+        "ready_for_legacy_code_removal": true,
+        "failing_windows_count": 0
+      }
+    }
+  },
+  "telemetry_snapshot": {
+    "deprecation_total_events": 19,
+    "deprecation_active_legacy_users": 2,
+    "deprecation_migration_progress_pct": 92.0,
+    "top_operations": [
+      {
+        "operation": "candidate_save_job",
+        "count": 17
+      },
+      {
+        "operation": "employers_reverify",
+        "count": 2
+      }
+    ],
+    "top_legacy_endpoints": [
+      {
+        "endpoint": "/api/jobs/save/test_job_nonexistent_12345",
+        "count": 5
+      },
+      {
+        "endpoint": "/api/jobs/save/test_telemetry_job_12345",
+        "count": 4
+      },
+      {
+        "endpoint": "/api/jobs/save/job_admin_test_123",
+        "count": 3
+      },
+      {
+        "endpoint": "/api/jobs/save/job_metadata_test",
+        "count": 2
+      },
+      {
+        "endpoint": "/api/employers/reverify",
+        "count": 2
+      },
+      {
+        "endpoint": "/api/jobs/save/job_test_p2_123",
+        "count": 2
+      },
+      {
+        "endpoint": "/api/jobs/save/test_job_12345",
+        "count": 1
+      }
+    ]
+  },
+  "root_cause_confirmed": {
+    "primary": "Governance readiness remains blocked because strict/near gates with synthetic included are not sustained across all required windows.",
+    "secondary": "Residual jobs/employers legacy telemetry (candidate_save_job, employers_reverify) keeps sustained_gate_met=false in governance view.",
+    "tertiary": "Operational near_zero excluding synthetic is green, but policy uses governance gates for retirement approval, creating divergence."
+  },
+  "what_remains_for_done": [
+    "Sustained governance gate pass required across all windows under approved policy mode.",
+    "Explicit v2 read parity sign-off required before any read-route retirement action.",
+    "Feature tracker row #26 must be updated from Pending Verification to Done only after policy criteria are satisfied.",
+    "Continue mandatory free-user non-OTP admin-block check in each cycle with passing evidence artifacts."
+  ],
+  "policy_guardrails": {
+    "legacy_read_pruning_executed": false,
+    "allowed_action": "monitoring_only",
+    "blocked_action": "legacy_read_prune_or_delete_without_signoff_and_sustained_governance_gates"
+  }
+}

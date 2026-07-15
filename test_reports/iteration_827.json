@@ -1,0 +1,45 @@
+{
+  "summary": "Iteration 827 – Verified all backend features for the RealAICoach 3-phase session (ui_tier_routes, blog editorial workflow, palette_power_user badge + command-palette-nav counter, job search alerts CRUD/dedupe/limit/delete, weekly digest search_alerts surfacing, public blog visibility filtering). 17/17 backend pytest cases passed against http://127.0.0.1:8001. Frontend E2E via preview URL could not be executed reliably: Expo dev server (port 3001) repeatedly crashes with V8 'JavaScript heap out of memory' during Metro bundling (max-old-space-size=2048MB), causing Cloudflare 502/504 on /login and other SPA routes. Static dist/client folder does not contain SPA HTML (no index/dashboard/login html), so serve-production.js falls back to Expo dev server which is not ready. This is an environmental issue not code – reported for main agent.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Preview browser access to any SPA route (/login, /dashboard, /admin-console, /job-search)",
+        "issue": "Expo dev server (:3001) crashes with V8 heap OOM during Metro bundling of index.js/expo-router render.js (~2632/2668 modules); Cloudflare edge returns 502/504 when requests hit the preview URL. Retry loop over 6+ minutes never yielded a successful bundle before another OOM restart cycle. serve-production.js falls back to Expo dev server because /app/frontend/dist/client has no SPA HTML routes exported.",
+        "affected_selectors": ["all SPA routes"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter827_realaicoach_features.py",
+    "/app/test_reports/pytest/iter827_results.xml"
+  ],
+  "action_items": [
+    "Frontend E2E validation still needed: HomeNovaAssistantWidget compact/expanded modes, BlogEditorialPanel admin console flow, FindJobsTab saved-alerts UI, and CommandPalette navigation POST. Backend contracts backing these UIs are all verified.",
+    "Investigate Expo dev-server memory ceiling (2048MB) vs bundle size (>2600 modules). Options: (a) raise --max-old-space-size in /etc/supervisor/conf.d/supervisord.conf 'expo' program; (b) ensure yarn export:web writes full SPA fallback HTML into /app/frontend/dist/client so serve-production.js does not need Metro. Currently only special HTML files (offline.html, qr.html, ms-login.html, iframe-*.html, v7-preview.html) are in dist/client — no index.html/login.html/dashboard.html.",
+    "Consider forcing full-page fallback in serve-production.js (dist-fallback appears to only fire briefly) so that even without Expo, SPA loads client-rendered bundle."
+  ],
+  "critical_code_review_comments": [
+    "Blog editorial POST /posts response wraps object as {\"post\": {...}} with `post_id` (not `id`). Frontend/tests should target this shape; ensure the admin-console panel unwraps `post` consistently.",
+    "Job Search alerts POST returns `{alert: {alert_id, ...}, created: bool}` — same nesting; verify FindJobsTab reads `alert_id` from `response.alert.alert_id` not the top level.",
+    "GET /api/blog-v2/posts returned 401 unauthenticated in this env — for a supposedly public feed this is a regression risk. Public sanity worked once authenticated. Verify blog_v2 public list is not being gated by session-required middleware."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter827_realaicoach_features.py"
+  ],
+  "success_rate": {
+    "backend": "100% (17/17)",
+    "frontend": "0% – environment unable to serve SPA routes for automation"
+  },
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! (validated). Free user p1.free.1779113329@example.com / P1Free#2026!Aa (validated for 403 negative test).",
+  "seed_data_creation": "Created several TEST_-prefixed editorial posts (drafts/published/scheduled) and TEST_-prefixed job search alerts via automated tests; alerts are cleaned up per-test.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend is green – see /app/backend/tests/test_iter827_realaicoach_features.py (uses REACT_APP_BACKEND_URL=http://127.0.0.1:8001 to bypass Cloudflare). Frontend E2E blocked by Expo Metro OOM crash loop. Once memory is bumped or full static dist is generated, run playwright covering: (1) HomeNovaAssistantWidget FAB→compact→expand→collapse→close; (2) /admin-console?category=platform&tab=blog-editorial New draft → submit_review → approve_publish; (3) /job-search Find Jobs tab save alert + delete alert chip; (4) Cmd+K palette navigation posts /api/home/command-palette-nav silently.",
+  "rca of the issue": "Expo dev-server (started via `yarn expo start --port 3001 --non-interactive`) needs to bundle ~2632 Web modules + 2668 SSR modules on every cold start. Configured heap of 2048MB is insufficient — Metro reaches ~96–99% then triggers V8 mark-compact OOM and node exits. Supervisor autorestarts, cycle repeats. serve-production.js on :3000 proxies to :3001 but fails ready-check, so Cloudflare returns 502/504. Mitigation: raise --max-old-space-size to 4096+ for the expo program, or produce a proper SPA static export (dist/client/index.html + hashed JS) so the production proxy serves static bytes without invoking Metro."
+}

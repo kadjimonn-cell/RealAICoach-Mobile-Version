@@ -1,0 +1,23 @@
+name: Scan Chat Theme Token Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  scan-chat-theme-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Scan/Chat Theme Token Guard
+        run: node frontend/scripts/scan-chat-theme-token-guard.js

@@ -1,0 +1,57 @@
+{
+  "summary": "iteration_848: Programmatic validation of enlarged handwritten signature on AI Learning Hub Certificate of Completion PDF. Backend-only per review request. 14/15 pytest PASS. Direct call to _build_certificate_pdf_bytes (portrait + landscape) confirms the enlargement change works — blue-ink width ~56.9mm portrait / 56.8mm landscape (>= 45mm target after +40% enlargement from ~33mm baseline) with 100% ink above the signature underline and ~2.4mm gap between ink bottom and line — NO overlap. HOWEVER: the SERVED portrait PDF endpoint (GET /api/ai-learn/certificates/{vid}/pdf/file?layout=portrait) still returns a STALE cached blob at ~33.14mm (pre-enlargement) because _certificate_render_key does not include CERTIFICATE_SIGNATURE_PROFILE_VERSION. Landscape endpoint bypasses cache and correctly returns the enlarged signature (56.76mm). This means end users viewing existing certificate PDFs in portrait mode WILL STILL SEE THE OLD SMALL SIGNATURE until cache is invalidated. NOTE: the review request referenced prefix /api/ai-learning-hub — the actual mounted prefix is /api/ai-learn (router = APIRouter(prefix='/ai-learn') at line 57).",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "GET /api/ai-learn/certificates/{verification_id}/pdf/file?layout=portrait",
+        "issue": "Serves STALE cached portrait PDF with OLD (~33mm) signature instead of enlarged (~57mm) version. Landscape works because _load_certificate_asset_bytes always rebuilds landscape fresh; portrait uses cached storage blob keyed by _certificate_render_key which omits CERTIFICATE_SIGNATURE_PROFILE_VERSION. Users continue to download the old small signature.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": [
+      {
+        "endpoint": "N/A (review-request text)",
+        "issue": "Review request mentions prefix /api/ai-learning-hub — actual mounted prefix is /api/ai-learn. Not a code bug, just a discrepancy in the request text."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "pdf_content_evidence": {
+    "direct_builder_portrait": "ink w=56.90mm h=26.5mm, above_line=6107px, below_line=0, ink_gap_to_line=2.41mm — PASS (>=45mm)",
+    "direct_builder_landscape": "ink w=56.76mm h=26.4mm, above_line=6068px, below_line=0, ink_gap_to_line=2.54mm — PASS (>=45mm)",
+    "endpoint_portrait_served": "ink w=33.14mm above_line=2115px below_line=0 — FAIL (stale cache serving pre-enlargement asset)",
+    "endpoint_landscape_served": "ink w=56.76mm above_line=6068px below_line=0 — PASS",
+    "certificate_used": "cert_b5e8b467bf1446 (admin@realaicoach.app), 1 certificate present in admin account",
+    "png_endpoint_status": "200, valid PNG magic bytes",
+    "verify_endpoint_status": "200, returns dict payload"
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_ai_learning_hub_signature_pdf.py",
+    "/app/test_reports/pytest/iter848_ai_learning_hub_signature.xml"
+  ],
+  "action_items": [
+    "CRITICAL: Invalidate stale portrait PDF caches. Either (a) bump CERTIFICATE_RENDER_PROFILE_VERSION (line 69, currently 'rac-cert-render-v6-learning-certificate-v15-exempt') to a new value like 'rac-cert-render-v7-ceo-signature-size-up', OR (b) include CERTIFICATE_SIGNATURE_PROFILE_VERSION inside the payload dict of _certificate_render_key (line 3396-3408). Either change forces _sync_certificate_storage_assets to detect stale render_key and re-render the portrait PDF.",
+    "Optionally run a one-off migration to call _sync_certificate_storage_assets(force=True) for all existing learn_hub_certificates so users see the new signature immediately on next download.",
+    "Consider making landscape branch also honor cache for consistency (currently landscape always rebuilds — wasteful) OR make portrait bypass cache for symmetry with landscape (safer for iterating on template changes)."
+  ],
+  "critical_code_review_comments": [
+    "routes/ai_learning_hub.py:3390-3409 _certificate_render_key omits CERTIFICATE_SIGNATURE_PROFILE_VERSION and CERTIFICATE_FOOTER_PROFILE_VERSION. Any change gated by those profile versions will not invalidate the storage cache. This is the root cause of the portrait-served stale asset.",
+    "routes/ai_learning_hub.py:3544-3553 landscape PDF branch is hardcoded to always rebuild (skips storage cache). Portrait branch (3573-3588) uses cache. Asymmetric behavior — either both should cache or neither. Recommend both cache with a correct render_key that includes all profile versions.",
+    "routes/ai_learning_hub.py:342-375 _get_cropped_signature_image uses lru_cache-like dict cache (_CROPPED_SIGNATURE_CACHE) with no invalidation. If the source PNG asset changes (adjimon-signature-handwritten.png), workers with a warm cache will keep serving the old cropped image until restart. Consider mtime-keyed cache or restart on deploy.",
+    "routes/ai_learning_hub.py:378-392 _draw_cropped_signature anchors the signature at baseline_y + 1mm and sizes it as box_h * 0.88 with aspect ratio preserved. Given signature_image_height_mm=34 (default) => sig_h=~30mm, ~57mm wide. Enlargement math checks out (~72% width increase vs old ~33mm). Behavior is correct at the builder level.",
+    "routes/ai_learning_hub.py:161 CERTIFICATE_SIGNATURE_PROFILE_VERSION is bumped to 'ceo-signature-size-up-v2' but is only used to trigger doc-level reshape (_ensure_certificate_record_shape lines 444-459). It does not participate in render/cache invalidation.",
+    "Storage cache serves the wrong content silently — no server log warning when stale asset is returned. Consider logging when render_key mismatches but a cached asset was returned (defensive telemetry)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_ai_learning_hub_signature_pdf.py (new — 15 tests, 14 PASS, 1 documented FAIL on stale cache)",
+    "/app/test_reports/pytest/iter848_ai_learning_hub_signature.xml (pytest JUnit)",
+    "/app/test_reports/iteration_848.json (this file)"
+  ],
+  "success_rate": {"backend": "93.3% (14/15)", "frontend": "N/A (skipped per review request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026!; Free: p1.free.1779113329@example.com / P1Free#2026!Aa. Login via POST /api/auth/login with header X-Requested-With: XMLHttpRequest. Both logged in successfully with HTTP 200.",
+  "seed_data_creation": "No new data created. Used existing admin certificate cert_b5e8b467bf1446 for endpoint tests and a synthetic cert dict for direct builder tests (INVALID watermark expected on synthetic dicts, which is fine).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend routes for AI Learning Hub certificates live under /api/ai-learn/... (NOT /api/ai-learning-hub — that's the frontend page path). Use http://localhost:8001 for backend tests (external Cloudflare-challenged for automation). Admin has exactly 1 certificate: cert_b5e8b467bf1446. Free user p1.free.1779113329 has 0 certificates (can list, gets empty array). Direct import path: `sys.path.insert(0,'/app/backend'); from routes.ai_learning_hub import _build_certificate_pdf_bytes`. To validate blue-ink bounds on the rendered PDF, use PyMuPDF (fitz) at dpi=200 with the RGB threshold (B>100, R<120, G<120, B-R>30, B-G>20) and restrict to bottom 60mm of the page. Signature underline sits at signature_y_mm=31 from page bottom (default). After bump/fix, re-run pytest test_served_portrait_pdf_endpoint_has_enlarged_signature — should reach 15/15 pass.",
+  "rca of the issue": "ROOT CAUSE: Portrait PDF served via /api/ai-learn/certificates/{vid}/pdf/file uses a storage-cached blob keyed by _certificate_render_key (routes/ai_learning_hub.py:3390-3409). The render_key hash payload only contains {template_version, render_profile_version, template_settings, typography_preset, verification_id, certificate_number, certificate_title, issued_at, expiration_date, revoked_at, status}. It does NOT contain CERTIFICATE_SIGNATURE_PROFILE_VERSION (line 161). When the signature enlargement patch bumped only CERTIFICATE_SIGNATURE_PROFILE_VERSION to 'ceo-signature-size-up-v2', the render_key stayed identical for existing certs → _load_certificate_asset_bytes (line 3573) still finds a matching cached storage_path and returns pre-enlargement bytes. Landscape branch (line 3544) hardcodes a fresh rebuild — that's why landscape correctly reflects the new size. REPRODUCTION: (1) login admin, (2) GET /api/ai-learn/certificates/cert_b5e8b467bf1446/pdf/file?layout=portrait, (3) render page 1 at 200dpi and detect blue ink in the bottom-right footer region, (4) measure width → 33.14mm (pre-change) instead of expected 56+mm. Direct _build_certificate_pdf_bytes(...,layout='portrait') on the same cert dict → 56.9mm ink width — proves builder is correct but cache is stale. MITIGATION: bump CERTIFICATE_RENDER_PROFILE_VERSION to a new sentinel (single-line change at ai_learning_hub.py:69), or add signature/footer profile versions to _certificate_render_key payload. Follow with one-off _sync_certificate_storage_assets(force=True) sweep so users get the fresh render on next fetch."
+}

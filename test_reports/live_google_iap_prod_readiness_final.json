@@ -1,0 +1,105 @@
+{
+  "started_at": "2026-05-20T13:56:06.471663+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "googleiap.prod.final.6dfbe881@gmail.com",
+    "password": "GoogleIAP#2026Aa!",
+    "name": "Google IAP Final User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200
+    },
+    {
+      "step": "auth_me_initial",
+      "body": {
+        "user_id": "user_b8787d61de03",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "simulate_basic",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "transaction_id": null,
+        "subscription_plan": null
+      }
+    },
+    {
+      "step": "simulate_premium",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "transaction_id": null,
+        "subscription_plan": null
+      }
+    },
+    {
+      "step": "auth_me_after",
+      "body": {
+        "user_id": "user_b8787d61de03",
+        "subscription_plan": "premium",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "notifications",
+      "count": 2,
+      "items": [
+        {
+          "title": "Payment Successful \u2014 Premium Plan Activated",
+          "message": "Your payment of $22.30 via Google Play has been processed. You're now subscribed to the Premium plan. eTicket: IAP-20260520-D1EB03F6"
+        },
+        {
+          "title": "Payment Successful \u2014 Basic Plan Activated",
+          "message": "Your payment of $8.35 via Google Play has been processed. You're now subscribed to the Basic plan. eTicket: IAP-20260520-4527B2B3"
+        }
+      ]
+    },
+    {
+      "step": "db_tx",
+      "rows": [
+        {
+          "transaction_id": "sim_google_7a5be8c200474f",
+          "amount": 15.99,
+          "amount_gross": 17.15,
+          "base_plan_price": 15.99,
+          "notification_sent": true,
+          "payment_status": "completed",
+          "plan_id": "premium",
+          "admin_receipt_sent": true,
+          "receipt_delivery_ok": true,
+          "receipt_number": "RCT-20260520-20D1EB03F6",
+          "user_receipt_sent": true
+        },
+        {
+          "transaction_id": "sim_google_5af8c3392b7145",
+          "amount": 5.99,
+          "amount_gross": 6.42,
+          "base_plan_price": 5.99,
+          "notification_sent": true,
+          "payment_status": "completed",
+          "plan_id": "basic",
+          "admin_receipt_sent": true,
+          "receipt_delivery_ok": true,
+          "receipt_number": "RCT-20260520-204527B2B3",
+          "user_receipt_sent": true
+        }
+      ]
+    },
+    {
+      "step": "receipt_sim_google_7a5be8c200474f",
+      "status_code": 200,
+      "content_type": "application/pdf"
+    },
+    {
+      "step": "receipt_sim_google_5af8c3392b7145",
+      "status_code": 200,
+      "content_type": "application/pdf"
+    }
+  ],
+  "finished_at": "2026-05-20T13:56:14.606188+00:00"
+}

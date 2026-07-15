@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-18T00:14:27.022824Z",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "free_login_statuses": [
+    200
+  ],
+  "free_login_success": true,
+  "free_admin_url": "https://visa-polish-v2.preview.emergentagent.com/",
+  "free_admin_route_testid_count": 0,
+  "free_admin_title_testid_count": 0,
+  "free_candidate_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate",
+  "free_candidate_route_testid_count": 1,
+  "admin_login_statuses": [
+    200
+  ],
+  "admin_login_success": true,
+  "admin_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+  "admin_route_testid_count": 1,
+  "admin_title_testid_count": 1,
+  "verdict": "pass"
+}

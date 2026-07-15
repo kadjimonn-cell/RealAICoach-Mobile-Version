@@ -1,0 +1,27 @@
+{
+  "admin_login": 200,
+  "free_login": 200,
+  "snapshot_status": 200,
+  "apply_phase2_force_status": 200,
+  "jobs_write_status": 410,
+  "jobs_write_detail": {
+    "message": "Legacy v1 endpoint family is retired for write operations. Use v2 routes.",
+    "route_family": "jobs",
+    "operation": "candidate_save_job",
+    "retirement_phase": "phase2_jobs_employers_writes",
+    "gate_met": true,
+    "force_apply": true,
+    "replacement_hint": "/api/hiring/v2/*"
+  },
+  "employers_write_status": 410,
+  "employers_write_detail": {
+    "message": "Legacy v1 endpoint family is retired for write operations. Use v2 routes.",
+    "route_family": "employers",
+    "operation": "employers_reverify",
+    "retirement_phase": "phase2_jobs_employers_writes",
+    "gate_met": true,
+    "force_apply": true,
+    "replacement_hint": "/api/hiring/v2/*"
+  },
+  "restore_status": 200
+}

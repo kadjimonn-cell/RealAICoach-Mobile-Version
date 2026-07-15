@@ -1,0 +1,114 @@
+{
+  "summary": "Nova Home Panel Layout Fix VERIFIED. All 5 reported issues addressed: (1) Desktop layout regression fixed - panel 392x740px with message list 385px visible; (2) Desktop conversation visibility working - auto-scroll to latest message confirmed; (3) Responsive usability verified on mobile (390x844) and tablet (768x1024) - panel stays within viewport; (4) Secondary sections (feedback, status, curation, GPS) no longer crowd out conversation - GPS hidden on mobile as expected; (5) Send flow working for authenticated admin user across all viewports.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "test_1_desktop_layout": {
+      "status": "PASS",
+      "viewport": "1920x1080",
+      "panel_dimensions": "392x740px",
+      "message_list_initial": "390x385px",
+      "message_list_after_send": "245px",
+      "fab_position": "x=1828, y=928, 64x64",
+      "panel_within_viewport": true,
+      "evidence": "Screenshot nova_panel_desktop.png, nova_after_send.png"
+    },
+    "test_2_desktop_conversation_visibility": {
+      "status": "PASS",
+      "description": "After sending message, assistant reply visible without manual scrolling",
+      "assistant_messages_found": 5,
+      "latest_message_visible": true,
+      "auto_scroll_working": true,
+      "evidence": "Screenshot nova_after_send.png shows conversation thread with assistant reply"
+    },
+    "test_3_mobile_responsiveness": {
+      "status": "PASS",
+      "viewport": "390x844",
+      "panel_dimensions": "366x680px",
+      "message_list": "364x319px",
+      "fab_position": "x=316, y=700, 56x56",
+      "fab_within_viewport": true,
+      "panel_within_viewport": true,
+      "input_visible": true,
+      "send_button_visible": true,
+      "gps_indicator_hidden": true,
+      "latest_message_visible": true,
+      "evidence": "Screenshot nova_mobile_panel.png, nova_mobile_after_send.png"
+    },
+    "test_4_tablet_responsiveness": {
+      "status": "PASS",
+      "viewport": "768x1024",
+      "panel_dimensions": "392x700px",
+      "message_list": "390x345px",
+      "fab_position": "x=680, y=876, 60x60",
+      "fab_within_viewport": true,
+      "panel_within_viewport": true,
+      "input_visible": true,
+      "send_button_visible": true,
+      "latest_message_visible": true,
+      "evidence": "Screenshot nova_tablet_panel.png, nova_tablet_after_send.png"
+    },
+    "test_5_secondary_sections_not_crowding": {
+      "status": "PASS",
+      "description": "Feedback panel, status indicator, curation strip, GPS block do not crowd out conversation",
+      "feedback_panel_dismissible": true,
+      "gps_hidden_on_mobile": true,
+      "message_list_height_adequate": true,
+      "evidence": "Message list heights: Desktop 385px, Mobile 319px, Tablet 345px - all >= 200px minimum"
+    },
+    "test_6_send_flow_authenticated": {
+      "status": "PASS",
+      "description": "Admin user can send message and receive assistant reply on all viewports",
+      "credentials_used": "admin@realaicoach.app",
+      "desktop_send": true,
+      "mobile_send": true,
+      "tablet_send": true,
+      "evidence": "All after_send screenshots show assistant responses"
+    }
+  },
+  "layout_fix_verification": {
+    "root_cause_identified": "Panel allocated too much fixed vertical space to secondary UI (feedback card, status/detail text, curation strip, GPS card, composer area) inside fixed-height panel, and auto-scroll was not strong enough",
+    "fix_applied": "Larger/taller panel bounds, reduced bottom offset, stronger scroll-to-latest behavior, message list flexGrow+justifyContent=end, feedback panel dismissible with 'Later', phone view hides GPS card",
+    "fix_verified": true,
+    "panel_sizing_correct": true,
+    "auto_scroll_working": true,
+    "responsive_across_devices": true
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_756.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "HomeNovaAssistantWidget.tsx layout fix verified working correctly",
+    "Panel dimensions appropriate for all tested viewports",
+    "Auto-scroll to latest message working after send",
+    "GPS indicator correctly hidden on mobile to save space",
+    "Feedback panel has 'Later' dismiss option to reduce clutter",
+    "Message list has adequate height (>=200px) on all viewports"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% (6/6 tests passed)"
+  },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Nova Home panel layout fix verified. Panel sizing: Desktop 392x740px, Mobile 366x680px, Tablet 392x700px. Message list heights adequate (319-385px). Auto-scroll working. GPS hidden on mobile. Send flow working for authenticated users. All responsive breakpoints tested and passing.",
+  "features_tested": [
+    "Desktop layout (1920x1080) - PASS: Panel 392x740px, message list visible",
+    "Desktop conversation visibility - PASS: Auto-scroll to latest message working",
+    "Mobile responsiveness (390x844) - PASS: Panel 366x680px fits viewport, GPS hidden",
+    "Tablet responsiveness (768x1024) - PASS: Panel 392x700px fits viewport",
+    "Secondary sections not crowding - PASS: Message list height adequate on all viewports",
+    "Send flow authenticated - PASS: Admin can send/receive on all viewports"
+  ]
+}

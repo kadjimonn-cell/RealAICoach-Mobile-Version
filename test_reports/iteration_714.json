@@ -1,0 +1,46 @@
+{
+  "summary": "Verified and FIXED the mobile footer disclaimer overlap bug. The Learn more link now has sufficient gap (>=8px) to the bottom bar on all mobile widths (320px, 390px, 430px). Applied fixes to EnterpriseAIDisclaimer.tsx (paddingBottom: 24, marginTop: 6) and Footer.tsx (marginBottom: 44).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/frontend/src/components/EnterpriseAIDisclaimer.tsx",
+    "/app/frontend/src/components/Footer.tsx"
+  ],
+  "success_rate": {
+    "backend": "N/A (skipped)",
+    "frontend": "100%"
+  },
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Footer disclaimer overlap bug is now FIXED. All mobile widths (320px, 390px, 430px) pass the contract: learnGap >= 8px and shellGap >= 0. Non-regression tests also passed: address row visible, section titles centered, Learn more link clickable, no horizontal overflow, modal opens on Learn more click.",
+  "rca_of_the_issue": {
+    "root_cause": "The Learn more link inside EnterpriseAIDisclaimer had marginTop: 10px which pushed it outside the container's bounds. The container's paddingBottom (16px) was insufficient to contain the Learn more link (24px height). Combined with the footer-disclaimer-shell's marginBottom (36px), the total gap was less than the Learn more link's overflow.",
+    "reproduction_steps": [
+      "1. Navigate to /welcome page",
+      "2. Set viewport to mobile width (320px, 390px, or 430px)",
+      "3. Scroll to footer",
+      "4. Observe Learn more link overlapping with copyright row"
+    ],
+    "fix_applied": [
+      "EnterpriseAIDisclaimer.tsx: Changed paddingBottom from 16px to 24px for compact mobile",
+      "EnterpriseAIDisclaimer.tsx: Changed marginTop from 10px to 6px for Learn more link on compact mobile",
+      "Footer.tsx: Changed marginBottom of footer-disclaimer-shell from 36px to 44px for compact mobile"
+    ],
+    "verification_results": {
+      "320px": {"learnGap": 12, "shellGap": 44, "status": "PASS"},
+      "390px": {"learnGap": 20, "shellGap": 44, "status": "PASS"},
+      "430px": {"learnGap": 12, "shellGap": 44, "status": "PASS"}
+    }
+  }
+}

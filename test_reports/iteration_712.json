@@ -1,0 +1,149 @@
+{
+  "summary": "Verified Welcome page mobile pricing card CTA bug fix (Checkpoint A-D). All tests passed: (1) Mobile pricing cards at 320px, 390px, and 430px show CTAs fully visible with adequate bottom gap (>=24px); (2) Dense mobile pricing contract (width < 430px) correctly limits feature list to 4 items and shortens upgrade copy; (3) CTA buttons remain above the lower feature-copy area on all tested phone widths; (4) Footer disclaimer and rhythm remain centered and responsive; (5) No horizontal overflow across all tested viewports; (6) Prior hero/footer/quick-nav/capability fixes remain intact.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_712.json",
+    "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+    "/app/frontend/e2e/welcome-visual-regression.spec.ts"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% (all mobile pricing CTA and responsiveness tests passed)"
+  },
+  "test_credentials": "No auth required for /welcome page",
+  "seed_data_creation": "None required",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Welcome page mobile pricing card CTA bug fix verified. The useDenseMobilePricingCards contract (width < 430px) correctly tightens mobile card density, moves CTA earlier in visual rhythm, limits feature list to 4 items, and shortens upgrade copy. All viewports (320px, 390px, 430px, 540px) show CTAs fully visible with no clipping or push-down issues.",
+  "test_results": {
+    "viewports_tested": ["mobile-320", "mobile-390", "mobile-430", "mobile-540"],
+    "mobile_pricing_cta_visibility": {
+      "320px": {
+        "cardCount": 3,
+        "horizontalOverflow": false,
+        "cards": [
+          {"cardId": "welcome-plan-free", "ctaGapBottom": 182, "ctaHeight": 41, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-basic", "ctaGapBottom": 182, "ctaHeight": 41, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-premium", "ctaGapBottom": 156, "ctaHeight": 41, "ctaFullyVisible": true, "featureCount": 3, "status": "PASS"}
+        ],
+        "status": "PASS"
+      },
+      "390px": {
+        "cardCount": 3,
+        "horizontalOverflow": false,
+        "cards": [
+          {"cardId": "welcome-plan-free", "ctaGapBottom": 182, "ctaHeight": 41, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-basic", "ctaGapBottom": 182, "ctaHeight": 41, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-premium", "ctaGapBottom": 140, "ctaHeight": 41, "ctaFullyVisible": true, "featureCount": 3, "status": "PASS"}
+        ],
+        "status": "PASS"
+      },
+      "430px": {
+        "cardCount": 3,
+        "horizontalOverflow": false,
+        "cards": [
+          {"cardId": "welcome-plan-free", "ctaGapBottom": 204, "ctaHeight": 45, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-basic", "ctaGapBottom": 204, "ctaHeight": 45, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-premium", "ctaGapBottom": 157, "ctaHeight": 45, "ctaFullyVisible": true, "featureCount": 3, "status": "PASS"}
+        ],
+        "status": "PASS"
+      },
+      "540px": {
+        "cardCount": 3,
+        "horizontalOverflow": false,
+        "cards": [
+          {"cardId": "welcome-plan-free", "ctaGapBottom": 186, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-basic", "ctaGapBottom": 186, "ctaFullyVisible": true, "featureCount": 4, "status": "PASS"},
+          {"cardId": "welcome-plan-premium", "ctaGapBottom": 157, "ctaFullyVisible": true, "featureCount": 3, "status": "PASS"}
+        ],
+        "status": "PASS"
+      }
+    },
+    "dense_mobile_pricing_contract": {
+      "threshold": "width < 430px",
+      "featureListLimit": 4,
+      "shortenedUpgradeCopy": true,
+      "reducedSpacing": true,
+      "ctaMovedEarlierInRhythm": true,
+      "status": "VERIFIED"
+    },
+    "footer_non_regression": {
+      "390px": {
+        "disclaimerTextAlign": "center",
+        "footerJustify": "space-between",
+        "sectionTitleAligns": ["center", "center", "center", "center"],
+        "horizontalOverflow": false,
+        "status": "PASS"
+      },
+      "320px": {
+        "disclaimerTextAlign": "center",
+        "disclaimerWidth": 244,
+        "disclaimerRatio": "76%",
+        "horizontalOverflow": false,
+        "status": "PASS"
+      }
+    },
+    "hero_non_regression": {
+      "390px": {
+        "horizontalOverflow": false,
+        "titleTextAlign": "center",
+        "status": "PASS"
+      }
+    },
+    "capability_non_regression": {
+      "390px": {
+        "overlayCount": 3,
+        "noOverlaps": true,
+        "horizontalOverflow": false,
+        "status": "PASS"
+      }
+    },
+    "social_section_non_regression": {
+      "390px": {
+        "buttonCount": 2,
+        "stacked": true,
+        "status": "PASS"
+      }
+    },
+    "horizontal_overflow": {
+      "320px": false,
+      "390px": false,
+      "430px": false,
+      "540px": false,
+      "status": "PASS - no overflow at any viewport"
+    }
+  },
+  "bug_fix_verification": {
+    "original_issue": "Mobile Welcome pricing cards showed clipped or pushed-down CTA buttons on phone widths due to desktop-heavy vertical card rhythm",
+    "root_cause": "WelcomePricing.tsx used desktop-style spacing and full feature lists on dense mobile widths, causing CTA buttons to appear clipped/pushed too deep in preview frames",
+    "fixes_applied": [
+      "Added useDenseMobilePricingCards contract (width < 430px) to WelcomePricing.tsx",
+      "Moved CTA button earlier in visual rhythm (before divider on dense mobile)",
+      "Reduced mobile card density with tighter spacing",
+      "Limited mobile feature list to 4 items on dense mobile widths",
+      "Shortened lower-priority upgrade copy on dense mobile widths"
+    ],
+    "files_changed": [
+      "/app/frontend/src/components/welcome/WelcomePricing.tsx",
+      "/app/frontend/e2e/welcome-responsive-contract.spec.ts",
+      "/app/frontend/e2e/welcome-visual-regression.spec.ts"
+    ],
+    "verification_status": "VERIFIED - All mobile pricing CTA visibility contracts pass across all tested viewports (320px, 390px, 430px, 540px)"
+  },
+  "screenshots": [
+    ".screenshots/mobile_pricing_320.png",
+    ".screenshots/mobile_pricing_390.png",
+    ".screenshots/mobile_pricing_430.png"
+  ]
+}

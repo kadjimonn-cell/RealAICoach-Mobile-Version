@@ -1,0 +1,74 @@
+{
+  "summary": "Visitor CTA routing verification PASSED - All 5 test scenarios confirmed that unauthenticated visitors clicking Pricing/Upgrade CTAs from /welcome are correctly redirected to /auth/register instead of /subscription/plans",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "test_1_growth_intelligence_cta": {
+      "status": "PASS",
+      "testid": "growth-plan-cta-button",
+      "expected": "/auth/register",
+      "actual": "/auth/register?source=welcome-growth-intelligence&return_to=%2Fwelcome%3Fsection%3Dpricing",
+      "notes": "Correctly redirects visitors to register with source tracking"
+    },
+    "test_2_capability_compare_plans_cta": {
+      "status": "PASS",
+      "testid": "welcome-capability-secondary-cta",
+      "expected": "/auth/register",
+      "actual": "/auth/register?source=welcome-capability-command-center-compare&return_to=%2Fwelcome%3Fsection%3Dpricing",
+      "notes": "Correctly redirects visitors to register with source tracking"
+    },
+    "test_3_locked_capability_matrix_cta": {
+      "status": "PASS",
+      "testid": "welcome-capability-card-cta-ai-writer",
+      "expected": "/auth/register",
+      "actual": "/auth/register?source=welcome-capability-command-center&return_to=%2Fwelcome%3Fsection%3Dfeatures",
+      "notes": "Correctly redirects visitors to register with source tracking"
+    },
+    "test_4a_free_plan_cta": {
+      "status": "PASS",
+      "testid": "welcome-plan-free-cta",
+      "expected": "/auth/register",
+      "actual": "/auth/register",
+      "notes": "Correctly redirects visitors to register without planId (correct for free plan)"
+    },
+    "test_4b_basic_plan_cta": {
+      "status": "PASS",
+      "testid": "welcome-plan-basic-cta",
+      "expected": "/auth/register with planId=basic",
+      "actual": "/auth/register?planId=basic&planName=Name&planPrice=57.5&billingPeriod=yearly",
+      "notes": "Correctly redirects visitors to register with plan context preserved"
+    },
+    "test_4c_premium_plan_cta": {
+      "status": "PASS",
+      "testid": "welcome-plan-premium-cta",
+      "expected": "/auth/register with planId=premium",
+      "actual": "/auth/register?planId=premium&planName=Name&planPrice=153.5&billingPeriod=yearly",
+      "notes": "Correctly redirects visitors to register with plan context preserved"
+    },
+    "test_5_regression_check": {
+      "status": "PASS",
+      "notes": "Welcome page loads correctly, all required data-testid attributes are discoverable: growth-plan-cta-button, welcome-capability-secondary-cta, welcome-plan-free-cta, welcome-plan-basic-cta, welcome-plan-premium-cta, and 3 capability card CTAs"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "None required - visitor-only flows",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Visitor CTA routing from /welcome to /auth/register is working correctly. All pricing CTAs (free/basic/premium), growth intelligence CTA, capability compare plans CTA, and locked capability matrix CTAs redirect unauthenticated visitors to the register page with appropriate source tracking and plan context parameters.",
+  "external_preview_note": "External preview URL (visitor-auth-gating.preview.emergentagent.com) was blocked by Cloudflare security verification. Tests were run against localhost:3000 which is functionally equivalent."
+}

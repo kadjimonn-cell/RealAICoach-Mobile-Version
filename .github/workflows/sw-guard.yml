@@ -1,0 +1,48 @@
+name: SW Invariant Guard
+
+on:
+  push:
+    paths:
+      - 'frontend/public/sw.js'
+      - 'frontend/scripts/bump-sw.js'
+      - 'frontend/app/_layout.tsx'
+      - 'frontend/package.json'
+      - 'backend/tests/test_sw_*.py'
+      - 'scripts/ci-sw-guard.sh'
+      - '.github/workflows/sw-guard.yml'
+  pull_request:
+    paths:
+      - 'frontend/public/sw.js'
+      - 'frontend/scripts/bump-sw.js'
+      - 'frontend/app/_layout.tsx'
+      - 'frontend/package.json'
+      - 'backend/tests/test_sw_*.py'
+      - 'scripts/ci-sw-guard.sh'
+      - '.github/workflows/sw-guard.yml'
+
+jobs:
+  sw-guard:
+    name: Service-Worker outage-proof contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install minimal Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-asyncio
+
+      - name: Run SW invariant guard
+        run: bash scripts/ci-sw-guard.sh

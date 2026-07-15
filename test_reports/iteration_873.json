@@ -1,0 +1,66 @@
+{
+  "summary": "AI Marketplace Architecture (213 agents / 22 categories / 37 features) — full backend + frontend validation. Backend: 28/28 existing pytest suite + 13/13 new supplemental tests pass (41/41). Frontend: all Portfolio + Agents interactive flows verified via Playwright against localhost:3000, including bulk status update, clone, pagination, search, category/status filters, and zero-regression on Workflows/Executions/Tools tabs.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "AI Agents panel — Bulk selection UX", "issue": "After clicking a bulk action (e.g., Set Beta), the panel automatically exits bulk-select mode AND clears the selection set. As a consequence, to run a second bulk action on the same agents the user must re-open Bulk select and re-tick each checkbox. Testing agents / users expecting the selection to persist can be surprised. Minor UX/design consideration — not a functional bug (state clearing is intentional per runBulk in ai-agents.tsx).", "selector": "[data-testid=agent-bulk-bar]", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_agent_marketplace.py",
+    "/app/backend/tests/test_agent_marketplace_extra_iter873.py",
+    "/app/test_reports/pytest/iteration_873_marketplace.xml",
+    "/app/test_reports/pytest/iteration_873_marketplace_extra.xml"
+  ],
+  "action_items": [
+    "(Optional / LOW) Consider keeping bulk-select mode + selection set active after a bulk action so consecutive actions (e.g., Set Beta then Enable) don't require re-selecting. Currently runBulk() in /app/frontend/app/admin/ai-agents.tsx calls setSelectedIds(new Set()) + setSelectMode(false) on success — intentional but affected the 2nd half of the Set Beta → Enable browser flow. Not a bug — tester compensated by restoring via API."
+  ],
+  "critical_code_review_comments": [
+    "AgentPortfolioTab.tsx is well-scoped (~194 lines), uses Promise.all for 4 marketplace endpoints, proper loading/error states with testids, and every readiness check row has data-testid=readiness-check-{name}. No changes needed.",
+    "ai-agents.tsx testIDs are consistent and derived from labels (agent-bulk-{label-slug}, agent-clone-{key}, agent-status-badge-{key}, agent-status-filter-{status}). Enables robust automation.",
+    "Marketplace endpoints properly gated behind admin auth (anon receives 401/403 for /marketplace/portfolio). Bulk-status validates the status enum server-side (400 on 'bogus').",
+    "Zero-regression confirmed: legacy /agent-framework/overview reports agents=213 tools=3; /agents, /agents/{key}, /agents/{key}/versions, /workflows, /executions, /tools, /prompts, /policy, /audit all return 200. POST /agents upsert accepts new marketplace fields (subcategory, feature_mappings, status, availability, permissions as list, config_profile) and DELETE cleans up.",
+    "Portfolio coverage matrix correctly reports 37/37 covered with coverage_percent=100.0 and uncovered_features=[]."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_agent_marketplace_extra_iter873.py"
+  ],
+  "success_rate": {"backend": "100% (41/41 tests: 28 existing + 13 new)", "frontend": "95% — all functional checks pass; the only miss was the browser-side status-restore step because bulk mode auto-exits after each action (restored via API)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "Temporary agent TEST_marketplace_upsert_iter873 created + deleted inside pytest. Clone ai_ethics_reviewer_clone_zu1m was created via UI during the browser flow — DELETED via API cleanup at end of run (verified 404). Bulk status flip on ai_ethics_reviewer + api_designer to 'beta' was RESTORED to 'active' via /marketplace/bulk-status after the browser flow.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Frontend is a static export served by expo_manual on port 3000 (do NOT rebuild it). Preview URL is Cloudflare-challenged for browser automation but works fine for curl/requests. Login flow: navigate to /auth/login, fill [data-testid=login-email-input] + [data-testid=login-password-input], click text='SIGN IN'. Admin lands on /. Then goto /admin/ai-agents. The 5 tabs use testid ai-agents-tab-{portfolio|agents|workflows|executions|tools}. Note: bulk actions auto-exit bulk mode + clear selection, so multi-step bulk flows in Playwright require re-toggling bulk select and re-ticking checkboxes between actions.",
+  "verification_matrix": {
+    "BACKEND_marketplace_catalog_paginated": "PASS (total=213, page_size=30, 8 pages)",
+    "BACKEND_marketplace_catalog_filters_q_category_status_availability_tag_feature": "PASS",
+    "BACKEND_marketplace_catalog_sort_name_asc_desc": "PASS",
+    "BACKEND_marketplace_categories": "PASS (22 categories with total/active/beta/experimental/subcategories)",
+    "BACKEND_marketplace_coverage": "PASS (features_total=37, uncovered=[], coverage_percent=100.0, matrix rows per feature)",
+    "BACKEND_marketplace_recommendations_valid_and_404": "PASS (money-strategy-hub + fitness-planner-pro ranked desc; unknown key → 404)",
+    "BACKEND_marketplace_dependencies_no_dangling": "PASS",
+    "BACKEND_marketplace_portfolio_shape": "PASS (agents_total=213, by_status/by_availability/by_health/avg_quality_score/coverage all present)",
+    "BACKEND_marketplace_readiness_9_checks": "PASS (ready=true, 9 checks all passed)",
+    "BACKEND_marketplace_templates_and_stats": "PASS (templates>=20, stats has health + quality_score per row)",
+    "BACKEND_marketplace_clone_dup409_export_import_bulk_lifecycle": "PASS",
+    "BACKEND_marketplace_bulk_invalid_status_400": "PASS",
+    "BACKEND_marketplace_anon_401_403": "PASS",
+    "BACKEND_zero_regression_agents_overview_workflows_executions_tools_prompts_policy_audit": "PASS",
+    "BACKEND_agent_upsert_with_marketplace_fields": "PASS (create with subcategory/feature_mappings/status=experimental/availability=workspace → GET reflects → DELETE → GET 404)",
+    "FRONTEND_login_and_admin_route": "PASS (admin lands on /admin/ai-agents with 213 agents)",
+    "FRONTEND_panel_title_and_5_tabs": "PASS (title 'AI Agent Marketplace'; portfolio/agents/workflows/executions/tools all present)",
+    "FRONTEND_portfolio_stats": "PASS (213 Total, 22 Categories, 203 Active, 8 Beta, 2 Experimental, 0 Disabled, 100% Coverage, 92 Avg Quality)",
+    "FRONTEND_portfolio_readiness_ready_9_checks": "PASS (badge=READY, 9 readiness-check rows)",
+    "FRONTEND_portfolio_category_list_22_rows": "PASS",
+    "FRONTEND_portfolio_coverage_matrix_and_toggle": "PASS (12 rows collapsed → 37 rows after clicking 'Show all 37 features'; summary '37/37 covered')",
+    "FRONTEND_agents_search_narrows": "PASS ('career' → 12 cards)",
+    "FRONTEND_agents_status_filter_beta": "PASS (beta filter → 8 cards)",
+    "FRONTEND_agents_show_more_pagination": "PASS (30 → 60 cards after Show more)",
+    "FRONTEND_bulk_select_set_beta": "PASS (bulk-bar shows '2 selected'; ai_ethics_reviewer + api_designer badges flipped Active → Beta)",
+    "FRONTEND_bulk_restore_active": "PARTIAL — bulk mode auto-exits + clears selection after any bulk action, so the 2nd Enable click could not be performed in the same session; restored via API POST /marketplace/bulk-status (documented). Not a functional bug; a minor UX note logged.",
+    "FRONTEND_clone_agent": "PASS (clone toast displayed; new card ai_ethics_reviewer_clone_zu1m appeared with status=Experimental; deleted post-test)",
+    "FRONTEND_zero_regression_workflows_executions_tools": "PASS (Workflows shows 1 card, Executions shows 11 cards, Tools shows 3 cards)"
+  }
+}

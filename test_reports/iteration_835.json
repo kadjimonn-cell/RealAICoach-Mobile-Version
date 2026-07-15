@@ -1,0 +1,49 @@
+{
+  "summary": "Verified V2 theme compliance fixes on AI Learning Hub (My Journey + Weekly Achievement Loop) in DARK and LIGHT modes, plus spot-checks on /notifications and /my-analytics. All previously-reported black-on-dark bugs are resolved. Computed color assertions PASS for KPI card icons and streak-badge label in both themes. No 'undefined color' console errors observed.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "computed_color_verification": {
+    "dark_mode": {
+      "ai-learning-hub-kpi-card-streak.flame_icon": "rgb(252, 211, 77)  (amber-300 #FCD34D) - VISIBLE (not black)",
+      "ai-learning-hub-kpi-card-active.bookmark_icon": "rgb(20, 184, 166)  (teal-500 #14B8A6) - VISIBLE",
+      "ai-learning-hub-kpi-card-complete.check_icon": "rgb(153, 246, 228) (teal-200 #99F6E4) - VISIBLE (not black)",
+      "ai-learning-hub-kpi-card-minutes.clock_icon": "rgb(20, 184, 166)  (teal-500) - VISIBLE",
+      "ai-learning-hub-weekly-streak-badge-label 'No Badge Yet'": "rgb(252, 211, 77) amber - VISIBLE (not black) on card bg rgba(245,158,11,0.08)"
+    },
+    "light_mode": {
+      "streak_flame": "rgb(180, 83, 9)   #B45309 (dark amber)  - matches spec",
+      "active_bookmark": "rgb(15, 118, 110) #0F766E (dark teal)   - VISIBLE",
+      "complete_check": "rgb(15, 118, 110) #0F766E (dark teal)   - VISIBLE",
+      "minutes_clock":   "rgb(15, 118, 110) #0F766E (dark teal)   - VISIBLE",
+      "weekly-streak-badge-label 'No Badge Yet'": "rgb(180, 83, 9) #B45309 - matches spec 'darker amber #B45309-ish'"
+    },
+    "notifications_page": "loads in both themes, cards render with proper backgrounds; no blank areas.",
+    "my_analytics_page (AnalyticsEnterpriseWorkspace)": "Metric cards visible in both light (rgb(248,250,252) body) and dark (rgb(5,10,24) body); icons and text readable, no transparent backgrounds.",
+    "ai-learning-hub_discover_tab": "renders without blank screens"
+  },
+  "console_errors_observed": [
+    "Only pre-existing 401 auth-me bootstrap warning (unrelated to theme)",
+    "No 'undefined color' or 'Cannot read properties of undefined' errors during navigation across journey/discover/notifications/my-analytics"
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "None - all four user-reported theme bugs verified fixed in both light and dark modes."
+  ],
+  "critical_code_review_comments": [
+    "Fixes look solid: mkColors mapper now has all missing keys, v2.ts aliases added, MetricCard uses explicit dark prop, and the new theme-token-validity-gate CI check will prevent regressions.",
+    "Recommend main agent keep the theme-token-validity-gate wired into export:web permanently so undefined-token regressions fail the build.",
+    "Minor observation: 'ai-learning-hub-kpi-card-streak' outer container has color rgb(15,23,42) inherited but is overridden by child DIVs. This is fine (child colors win) but could be made explicit for readability."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (frontend-only test)", "frontend": "100%" },
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026!  (used successfully)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Theme testids: data-testid=theme-toggle-light|dark|system on the sidebar theme toggle bar (bottom of left rail). Key testids: ai-learning-hub-kpi-card-{streak,active,complete,minutes}, ai-learning-hub-weekly-streak-badge-label, ai-learning-hub-weekly-streak-badge-card. Body bg is rgb(5,10,24) in dark and rgb(248,250,252) in light. Cloudflare occasionally interstitials on cold navigations; retry after a 15s pause. The frontend is a static export (no hot reload) at https://visa-polish-v2.preview.emergentagent.com.",
+  "rca of the issue": "N/A - fix verification only. Main agent's RCA (unknown theme tokens resolving to undefined -> falling back to default rgb(0,0,0)) was correct; adding missing keys/aliases and passing explicit dark prop resolves it."
+}

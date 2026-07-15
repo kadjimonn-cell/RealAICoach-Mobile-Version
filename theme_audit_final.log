@@ -1,0 +1,83 @@
+=== RUNTIME THEME AUDIT - COMPREHENSIVE TEST ===
+
+============================================================
+PART 1: TESTING USER ROUTES
+============================================================
+
+Navigating to login page...
+Logging in as user: e2e.visual.kyc@example.com
+User logged in successfully
+
+============================================================
+Testing route: /profile
+============================================================
+  Navigating to /profile...
+  Route loaded successfully
+  Capturing initial state (Light mode)...
+  Toggling to Dark mode...
+  Warning: Could not find dark mode toggle button
+  Color changes detected:
+     Body: No change
+     Main: No change
+     Card: No change
+     Body background: rgb(248, 250, 252) -> rgb(248, 250, 252)
+  Toggling back to Light mode...
+  Returned to original colors: Yes
+
+============================================================
+Testing route: /settings/payment-cards
+============================================================
+  Navigating to /settings/payment-cards...
+  Route loaded successfully
+  Capturing initial state (Light mode)...
+  Toggling to Dark mode...
+  Warning: Could not find dark mode toggle button
+  Color changes detected:
+     Body: No change
+     Main: No change
+     Card: No change
+     Body background: rgb(248, 250, 252) -> rgb(248, 250, 252)
+  Toggling back to Light mode...
+  Returned to original colors: Yes
+
+============================================================
+Testing route: /certificate-gallery
+============================================================
+  Navigating to /certificate-gallery...
+  FAIL: Route /certificate-gallery returned 404 Not Found
+
+============================================================
+PART 2: TESTING ADMIN ROUTE
+============================================================
+
+Logging out and logging in as admin: admin@realaicoach.app
+Admin logged in successfully
+
+============================================================
+Testing route: /executive-dashboard
+============================================================
+  Navigating to /executive-dashboard...
+  FAIL: Route /executive-dashboard returned 404 Not Found
+
+============================================================
+RUNTIME THEME AUDIT SUMMARY
+============================================================
+
+USER ROUTES:
+  /profile: FAIL
+    - Dark mode toggle not found
+    - Theme colors do not change - fixed colors detected
+  /settings/payment-cards: FAIL
+    - Dark mode toggle not found
+    - Theme colors do not change - fixed colors detected
+  /certificate-gallery: FAIL
+    - Route not accessible (404)
+
+ADMIN ROUTES:
+  /executive-dashboard: FAIL
+    - Route not accessible (404)
+
+OVERALL: 0/4 routes passed theme audit
+
+=== RUNTIME THEME AUDIT COMPLETE ===
+Results saved to /app/theme_audit_results.json

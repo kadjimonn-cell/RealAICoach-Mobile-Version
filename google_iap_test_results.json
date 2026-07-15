@@ -1,0 +1,274 @@
+{
+  "timestamp": "2026-05-20 13:41:42 UTC",
+  "tests": [
+    {
+      "name": "Admin login",
+      "status": "PASS",
+      "details": {
+        "info": "Logged in as admin@realaicoach.app"
+      },
+      "timestamp": "2026-05-20 13:41:43 UTC"
+    },
+    {
+      "name": "User login",
+      "status": "PASS",
+      "details": {
+        "info": "Logged in as googleiap.prod.retest.fix.00a6b0fb@gmail.com"
+      },
+      "timestamp": "2026-05-20 13:41:43 UTC"
+    },
+    {
+      "name": "Basic plan simulation",
+      "status": "PASS",
+      "details": {
+        "info": "Transaction ID: sim_google_e13342ba6e6743",
+        "checks": {
+          "fee_accuracy": true,
+          "notification_latency_under_2s": false,
+          "subscription_active": true,
+          "api_integrity": true
+        }
+      },
+      "timestamp": "2026-05-20 13:41:46 UTC"
+    },
+    {
+      "name": "Basic plan - fee_accuracy",
+      "status": "PASS",
+      "details": {
+        "value": true
+      },
+      "timestamp": "2026-05-20 13:41:46 UTC"
+    },
+    {
+      "name": "Basic plan - notification_latency_under_2s",
+      "status": "FAIL",
+      "details": {
+        "value": false
+      },
+      "timestamp": "2026-05-20 13:41:46 UTC"
+    },
+    {
+      "name": "Basic plan - subscription_active",
+      "status": "PASS",
+      "details": {
+        "value": true
+      },
+      "timestamp": "2026-05-20 13:41:46 UTC"
+    },
+    {
+      "name": "Basic plan - api_integrity",
+      "status": "PASS",
+      "details": {
+        "value": true
+      },
+      "timestamp": "2026-05-20 13:41:46 UTC"
+    },
+    {
+      "name": "Premium plan simulation",
+      "status": "PASS",
+      "details": {
+        "info": "Transaction ID: sim_google_c0346d0d0fe943",
+        "checks": {
+          "fee_accuracy": true,
+          "notification_latency_under_2s": false,
+          "subscription_active": true,
+          "api_integrity": true
+        }
+      },
+      "timestamp": "2026-05-20 13:41:49 UTC"
+    },
+    {
+      "name": "Premium plan - fee_accuracy",
+      "status": "PASS",
+      "details": {
+        "value": true
+      },
+      "timestamp": "2026-05-20 13:41:49 UTC"
+    },
+    {
+      "name": "Premium plan - notification_latency_under_2s",
+      "status": "FAIL",
+      "details": {
+        "value": false
+      },
+      "timestamp": "2026-05-20 13:41:49 UTC"
+    },
+    {
+      "name": "Premium plan - subscription_active",
+      "status": "PASS",
+      "details": {
+        "value": true
+      },
+      "timestamp": "2026-05-20 13:41:49 UTC"
+    },
+    {
+      "name": "Premium plan - api_integrity",
+      "status": "PASS",
+      "details": {
+        "value": true
+      },
+      "timestamp": "2026-05-20 13:41:49 UTC"
+    },
+    {
+      "name": "Payment transactions count",
+      "status": "PASS",
+      "details": {
+        "info": "Found 6 Google IAP transactions"
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 1 - payment_status",
+      "status": "PASS",
+      "details": {
+        "payment_id": "sim_google_c0346d0d0fe943",
+        "actual_value": "completed",
+        "expected": "completed"
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 1 - notification_sent",
+      "status": "PASS",
+      "details": {
+        "payment_id": "sim_google_c0346d0d0fe943",
+        "actual_value": true,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 1 - user_receipt_sent",
+      "status": "FAIL",
+      "details": {
+        "payment_id": "sim_google_c0346d0d0fe943",
+        "actual_value": null,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 1 - admin_receipt_sent",
+      "status": "FAIL",
+      "details": {
+        "payment_id": "sim_google_c0346d0d0fe943",
+        "actual_value": null,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 1 - receipt_delivery_ok",
+      "status": "FAIL",
+      "details": {
+        "payment_id": "sim_google_c0346d0d0fe943",
+        "actual_value": null,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 2 - payment_status",
+      "status": "PASS",
+      "details": {
+        "payment_id": "sim_google_e13342ba6e6743",
+        "actual_value": "completed",
+        "expected": "completed"
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 2 - notification_sent",
+      "status": "PASS",
+      "details": {
+        "payment_id": "sim_google_e13342ba6e6743",
+        "actual_value": true,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 2 - user_receipt_sent",
+      "status": "FAIL",
+      "details": {
+        "payment_id": "sim_google_e13342ba6e6743",
+        "actual_value": null,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 2 - admin_receipt_sent",
+      "status": "FAIL",
+      "details": {
+        "payment_id": "sim_google_e13342ba6e6743",
+        "actual_value": null,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 2 - receipt_delivery_ok",
+      "status": "FAIL",
+      "details": {
+        "payment_id": "sim_google_e13342ba6e6743",
+        "actual_value": null,
+        "expected": true
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Payment notifications count",
+      "status": "PASS",
+      "details": {
+        "info": "Found 2 Google IAP payment notifications"
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Notification 1 - Contains payment confirmation",
+      "status": "PASS",
+      "details": {
+        "title": "Payment Successful \u2014 Premium Plan Activated",
+        "message_preview": "Payment Successful \u2014 Premium Plan Activated via Google Play."
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Notification 2 - Contains payment confirmation",
+      "status": "PASS",
+      "details": {
+        "title": "Payment Successful \u2014 Basic Plan Activated",
+        "message_preview": "Payment Successful \u2014 Basic Plan Activated via Google Play."
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 1 - Receipt PDF returns 200",
+      "status": "PASS",
+      "details": {
+        "payment_id": "sim_google_c0346d0d0fe943",
+        "status_code": 200,
+        "content_type": "application/pdf",
+        "content_length": 320062
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    },
+    {
+      "name": "Transaction 2 - Receipt PDF returns 200",
+      "status": "PASS",
+      "details": {
+        "payment_id": "sim_google_e13342ba6e6743",
+        "status_code": 200,
+        "content_type": "application/pdf",
+        "content_length": 320058
+      },
+      "timestamp": "2026-05-20 13:41:52 UTC"
+    }
+  ],
+  "summary": {
+    "total": 28,
+    "passed": 20,
+    "failed": 8
+  }
+}

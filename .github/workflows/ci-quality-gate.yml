@@ -1,0 +1,620 @@
+name: CI Quality Gate
+
+# Unified ESLint + V2 Theme Audit gate.
+# Runs on every PR and push to main — blocks merge on regression.
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master]
+
+concurrency:
+  group: ci-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eslint-gate:
+    name: ESLint — Zero Errors
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Run ESLint (full codebase)
+        id: eslint
+        working-directory: frontend
+        run: |
+          set +e
+          node node_modules/eslint/bin/eslint.js app/ src/ \
+            --format json \
+            --max-warnings 99999 \
+            -o /tmp/eslint-report.json
+          ESLINT_EXIT=$?
+
+          # Parse counts
+          ERRORS=$(python3 -c "
+          import json, sys
+          data = json.load(open('/tmp/eslint-report.json'))
+          print(sum(f.get('errorCount',0) for f in data))
+          " 2>/dev/null || echo "?")
+
+          WARNINGS=$(python3 -c "
+          import json, sys
+          data = json.load(open('/tmp/eslint-report.json'))
+          print(sum(f.get('warningCount',0) for f in data))
+          " 2>/dev/null || echo "?")
+
+          echo "errors=$ERRORS" >> "$GITHUB_OUTPUT"
+          echo "warnings=$WARNINGS" >> "$GITHUB_OUTPUT"
+
+          if [ "$ERRORS" != "0" ] && [ "$ERRORS" != "?" ]; then
+            echo "::error::ESLint found $ERRORS error(s). Zero errors required."
+            exit 1
+          fi
+
+          echo "ESLint passed: 0 errors, $WARNINGS warnings."
+          exit 0
+
+      - name: Raw fetch guard (feature routes)
+        working-directory: frontend
+        run: node scripts/raw-fetch-feature-gate.js
+
+      - name: Generate ESLint summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          try:
+              data = json.load(open("/tmp/eslint-report.json"))
+              errors = sum(f.get("errorCount", 0) for f in data)
+              warnings = sum(f.get("warningCount", 0) for f in data)
+              files = len(data)
+              emoji = "✅" if errors == 0 else "🚫"
+              md = [
+                  f"## {emoji} ESLint Gate — {'PASS' if errors == 0 else 'FAIL'}",
+                  "",
+                  f"| Metric | Count |",
+                  f"|---|---|",
+                  f"| Errors | **{errors}** |",
+                  f"| Warnings | {warnings} |",
+                  f"| Files checked | {files} |",
+              ]
+              if errors > 0:
+                  # Show first 10 errors
+                  md.append("")
+                  md.append("### Errors (first 10)")
+                  count = 0
+                  for f in data:
+                      for msg in f.get("messages", []):
+                          if msg.get("severity") == 2 and count < 10:
+                              md.append(f"- `{f['filePath'].split('frontend/')[-1]}:{msg['line']}` — {msg['message']} (`{msg.get('ruleId','')}`)")
+                              count += 1
+              pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(md) + "\n")
+          except Exception as e:
+              pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text(f"## ESLint Gate\n\nFailed to parse report: {e}\n")
+          PY
+
+      - name: Upload ESLint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-report
+          path: /tmp/eslint-report.json
+          retention-days: 7
+          if-no-files-found: warn
+
+  theme-audit-gate:
+    name: V2 Theme Audit — Zero P0 Violations
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run V2 theme audit (strict mode)
+        id: theme
+        run: |
+          set +e
+          python3 scripts/audit_v2_theme.py --strict --budget 0 --baseline /app/memory/theme_audit_baseline_v2.json --fail-on-new 2>&1 | tee /tmp/theme-audit.txt
+          THEME_EXIT=${PIPESTATUS[0]}
+
+          if [ $THEME_EXIT -ne 0 ]; then
+            echo "::error::V2 Theme audit failed with P0 violations."
+            exit 1
+          fi
+          echo "V2 Theme audit: STRICT PASS"
+
+      - name: Run global theme scan
+        if: always()
+        run: |
+          python3 scripts/audit_v2_theme_global.py 2>&1 | tee -a /tmp/theme-audit.txt
+          echo "Global theme scan complete."
+
+      - name: Enforce global theme scan (zero violations)
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          report = json.load(open('/tmp/v2_theme_audit_global.json'))
+          files_with = int(report.get('files_with_violations', 0))
+          total = int(report.get('total_violations', 0))
+          if files_with > 0 or total > 0:
+              print(f"::error::Global theme scan failed: files_with_violations={files_with}, total_violations={total}")
+              sys.exit(1)
+          print("Global theme scan: PASS (0 violations)")
+          PY
+
+      - name: Generate theme summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+
+          md = ["## V2 Theme Compliance Gate", ""]
+
+          # Parse the strict audit output
+          audit_txt = pathlib.Path("/tmp/theme-audit.txt").read_text()
+          if "STRICT PASS" in audit_txt:
+              md.append("### ✅ Strict Audit — PASS")
+              md.append("Zero P0 violations detected.")
+          elif "STRICT FAIL" in audit_txt:
+              md.append("### 🚫 Strict Audit — FAIL")
+              md.append("P0 violations found — merge blocked.")
+          else:
+              md.append("### ⚠️ Strict Audit — Unknown")
+
+          md.append("")
+
+          # Parse global scan JSON if available
+          try:
+              report = json.load(open("/tmp/v2_theme_audit_global.json"))
+              violations = report.get("total_violations", 0)
+              files_scanned = report.get("files_scanned", 0)
+              files_with = report.get("files_with_violations", 0)
+              md.append("### Global Scan Results")
+              md.append("")
+              md.append("| Metric | Count |")
+              md.append("|---|---|")
+              md.append(f"| Files scanned | {files_scanned} |")
+              md.append(f"| Files with violations | **{files_with}** |")
+              md.append(f"| Total violations | {violations} |")
+          except Exception:
+              md.append("_(Global scan report not available)_")
+
+          pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(md) + "\n")
+          PY
+
+      - name: Upload theme audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-audit-report
+          path: /tmp/theme-audit.txt
+          retention-days: 7
+          if-no-files-found: warn
+
+  backend-tests:
+    name: Backend Pytest
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      MONGO_URL: mongodb://localhost:27017
+      DB_NAME: realaicoach_ci
+      JWT_SECRET: ci-quality-gate-jwt-secret
+      EMERGENT_LLM_KEY: ci-not-used
+      RESEND_API_KEY: ci-not-used
+      RESEND_FROM_EMAIL: ci@example.com
+      BRAND_NAME: RealAICoach
+      FRONTEND_URL: http://localhost:3000
+      FIELD_ENCRYPTION_KEY: ${{ secrets.FIELD_ENCRYPTION_KEY_CI }}
+      FIELD_LOOKUP_HMAC_KEY: ${{ secrets.FIELD_LOOKUP_HMAC_KEY_CI }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio
+
+      - name: Stale URL scanner merge guard (must be zero)
+        working-directory: backend
+        run: |
+          python -m pytest tests/test_stale_url_ci_guard.py tests/test_runtime_origin_shell_guard.py tests/test_boot_policy_handshake_guard.py -q --tb=short
+
+      - name: Admin i18n label coverage guard
+        working-directory: backend
+        env:
+          ADMIN_I18N_ENFORCEMENT_PHASE: phase_5_zero
+        run: |
+          python -m pytest tests/test_admin_i18n_label_coverage_guard.py -q --tb=short
+
+      - name: Wait for MongoDB
+        run: |
+          for i in $(seq 1 10); do
+            if nc -z localhost 27017; then echo "Mongo ready"; exit 0; fi
+            sleep 2
+          done
+          echo "Mongo timeout"; exit 1
+
+      - name: Run pytest
+        working-directory: backend
+        run: |
+          python -m pytest tests/ -v --tb=short 2>&1 | tee /tmp/pytest-output.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Generate pytest summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os, pathlib
+          txt = pathlib.Path("/tmp/pytest-output.txt").read_text() if pathlib.Path("/tmp/pytest-output.txt").exists() else "No output"
+          lines = txt.strip().splitlines()
+          summary_line = lines[-1] if lines else "?"
+          passed = "passed" in summary_line.lower()
+          emoji = "✅" if passed else "🚫"
+          md = [f"## {emoji} Backend Tests", "", f"```", summary_line, "```"]
+          pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(md) + "\n")
+          PY
+
+      - name: Upload pytest output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-output
+          path: /tmp/pytest-output.txt
+          retention-days: 7
+          if-no-files-found: warn
+
+  frontend-component-e2e-core-flows:
+    name: Frontend Component E2E — Core Flows
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+
+    env:
+      REACT_APP_BACKEND_URL: http://127.0.0.1:8001
+      EXPO_PUBLIC_BACKEND_URL: http://127.0.0.1:8001
+      E2E_BASE_URL: http://127.0.0.1:4173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build static bundle
+        working-directory: frontend
+        run: yarn export:web
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+
+      - name: Serve static bundle
+        working-directory: frontend
+        run: |
+          node scripts/welcome-visual-ci-server.js > /tmp/frontend-component-e2e-server.log 2>&1 &
+          for i in $(seq 1 35); do
+            if curl -sf http://127.0.0.1:4173/ >/dev/null; then echo "Frontend component E2E static server ready"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/frontend-component-e2e-server.log || true
+          echo "::error::Frontend component E2E static server did not start"
+          exit 1
+
+      - name: Run frontend component E2E core flows
+        working-directory: frontend
+        run: |
+          node node_modules/@playwright/test/cli.js test e2e/auth.spec.ts e2e/subscription.spec.ts e2e/ai-coaching.spec.ts e2e/notifications.spec.ts e2e/admin-dashboard.spec.ts e2e/ai-writer.spec.ts e2e/ai-chatbot.spec.ts e2e/ai-search.spec.ts --grep "@component" --project=desktop-chromium --workers=4 --retries=2 --reporter=list
+          node node_modules/@playwright/test/cli.js test e2e/integrations-enterprise.spec.ts --project=desktop-chromium --project=tablet-chromium --project=mobile-chromium --reporter=list
+
+      - name: Upload frontend component E2E artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-component-e2e-core-flows-artifacts
+          path: |
+            frontend/test-results
+            frontend/playwright-report
+            /tmp/frontend-component-e2e-server.log
+          retention-days: 7
+          if-no-files-found: warn
+
+  welcome-visual-regression:
+    name: Welcome Visual Regression — Responsive Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+
+    env:
+      REACT_APP_BACKEND_URL: http://127.0.0.1:8001
+      EXPO_PUBLIC_BACKEND_URL: http://127.0.0.1:8001
+      E2E_BASE_URL: http://127.0.0.1:4173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build static Welcome bundle
+        working-directory: frontend
+        run: yarn export:web
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+
+      - name: Serve static bundle
+        working-directory: frontend
+        run: |
+          node scripts/welcome-visual-ci-server.js > /tmp/welcome-visual-server.log 2>&1 &
+          for i in $(seq 1 20); do
+            if curl -sf http://127.0.0.1:4173/welcome >/dev/null; then echo "Welcome static server ready"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/welcome-visual-server.log || true
+          echo "::error::Welcome static server did not start"
+          exit 1
+
+      - name: Run Welcome visual checkpoint
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js test e2e/welcome-visual-regression.spec.ts --project=desktop-chromium --project=tablet-chromium --reporter=list
+
+      - name: Upload Welcome visual artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: welcome-visual-regression-artifacts
+          path: |
+            frontend/test-results
+            frontend/playwright-report
+            /tmp/welcome-visual-server.log
+          retention-days: 7
+          if-no-files-found: warn
+
+  top-routes-layout-contract:
+    name: Top Routes Visual/Layout Contract — Mobile Tablet Desktop
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+
+    env:
+      REACT_APP_BACKEND_URL: http://127.0.0.1:8001
+      EXPO_PUBLIC_BACKEND_URL: http://127.0.0.1:8001
+      E2E_BASE_URL: http://127.0.0.1:4173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build static bundle
+        working-directory: frontend
+        run: yarn export:web
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+
+      - name: Serve static bundle
+        working-directory: frontend
+        run: |
+          node scripts/welcome-visual-ci-server.js > /tmp/top-routes-visual-server.log 2>&1 &
+          for i in $(seq 1 25); do
+            if curl -sf http://127.0.0.1:4173/ >/dev/null; then echo "Top routes static server ready"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/top-routes-visual-server.log || true
+          echo "::error::Top routes static server did not start"
+          exit 1
+
+      - name: Run top-routes layout contract suite
+        working-directory: frontend
+        run: |
+          node node_modules/@playwright/test/cli.js test e2e/auth.spec.ts e2e/subscription.spec.ts e2e/ai-coaching.spec.ts e2e/notifications.spec.ts e2e/admin-dashboard.spec.ts e2e/ai-writer.spec.ts e2e/ai-chatbot.spec.ts e2e/ai-search.spec.ts --grep "@component" --project=desktop-chromium --reporter=list
+          node node_modules/@playwright/test/cli.js test e2e/top-routes-layout-contract.spec.ts --project=desktop-chromium --project=tablet-chromium --project=mobile-chromium --reporter=list
+          node node_modules/@playwright/test/cli.js test e2e/platform-responsive-guardrails.spec.ts --project=desktop-chromium --reporter=list
+
+      - name: Upload top-routes layout artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: top-routes-layout-contract-artifacts
+          path: |
+            frontend/test-results
+            frontend/playwright-report
+            /tmp/top-routes-visual-server.log
+          retention-days: 7
+          if-no-files-found: warn
+
+  theme-first-paint-contract:
+    name: Theme First Paint Contract — Isolated
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+
+    env:
+      REACT_APP_BACKEND_URL: http://127.0.0.1:8001
+      EXPO_PUBLIC_BACKEND_URL: http://127.0.0.1:8001
+      E2E_BASE_URL: http://127.0.0.1:4173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build static bundle
+        working-directory: frontend
+        run: yarn export:web
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+
+      - name: Serve static bundle
+        working-directory: frontend
+        run: |
+          node scripts/welcome-visual-ci-server.js > /tmp/theme-first-paint-server.log 2>&1 &
+          for i in $(seq 1 35); do
+            if curl -sf http://127.0.0.1:4173/auth/login >/dev/null; then echo "Theme first-paint static server ready"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/theme-first-paint-server.log || true
+          echo "::error::Theme first-paint static server did not start"
+          exit 1
+
+      - name: Run first-paint token contract suite
+        working-directory: frontend
+        run: |
+          node node_modules/@playwright/test/cli.js test e2e/theme-first-paint.spec.ts --grep "@component" --project=desktop-chromium --workers=1 --reporter=list
+
+      - name: Upload first-paint artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-first-paint-contract-artifacts
+          path: |
+            frontend/test-results
+            frontend/playwright-report
+            /tmp/theme-first-paint-server.log
+          retention-days: 7
+          if-no-files-found: warn
+
+  rbac-admin-visibility-auth-session:
+    name: RBAC Admin Visibility Auth Session — Multi Breakpoint
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+
+    env:
+      REACT_APP_BACKEND_URL: http://127.0.0.1:8001
+      EXPO_PUBLIC_BACKEND_URL: http://127.0.0.1:8001
+      E2E_BASE_URL: http://127.0.0.1:4173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+
+      - name: Build static bundle
+        working-directory: frontend
+        run: yarn export:web
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+
+      - name: Serve static bundle
+        working-directory: frontend
+        run: |
+          node scripts/welcome-visual-ci-server.js > /tmp/rbac-admin-visibility-auth-server.log 2>&1 &
+          for i in $(seq 1 35); do
+            if curl -sf http://127.0.0.1:4173/ >/dev/null; then echo "RBAC auth-session static server ready"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/rbac-admin-visibility-auth-server.log || true
+          echo "::error::RBAC auth-session static server did not start"
+          exit 1
+
+      - name: Run RBAC admin visibility auth-session suite
+        working-directory: frontend
+        run: |
+          node node_modules/@playwright/test/cli.js test e2e/admin-visibility-auth-session.spec.ts --project=desktop-chromium --project=tablet-chromium --project=mobile-chromium --reporter=list
+
+      - name: Upload RBAC auth-session artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rbac-admin-visibility-auth-session-artifacts
+          path: |
+            frontend/test-results
+            frontend/playwright-report
+            /tmp/rbac-admin-visibility-auth-server.log
+          retention-days: 7
+          if-no-files-found: warn

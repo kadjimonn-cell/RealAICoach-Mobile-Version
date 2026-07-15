@@ -1,0 +1,117 @@
+{
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "fedapay.live.e2e.eb742407bf@example.com",
+    "password": "FedapayLive#2026Aa!",
+    "name": "FedaPay Live E2E User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_8ce72153e7c3",
+        "email": "fedapay.live.e2e.eb742407bf@example.com",
+        "name": "FedaPay Live E2E User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_8ce72153e7c3",
+        "email": "fedapay.live.e2e.eb742407bf@example.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "plans",
+      "status_code": 200,
+      "plan_ids": [
+        "free",
+        "basic",
+        "premium"
+      ]
+    },
+    {
+      "step": "gateways",
+      "status_code": 200,
+      "fedapay": {
+        "status": "active",
+        "mode": "live",
+        "countries": [
+          "BJ",
+          "CI",
+          "NE",
+          "SN",
+          "TG"
+        ]
+      }
+    },
+    {
+      "step": "pay_basic",
+      "status_code": 200,
+      "success": true,
+      "status": "pending",
+      "deduped": null,
+      "ticket_id": "MMSUB_299497498D",
+      "payment_id": "fedapay_4e0e9dd45228",
+      "transaction_id": null,
+      "payment_url": "https://process.fedapay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExMTA5MDQ2MiwiZXhwIjoxNzc5MzMzMjM5fQ.2UATHWtkZwgdhJ44eZoycma3HiVmoQjxFg4tnI9b6kg",
+      "payment_url_host": "process.fedapay.com"
+    },
+    {
+      "step": "pay_premium",
+      "status_code": 200,
+      "success": true,
+      "status": "pending",
+      "deduped": null,
+      "ticket_id": "MMSUB_937FEE2921",
+      "payment_id": "fedapay_9ee386fc0f45",
+      "transaction_id": null,
+      "payment_url": "https://process.fedapay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExMTA5MDQ2MywiZXhwIjoxNzc5MzMzMjQxfQ.XuuuMOVFJVhhBUDZZ79kC2OaTxHy1Wl1yd1f3-AwjRc",
+      "payment_url_host": "process.fedapay.com"
+    },
+    {
+      "step": "status_basic",
+      "status_code": 200,
+      "body": {
+        "payment_id": "fedapay_4e0e9dd45228",
+        "status": "pending",
+        "amount_local": 4061.0,
+        "currency": "XOF",
+        "gateway": "FedaPay",
+        "created_at": "2026-05-20T03:13:59.633728+00:00"
+      }
+    },
+    {
+      "step": "callback_basic",
+      "status_code": 307,
+      "location": "https://visa-polish-v2.preview.emergentagent.com/subscription/payment-result?gateway=fedapay&status=approved&tx_id=MMSUB_299497498D",
+      "is_redirect": true
+    },
+    {
+      "step": "status_premium",
+      "status_code": 200,
+      "body": {
+        "payment_id": "fedapay_9ee386fc0f45",
+        "status": "pending",
+        "amount_local": 10850.0,
+        "currency": "XOF",
+        "gateway": "FedaPay",
+        "created_at": "2026-05-20T03:14:01.310754+00:00"
+      }
+    },
+    {
+      "step": "callback_premium",
+      "status_code": 307,
+      "location": "https://visa-polish-v2.preview.emergentagent.com/subscription/payment-result?gateway=fedapay&status=approved&tx_id=MMSUB_937FEE2921",
+      "is_redirect": true
+    }
+  ]
+}

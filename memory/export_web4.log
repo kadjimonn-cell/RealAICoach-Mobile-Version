@@ -1,0 +1,127 @@
+yarn run v1.22.22
+$ node scripts/enforce-exact-expo-pin.js && python3 ../scripts/auto_fixer_corruption_guard.py && node scripts/i18n-seed-safe.js && node scripts/verify-package-json.js && node scripts/payment-picker-viewport-guard.js && node scripts/runtime-crash-sentinel.js --scope=critical && node scripts/theme-build-gate.js && node scripts/theme-token-validity-gate.js && node scripts/theme-palette-prop-gate.js && node scripts/nav-lock-sync-gate.js && node scripts/selector-validity-gate.js && node scripts/sidenav-gallery-parity-gate.js && node scripts/pricing-policy-drift-gate.js && METRO_MAX_WORKERS=1 node node_modules/expo/bin/cli export --platform web --max-workers 1 && node scripts/bump-sw.js && node scripts/precompress-assets.js && python3 ../scripts/responsive_layout_gate.py
+[enforce-exact-expo-pin] expo already exact pinned (54.0.34)
+✓ No auto-fixer corruption patterns detected across 967 source files.
+[i18n-strip-language-tags] PASS: sanitized 0 tagged values across 0 files.
+[i18n-route-gate] scanned route files: 219
+[i18n-route-gate] baseline=0 current=0 newly_introduced=0
+[i18n-route-gate] PASS: no newly introduced route hardcoded-copy violations.
+[critical-surface-i18n-gate] scanned=0 exemptions=28 violations=0
+[critical-surface-i18n-gate] report=/app/frontend/.quality/critical_surface_i18n_report.json
+[critical-surface-i18n-gate] PASS: no non-exempt literals found.
+[v7-platform-boundary-gate] violations=0
+[v7-platform-boundary-gate] scanned_files=789
+[v7-platform-boundary-gate] report=/app/frontend/.quality/v7_platform_boundary_report.json
+[v7-platform-boundary-gate] PASS: no V7/template leakage found across app + components.
+[i18n-nightly] scanned files: 820
+[i18n-nightly] used keys: 10207, locale keys: 11757
+[i18n-nightly] missing now: 62, baseline: 62
+[i18n-nightly] PASS: No newly introduced missing i18n keys.
+[gls-layout-gate] Scanning for layout compliance...
+
+
+  WARN (27 advisory):
+
+    src/components/home/HomeEnterpriseCommandDeck.tsx:197 [NON_STANDARD_MAX_WIDTH] maxWidth: 680 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/home/HomeExecutiveOverviewBand.tsx:154 [NON_STANDARD_MAX_WIDTH] maxWidth: 700 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/home/HomeHero.tsx:202 [NON_STANDARD_MAX_WIDTH] maxWidth: 1400 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/home/HomeHero.tsx:226 [NON_STANDARD_MAX_WIDTH] maxWidth: 660 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/legal/TrustCenterTemplate.tsx:183 [NON_STANDARD_MAX_WIDTH] maxWidth: 780 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/legal/TrustCenterTemplate.tsx:187 [NON_STANDARD_MAX_WIDTH] maxWidth: 700 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/legal/TrustCenterTemplate.tsx:351 [NON_STANDARD_MAX_WIDTH] maxWidth: 760 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/pricing/PricingBottomCta.tsx:40 [NON_STANDARD_MAX_WIDTH] maxWidth: 720 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/pricing/PricingHeroSection.tsx:72 [NON_STANDARD_MAX_WIDTH] maxWidth: 760 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/pricing/PricingHeroSection.tsx:80 [NON_STANDARD_MAX_WIDTH] maxWidth: 760 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/pricing/PricingMatrixSection.tsx:38 [NON_STANDARD_MAX_WIDTH] maxWidth: 780 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/pricing/PricingPlansSection.tsx:45 [NON_STANDARD_MAX_WIDTH] maxWidth: 780 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeBenefits.tsx:430 [NON_STANDARD_MAX_WIDTH] maxWidth: 980 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeBenefits.tsx:431 [NON_STANDARD_MAX_WIDTH] maxWidth: 760 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeCTA.tsx:306 [NON_STANDARD_MAX_WIDTH] maxWidth: 920 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeCTA.tsx:307 [NON_STANDARD_MAX_WIDTH] maxWidth: 760 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeCTA.tsx:335 [NON_STANDARD_MAX_WIDTH] maxWidth: 620 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeCapabilityMatrix.tsx:214 [NON_STANDARD_MAX_WIDTH] maxWidth: 640 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomeMetrics.tsx:840 [NON_STANDARD_MAX_WIDTH] maxWidth: 720 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    src/components/welcome/WelcomePricing.tsx:528 [NON_STANDARD_MAX_WIDTH] maxWidth: 720 is not a GLS standard (960, 1240, 1440). Consider using GLSContainer.
+    ... and 7 more warnings
+
+[gls-layout-gate] Results: 0 FAIL, 27 WARN
+
+[gls-layout-gate] PASS — no new layout regressions against baseline.
+[admin-dashboard-viewport-guard] PASS
+[footer-route-contract-gate] PASS
+ - Critical contracts checked: 5
+[ui-contract-gate] PASS
+ - Contracts checked: 3
+ - Snapshot matrix: 3 viewports x 5 routes
+[i18n-seed-safe] locale seed completed with strict tag sanitization.
+[verify-package-json] ✓ all required scripts resolve to the local expo CLI
+[payment-picker-viewport-guard] PASS
+[footer-route-contract-gate] PASS
+ - Critical contracts checked: 5
+[runtime-crash-sentinel] PASS (critical) — scanned 23 files, no crash signatures found.
+
+🔒 Theme Compliance Build Gate (strict)
+
+   Running local V2 theme audit scanner...
+   Grade: A | Warns: 0 | Fails: 0 | Infos: 1 | Files: 774
+   Report: /app/frontend/.quality/theme_build_gate_report.json
+   ✅ GATE PASSED (strict) — zero warn/fail issues
+
+✅ theme-token-validity-gate passed (735 files scanned, 97 valid tokens, contrast contract OK)
+✅ theme-palette-prop-gate passed (63 palette-prop consumers, exec-theme keys OK, css-var mappings canonical, 962 files)
+[nav-lock-sync-gate] PASS — 42 nav items in sync across all locked lists
+[selector-validity-gate] PASS — 962 files scanned, 0 malformed selectors.
+[selector-validity-gate] Report: /app/frontend/.quality/selector_validity_report.json
+[sidenav-gallery-parity-gate] PASS
+ - Sidebar candidates: 17
+ - Registry defaults: 17
+ - Report: /app/frontend/.quality/sidenav_gallery_parity_report.json
+[pricing-policy-drift-gate] scanned=1547 violations=0
+[pricing-policy-drift-gate] report=/app/frontend/.quality/pricing_policy_drift_report.json
+[pricing-policy-drift-gate] PASS: no hardcoded platform pricing literals detected outside approved policy files.
+env: load .env
+env: export EXPO_TUNNEL_SUBDOMAIN EXPO_PACKAGER_HOSTNAME EXPO_PUBLIC_BACKEND_URL REACT_APP_BACKEND_URL REACT_APP_ENABLE_AUTH_GUARD_P0_HARDENING REACT_APP_ENABLE_AUTH_BANNER_P0_CONTRACT REACT_APP_ENABLE_AUTH_CANONICAL_ORIGIN_RECOVERY REACT_APP_ENABLE_AUTH_PRELOGIN_RECOVERY_FLOW REACT_APP_SHOW_AUTH_REQUIRED_BANNER EXPO_USE_FAST_RESOLVER METRO_CACHE_ROOT EXPO_SKIP_CORS_CHECK EXPO_PUBLIC_AZURE_CLIENT_ID EXPO_DEVTOOLS_LISTEN_ADDRESS EXPO_PUBLIC_GOOGLE_SITE_VERIFICATION EXPO_NO_METRO_LAZY EXPO_NO_TYPESCRIPT_SETUP EXPO_PUBLIC_VAPID_KEY EXPO_PACKAGER_PROXY_URL REACT_APP_OTEL_EXPORTER_OTLP_HTTP EXPECTED_PREVIEW_HOST DIST_FORCE_REBUILD BLOCKING_DIST_SELF_HEAL SKIP_STARTUP_PROBE FRONTEND_EXPORT_NODE_OPTIONS NODE_OPTIONS
+Starting Metro Bundler
+Static rendering is enabled. Learn more: https://docs.expo.dev/router/reference/static-rendering/
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% ( 32/386)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% ( 74/413)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (108/510)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (137/526)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (178/581)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (226/624)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (281/708)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (324/896)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+ WARN  The package /app/frontend/node_modules/zustand contains an invalid package.json configuration. Consider raising this issue with the package maintainer(s).
+Reason: The resolution for "/app/frontend/node_modules/zustand/middleware.js" defined in "exports" is /app/frontend/node_modules/zustand/esm/middleware.js.mjs, however this file does not exist. Falling back to file-based resolution.
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (331/907)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓░░░░░░░░░░░ 34.5% ( 643/1095)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 38.7% ( 733/1178)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 40.7% ( 752/1179)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 42.3% ( 770/1184)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 43.9% ( 790/1196)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 45.1% ( 805/1199)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 48.2% ( 891/1340)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 48.2% ( 983/1416)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 52.4% (1029/1422)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 58.8% (1160/1513)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web ./index.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 61.8% (1191/1515)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  0.0% (0/1)

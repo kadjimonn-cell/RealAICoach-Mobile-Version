@@ -1,0 +1,79 @@
+{
+  "guard": "pdf_v15_logo_tile_guard",
+  "status": "failed",
+  "failure_count": 11,
+  "failures": [
+    "/app/backend/middleware_pdf_policy.py: missing 'merge_page('",
+    "/app/backend/server.py: missing 'PdfVersionPolicyMiddleware'",
+    "/app/backend/server.py: missing 'app.add_middleware(PdfVersionPolicyMiddleware)'",
+    "/app/backend/routes/job_platform.py: missing build_pdf_v15_filename() usage for PDF disposition",
+    "/app/backend/routes/job_search.py: missing build_pdf_v15_filename() usage for PDF disposition",
+    "/app/backend/routes/job_search.py: new PDF generator bypasses shared v15 helpers (must use services/pdf_v15_theme.py helpers or middleware enforcer)",
+    "/app/backend/routes/travel_visa_ext.py:731: hardcoded .pdf filename literal detected",
+    "/app/backend/routes/travel_visa_ext.py: missing build_pdf_v15_filename() usage for PDF disposition",
+    "/app/backend/routes/writing_studio.py: missing build_pdf_v15_filename() usage for PDF disposition",
+    "/app/backend/routes/writing_studio.py: new PDF generator bypasses shared v15 helpers (must use services/pdf_v15_theme.py helpers or middleware enforcer)",
+    "pdf export registry has unclassified exports: 2"
+  ],
+  "migration_note_required": true,
+  "migration_note_template": "PDF generator introduced/changed without shared v15 helper usage. Add migration note in PR description with: impacted file, helper used, and enforcement evidence.",
+  "details": [
+    {
+      "path": "/app/backend/utils/pdf_v15_layout_composer.py",
+      "missing": [],
+      "forbidden_present": [],
+      "status": "pass"
+    },
+    {
+      "path": "/app/backend/services/pdf_v15_theme.py",
+      "missing": [],
+      "forbidden_present": [],
+      "status": "pass"
+    },
+    {
+      "path": "/app/backend/services/gtec_scan_v2.py",
+      "missing": [],
+      "forbidden_present": [],
+      "status": "pass"
+    },
+    {
+      "path": "/app/backend/routes/payments_reporting_routes.py",
+      "missing": [],
+      "forbidden_present": [],
+      "status": "pass"
+    },
+    {
+      "path": "/app/backend/utils/receipt_generator.py",
+      "missing": [],
+      "forbidden_present": [],
+      "status": "pass"
+    },
+    {
+      "path": "/app/backend/middleware_pdf_policy.py",
+      "missing": [
+        "merge_page("
+      ],
+      "forbidden_present": [],
+      "status": "fail"
+    },
+    {
+      "path": "/app/backend/utils/email_service.py",
+      "missing": [],
+      "forbidden_present": [],
+      "status": "pass"
+    },
+    {
+      "path": "/app/backend/server.py",
+      "missing": [
+        "PdfVersionPolicyMiddleware",
+        "app.add_middleware(PdfVersionPolicyMiddleware)"
+      ],
+      "forbidden_present": [],
+      "status": "fail"
+    },
+    {
+      "path": "/app/backend/routes/ai_learning_hub.py",
+      "status": "learning_certificate_theme_exempt"
+    }
+  ]
+}

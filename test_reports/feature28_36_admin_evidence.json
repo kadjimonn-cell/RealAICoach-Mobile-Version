@@ -1,0 +1,34 @@
+{
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "admin": {
+    "30_sports_admin": {
+      "ok": true,
+      "status_code": 200,
+      "sample_keys": [
+        "generated_at",
+        "summary",
+        "sources",
+        "auto_replacement_history",
+        "category_curation"
+      ]
+    },
+    "36_referrals_admin": {
+      "ok": true,
+      "status_code": 200,
+      "sample_keys": [
+        "total_referrers",
+        "total_clicks",
+        "total_signups",
+        "total_events",
+        "active_subscribers",
+        "conversion_rate",
+        "total_commission_paid",
+        "monthly_recurring_commission",
+        "recent_30d_signups",
+        "recent_7d_signups",
+        "commission_rate",
+        "discount_rate"
+      ]
+    }
+  }
+}

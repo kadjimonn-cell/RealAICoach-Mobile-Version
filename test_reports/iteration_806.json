@@ -1,0 +1,45 @@
+{
+  "summary": "Feature 26 Job Search — Weekly Digest end-to-end verification (backend + frontend). Backend 11/11 pytest cases PASSED: (1) GET /api/job-search/digest/preference returns {subscribed: bool} default true; (2) POST /digest/preference toggles subscribed to false then back to true, GET reflects state; (3) POST /digest/send-now is 401/403 for free/non-admin user (verified with p1.free.1779113329@example.com); (4) GET /digest/runs is 401/403 for free/non-admin user; (5) send-now with admin subscribed=false => audience 0, sent 0, status='complete', trigger='admin_manual', has week_key; (6) send-now with admin subscribed=true => audience >= 1 (admin has job_search_profile), status='complete'; (7) GET /digest/runs lists >=1 recent run with week_key + status='complete'; (8) email template 'job_search_weekly_digest' is registered in TEMPLATE_CATALOG; (9) build_job_search_weekly_digest_email renders subject/html/text without error, subject contains 'digest', html includes upgrade hint copy when show_upgrade_hint=True; (10) cron-path idempotency verified via direct python import of _send_job_search_weekly_digest(db, trigger='cron', force=False) returns {skipped:'already_sent', week_key:...}; (11) scheduler.py contains add_job id='job_search_weekly_digest' CronTrigger day_of_week='mon' hour=9 minute=30. Frontend E2E (admin@realaicoach.app via API cookie login then navigate to /job-search Career Profile tab): 'job-search-digest-toggle' testid PRESENT and 'Email me a weekly job digest' label VISIBLE. Toggle roundtrip via API confirmed baseline true -> click toggle => API returns subscribed=false -> reload page => API still returns false (persistence OK) -> click again => API returns true (restored). Hero + step buttons render (5 step-* testids visible incl. quick-start). Regression: /api/job-search/summary and /jobs remain 200 (not 403) for free-tier user p1.free.1779113329@example.com (verified in pytest TestFreeTierRegression). Admin preference restored to subscribed=true at end of test run.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "/job-search Career Profile tab digest toggle",
+        "issues": ["RN Switch on web does not expose aria-checked or the underlying input.checked as a serializable attribute (both are null in DOM inspection). This is a react-native-web Switch limitation, not a bug — the state is correctly synced via the API (verified via /api/job-search/digest/preference GET after clicks). Consider adding an explicit `accessibilityState={{checked: value}}` or setting `aria-checked` prop for improved a11y/testing hooks."]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_job_search_weekly_digest.py",
+    "/app/test_reports/pytest/job_search_weekly_digest.xml"
+  ],
+  "action_items": [
+    "OPTIONAL a11y improvement: add explicit accessibilityState={{checked: digestSubscribed}} on the Switch in /app/frontend/src/components/jobSearch/ProfileTab.tsx so aria-checked appears in DOM (improves screen-reader + Playwright determinism). Current behavior is functionally correct."
+  ],
+  "critical_code_review_comments": [
+    "/app/backend/scheduler_jobs/digests.py::_send_job_search_weekly_digest is well-structured: uses ISO-week keying for idempotency, honors opt-out via job_alert_preferences.subscribed=false, filters to users with job_search_profiles, skips users with zero digest content (skipped_no_content), and passes show_upgrade_hint based on subscription_plan=='free'. Persists a summary doc to job_search_digest_runs.",
+    "/app/backend/routes/job_search.py digest section (lines 440-479) is minimal and correct — GET/POST preference use upsert with email persisted, send-now uses require_admin + force=True, runs list is admin-only and excludes _id. No sensitive data leakage.",
+    "/app/backend/scheduler.py registers the job with CronTrigger(day_of_week='mon', hour=9, minute=30) and replace_existing=True, max_instances=1 — matches spec.",
+    "/app/backend/utils/email_templates.py::build_job_search_weekly_digest_email (line 2204) is registered in TEMPLATE_CATALOG under key 'job_search_weekly_digest' and renders subject/html/text with all required kwargs. The upgrade_hint callout is conditionally rendered — good.",
+    "/app/frontend/src/components/jobSearch/ProfileTab.tsx digest section (lines 36-172) loads pref via /job-search/digest/preference on mount, posts on toggle change, disables during in-flight (digestBusy). Both data-testid and testID props applied for RNW/native compat. Label uses i18n key jobSearch.profile.weeklyDigest with English fallback.",
+    "MINOR (non-blocking): the RN Switch does not surface aria-checked to the DOM. Not a functional bug — API state is correctly synced. Could be improved with explicit accessibilityState/aria-checked prop."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_job_search_weekly_digest.py (NEW — 11 pytest cases; regression suite for the weekly digest feature)"
+  ],
+  "success_rate": {
+    "backend": "100% (11/11 pytest cases passed in 5.20s)",
+    "frontend": "100% (toggle present, label visible, click roundtrip persists to backend across reload, hero + steps render, regression free-tier /summary and /jobs return 200)"
+  },
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! ; Free: p1.free.1779113329@example.com / P1Free#2026!Aa (both from /app/memory/test_credentials.md).",
+  "seed_data_creation": "No new seed data created. Admin already has a job_search_profile from prior iterations. Admin digest preference was toggled during tests; RESTORED to subscribed=true at end.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Environment notes: (1) Cloudflare WAF returns 429/challenge on rapid preview browser API calls — pace requests or sleep 60-90s between browser sessions. (2) /signin route redirects to /welcome; use /welcome then click 'Sign in' to reach /auth/login with all login-* testids, OR just POST to /api/auth/login with credentials:'include' from any preview page to establish the cookie session and then goto('/job-search'). (3) The RN Switch renders as a custom component and does NOT reflect state via aria-checked or input.checked in the DOM — verify toggle state via API roundtrip (/api/job-search/digest/preference) instead of DOM assertions. (4) Admin's job_search_digest_runs collection now has a run for the current ISO week — cron idempotency test relies on this; if reset, re-run send-now first. (5) Pytest suite: `pytest backend/tests/test_job_search_weekly_digest.py -v` (5s runtime, no LLM calls). Rerunning is safe — final assertion always restores admin subscribed=true.",
+  "rca_of_the_issue": "N/A — no functional bugs found. All spec requirements met: preference endpoints work with default opt-in, send-now/runs are admin-gated (403 for free), opt-out honored (audience 0 when subscribed=false), idempotency via ISO week_key on cron path, template registered and renders, scheduler cron mon 09:30 UTC registered, frontend toggle visible with correct label and API-persisted state across reload. One optional a11y improvement noted (add accessibilityState={{checked}} to Switch)."
+}

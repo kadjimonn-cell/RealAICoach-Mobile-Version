@@ -1,0 +1,58 @@
+{
+  "summary": "Iteration 802 — Home rebuild verification (Today Pulse hero right card + Trusted-by-Leaders carousel + Trophy Case i18n + Getting Started checklist). Backend GET /api/home/today-pulse: 3/3 pytest PASS — cookie-auth returns {streak_days=1, sessions_today=0, total_sessions=0, badges_earned=1, badges_total=6, checklist_percent=20, timestamp}; streak stable within same UTC day; unauthenticated returns 401. Frontend (FR/dark, free plan): (1) Today Pulse card renders 4 signals with FR labels + REAL values (Série de Jours 1 Jours · Sessions en cours 0 Aujourd'hui · badges gagnés 1/6 · Progression de la configuration 20%); banned English zero-phrases absent. (2) Getting Started checklist: 5 items with FR labels (Complétez votre profil / Commencer la première session IA / Fixer un objectif / Explorer les outils de coaching / Terminer la visite d'intégration), 4 ETA chips (~2 min) on incomplete items only, pulsing 'COMMENCER ICI' chip on first incomplete step, reward-hint 'Compléter toutes les étapes débloque le badge Champion'. (3) Trophy Case: 6 FR-localized badges (Premiers Pas · Pionnier · Définisseur d'objectifs · Maître de la série · Utilisateur avancé · Champion), OBTENU chip localized on earned badge, per-badge progress bars — BUT the 'Next up' chip is MISSING (BUG: nextUpId is computed but never passed to BadgeCard). (4) Trusted by Leaders: carousel with 10 dots, counter 'N/10', 5-star rating, outcome chip, canonical testimonials confirmed on mobile (Sophia Bennett @ 1/10, 42% faster onboarding readiness); prev navigation works (5→4 to Marcus Holt); next arrow did not visibly advance counter in this desktop run — likely intercepted by right-side floating 'Carte de Progression' overlay (see integration issue). Regression: home-activity-pulse present, feature-highlights-section present, no '{BRAND}' leaks. Mobile 390px: no horizontal overflow, all 4 sections stack correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "HomeTrophyCase.tsx",
+        "issue": "'Next up' chip never renders. Parent computes nextUpId correctly (line 80-92) but line 134 instantiates <BadgeCard key={b.id} badge={b} index={i} /> WITHOUT passing isNextUp. BadgeCard declares isNextUp?: boolean prop (line 141) and only renders the [data-testid=badge-<id>-next-up] chip when isNextUp is truthy (line 211). Result: 0 next-up chips in DOM, failing the acceptance criterion 'exactly one unearned badge shows the Next up chip'. Fix: change line 134 to <BadgeCard key={b.id} badge={b} index={i} isNextUp={b.id === nextUpId} />.",
+        "selector": "[data-testid$=-next-up]",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Trusted by Leaders — next-arrow navigation",
+        "issue": "Clicking [data-testid=testimonial-next] did not increment the counter (stayed at 5/10 after two next-clicks) although [data-testid=testimonial-prev] correctly went 5→4 (Marcus Holt). Likely the right-side floating 'Carte de Progression' quick-nav panel (visible in screenshots at ~x=1425 top-right of viewport) overlaps the right-hand chevron button on desktop viewports, intercepting the click; force=True on Playwright bypasses actionability checks but the DOM event still targets the topmost element. Recommend z-index or right-padding fix so the next-arrow is not occluded by the progress-card side rail. NOTE: dots (testimonial-dot-*) and prev arrow are unaffected because they sit to the left of the overlay.",
+        "affected_selectors": ["[data-testid=testimonial-next]"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Hero left card (hero-stats-grid)",
+        "issues": ["The rebuilt right card (home-hero-pulse-card) is now personal — good. But the LEFT hero-stats-grid still shows the same dead platform zeros in FR ('0+ Coachs Mondiaux', '0% Amélioration des Performances', '0+ Sessions IA Aujourd'hui'). The English acceptance-criterion strings ('Performance lift 0%', 'Global expert network 0+') are absent because they're translated to FR, but the underlying zero-values still live on the hero left card. Consider replacing these left-card stats too — or hiding them for free/new users — so the hero as a whole no longer surfaces dead platform zeros."]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter802_home_today_pulse.py",
+    "/app/test_reports/pytest/iter802_today_pulse.xml"
+  ],
+  "action_items": [
+    "HIGH — Fix HomeTrophyCase.tsx line 134: pass isNextUp={b.id === nextUpId} to <BadgeCard/>. This is the exact one-line missing prop that prevents the acceptance-criterion 'Next up' chip from rendering.",
+    "MEDIUM — Fix z-index / occlusion of the right-side floating 'Carte de Progression' quick-nav panel so it does not overlap [data-testid=testimonial-next]. Alternative: move that panel out of the flow that overlaps the testimonial carousel, or add pointer-events fencing so it does not intercept clicks on the underlying card.",
+    "LOW — Consider replacing the FR dead-zero stats on the hero-stats-grid (Coachs Mondiaux 0+ / Amélioration des Performances 0% / Sessions IA Aujourd'hui 0+) with personal metrics or hiding them for new/free users, consistent with the Today-Pulse rebuild intent."
+  ],
+  "critical_code_review_comments": [
+    "HomeTrophyCase.tsx: nextUpId is computed with a useMemo (correct) but never threaded down to the child — a classic 'declared-but-not-wired' bug. This suggests the acceptance criterion was never manually verified during implementation. Adding a snapshot test that asserts one and only one [data-testid$=-next-up] appears when there is any unearned badge would prevent regressions.",
+    "HomeSocialProof.tsx goTo() clears the auto-cycle timer but never restarts it — after the first manual click, the carousel stops auto-cycling forever until page reload. Minor UX debt.",
+    "HomeChecklist.tsx correctly conditions the ETA chip on incomplete items only (4/5 items show ~2 min in observed data), and the pulsing 'Start here' chip fires on the first incomplete item — good.",
+    "Backend /api/home/today-pulse correctly upserts user_login_days by day (idempotent within the same UTC day) and computes streak by walking descending days — confirmed streak stays at 1 across two consecutive same-day calls."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter802_home_today_pulse.py"
+  ],
+  "success_rate": {
+    "backend": "100% (3/3 pytest)",
+    "frontend": "~85% — Today Pulse PASS, Getting Started PASS, Trusted-by-Leaders structural PASS but next-arrow click occluded, Trophy Case renders but next-up chip missing (HIGH bug), Mobile responsive PASS, Regression PASS"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free / FR / dark) — verified working",
+  "seed_data_creation": "None; existing free-plan fixture user was sufficient.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "The one-line trophy fix (pass isNextUp={b.id === nextUpId} at HomeTrophyCase.tsx:134) is the only functional blocker. After fix, re-run: login → home → scroll to trophy — expect exactly ONE [data-testid=badge-<id>-next-up] chip on the unearned badge with highest progress ratio (currently 'champion' at 20% since streak_master is 1/7=14% and champion is 1/5=20%). Environment quirks: (1) 'Checking your secure session' loader appears on first automation load — reload once, wait 8s. (2) Cloudflare challenge triggers after 429 bursts — give 2-3 min cooldown between full automation runs. (3) Right-side floating 'Carte de Progression' rail overlaps testimonial-next arrow at 1920px — either fix overlay or use dot click for next navigation in tests. Regression backend file /app/backend/tests/test_iter802_home_today_pulse.py is idempotent — safe to re-run.",
+  "rca_of_the_issue": "TROPHY 'NEXT UP' MISSING — Root cause: HomeTrophyCase.tsx computes `const nextUpId = React.useMemo(...)` at lines 80-92 (correct logic — picks unearned badge with highest progress/threshold ratio) but never threads it into the child. Line 134 renders `<BadgeCard key={b.id} badge={b} index={i} />` — the `isNextUp` prop declared on line 141 (`function BadgeCard({ badge: b, index, isNextUp })`) is undefined for every card, so the conditional at line 211 (`) : isNextUp ? (...next-up chip...) : (...lock icon...)`) always falls through to the lock icon branch. Reproduction: log in as free user, scroll to trophy-case-section, query DOM for `[data-testid$=-next-up]` — returns 0 nodes. Mitigation: `<BadgeCard key={b.id} badge={b} index={i} isNextUp={b.id === nextUpId} />`. Verify: exactly one chip renders on the badge with id equal to nextUpId (currently 'champion' at 1/5). TESTIMONIAL-NEXT NOT ADVANCING — Root cause hypothesis: the persistent right-side 'Carte de Progression' quick-nav rail (fixed-position side card visible in all desktop screenshots at approximately x≈1425 top-right of viewport) sits above the right chevron button of the testimonial carousel at 1920px viewport, capturing the click. Prev arrow (left side) is unaffected because it is not under the overlay; dots (center-bottom) also work. Recommend adjusting the overlay's right-margin or z-index / pointer-events on the specific area of overlap."
+}

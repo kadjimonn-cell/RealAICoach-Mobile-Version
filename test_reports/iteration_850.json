@@ -1,0 +1,48 @@
+{
+  "summary": "iteration_850 (BACKEND-ONLY): Verified the global exactly-once email enforcement policy in utils/email_service.py. Wrote a new permanent regression suite /app/backend/tests/test_email_exactly_once_policy.py (8 tests, all PASS) that monkeypatches _send_via_resend_with_throttle and calls send_email through the real gateway (dedupe -> permanent idempotency -> notification cap). All four dedupe layers behave per policy: (1) identical no-dedupe-key send is suppressed by content-hash TTL dedupe with error='email-dedupe: duplicate suppressed', provider invoked exactly ONCE; (2) BYPASS-RESISTANCE — after nuking email_send_dedupe rows the 2nd send is still blocked, this time by the permanent notification cap with error='email-cap-guardrail: max sends reached...', cap_max=1, provider not re-invoked; (3) genuinely different content/subject yields a 2nd successful send (provider invoked twice) — legit unique emails NOT blocked; (4) explicit dedupe_key: repeat with same key is suppressed by permanent idempotency with error='email-idempotency: duplicate suppressed'. Cap policy override: inserted policy doc {template_key:'e2e_cap_override_test', active:True, max_per_fingerprint:2}, cleared cache, _resolve_notification_cap_limit returns 2 for override / 1 for unlisted — cleanup removes the policy doc. Env + module: EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT=1 present in /app/backend/.env AND _EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT==1 in the running module. Regression: tests/test_ai_learning_hub_certificate_email_attachments.py (9/9 PASS) + tests/test_ai_learning_hub_signature_pdf.py (15/15 PASS) + tests/test_feature23_email_v7_contract_gap.py (3/3 PASS) = 27/27 regressions PASS. Backend healthy — GET /api/health -> 200 {status:healthy}. No real emails sent (provider monkeypatched throughout).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "exactly_once_evidence": {
+    "env_pin": "EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT=1 present at line 122 of /app/backend/.env",
+    "module_constant": "_EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT == 1 (utils/email_service.py L54-56)",
+    "layer_1_ttl_dedupe": "PASS — 2nd identical send returns {skipped:True, error:'email-dedupe: duplicate suppressed'}; provider invoked 1x",
+    "layer_2_permanent_cap": "PASS — after deleting email_send_dedupe rows, 2nd send blocked by cap: error='email-cap-guardrail: max sends reached for notification fingerprint', cap_max=1, provider NOT re-invoked; email_notification_send_caps row has send_count>=1",
+    "layer_3_unique_content": "PASS — different subject+body (different fingerprint) sends successfully; provider invoked 2x for 2 unique payloads",
+    "layer_4_explicit_dedupe_key": "PASS — same dedupe_key repeat returns {skipped:True, error:'email-idempotency: duplicate suppressed'}",
+    "template_policy_override": "PASS — inserted policy(max_per_fingerprint=2) for 'e2e_cap_override_test' -> _resolve_notification_cap_limit returns 2; unlisted template returns 1; cleanup removed policy doc",
+    "no_real_emails_sent": "confirmed — _send_via_resend_with_throttle monkeypatched in every send_email invocation"
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_email_exactly_once_policy.py",
+    "/app/test_reports/pytest/iter850_exactly_once.xml",
+    "/app/test_reports/pytest/iter850_regression.xml",
+    "/app/test_reports/pytest/iter850_v7_contract.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "utils/email_service.py:187 _resolve_notification_cap_limit uses fallback `int(_EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT or 2)` — the literal '2' is now stale after the policy change. If the env var is ever unset or coerces to 0 the default resurrects the old '2'. Recommend hard-coding the fallback to `1` (or `default_cap = max(1, _EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT)`) so a missing env var can never re-enable a 2-per-fingerprint window.",
+    "utils/email_service.py:1655 dedupe fail-open branch (_reserve_email_dedupe_slot returning True on DB error) still allows the second send to bypass content-hash dedupe. The cap layer is the safety net, but if Mongo is degraded both layers may fail-open silently — consider a metric/alert on the FAIL-OPEN warning logs so ops sees when the policy is degraded.",
+    "utils/email_service.py:600 _reserve_notification_cap_slot returns (True, 0) on generic exceptions — this is a FAIL-OPEN. The new warning log is in place, but a Prometheus counter (e.g., email_notification_cap_fail_open_total) would let ops enforce SLOs.",
+    "Test rigor: the new test_bypass_resistance_cap_blocks_after_dedupe_cleared explicitly simulates the earlier manual bypass by DELETEing email_send_dedupe rows between sends — this is the exact vector the policy is designed to close, and it is now a permanent regression gate."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_email_exactly_once_policy.py (new — 8 tests, all PASS)",
+    "/app/test_reports/pytest/iter850_exactly_once.xml (new pytest JUnit)",
+    "/app/test_reports/pytest/iter850_regression.xml (regression, 24/24 PASS)",
+    "/app/test_reports/pytest/iter850_v7_contract.xml (v7 contract, 3/3 PASS)",
+    "/app/test_reports/iteration_850.json (this file)"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 new + 24/24 regression + 3/3 v7 contract = 35/35)",
+    "frontend": "N/A (skipped per review request)"
+  },
+  "test_credentials": "Not required — provider is monkeypatched; no admin login used. (Admin creds documented in /app/memory/test_credentials.md for future use.)",
+  "seed_data_creation": "Per-test: creates rows in email_send_dedupe / email_notification_send_caps / email_delivery_idempotency for unique recipient e2e.policy.{ts}.{rand}@realaicoach.app. Test 7 inserts one policy doc into email_notification_template_policies for template_key='e2e_cap_override_test'. Every test cleans up its own rows via _cleanup() and finally-blocks — no residual test data left in Mongo.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "To re-verify: `cd /app/backend && python -m pytest tests/test_email_exactly_once_policy.py -v`. The suite is now the permanent regression gate for the exactly-once policy. IMPORTANT gotchas: (1) load_dotenv('/app/backend/.env') is required at module top because pytest does not inherit supervisor's env — otherwise MONGO_URL / DB_NAME are missing; (2) use the _run(coro_factory) helper (fresh event loop + fresh Motor client + patched routes.db.db AND utils.email_service.db) so async DB reads inside send_email don't cross event loops; (3) monkeypatch utils.email_service._send_via_resend_with_throttle (NOT resend.Emails.send) because send_email calls the module symbol directly at ~line 1817; (4) content MUST contain 'class=\"em-outer\"' or the v7 guardrail returns v7_violation before reaching dedupe; (5) template_key MUST be provided (V7_ENFORCEMENT_MODE=strict blocks otherwise); (6) recipient must NOT be @example.com in prod-like check — use @realaicoach.app to avoid _is_valid_recipient_email rejection.",
+  "rca of the issue": "Policy: 'The same email should never be sent twice to the same users.' Fix applied by main agent (verified in this iteration): (a) _EMAIL_NOTIFICATION_MAX_PER_FINGERPRINT default lowered from '2' to '1' in code (utils/email_service.py L54-56) AND pinned in /app/backend/.env L122; (b) loud FAIL-OPEN warning logs added to _reserve_email_dedupe_slot (L488-493) and _reserve_notification_cap_slot (L592-598) so silent degradation is now observable; (c) email_notification_template_policies remains the ONLY sanctioned override. Verification approach: three-layer probe — (1) identical send hits content-hash dedupe (skipped), (2) after dedupe rows are deleted the identical send still hits the permanent cap (skipped, provider not invoked, cap_max=1), (3) unique-content send passes through both layers, (4) explicit dedupe_key hits permanent idempotency. All 4 assertions PASS. The historical manual-bypass vector (deleting email_send_dedupe rows) is now closed by the cap layer, and the closure is guarded by a permanent regression test."
+}

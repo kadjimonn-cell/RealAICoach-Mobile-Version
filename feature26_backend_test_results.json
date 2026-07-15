@@ -1,0 +1,59 @@
+{
+  "test_date": "2026-06-18",
+  "feature": "Feature 26 (Jobs Portal)",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "tests": [
+    {
+      "name": "Admin Login",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "email": "admin@realaicoach.app"
+      }
+    },
+    {
+      "name": "Health Endpoint Lock Contract",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "feature_number": 26,
+        "feature_id": "jobs-portal",
+        "service": "hiring-v2",
+        "version": "v2"
+      }
+    },
+    {
+      "name": "Legacy Retirement Readiness (lookback_hours=72)",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "retirement_phase": "observe",
+        "generated_at": "2026-06-18T00:43:51.474869+00:00",
+        "lookback_hours": 72
+      }
+    },
+    {
+      "name": "Legacy Removal Readiness (strict_zero, exclude_synthetic=false)",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "sustained_gate_met": false,
+        "ready_for_legacy_code_removal": false,
+        "mode": "strict_zero",
+        "exclude_synthetic": false
+      }
+    },
+    {
+      "name": "Legacy Removal Readiness (near_zero, exclude_synthetic=false)",
+      "status": "PASS",
+      "details": {
+        "status_code": 200,
+        "sustained_gate_met": false,
+        "operational_near_zero_excluding_synthetic.sustained_gate_met": true,
+        "gate_divergence_detected": true,
+        "mode": "near_zero",
+        "exclude_synthetic": false
+      }
+    }
+  ]
+}

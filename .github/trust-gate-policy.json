@@ -1,0 +1,6 @@
+{
+  "mode": "soft-block",
+  "soft_block_started_at": "2026-05-15T14:30:00Z",
+  "hard_block_after_hours": 48,
+  "notes": "Wave-2 approved rollout: 48h soft-block observation then auto hard-block."
+}

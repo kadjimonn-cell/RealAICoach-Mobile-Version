@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-06-23T15:50:09.953998Z",
+  "backend_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "passed": [
+    {
+      "test": "Login (Basic user)",
+      "detail": "Authenticated successfully"
+    },
+    {
+      "test": "GET /api/ai-solver/playbooks/schedules",
+      "detail": "Returns schedules array (count: 1)"
+    },
+    {
+      "test": "401 check: GET ai-solver/playbooks/schedules",
+      "detail": "Returns 401 Unauthorized"
+    },
+    {
+      "test": "401 check: POST ai-solver/playbooks/fake_id/auto-run-loop",
+      "detail": "Returns 401 Unauthorized"
+    },
+    {
+      "test": "401 check: GET ai-solver/bootstrap",
+      "detail": "Returns 401 Unauthorized"
+    },
+    {
+      "test": "401 check: GET ai-solver/categories",
+      "detail": "Returns 401 Unauthorized"
+    },
+    {
+      "test": "Login (Free user)",
+      "detail": "Authenticated successfully"
+    },
+    {
+      "test": "GET /ai-solver/bootstrap",
+      "detail": "Status 200, response keys: ['feature_id', 'surface', 'route', 'categories', 'agent_catalog']"
+    },
+    {
+      "test": "GET /ai-solver/categories",
+      "detail": "Status 200, response keys: ['categories', 'agent_catalog']"
+    },
+    {
+      "test": "GET /ai-solver/context-sources",
+      "detail": "Status 200, response keys: ['data_sources', 'plan', 'plan_policy', 'usage_limits', 'entitlement_ai']"
+    },
+    {
+      "test": "GET /ai-solver/insights/weekly",
+      "detail": "Status 200, response keys: ['window_days', 'current', 'previous', 'delta', 'top_categories']"
+    },
+    {
+      "test": "GET /ai-solver/playbooks",
+      "detail": "Status 200, response keys: ['playbooks']"
+    },
+    {
+      "test": "Frontend API contract",
+      "detail": "Backend endpoints verified - frontend should render correctly"
+    }
+  ],
+  "failed": [
+    {
+      "test": "POST /api/ai-solver/playbooks/{nonexistent}/auto-run-loop",
+      "detail": "Expected 404, got 403"
+    }
+  ],
+  "warnings": [
+    {
+      "test": "Create test execution",
+      "detail": "Status 403"
+    },
+    {
+      "test": "Frontend visual testing",
+      "detail": "Skipped - requires browser automation (Playwright/Puppeteer)"
+    }
+  ],
+  "summary": {
+    "total": 14,
+    "passed": 13,
+    "failed": 1,
+    "warnings": 2,
+    "success": false
+  }
+}

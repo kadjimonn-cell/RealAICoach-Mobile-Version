@@ -1,0 +1,27 @@
+{
+  "summary": "Frontend-only validation of the language + currency auto-detection fix (localhost:3000 static export). All 8 requested scenarios PASS: fr-FR visitor auto-detects French UI (html lang=fr, app_theme.languageCode=fr, full French copy including Tarifs / Croissance Professionnelle); pricing shows EUR (€0 and €50.45 present, no $57.50 / $153.50 leak) with 'facturé en EUR' disclaimer and currency-selector-wrapper mounted; sticky quick navigator [data-testid=welcome-sticky-quick-navigator] renders French copy 'Accédez aux sections les plus utiles sans perdre le contexte.' and chips (Premiers pas / Tarifs / Sécurité / Conformité / Formation et Développement / Ressources Humaines / Exécutif / Revenus) with zero English leak; en-US visitor auto-detects English (html lang=en, app_theme.languageCode=en, quick nav copy 'Jump into the highest-signal areas without losing context.' + chips Getting Started/Pricing/Security/Compliance/L&D/People Ops/Executive/Revenue, $ pricing); manual language override via welcome-language-selector → lang-option-es re-renders UI in Spanish and updates app_theme.languageCode=es (html lang=es); manual currency override via native select inside currency-selector-wrapper to GBP re-renders pricing with £ symbol and 'GBP' label. Proxy fix confirmed live: http://localhost:3000/api/health → 200, http://localhost:3000/api/payments/currencies → 200 with 23-currency list. Code review of /app/frontend/serve-production.js confirms: detectBackendPort candidates = [envPort, 8001] with explicit comment forbidding 8010; mutable `let backendPort`; proxy uses `router: () => backendPort` (line 1416); onError calls redetectBackendPortOnFailure with 5s throttle. Self-heal fallback (candidates[candidates.length - 1] || 8001) means an unreachable 8001 at boot still keeps the proxy targeting 8001, never a non-app port.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_889.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "serve-production.js: candidates list explicitly excludes 8010 and documents WHY in a code comment — good defensive posture and future-proofing.",
+    "welcome.tsx quickNavChipLabel with slugified tx-key lookup + raw fallback is a robust pattern; consider adding a dev-mode warning when a chip label falls back to raw so missing locale keys surface early instead of silently leaking source-language text.",
+    "Currency selector is a native <select> on RN-web — no ARIA/testid on individual options; adding data-testid=currency-option-<code> would harden future automated coverage (non-blocking, verification worked via select_option).",
+    "First-hit hydration warning: /api/auth/me returns 401 on anonymous visitor as expected, but the error is logged to console via console.error — consider downgrading anonymous-bootstrap 401 to console.debug to reduce noise on the welcome page (cosmetic)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (skipped per request)", "frontend": "100%" },
+  "test_credentials": "Not needed — anonymous visitor tests only.",
+  "seed_data_creation": "None.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All scenarios were exercised via Playwright against http://localhost:3000 with navigator.language + navigator.languages overridden via page.add_init_script and localStorage cleared BEFORE goto. Key data-testids: welcome-language-selector (nav chip), lang-option-{en,fr,es,de,it,pt,ja,zh,hi,ar} (dropdown), currency-selector-wrapper (contains a native <select> — use page.select_option with values USD/EUR/GBP/…), welcome-sticky-quick-navigator (right-side floating panel). Static export was fresh and hydrated within ~3s on subsequent visits; only the very first cold hit may need ~30s. Do NOT restart supervisors — proxy self-heal is verified by code inspection per user directive.",
+  "rca of the issue": "Root cause verified fixed: serve-production.js detectBackendPort() previously included 8010 (internal tools server) in the candidate list. On a cold boot where backend 8001 was still starting, the port-probe would succeed on 8010, then the /api express-http-proxy target was captured once and never re-evaluated — permanently routing /api/* to the wrong internal server for the process lifetime (silent 404s on currencies/plans/i18n data → currency dropdown empty → pricing frozen in USD → auto-detect appeared 'broken'). The fix removes 8010 entirely, keeps candidates strictly [envPort, 8001], makes backendPort a mutable let, moves the target resolution into a `router: () => backendPort` closure (re-evaluated per request), and adds redetectBackendPortOnFailure() inside proxy onError with a 5s throttle so a transient backend outage self-heals on the next request. Verified live: /api/health and /api/payments/currencies both return 200 via the localhost:3000 → 8001 proxy hop, and the currency list plus EUR auto-selection are functional in the browser."
+}

@@ -1,0 +1,67 @@
+{
+  "summary": "Iteration 797 verified 3 of the 4 Nova bug fixes end-to-end. FIX 1 (i18n GPS strings) confirmed via grep — en.ts/fr.ts contain help.chat.gpsLive/gpsDegraded/gpsSource/gpsFreshness with proper French translations. FIX 2 (NovaFeedbackCard visible in embedded surface) PROVEN LIVE in Playwright — thumbs-up pill click on Nova's reply opens chat-feedback-panel, all stars feedback-star-1..5 are clickable, feedback-comment and feedback-submit-btn render, submit produces feedback-success. FIX 4 ({BRAND} corruption remediation) PROVEN LIVE — after opening feedback panel and after successful submit, document.body.innerText contains 0 occurrences of literal '{BRAND}' while 'Nova' is preserved (5 occurrences); backend POST /api/i18n/auto-translate for fr locale returns clean output preserving 'Nova' with no {BRAND}; and all 23 /app/frontend/src/i18n/locales/*.ts files are free of the '{BRAND}' token. FIX 3 backend regression (test_iter796_gps_quick_questions.py) — 3/3 pass; authenticated /api/gps/state and anonymous /api/gps/state both return the 3 seeded defaults. HOWEVER, FIX 3 UI is BROKEN in the live embedded chat surface: quick-q-0/1/2 chips do NOT render on the guided-welcome state even though (a) client-side fetch of /api/gps/state returns the 3 defaults in messaging.quick_questions, (b) the LKG snapshot in localStorage (gps:last-known-good:v1) contains the 3 defaults, and (c) exported JS bundle contains the quick-q-${t} template + quickQuestions=messaging.quick_questions filter. chat-welcome is present but the qChips row is empty; none of the three default strings appear anywhere in the DOM.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "NovaChatPanel (embedded surface on /help → Contact → Chat IA)",
+        "issue": "quick-q-0, quick-q-1, quick-q-2 chips do not render on the guided-welcome state even though gpsState.messaging.quick_questions is populated (verified via in-browser fetch to /api/gps/state AND localStorage 'gps:last-known-good:v1'). chat-welcome is visible, tools row (attach/mic/GPT-5.2) shows, but the qChips View below is empty. None of the 3 seed strings ('What can you help me with?', 'How does AI coaching work?', 'How do I upgrade or manage my plan?') appear in document.body.innerText.",
+        "selector": "[data-testid=\"quick-q-0\"]",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter796_gps_quick_questions.py",
+    "/app/backend/tests/test_iter797_brand_translate_guard.py",
+    "/app/test_reports/pytest/iter797_fix4_and_gps_regression.xml"
+  ],
+  "action_items": [
+    "Debug why NovaChatPanel receives quickQuestions=[] at render time on /help embedded surface even though gpsState.messaging.quick_questions is populated in both the fresh /api/gps/state response and the LKG snapshot. Likely candidates: (a) the useMemo in help.tsx L197 using gpsState?.messaging as dep sees an initial undefined then defaults-hydrated state but the re-render never applies because of a stale closure in a parent, (b) the NovaChatPanel prop path in help.tsx L846 might be overwritten elsewhere, (c) surfaceVariant='embedded' may be triggering an unintended branch. Suggest adding a temporary console.log inside NovaChatPanel around L282 to print quickQuestions.length + isEmbedded and re-verifying in browser, or a temporary data-testid=\"quick-q-count\" View exposing quickQuestions.length for automated inspection.",
+    "OPTIONAL: The /api/auth/me route-guard probe still bursts 401/429 (visible in console warnings [auth-session] auth_me_unauthorized + [i18n-429-monitor] auto_translate_error backoff_ms:400, queue:157). Not related to any FIX under test but continues to hurt E2E stability; add exponential backoff / single-flight coalescing."
+  ],
+  "critical_code_review_comments": [
+    "FIX 1 verified: /app/frontend/src/i18n/locales/en.ts and fr.ts contain all 4 keys (gpsLive/gpsDegraded/gpsSource/gpsFreshness) with proper French copy ('GPS EN DIRECT', 'GPS DÉGRADÉ', 'source', 'fraîcheur').",
+    "FIX 2 verified live: NovaFeedbackCard.tsx L30 (showFeedback && !feedbackSent) — clicking a thumbs-up pill on Nova's reply now opens the inline feedback card on the embedded surface (previously suppressed for embedded/floating). Stars → comment → submit → success flow all worked in browser.",
+    "FIX 3 backend verified live (pytest 3/3) — /api/gps/state self-repairs messaging.quick_questions to the 3 defaults. In-browser fetch confirms.",
+    "FIX 3 frontend NOT verified live: help.tsx L197-200 memo appears logically correct (Array.isArray + trim().length>0 filter) and the bundle contains the wiring, but chips never render even after clicking a New Chat and waiting 6s for state hydration. Likely a state-timing or render-branch bug in NovaChatPanel — main agent should investigate before closing FIX 3.",
+    "FIX 4 verified live: auto_translate.py L32 UNRESOLVED_BRAND_TOKEN_PATTERN regex change is effective — POST /api/i18n/auto-translate for fr locale returns clean output preserving 'Nova' with no {BRAND}; document.body.innerText scans (before + after feedback submit) show 0 '{BRAND}' occurrences; all 23 locale files clean.",
+    "Minor: /app/frontend/src/hooks/useGlobalPlatformState.ts L133 defaultState.messaging = {}. If initial render happens with defaultState before LKG hydration finishes and useMemo dep [gpsState?.messaging] snapshots the {} reference, later state updates that reuse the same messaging Record ref would not fire the memo. Suggest depending on gpsState?.messaging?.quick_questions directly, or hoisting the filter into the hook so quickQuestions is always a new-array reference on state change."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter797_brand_translate_guard.py (new — FIX 4 backend + locale-file regression guard)"
+  ],
+  "success_rate": {
+    "backend": "100% (5/5 pytest: 3 gps-quick-questions + 2 brand-translate)",
+    "frontend": "75% (FIX 1 keys ✅, FIX 2 feedback panel live ✅, FIX 4 no {BRAND} in DOM live ✅, FIX 3 UI chips ❌ — chips do not render despite backend + client-side state having the 3 defaults)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa (Free, French locale, dark theme)",
+  "seed_data_creation": "none (backend self-repair seeds defaults on read)",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "FIX 1/2/4 are all live-verified. FIX 3 backend also live-verified. The blocker is FIX 3 frontend: on /help → Contact → Chat IA (embedded surface), the guided-welcome state renders (chat-welcome present) but the qChips View is empty — quick-q-0/1/2 never appear even after waiting 8s for gpsState hydration, and even though in-browser fetch of /api/gps/state AND localStorage 'gps:last-known-good:v1' both contain the 3 defaults. Try inspecting the React tree via a debug testid or a console.log inside NovaChatPanel to confirm what quickQuestions the component actually receives. Login route /auth/login worked reliably (no Cloudflare challenges this run); use one browser context and wait 4-5s after each nav step to avoid the /api/auth/me 429 burst.",
+  "verification_evidence": {
+    "backend_pytest": "5 passed in 2.00s (test_login_free_user_ok, test_gps_state_quick_questions_populated_authenticated, test_gps_state_quick_questions_unauthenticated, test_auto_translate_preserves_nova_and_no_brand_token, test_locale_files_free_of_brand_token)",
+    "fix1_locale_keys": {
+      "fr.ts": {"gpsLive": "GPS EN DIRECT", "gpsDegraded": "GPS DÉGRADÉ", "gpsSource": "source", "gpsFreshness": "fraîcheur"},
+      "en.ts": {"gpsLive": "GPS LIVE", "gpsDegraded": "GPS DEGRADED", "gpsSource": "source", "gpsFreshness": "freshness"}
+    },
+    "fix2_live": "chat-feedback-panel ✅, feedback-star-4 ✅, feedback-comment ✅, feedback-submit-btn ✅, feedback-success ✅",
+    "fix3_backend_live": "in-browser fetch(/api/gps/state, credentials:'include') → messaging.quick_questions = ['What can you help me with?', 'How does AI coaching work?', 'How do I upgrade or manage my plan?']",
+    "fix3_frontend_live": "quick-q-0/1/2 selectors NOT found; chat-welcome present; none of the 3 seed strings anywhere in body innerText",
+    "fix4_live": "document.body.innerText '{BRAND}' occurrences = 0 (before feedback submit) and 0 (after feedback submit); 'Nova' occurrences = 5. All 23 locale files: 0 '{BRAND}' hits (grep -l returns empty)",
+    "fix4_backend": "POST /api/i18n/auto-translate {texts:['Nova','Help us improve Nova by rating this conversation'], lang:'fr'} → 200 OK, response strings preserve 'Nova', 0 '{BRAND}' tokens"
+  },
+  "rca of the issue": {
+    "issue": "FIX 3 frontend: quick-q chips do not render on /help embedded chat welcome despite backend and client-side state both containing the 3 defaults.",
+    "reproduction": "1) Login as p1.free.1779113329@example.com. 2) Navigate to /help. 3) Click Contact tab, then Chat IA sub-tab. 4) Wait for [data-testid=\"nova-chat-panel\"] and [data-testid=\"chat-welcome\"]. 5) Query [data-testid=\"quick-q-0\"] → returns null. 6) Meanwhile, in the same page context evaluate `await fetch('/api/gps/state',{credentials:'include'}).then(r=>r.json()).then(j=>j.messaging.quick_questions)` → returns the 3 seed strings.",
+    "possible_root_causes": [
+      "help.tsx L197-200 useMemo dep [gpsState?.messaging] may capture the initial defaultState.messaging={} reference and never re-run because the hook's LKG-merge or fetch-merge reuses the messaging object identity.",
+      "NovaChatPanel receives quickQuestions=[] because the prop chain in help.tsx L846 might be reading from a stale closure or being overridden by a sibling render branch.",
+      "A conditional inside NovaChatPanel not visible in the source diff may be gating chips on more than just showGuidedWelcome (e.g., isEmbedded plus some flag) — worth re-verifying render conditions around L282-288."
+    ],
+    "mitigation": "Add a temporary [data-testid=\"quick-q-count\"] View exposing quickQuestions.length inside NovaChatPanel to confirm the received prop shape; then either (a) change the memo dep to `gpsState?.messaging?.quick_questions` (deeper path), or (b) compute the filtered list inside useGlobalPlatformState so consumers get a stable array reference that changes only when contents change."
+  }
+}

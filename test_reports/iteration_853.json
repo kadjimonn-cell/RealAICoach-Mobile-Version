@@ -1,0 +1,65 @@
+{
+  "summary": "Backend-only validation of the GTEC C5 Executive Compliance Report v2 (3-page redesign). Wrote /app/backend/tests/test_gtec_c5_executive_pdf_v2.py (12 permanent tests) covering bundle build from real DB report via motor, 3-page structural validation (executive verdict + runtime enforcement + §12/§13 appendix), PASS/FAIL synthetic variants, trend helper (returns <=7 rows oldest→newest excluding current task_id, returns [] when MONGO_URL missing), email dispatch wiring (send_catalog_template monkeypatched — no real email), and /api/health smoke. All 12 tests pass. Also re-ran the 7 mandated regression suites: 85/85 passed. The 2 pre-existing order-flaky enterprise workflow tests verified passing in isolation as noted by the reviewer.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "regression_results": {
+    "new_suite": {
+      "file": "/app/backend/tests/test_gtec_c5_executive_pdf_v2.py",
+      "results": "12 passed, 0 failed",
+      "junit_xml": "/app/test_reports/pytest/executive_pdf_v2.xml"
+    },
+    "mandated_regression_suites": {
+      "files": [
+        "tests/test_gtec_c5_pdf_email_checkpoint.py",
+        "tests/test_gtec_c5_pdf_email_summary.py",
+        "tests/test_gtec_c5_naming.py",
+        "tests/test_gtec_c5_public_naming.py",
+        "tests/test_pdf_v15_global_overlay_contract.py",
+        "tests/test_gtec_c5_receipt.py",
+        "tests/test_gtec_c5_trust_grade.py"
+      ],
+      "results": "85 passed, 0 failed",
+      "junit_xml": "/app/test_reports/pytest/gtec_c5_regression.xml"
+    },
+    "flaky_isolated_reruns": {
+      "tests": [
+        "tests/test_gtec_c5_enterprise_workflow.py::TestReleaseCertificateChecks::test_release_certificate_includes_responsive_viewport_matrix_check",
+        "tests/test_gtec_c5_enterprise_workflow.py::TestExistingEndpointsNoRegression::test_pipeline_enforcement_state_endpoint_still_works"
+      ],
+      "results": "2 passed in isolation (order flakiness NOT a new regression)"
+    }
+  },
+  "verified_contracts": {
+    "bundle": "guardrail_passed=True, guardrail_failures=[], filename matches rac-compliance-v15-gtec-c5-<taskid>-<UTC ts>Z.pdf, sha256 64-hex, pdf_bytes start %PDF-1.4 and end %%EOF, base64 attachment decodes back to same bytes",
+    "page1_markers": ["<status verdict>", "C5 TRUST SCORE", "FINDINGS BY SEVERITY", "TRUST SCORE TREND", "COMPLIANCE DOMAIN SCORECARD", "LIVE OPS DASHBOARD"],
+    "page2_markers": ["C5 RUNTIME SUMMARY", "WHITE SCREEN SENTRY STATUS", "EXTERNAL CERT STATUS", "INCIDENTS AUTO CLOSED", "VIEWPORT MATRIX"],
+    "page3_markers": ["§12 FINAL OUTPUT", "§13 v3 FINAL OUTPUT", "TASK_ID", "EXECUTION_HASH", "SYSTEM_STATUS", "CONFIDENCE_LEVEL"],
+    "brand_marker": "RealAICoach Security present in extracted text",
+    "page1_images": ">=2 images embedded (logo tile + QR code) — verified via PyMuPDF get_images",
+    "variants": "PASS and FAIL variants each render 3 pages and show correct verdict text on page 1",
+    "trend_helper": "returns <=7 rows sorted oldest→newest, excludes current task_id, keys {status, trust_percent, generated_at}; returns [] when MONGO_URL env var is missing (monkeypatched)",
+    "email_wiring": "_email_report_to_admins forwards bundle.attachment to send_catalog_template(template_key='gtec_scan_v2_report', attachments=[...], pdf_attachment_name=..., pdf_guardrail_passed=True). Base64 attachment content decodes to a valid %PDF-1.4 blob."
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_gtec_c5_executive_pdf_v2.py",
+    "/app/test_reports/pytest/executive_pdf_v2.xml",
+    "/app/test_reports/pytest/gtec_c5_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "_render_gtec_final_output_pdf uses ReportLab (heavy) — file gtec_scan_v2.py is now ~5863 lines. Consider extracting the PDF renderer + trend helper into services/gtec_c5_pdf.py to enforce <700 loc modules. Not blocking.",
+    "_fetch_gtec_c5_trend_rows opens/closes a fresh sync pymongo client on every PDF render. Fine for best-effort correctness (avoids motor loop-binding), but if PDFs are generated in tight bulk loops the 3s server-selection timeout could be a latency ceiling. Could cache trend rows for the report by task_id if needed later.",
+    "Guardrail set is comprehensive (pdf_header_v14, logo image, RealAICoach Security heading, §12, §13). Suggest adding a `qr_image_present` guardrail explicitly (currently guaranteed only by count-of-images heuristic on page1) so the QR deep-link contract is enforceable at guardrail level.",
+    "Filename slugger converts underscores to dashes — task_id 'gtec_c5_96f226bdf937' becomes 'gtec-c5-96f226bdf937'. Contract tests updated to match. This is a hidden change vs raw task_id: OK because filename uses to_public_task_id which normalizes anyway."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_gtec_c5_executive_pdf_v2.py (NEW — 12 permanent tests)"
+  ],
+  "success_rate": {"backend": "100% (12/12 new + 85/85 regression)", "frontend": "N/A (backend-only per request)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (not exercised — unit-level tests only, no real email sent)",
+  "seed_data_creation": "None. Reused latest doc in db.gtec_scan_c5_reports (task_id=gtec_c5_96f226bdf937, status=INFRA_BLOCKED). Synthetic PASS/FAIL variants are in-memory copies with mutated status/task_id — never persisted.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "GTEC C5 Executive PDF v2 (3-page redesign) is fully validated. New permanent regression file: /app/backend/tests/test_gtec_c5_executive_pdf_v2.py. If any future edits touch services/gtec_scan_v2.py::_render_gtec_final_output_pdf or _build_gtec_final_output_pdf_bundle or _fetch_gtec_c5_trend_rows, re-run this file. dotenv is loaded inside the test module because pytest doesn't auto-load /app/backend/.env. Motor loop-binding is respected: _fetch_latest_report_via_motor creates a fresh AsyncIOMotorClient inside asyncio.run(). Email dispatch test builds a minimal duck-typed motor DB (_FakeDB with __getitem__ -> _FakeCollection with find_one/find/update_one) and monkeypatches utils.email_service.send_catalog_template — so NO real email ever leaves and the exactly-once email dedupe records are untouched. GTEC_PDF_GUARDRAIL_STRICT=1 in backend/.env is honored."
+}

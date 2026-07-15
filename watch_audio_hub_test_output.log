@@ -1,0 +1,71 @@
+[00:59:36] ================================================================================
+[00:59:36] Watch Videos Audio Hub Deep Backend E2E Verification
+[00:59:36] ================================================================================
+[00:59:36] Base URL: https://visa-polish-v2.preview.emergentagent.com
+[00:59:36] Surfaces: audio-studio, podcasts
+[00:59:36] Plans: free, basic, premium
+[00:59:36] ================================================================================
+[00:59:36] 
+================================================================================
+[00:59:36] Testing FREE plan: e2e.watchvideos.real.free.1778538343@example.com
+[00:59:36] ================================================================================
+[00:59:37] ✅ Login successful: e2e.watchvideos.real.free.1778538343@example.com
+[00:59:37] 
+--- Testing audio-studio surface ---
+[00:59:37] Testing audio-studio_bootstrap_free...
+[00:59:37] 
+--- Testing podcasts surface ---
+[00:59:37] Testing podcasts_bootstrap_free...
+[00:59:37] Testing podcasts_play_free...
+[00:59:37] Testing podcasts_access_control_free...
+[00:59:37] 
+================================================================================
+[00:59:37] Testing BASIC plan: e2e.watchvideos.real.basic.1778538343@example.com
+[00:59:37] ================================================================================
+[00:59:37] ✅ Login successful: e2e.watchvideos.real.basic.1778538343@example.com
+[00:59:37] 
+--- Testing audio-studio surface ---
+[00:59:37] Testing audio-studio_bootstrap_basic...
+[00:59:38] Testing audio-studio_play_basic...
+[00:59:38] Testing audio-studio_access_control_basic...
+[00:59:38] 
+--- Testing podcasts surface ---
+[00:59:38] Testing podcasts_bootstrap_basic...
+[00:59:38] Testing podcasts_play_basic...
+[00:59:38] Testing podcasts_access_control_basic...
+[00:59:38] 
+================================================================================
+[00:59:38] Testing PREMIUM plan: e2e.watchvideos.real.premium.1778538343@example.com
+[00:59:38] ================================================================================
+[00:59:38] ✅ Login successful: e2e.watchvideos.real.premium.1778538343@example.com
+[00:59:38] 
+--- Testing audio-studio surface ---
+[00:59:38] Testing audio-studio_bootstrap_premium...
+[00:59:38] Testing audio-studio_play_premium...
+[00:59:38] Testing audio-studio_access_control_premium...
+[00:59:38] 
+--- Testing podcasts surface ---
+[00:59:38] Testing podcasts_bootstrap_premium...
+[00:59:38] Testing podcasts_play_premium...
+[00:59:38] Testing podcasts_access_control_premium...
+[00:59:38] 
+================================================================================
+[00:59:38] TEST SUMMARY
+[00:59:38] ================================================================================
+[00:59:38] Total tests: 18
+[00:59:38] Passed: 15
+[00:59:38] Failed: 3
+[00:59:38] Success rate: 83.3%
+[00:59:38] 
+================================================================================
+[00:59:38] FAILED TESTS
+[00:59:38] ================================================================================
+[00:59:38] ❌ audio-studio_bootstrap_free
+[00:59:38]    Details: {
+  "requirement": "bootstrap_200",
+  "expected": 200,
+  "actual": 401,
+  "response": "{\"detail\":\"Authentication required\",\"code\":\"AUTH_REQUIRED\"}"
+}
+[00:59:38] 
+Results saved to: /app/watch_audio_hub_test_results.json

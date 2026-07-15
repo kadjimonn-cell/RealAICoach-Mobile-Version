@@ -1,0 +1,39 @@
+{
+  "summary": "SMOKE run for CI selector-validity-gate integration into frontend export:web chain. All 4 requested checks PASS. Gate artifact and package.json wiring verified. Rebuilt static export serves 200 at both localhost:3000 and external URL. Welcome page loads at 1920x800 with 0 page errors and content rendered (bodyLen=16809, 40+ data-testid selectors present). Mobile 390x844 shows zero horizontal overflow (docScroll=390, innerWidth=390) — previous responsiveness fix intact in new bundle. Admin login (admin@realaicoach.app) succeeds — navigates from /auth/login to authenticated dashboard shell with 'Welcome back, RealAICoach!' resume modal and full sidebar (Home / Features / FPS Game / Flappy Bird / Watch Videos / Audio Studio / Podcasts / Sports / Travel Visa / etc.). No pageerrors on any tested route. Build-chain change did not alter app behavior.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "gate_artifact_verification": {
+    "selector_validity_report_exists": true,
+    "report_path": "/app/frontend/.quality/selector_validity_report.json",
+    "generatedAt": "2026-07-11T05:00:40.329Z",
+    "scannedFiles": 952,
+    "violationCount": 0,
+    "package_json_export_web_contains_gate": true,
+    "gate_position_in_chain": "after nav-lock-sync-gate.js and before sidenav-gallery-parity-gate.js (line 11)"
+  },
+  "smoke_results": {
+    "desktop_welcome_1920x800": {"status": "PASS", "bodyLen": 16809, "pageerrors": 0, "notes": "40+ welcome-* testids rendered; hero, nav, progress-map, quick-nav all visible"},
+    "mobile_welcome_390x844_no_horizontal_overflow": {"status": "PASS", "docScroll": 390, "docClient": 390, "bodyScroll": 390, "innerWidth": 390},
+    "admin_login_and_dashboard": {"status": "PASS", "flow": "/welcome -> [welcome-nav-signin] -> /auth/login -> fill [login-email-input]+[login-password-input] -> [login-submit-button] -> / (authenticated shell + Welcome-back resume modal)", "final_url": "http://localhost:3000/", "body_preview_contains": ["Navigated to Dashboard","Welcome back, RealAICoach","OWNER","admin@reala..."]},
+    "gate_artifact_and_package_json": {"status": "PASS", "artifact_violationCount": 0, "gate_wired_in_export_web": true}
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "package.json export:web chain is a very long single-line command (line 11) with 11 sequential gate scripts followed by METRO_MAX_WORKERS=1 export. Consider splitting into a shell script or Makefile target for readability and easier CI failure attribution, but not blocking.",
+    "The selector-validity-gate.js scans app/ + src/ .ts/.tsx/.css looking for a second attribute inside [data-testid=\"...\"] selectors — good targeted regex; recommend also scanning .js/.jsx if any are still authored (currently only .ts/.tsx/.css) to future-proof.",
+    "Direct navigation to /login (no /auth prefix) redirects to /welcome — this is expected because canonical login route is /auth/login. If any legacy links/tests still hit /login they will land on welcome (soft redirect); not a bug for this iteration."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only SMOKE)", "frontend": "100% (4/4 SMOKE checks)"},
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! from /app/memory/test_credentials.md — verified working against rebuilt static export",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Selector-validity-gate is now part of frontend export:web chain. Report artifact at /app/frontend/.quality/selector_validity_report.json (violationCount must stay 0). Login canonical path is /auth/login (not /login). Static export currently served by serve-production.js on port 3000; do NOT run yarn export:web from testing (7min rebuild). Previous iteration_829 confirmed responsiveness across 320/390/768/1920; this iteration re-confirmed 390 mobile no-horizontal-overflow after gate integration.",
+  "rca of the issue": "N/A — no issues found in this SMOKE run."
+}

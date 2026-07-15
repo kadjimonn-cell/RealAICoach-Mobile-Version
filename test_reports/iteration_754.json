@@ -1,0 +1,90 @@
+{
+  "summary": "RouteAccessGuard root-route fix VERIFIED. Bug fix confirmed: adding `/` to PUBLIC_EXACT_ROUTES in RouteAccessGuard.tsx eliminates the blocking 'Checking access' overlay on root URL. All 5 test cases passed: (1) visitor opening `/` no longer trapped behind overlay, (2) `/welcome` direct access works, (3) authenticated login flow works, (4) protected routes work after login, (5) public routes remain accessible for visitors.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "test_1_root_url_visitor": {
+      "status": "PASS",
+      "description": "Visitor opening root URL `/` should NOT show blocking overlay",
+      "url_tested": "https://visa-polish-v2.preview.emergentagent.com/",
+      "blocking_overlay_visible": false,
+      "redirected_to_welcome": true,
+      "evidence": "No route-access-guard-overlay visible, URL correctly redirected to /welcome"
+    },
+    "test_2_welcome_direct": {
+      "status": "PASS",
+      "description": "Visitor opening `/welcome` directly should NOT show blocking overlay",
+      "url_tested": "https://visa-polish-v2.preview.emergentagent.com/welcome",
+      "blocking_overlay_visible": false,
+      "welcome_content_visible": true,
+      "evidence": "No route-access-guard-overlay visible, welcome page content rendered"
+    },
+    "test_3_authenticated_login": {
+      "status": "PASS",
+      "description": "Authenticated user can log in with free user credentials",
+      "credentials_used": "p1.free.1779113329@example.com",
+      "login_successful": true,
+      "blocking_overlay_after_login": false,
+      "console_evidence": "[auth-session] session_renew_success {phase: route_guard_session_probe_auth_me_success}",
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/"
+    },
+    "test_4_protected_route_after_login": {
+      "status": "PASS",
+      "description": "After login, navigating to protected route should work without blocking overlay",
+      "url_tested": "https://visa-polish-v2.preview.emergentagent.com/dashboard",
+      "blocking_overlay_visible": false,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/dashboard",
+      "evidence": "Dashboard rendered successfully with sidebar and user content visible"
+    },
+    "test_5_regression_public_routes": {
+      "status": "PASS",
+      "description": "Regression check - public routes still accessible for visitors after cookie clear",
+      "welcome_accessible": true,
+      "root_accessible": true,
+      "blocking_overlay_on_welcome": false,
+      "blocking_overlay_on_root": false,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/welcome"
+    }
+  },
+  "bug_fix_verification": {
+    "original_bug": "User reported blocking RouteAccessGuard overlay saying 'Checking access / Please wait while we prepare this page' on root URL `/`",
+    "root_cause": "RouteAccessGuard did not treat `/` as a public bootstrap route, causing false blocking overlay during auth bootstrap",
+    "fix_applied": "Added `/` to PUBLIC_EXACT_ROUTES in RouteAccessGuard.tsx (line 14)",
+    "fix_verified": true,
+    "verification_method": "Playwright browser automation on canonical preview host"
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_754.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix correctly adds `/` to PUBLIC_EXACT_ROUTES set at line 14 of RouteAccessGuard.tsx",
+    "Public route bypass logic at lines 377-387 correctly checks all three path variants (bootstrapPathnameClean, normalizedPathnameClean, browserPathnameClean)",
+    "Auth bootstrap flow works correctly - session_renew_success logged after login",
+    "No regression in protected route behavior - dashboard accessible after login"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100% (5/5 tests passed)"
+  },
+  "test_credentials": "p1.free.1779113329@example.com / P1Free#2026!Aa",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "RouteAccessGuard root-route fix verified. The bug where visitors were trapped behind 'Checking access' overlay on root URL `/` is now fixed. All public bootstrap routes (`/`, `/welcome`) work correctly for visitors. Authenticated login flow and protected route access work correctly. No regressions detected.",
+  "features_tested": [
+    "Root URL `/` visitor access - PASS: no blocking overlay, redirects to /welcome",
+    "/welcome direct access - PASS: no blocking overlay, content visible",
+    "Authenticated login flow - PASS: credentials work, session established",
+    "Protected route /dashboard - PASS: accessible after login, no blocking overlay",
+    "Public route regression check - PASS: both `/` and `/welcome` accessible for visitors"
+  ]
+}

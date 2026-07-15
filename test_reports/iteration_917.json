@@ -1,0 +1,32 @@
+{
+  "summary": "Iter917 — Full regression of Emergent 'Mono' cross-platform restructure (mobile Expo moved to /app/mobile; new thin React web shell at /app/frontend). Backend startup clean (no /app/frontend path errors after fresh boot), all 3 existing pytest suites pass (test_preprod_entitlement_lock 16/16, test_travel_visa_country_track_iter915 4/4 + 1 pre-existing skip, test_gtec_directive_selfheal_iter916 8/8), NEW comprehensive iter917 mono-restructure suite passes 14/14 (structure, health, auth, startup logs, web shell on port 3555, build.js). UI verified end-to-end on preview URL: /welcome renders marketing hero, /auth/login loads, free user login succeeds → redirects to Home dashboard, /features/travel-visa Explore tab loads 30 countries / 480 categories after Skip, and deep-link /features/travel-visa?country=US correctly opens the United States Country Track view with visa lesson tracks + AI document checklist + 3 embassies + visa categories. Structure verified: /app/frontend has react-scripts (no expo), /app/mobile has expo + eas.json + app.json.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_mono_restructure_iter917.py",
+    "/app/backend/tests/test_preprod_entitlement_lock.py",
+    "/app/backend/tests/test_travel_visa_country_track_iter915.py",
+    "/app/backend/tests/test_gtec_directive_selfheal_iter916.py",
+    "/app/test_reports/pytest/iter917_regression.xml",
+    "/app/test_reports/pytest/iter917_mono_restructure.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "/app/frontend/server.js resolveRouteHtml correctly guards path traversal via candidate.startsWith(DIST_DIR) — safe.",
+    "/app/frontend/scripts/build.js falls back to ../mobile/dist if rnw_dist not present — good fallback for CI where only the mobile bundle has been exported.",
+    "preview_host_guard reads /app/frontend/.env (a symlink/copy of /app/mobile/.env). EXPO_TUNNEL_SUBDOMAIN + REACT_APP_BACKEND_URL are present. Consider adding /app/frontend/.env to a CI check to prevent regression if someone runs `yarn install` inside /app/frontend and accidentally overwrites the .env.",
+    "Server.js listens on PORT env var (default 3000) — supervisor's expo_manual still owns port 3000, and this new file is intentionally NOT wired to supervisor per the request. Web shell was validated on spare port 3555 only.",
+    "Backend startup log shows 3 historical failures (Preview startup host guard failed) BEFORE the current successful boot — these are pre-fix crashes, not regressions. The latest boot at 2026-07-15T04:12:09 is clean (Application startup complete, GTEC loaded, all schedulers started).",
+    "Pre-existing skip in test_travel_visa_country_track_iter915 (TestTelemetry::test_telemetry_insert_on_call) is unchanged — same skip present in iter915 report."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_mono_restructure_iter917.py (new — 14 tests: structure, backend health/auth, startup log validation, web shell smoke, build.js)"
+  ],
+  "success_rate": {"backend": "100% (42/42 pytest cases, 1 pre-existing skip unchanged)", "frontend": "100% (welcome, login, travel-visa explore + deep-link country track all render and function correctly)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! ; Free user: p1.free.1779113329@example.com / P1Free#2026!Aa (both verified working)",
+  "seed_data_creation": "None — all tests use existing seeded users and are read-only.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Cross-platform Mono restructure is production-ready. Structure: /app/frontend = new thin React web shell (react-scripts, express server.js on PORT env, scripts/build.js assembles ./build from ../mobile/dist or ./rnw_dist). /app/mobile = full Expo app (supervisor 'expo_manual' still serves /app/mobile/serve-production.js on port 3000 — preview URL comes from here). preview_host_guard requires /app/frontend/.env to contain EXPO_TUNNEL_SUBDOMAIN=visa-polish-v2 and REACT_APP_BACKEND_URL — DO NOT delete /app/frontend/.env or backend will refuse to start. When testing the web shell standalone, always use spare port (e.g. 3555): `cd /app/frontend && PORT=3555 node server.js`. Onboarding overlay on Travel Visa first visit is expected — click 'Skip' text link (top-right) to reach Explore/Country Track. Pre-Prod Entitlement Lock is ACTIVE: all non-admins forced to free plan, all paid checkout endpoints return 403 (expected, covered by test_preprod_entitlement_lock).",
+  "rca of the issue": "No issue — restructure is a clean migration. The 3 historical 'Preview startup host guard failed' errors in backend.err.log occurred DURING the migration (uvicorn watchfiles reloaded after /app/frontend was moved but before /app/frontend/.env was recreated). The latest boot at 2026-07-15T04:12:09 is clean and stable, verified by test_current_boot_has_no_frontend_path_errors and test_current_boot_no_filenotfound_for_frontend_paths which scan the log tail after the most recent 'Application startup complete.' marker."
+}

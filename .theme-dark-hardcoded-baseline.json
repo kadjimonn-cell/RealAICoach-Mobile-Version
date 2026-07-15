@@ -1,0 +1,4 @@
+{
+  "count": 0,
+  "notes": "Drained to zero on 2026-04-21. Ops/admin panels that are intentionally dark now carry a file-level `@theme-audit-file-ok` pragma; inline `@theme-ok <reason>` is used for HTML exports, CSS-var fallbacks, semantic badge palettes, and theme-token fallbacks."
+}

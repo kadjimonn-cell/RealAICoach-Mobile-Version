@@ -1,0 +1,17 @@
+{
+  "checkpoint": "C4",
+  "goal": "Welcome/Pricing unified fallback behavior",
+  "evidence": {
+    "welcome_pricing_empty_count": 0,
+    "welcome_faq_empty_count": 0,
+    "pricing_plans_empty_count": 0,
+    "pricing_plan_cards_count": 3,
+    "screenshots": [
+      "/tmp/checkpoint_c4_welcome_scrolled.png",
+      "/tmp/checkpoint_c4_pricing_scrolled.png"
+    ],
+    "console_log": "/root/.emergent/automation_output/20260518_001531/console_20260518_001531.log"
+  },
+  "status": "pass_with_note",
+  "note": "welcome pulse plans test-id did not return value in this run, but pricing/faq empties are cleared and pricing cards render."
+}

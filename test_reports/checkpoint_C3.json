@@ -1,0 +1,39 @@
+{
+  "checkpoint": "C3",
+  "goal": "Auto-repair + recurring integrity guard path",
+  "repair_response": {
+    "status": "ok",
+    "result": {
+      "timestamp": "2026-05-18T00:25:14.472578+00:00",
+      "actor_user_id": "user_4b5a68d2f7c6",
+      "inserted_plans": [],
+      "inserted_faq": [],
+      "repaired": false,
+      "completeness": {
+        "plans_count": 3,
+        "faq_count": 3,
+        "missing_plan_ids": [],
+        "plan_ids": [
+          "basic",
+          "free",
+          "premium"
+        ],
+        "is_complete": true
+      }
+    }
+  },
+  "status_response": {
+    "status": "ok",
+    "catalog": {
+      "plans_count": 3,
+      "faq_count": 3,
+      "missing_plan_ids": [],
+      "plan_ids": [
+        "basic",
+        "free",
+        "premium"
+      ],
+      "is_complete": true
+    }
+  }
+}

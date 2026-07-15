@@ -1,0 +1,12 @@
+{
+  "contract_version": "iap-secret-contract-v2",
+  "generated_at": "2026-07-15T23:01:18.936829+00:00",
+  "strict": false,
+  "require_live": false,
+  "production_runtime": false,
+  "apple_enabled": true,
+  "google_enabled": true,
+  "apple_state": "live_ready",
+  "google_state": "live_ready",
+  "failures": []
+}

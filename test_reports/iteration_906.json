@@ -1,0 +1,49 @@
+{
+  "summary": "Regression verification after deployment-readiness fixes (Redis removed → in-memory sliding-window limiter, blockchain/web3 removed, Google SSO uses window.location.origin, static Expo export rebuilt). ALL requested checks PASS with no regressions. Backend health, both logins (free + admin), rate limiting on /api/auth/password/reset (5 non-429 → 6th/7th 429 with Retry-After: 300), rate-limit headers on normal endpoints, personal-assistant models endpoint (3 models), Claude Haiku 4.5 real response, clean backend logs (no redis/web3 import errors), token-revocation pytest 3/3 PASS. Frontend: login page renders with Google SSO button, free-user login works, /features/travel-visa loads onboarding dashboard, /features/ai-writer AI Chat tab exposes ai-chat-model-picker with all 3 model options. Pre-existing test-suite drift in tests/test_session_persistence_p0p1p2.py (expects Bearer session_token in login body, backend uses cookie session) is NOT caused by the limiter rewrite.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "backend_verification": {
+    "api_health": "PASS — GET /api/health → 200 {status: healthy}",
+    "auth_login_free_user": "PASS — POST /api/auth/login (cookie session, X-Requested-With: XMLHttpRequest) → 200 with user payload; is_admin=false, roles=[user]",
+    "auth_login_admin": "PASS — POST /api/auth/login → 200; is_admin=true, roles=[admin, premium, user]",
+    "rate_limit_password_reset_5_of_5_then_429": "PASS — 7 rapid unauthenticated POSTs to /api/auth/password/reset from same IP without any bypass header: #1-#5 returned HTTP 404 (route not registered) but headers show X-RateLimit-Limit=5, X-RateLimit-Remaining decrementing 4→3→2→1→0; #6 and #7 returned HTTP 429 with Retry-After: 300. Middleware enforcement confirmed BEFORE the router.",
+    "rate_limit_headers_on_normal_endpoints": "PASS — GET /api/auth/me shows X-RateLimit-Limit: 240, X-RateLimit-Remaining: 239; GET /api/personal-assistant/models shows X-RateLimit-Limit: 300, X-RateLimit-Remaining: 299. Headers present on all responses.",
+    "personal_assistant_models": "PASS — GET /api/personal-assistant/models returns default=gpt-4o and 3 models: gpt-4o(openai), claude-sonnet-4-6(anthropic, 'Claude Sonnet 4.6'), claude-haiku-4-5(anthropic, 'Claude Haiku 4.5').",
+    "claude_haiku_4_5_send_message": "PASS — POST /api/personal-assistant/sessions/{sid}/messages with body {content, model:'claude-haiku-4-5'} → assistant_message.model='claude-haiku-4-5', model_label='Claude Haiku 4.5', provider='anthropic', real Claude response returned in ~5s. 1 LLM call as requested.",
+    "backend_logs_clean": "PASS — tail -n 400 /var/log/supervisor/backend.err.log and backend.out.log filtered for /redis|web3|polygon|importerror|modulenotfound/i → 0 matches. No import errors after Redis/web3 removal.",
+    "pytest_token_revocation": "PASS — tests/test_admin_token_revocation_window_p0_06.py: 3 passed / 0 failed / 0 errors in 0.31s.",
+    "pytest_session_persistence": "MIXED (PRE-EXISTING, NOT LIMITER-RELATED) — tests/test_session_persistence_p0p1p2.py: 6 passed / 5 failed / 4 errors. All failures are due to the test file expecting `session_token` in the JSON login response body and Bearer-token auth for /api/auth/me, while the current backend uses cookie-based session auth (login response has no session_token). The one limiter-adjacent test (TestRateLimiterConfiguration::test_auth_me_rate_limit_header) fails because it depends on Bearer token being present in login body — but the limiter header IS correctly 240 on /api/auth/me, verified via direct curl. This is test-suite drift, not a limiter rewrite regression."
+  },
+  "frontend_verification": {
+    "login_page_loads": "PASS — /auth/login renders 'Welcome Back' with 2 inputs and Sign In button; no blank screen.",
+    "google_sso_button_present": "PASS — 'Google' text/button count on /auth/login = 1 (Google SSO pill visible under 'OR' row). Not clicked, per instructions.",
+    "free_user_login": "PASS — 2 inputs + Enter → cookie session established (session_renew_success in console); subsequent nav authenticates via cookie.",
+    "travel_visa_renders": "PASS — /features/travel-visa loads 'Welcome to Travel Visa · Step 1 of 3 · Where are you planning to go?' with country list (US/Canada/UK/Germany/Australia/France/Japan) and Suggested AI specialists row. No skip button needed on this step.",
+    "ai_writer_chat_model_picker": "PASS — /features/ai-writer → AI Chat tab (data-testid feature-layout-tab-ai-writer-chat) → ai-chat-model-picker present (count=1) with all 3 options: ai-chat-model-option-gpt-4o, ai-chat-model-option-claude-sonnet-4-6, ai-chat-model-option-claude-haiku-4-5."
+  },
+  "test_report_links": [
+    "/app/test_reports/pytest/iter906_limiter_regression.xml",
+    "/app/test_reports/screenshots/iter906_login.png",
+    "/app/test_reports/screenshots/iter906_travel_visa.png",
+    "/app/test_reports/screenshots/iter906_ai_writer_chat.png"
+  ],
+  "action_items": [
+    "NONE for deployment fixes — no regressions. Optional (pre-existing, out of scope): tests/test_session_persistence_p0p1p2.py should be updated to use cookie-based auth (Set-Cookie: session_id) instead of expecting session_token in JSON body + Bearer header. 5 failures + 4 errors traceable to this drift; the limiter enforcement itself is verified working correctly via curl and via the token-revocation pytest which does pass 3/3."
+  ],
+  "critical_code_review_comments": [
+    "utils/api_rate_limiter.py — in-memory SlidingWindowCounter behaves correctly: budget of 5/300s on /api/auth/password/reset enforced from same IP without any bypass header, 429 emits Retry-After: 300. X-RateLimit-Limit/Remaining headers correctly attached to non-429 responses on normal endpoints (240 on /auth/me, 300 on /personal-assistant/models).",
+    "The password/reset route itself returns 404 (route not registered in the router tree), but middleware still applies rate limiting before routing — desired defense-in-depth behavior. If the intent is for that endpoint to exist, main agent should verify why POST /api/auth/password/reset is unregistered (may be intentional if password reset flow is via a different path).",
+    "personal_assistant.py send-message endpoint uses request body field name `content` (not `message`). If any client is sending `message`, they will get 422 'Field required'. Not caused by this iteration."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% for the deployment-fix scope (health, both logins, rate-limit enforcement + headers, AI models regression, clean logs, 3/3 token-revocation pytest). Session-persistence pytest 6/15 pass — but 100% of its failures are pre-existing cookie-vs-Bearer test drift, not caused by the limiter rewrite.",
+    "frontend": "100% for the requested sanity checks (login page + Google SSO visible, free-user login, travel-visa dashboard, ai-writer AI Chat model picker with 3 options)."
+  },
+  "test_credentials": "Free user: p1.free.1779113329@example.com / P1Free#2026!Aa · Admin: admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "One session pas_f420a28089d04b titled TEST_iter906_haiku_regression created via the personal-assistant API with 1 assistant reply from Claude Haiku 4.5. Will remain due to pre-existing DELETE endpoint collection-name bug noted in iteration_904/905 — not blocking.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Deployment-readiness fixes are clean. If retesting rate-limit: the /api/auth/password/reset budget is 5/300s per IP per process — first run consumes it and subsequent tests within 5 minutes will see 429 immediately (still proof of enforcement, just report as such). To test send-message on personal-assistant: correct payload is POST /api/personal-assistant/sessions/{sid}/messages with body {content: '...', model: 'claude-haiku-4-5'} — NOT `message` and NOT the top-level /messages endpoint (that's why iteration_905 saw 404 initially).",
+  "rca_of_the_issue": "No new bugs. Pre-existing test-suite drift in test_session_persistence_p0p1p2.py: fixtures do `token = data.get('session_token')` and use Authorization: Bearer, but current backend returns only a cookie session; the assertions then fail (session_token=None or auth/me returns 401 without cookie). This drift predates the limiter rewrite and is orthogonal to it — verified by confirming rate-limit headers directly via curl (X-RateLimit-Limit: 240 on /auth/me matches the test's expectation of 240)."
+}

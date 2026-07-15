@@ -1,0 +1,105 @@
+yarn run v1.22.22
+$ node scripts/enforce-exact-expo-pin.js && python3 ../scripts/auto_fixer_corruption_guard.py && node scripts/i18n-seed-safe.js && node scripts/verify-package-json.js && node scripts/payment-picker-viewport-guard.js && node scripts/runtime-crash-sentinel.js --scope=critical && node scripts/theme-build-gate.js && node scripts/theme-token-validity-gate.js && node scripts/nav-lock-sync-gate.js && node scripts/selector-validity-gate.js && node scripts/sidenav-gallery-parity-gate.js && node scripts/pricing-policy-drift-gate.js && METRO_MAX_WORKERS=1 node node_modules/expo/bin/cli export --platform web --max-workers 1 && node scripts/bump-sw.js && node scripts/precompress-assets.js && python3 ../scripts/responsive_layout_gate.py
+[enforce-exact-expo-pin] expo already exact pinned (54.0.34)
+✓ No auto-fixer corruption patterns detected across 960 source files.
+[i18n-seed-safe] non-blocking seed skip: timeout after 45s
+[verify-package-json] ✓ all required scripts resolve to the local expo CLI
+[payment-picker-viewport-guard] PASS
+[footer-route-contract-gate] PASS
+ - Critical contracts checked: 5
+[runtime-crash-sentinel] PASS (critical) — scanned 23 files, no crash signatures found.
+
+🔒 Theme Compliance Build Gate (strict)
+
+   Running local V2 theme audit scanner...
+   Grade: A | Warns: 0 | Fails: 0 | Infos: 1 | Files: 768
+   Report: /app/frontend/.quality/theme_build_gate_report.json
+   ✅ GATE PASSED (strict) — zero warn/fail issues
+
+✅ theme-token-validity-gate passed (728 files scanned, 97 valid tokens, contrast contract OK)
+[nav-lock-sync-gate] PASS — 42 nav items in sync across all locked lists
+[selector-validity-gate] PASS — 955 files scanned, 0 malformed selectors.
+[selector-validity-gate] Report: /app/frontend/.quality/selector_validity_report.json
+[sidenav-gallery-parity-gate] PASS
+ - Sidebar candidates: 17
+ - Registry defaults: 17
+ - Report: /app/frontend/.quality/sidenav_gallery_parity_report.json
+[pricing-policy-drift-gate] scanned=1532 violations=0
+[pricing-policy-drift-gate] report=/app/frontend/.quality/pricing_policy_drift_report.json
+[pricing-policy-drift-gate] PASS: no hardcoded platform pricing literals detected outside approved policy files.
+env: load .env
+env: export EXPO_TUNNEL_SUBDOMAIN EXPO_PACKAGER_HOSTNAME EXPO_PUBLIC_BACKEND_URL REACT_APP_BACKEND_URL REACT_APP_ENABLE_AUTH_GUARD_P0_HARDENING REACT_APP_ENABLE_AUTH_BANNER_P0_CONTRACT REACT_APP_ENABLE_AUTH_CANONICAL_ORIGIN_RECOVERY REACT_APP_ENABLE_AUTH_PRELOGIN_RECOVERY_FLOW REACT_APP_SHOW_AUTH_REQUIRED_BANNER EXPO_USE_FAST_RESOLVER METRO_CACHE_ROOT EXPO_SKIP_CORS_CHECK EXPO_PUBLIC_AZURE_CLIENT_ID EXPO_DEVTOOLS_LISTEN_ADDRESS EXPO_PUBLIC_GOOGLE_SITE_VERIFICATION EXPO_NO_METRO_LAZY EXPO_NO_TYPESCRIPT_SETUP EXPO_PUBLIC_VAPID_KEY EXPO_PACKAGER_PROXY_URL REACT_APP_OTEL_EXPORTER_OTLP_HTTP EXPECTED_PREVIEW_HOST DIST_FORCE_REBUILD BLOCKING_DIST_SELF_HEAL SKIP_STARTUP_PROBE FRONTEND_EXPORT_NODE_OPTIONS
+Starting Metro Bundler
+Static rendering is enabled. Learn more: https://docs.expo.dev/router/reference/static-rendering/
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% ( 28/338)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% ( 67/399)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% ( 95/430)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (124/514)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (152/557)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (207/604)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (231/626)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.0% (2/2)
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (288/829)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.8% ( 15/120)
+ WARN  The package /app/frontend/node_modules/zustand contains an invalid package.json configuration. Consider raising this issue with the package maintainer(s).
+Reason: The resolution for "/app/frontend/node_modules/zustand/middleware.js" defined in "exports" is /app/frontend/node_modules/zustand/esm/middleware.js.mjs, however this file does not exist. Falling back to file-based resolution.
+Web ./index.js ▓▓░░░░░░░░░░░░░░ 17.0% (330/895)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.8% ( 15/120)
+Web ./index.js ▓▓▓▓▓░░░░░░░░░░░ 34.3% ( 637/1088)
+λ node_modules/expo-router/node/render.js ░░░░░░░░░░░░░░░░  4.8% ( 15/120)
+Web ./index.js ▓▓▓▓▓░░░░░░░░░░░ 35.9% ( 657/1097)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 38.8% ( 729/1171)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 40.5% ( 746/1172)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 42.0% ( 763/1177)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓░░░░░░░░░░ 43.7% ( 784/1189)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 44.9% ( 799/1192)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 47.4% ( 872/1267)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓▓░░░░░░░░░ 48.0% ( 974/1408)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 51.0% (1008/1411)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (123/515)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (131/519)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.1% (267/723)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓░░░░░░░░░░░░░░ 17.3% (309/743)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓▓░░░░░░░░░░░░░ 19.4% (339/770)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓▓░░░░░░░░░░░░░ 19.4% (363/847)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓▓░░░░░░░░░░░░░ 19.8% (385/868)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓▓░░░░░░░░░░░░░ 22.2% (436/929)
+Web ./index.js ▓▓▓▓▓▓▓▓░░░░░░░░ 56.0% (1074/1435)
+λ node_modules/expo-router/node/render.js ▓▓▓░░░░░░░░░░░░░ 23.9% (462/949)
+Web ./index.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 56.4% (1081/1440)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 61.1% (1179/1508)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 62.0% (1187/1508)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 62.6% (1193/1508)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 63.1% (1198/1508)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 63.7% (1204/1508)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 64.0% (1280/1648)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)
+Web ./index.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 64.8% (1380/1723)
+λ node_modules/expo-router/node/render.js ▓▓▓▓░░░░░░░░░░░░ 25.8% ( 508/1000)

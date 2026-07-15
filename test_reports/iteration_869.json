@@ -1,0 +1,115 @@
+{
+  "summary": "Iter869 — Full validation of Feature 31 replacement (Problem Solver retired → AI Coaching Team live). All backend E2E (16/16), retirement contracts, tier gating, chat flow with memory + cross-user isolation, daily-quota 429, and regression suite (40/40) pass. Frontend renders correctly for free + admin tiers, /ai-problem-solver → /ai-coaching-team redirect works, sidenav shows 'AI Coaching Team' (no 'Problem Solver' anywhere), mobile 390 stacks full-width. One minor data-hygiene finding: DB /api/features endpoint still returns a stale 'ai-problem-solver' record (feature_number=null, sort_order=30) — non-visible in UI but should be cleaned up.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/features", "issue": "Stale DB record still returned for feature_id='ai-problem-solver' (feature_number=null, route=/ai-problem-solver, sort_order=30). ai-coaching-team correctly occupies slot 31. Not user-visible in current UI (sidenav sources from CORE_SIDENAV_FEATURE_DEFAULTS which is clean), but leaves a client-side foot-gun if any consumer iterates /api/features by feature_id. Recommend a one-shot DB cleanup: db.features.delete_one({feature_id:'ai-problem-solver'})."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "backend_e2e_new_suite": {
+      "path": "/app/backend/tests/test_feature31_coaching_team_e2e.py",
+      "total": 16, "passed": 16, "failed": 0,
+      "coverage": [
+        "Retirement 410 (authed) for /api/ai-solver/categories, /api/ai-problem-solver/sessions GET+POST with full payload {retired,feature,replacement_feature,replacement_route,replacement_api}",
+        "Unauth /api/ai-coaching-team/coaches → 401 (auth middleware precedence, accepted)",
+        "Free-tier /coaches → 4 coaches; career_coach available:true; interview/resume/negotiation available:false; tier=free; all_coaches_unlocked=false",
+        "Free /status → daily_limit=5, used_today>=0, remaining_today=5-used_today, all_coaches_unlocked=false",
+        "Tier gating: free POST negotiation_coach → 402 COACH_LOCKED + upgrade_route=/subscription/plans",
+        "Bogus coach_key → 400",
+        "Chat flow: create session, send message (LLM reply + remaining_today decrement), get session shows role='user' + role='assistant' msgs, memory recall on second msg mentions prior topic",
+        "Session list contains session; admin GET on free user's session_id → 404 (cross-user isolation confirmed)",
+        "DELETE /sessions/{id} → 200 + subsequent GET → 404",
+        "Admin /coaches → all_coaches_unlocked=true, tier=premium, all 4 available",
+        "Admin /status → daily_limit=-1, remaining_today=-1"
+      ]
+    },
+    "backend_daily_quota_exhaust": {
+      "path": "/app/backend/tests/test_feature31_daily_quota_exhaust.py",
+      "total": 1, "passed": 1, "failed": 0,
+      "coverage": ["Free user hits 429 DAILY_LIMIT_REACHED with upgrade_route after ≤ (remaining+2) messages; consumed remaining daily quota to 0"]
+    },
+    "backend_regression_suite": {
+      "paths": [
+        "tests/test_feature31_coaching_team_replacement.py",
+        "tests/test_canonical_feature_order_integrity.py",
+        "tests/test_sidenav_gallery_parity.py",
+        "tests/test_subscription_access_policy_global_lock.py",
+        "tests/test_agent_framework.py"
+      ],
+      "total": 40, "passed": 40, "failed": 0
+    },
+    "feature_registry_check": {
+      "GET /api/features feature_number=31": "ai-coaching-team (route=/ai-coaching-team, premium=true, title='AI Coaching Team') ✓",
+      "stale ai-problem-solver": "still present (feature_number=null, sort_order=30, route=/ai-problem-solver) — see minor issue"
+    },
+    "frontend_e2e_browser": {
+      "login_ux": "Sign-In link on /welcome → /auth/login route; login-email-input / login-password-input / login-submit-button testids work",
+      "redirect": "/ai-problem-solver → /ai-coaching-team (verified via desktop free session)",
+      "free_page": {
+        "coaching-team-page": true,
+        "coaching-team-quota": "'0 messages left today' (quota was drained by backend tests; format correct)",
+        "coach_cards": ["career_coach","interview_coach","resume_specialist","negotiation_coach"],
+        "coach_locked_badges": ["interview_coach","resume_specialist","negotiation_coach"],
+        "upsell": true,
+        "recent_sessions": "Career Coach session tile visible",
+        "sidenav": "AI TOOLS shows 'AI Coaching Team' highlighted; NO 'Problem Solver' text anywhere on page or nav",
+        "locked_card_click": "coach-card-interview_coach → /subscription/plans ✓"
+      },
+      "admin_page": {
+        "coach_cards": 4,
+        "new_session_buttons": 4,
+        "locked_badges": 0,
+        "upsell_visible": false,
+        "quota_text": "∞ messages left today"
+      },
+      "mobile_390": {
+        "coach_cards_visible": 4,
+        "card_width_px": 362,
+        "viewport_px": 390,
+        "layout": "stacks full-width"
+      },
+      "regression": {
+        "/admin/ai-agents": "loads for admin: 55 Agents, 1 Workflow, 11 Executions, 3 Tools stats render",
+        "/executive": "Free user 404 Page Not Found with graceful redirect — no crash, no error class elements (Problem Solver Autonomous Control removal did not break executive route)"
+      }
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_feature31_coaching_team_e2e.py",
+    "/app/backend/tests/test_feature31_daily_quota_exhaust.py",
+    "/app/test_reports/pytest/iter869_coaching_team_e2e.xml",
+    "/app/test_reports/pytest/iter869_regression.xml"
+  ],
+  "action_items": [
+    "OPTIONAL cleanup: remove stale DB record for feature_id='ai-problem-solver' in db.features so /api/features feed is fully consistent with the retirement (feature_number is already null; UI does not surface it, but it's noisy)."
+  ],
+  "critical_code_review_comments": [
+    "/app/backend/routes/ai_coaching_team.py is clean and focused (243 lines, single responsibility). Tier resolution via compute_effective_plan + admin/full_access override is consistent with rest of platform.",
+    "Entitlement lookup uses build_feature_entitlements — correct source of truth. Daily-quota counter stored in coaching_team_usage per (user_id,date) with upsert increment — atomic, correct.",
+    "Chat handler pushes user+assistant messages atomically with $push $slice:-200 (bounded window) → good memory hygiene; execute_agent uses session_id=f'ct-{session_id}' which cleanly namespaces framework memory per coaching session.",
+    "COACH_LOCKED and DAILY_LIMIT_REACHED both include upgrade_route — good UX contract. HTTP 402 vs 429 mapping is semantically correct.",
+    "Cross-user isolation implemented via {user_id: user.user_id} filter on all reads/writes — verified 404 for admin fetching free user's session.",
+    "/app/backend/routes/ai_problem_solver.py retirement stub (38 lines) covers all methods + arbitrary /{path:path} — solid.",
+    "Minor: /api/features still contains stale 'ai-problem-solver' doc. Consider adding a startup migration or explicit db.features.delete_one({feature_id:'ai-problem-solver'}) to feature_registry seeding.",
+    "Frontend page (CoachingTeamPage.tsx) exposes proper testids: coaching-team-page, coaching-team-quota, coach-card-<key>, coach-locked-<key>, coaching-team-upsell, coach-start-<key>, coaching-team-upgrade-cta, coaching-team-upsell-cta — E2E-ready."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_feature31_coaching_team_e2e.py (NEW - 16 HTTP-level tests)",
+    "/app/backend/tests/test_feature31_daily_quota_exhaust.py (NEW - 1 daily-limit 429 test)"
+  ],
+  "success_rate": {
+    "backend": "100% (57/57 = 16 E2E + 1 quota + 40 regression)",
+    "frontend": "100% (all required flows: redirect, page render for free & admin, sidenav swap, locked-card→plans, mobile 390, /admin/ai-agents regression, executive no-crash)"
+  },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (quota fully drained during quota-exhaust test). Admin: admin@realaicoach.app / NewAdminPass2026!",
+  "seed_data_creation": "Created & deleted 1 free-user coaching session in E2E chat flow test. Daily-quota test drove free user's used_today from remaining to 5 (0 remaining). Both auto-cleanup safe (per-day counter resets at UTC day rollover).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature 31 replacement is production-solid on both surfaces. Backend API prefix /api/ai-coaching-team. Free user's daily coaching quota was drained today by iter869 quota-exhaust test — any subsequent frontend chat E2E on p1.free will hit 429 immediately; use admin@realaicoach.app for unlimited flow or wait UTC day rollover. Testids to reuse: coaching-team-page, coaching-team-quota, coach-card-<key>, coach-locked-<key>, coach-start-<key>, coaching-team-upsell, coaching-team-upsell-cta, coaching-team-upgrade-cta, coaching-team-input, coaching-team-send, coaching-team-back-to-coaches, session-row-<id>. Login flow: welcome → Sign In → /auth/login → post-login lands on /. Cloudflare bot challenge appears occasionally; retry navigation with 3s sleep loop. Static export frontend — do NOT modify frontend files (10-min rebuild)."
+}

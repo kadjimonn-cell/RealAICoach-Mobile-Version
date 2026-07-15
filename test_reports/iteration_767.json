@@ -1,0 +1,85 @@
+{
+  "summary": "Welcome Footer 4-style responsive contract verification - PARTIAL PASS. 4/5 viewport tests passed. Critical issue found at 875px width where footer link columns show 3+1 layout instead of expected 2x2 layout.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Footer.tsx - Link Columns Grid",
+        "issue": "At 875px width (compact tablet band 560-879px), footer link columns display 3+1 layout (PRODUCT, RESOURCES, COMPANY on row 1; LEGAL alone on row 2) instead of expected 2x2 layout (2 columns per row)",
+        "selector": "[data-testid='footer-link-columns-grid']",
+        "priority": "HIGH",
+        "root_cause": "The useCompactTabletFooter styles (lines 1390-1398) set flexBasis to compactTabletLinkColumnWidth (370px), but the actual computed style shows flex-basis: 42% which comes from the fallback condition (isTabletBand && !useTabletFourColumnFooter && !useCompactTabletFooter). This suggests the useCompactTabletFooter condition is not being applied correctly or is being overridden.",
+        "affected_widths": ["875px"],
+        "expected_behavior": "2x2 layout with PRODUCT+RESOURCES on row 1, COMPANY+LEGAL on row 2",
+        "actual_behavior": "3+1 layout with PRODUCT+RESOURCES+COMPANY on row 1, LEGAL alone on row 2"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Welcome Footer at 875px",
+        "issues": ["LEGAL column isolated on its own row creates visual imbalance and empty space"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/frontend/e2e/welcome-responsive-contract.spec.ts"
+  ],
+  "action_items": [
+    "Fix Footer.tsx link column styles at 875px - ensure useCompactTabletFooter styles are applied correctly",
+    "Verify the style array order in lines 1368-1420 - the useCompactTabletFooter condition (lines 1390-1398) should set flexBasis to compactTabletLinkColumnWidth (370px) but actual computed style shows 42%",
+    "Check if there's a CSS specificity issue or if the fallback condition (isTabletBand && !useTabletFourColumnFooter && !useCompactTabletFooter) is incorrectly evaluating to true"
+  ],
+  "critical_code_review_comments": [
+    "Line 1404 uses 'width' from useGLSBreakpoint instead of 'footerResponsiveWidth' - this may cause inconsistent behavior between the condition checks and the style values",
+    "The style array in lines 1368-1420 has multiple conditional styles that may conflict - consider consolidating the logic",
+    "At 875px, useCompactTabletFooter should be true (560 <= 875 < 880) but the fallback styles (flex-basis: 42%) are being applied instead of compactTabletLinkColumnWidth (370px)"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "80% (4/5 viewport tests passed)"
+  },
+  "test_credentials": "N/A",
+  "seed_data_creation": "N/A",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The 4-style responsive contract is mostly working but has a critical issue at 875px. Phone (390px), tablet (768px), balanced tablet (1120px), and desktop (1440px) all pass. Only the 875px width fails with 3+1 layout instead of 2x2. The root cause appears to be in Footer.tsx where the useCompactTabletFooter styles are not being applied correctly - the computed flex-basis shows 42% instead of the expected 370px from compactTabletLinkColumnWidth.",
+  "rca_of_the_issue": {
+    "problem": "At 875px, footer link columns show 3+1 layout instead of 2x2",
+    "root_cause": "The useCompactTabletFooter styles (flexBasis: compactTabletLinkColumnWidth = 370px) are not being applied. Instead, the fallback condition styles (flexBasis: 42%) are being used.",
+    "evidence": {
+      "expected_flex_basis": "370px (from compactTabletLinkColumnWidth calculation)",
+      "actual_flex_basis": "42%",
+      "column_positions_at_875px": {
+        "PRODUCT": {"top": 287, "left": 58, "width": 240},
+        "RESOURCES": {"top": 287, "left": 318, "width": 240},
+        "COMPANY": {"top": 287, "left": 578, "width": 240},
+        "LEGAL": {"top": 521, "left": 318, "width": 240}
+      }
+    },
+    "reproduction_steps": [
+      "1. Navigate to /welcome",
+      "2. Set viewport to 875x1024",
+      "3. Scroll to footer",
+      "4. Observe link columns layout - PRODUCT, RESOURCES, COMPANY on row 1; LEGAL on row 2"
+    ],
+    "mitigation": "Review the style array order in Footer.tsx lines 1368-1420 and ensure useCompactTabletFooter condition properly applies its styles without being overridden"
+  },
+  "viewport_test_results": {
+    "phone_390": {"status": "PASS", "layout": "2x2", "rows": 2},
+    "tablet_768": {"status": "PASS", "layout": "2x2", "rows": 2},
+    "mid_875": {"status": "FAIL", "layout": "3+1", "rows": 2, "issue": "Not proper 2x2"},
+    "mid_1120": {"status": "PASS", "layout": "4-col", "rows": 1},
+    "desktop_1440": {"status": "PASS", "layout": "4-col", "rows": 1}
+  },
+  "regression_check": {
+    "social_section_centered": true,
+    "disclaimer_centered": true,
+    "careers_banner_centered": true,
+    "no_horizontal_overflow": true
+  }
+}

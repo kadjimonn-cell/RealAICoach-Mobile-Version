@@ -1,0 +1,27 @@
+{
+  "summary": "FINAL RETEST of BUG2 (Travel Visa onboarding step-3 offscreen) — PORTAL FIX VERIFIED WORKING ✅. Executed the exact requested flow @1920x1080 as free user p1.free.1779113329@example.com: login → cleared travel-visa-onboarding-complete localStorage keys → reloaded /features/travel-visa → onboarding appeared → step1 US → Continue → step2 tourist → Continue → step3. Direct DOM assertions confirm: (1) PORTAL PROOF: [data-testid=\"tv-v2-onboarding-overlay\"] is now a direct child of document.body (parentElement.tagName === 'BODY'). (2) VISIBILITY: level-beginner getBoundingClientRect().y = 203 (in [0..1080] ✅). All three level cards render in correct 3-col layout at y=203, x=480/797/1114, w=305 each. (3) Overlay computed style: position: fixed, zIndex 1200, rect (0,0)–(1920,1080). (4) tv-v2-root.scrollTop = 0 at step 3 (defensive reset also working). (5) After beginner → Get Started: overlay unmounted, main dashboard rendered with 26 images (country flag SVGs + KPI cards visible: Countries=30, Categories=480, Readiness=0%, Plan=FREE). BUG2 is FULLY RESOLVED by the ReactDOM.createPortal(overlay, document.body) fix in TravelVisaMain.tsx (line 588-614) combined with the defensive outer-scrollTop reset in TravelVisaOnboarding.tsx useEffect (line 65-74). Static export bundle index-6c69a5d99d09d24b7dfe71b43a259e3c.js (mtime 00:02) is newer than source (23:52) and contains createPortal references.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iter913_step3.png",
+    "/app/test_reports/iter913_dashboard.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix is clean and canonical. ReactDOM.createPortal to document.body is the correct pattern for full-screen modals inside RN-Web ScrollView hierarchies (which apply identity transforms and hijack position:fixed).",
+    "Defensive scrollTop reset in TravelVisaOnboarding.tsx useEffect is a good belt-and-suspenders safeguard; harmless even if portal handles the issue.",
+    "Minor: pre-onboarding /api/auth/me 401 (bootstrap) and one /api/... 403 during onboarding — pre-existing noise, not introduced by this fix (same as iter_910/911/912)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested per request", "frontend": "100% (1/1 flow passed end-to-end)"},
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (worked). Login lives at /auth/login.",
+  "seed_data_creation": "Cleared travel-visa-onboarding-complete localStorage keys to force onboarding.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "BUG2 is RESOLVED. If any follow-up testing is required on TravelVisa onboarding, note: overlay is now portaled to document.body via ReactDOM.createPortal (TravelVisaMain.tsx L610-613, wrapped in Platform.OS==='web' && typeof document !== 'undefined' check). Native (iOS/Android) still renders overlay in-tree via absolute positioning. Selectors: tv-v2-onboarding-overlay / -country-us / -visa-tourist / -level-beginner|intermediate|expert / -continue / -skip / -back. Login route /auth/login (root redirects to /welcome).",
+  "rca_of_the_issue": "BUG2 RCA (confirmed resolved iter_913): Original bug — RN-Web ScrollView (tv-v2-root) applied identity transform: matrix(1,0,0,1,0,0), which per CSS spec establishes a new containing block for position:fixed descendants, causing the onboarding overlay to be dragged offscreen by outer scrollTop. FIX APPLIED (verified working): (a) The overlay is rendered via ReactDOM.createPortal(overlay, document.body) on web, escaping the transformed ancestor entirely; (b) TravelVisaOnboarding useEffect on currentStep also resets tv-v2-root.scrollTop=0 in setTimeout(0) as defense-in-depth. Verification: overlay.parentElement === document.body (portal working); level-beginner y=203 in viewport (visible); dashboard renders after Get Started."
+}

@@ -1,0 +1,184 @@
+{
+  "started_at": "2026-05-20T13:35:19.338068+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "googleiap.prod.retest.fix.00a6b0fb@gmail.com",
+    "password": "GoogleIAP#2026Aa!",
+    "name": "Google IAP Prod Fix User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_3c7e1fad60f4",
+        "email": "googleiap.prod.retest.fix.00a6b0fb@gmail.com",
+        "name": "Google IAP Prod Fix User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_3c7e1fad60f4",
+        "email": "googleiap.prod.retest.fix.00a6b0fb@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "simulate_basic",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "checks": {
+          "fee_accuracy": true,
+          "notification_latency_under_2s": true,
+          "subscription_active": true,
+          "api_integrity": true
+        },
+        "notification_latency_ms": 250
+      }
+    },
+    {
+      "step": "simulate_premium",
+      "status_code": 200,
+      "body": {
+        "success": true,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "checks": {
+          "fee_accuracy": true,
+          "notification_latency_under_2s": true,
+          "subscription_active": true,
+          "api_integrity": true
+        },
+        "notification_latency_ms": 244
+      }
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_3c7e1fad60f4",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "iap_platform": null
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 2,
+      "latest_payment_notifications": [
+        {
+          "id": "notif_a9ea3ec9bd85",
+          "notification_id": "notif_a9ea3ec9bd85",
+          "user_id": "user_3c7e1fad60f4",
+          "type": "payment_confirmation",
+          "title": "Payment Successful \u2014 Premium Plan Activated",
+          "message": "Payment Successful \u2014 Premium Plan Activated via Google Play.",
+          "read": false,
+          "created_at": "2026-05-20T13:35:21.727955+00:00",
+          "metadata": {
+            "plan": "Premium",
+            "amount": 22.3,
+            "ticket_id": "IAP-20260520-28F32FE3",
+            "payment_method": "Google Play",
+            "currency": "USD",
+            "amount_local": 17.15,
+            "transaction_id": "sim_google_e9814a04deab4f",
+            "transaction_ref": "sim_google_e9814a04deab4f",
+            "tax_amount": 1.16,
+            "amount_gross": 17.15,
+            "amount_net": 17.15,
+            "locale": "en"
+          }
+        },
+        {
+          "id": "notif_b8671d70b4bd",
+          "notification_id": "notif_b8671d70b4bd",
+          "user_id": "user_3c7e1fad60f4",
+          "type": "payment_confirmation",
+          "title": "Payment Successful \u2014 Basic Plan Activated",
+          "message": "Payment Successful \u2014 Basic Plan Activated via Google Play.",
+          "read": false,
+          "created_at": "2026-05-20T13:35:21.436417+00:00",
+          "metadata": {
+            "plan": "Basic",
+            "amount": 8.35,
+            "ticket_id": "IAP-20260520-56162C83",
+            "payment_method": "Google Play",
+            "currency": "USD",
+            "amount_local": 6.42,
+            "transaction_id": "sim_google_8108b061268c4c",
+            "transaction_ref": "sim_google_8108b061268c4c",
+            "tax_amount": 0.43,
+            "amount_gross": 6.42,
+            "amount_net": 6.42,
+            "locale": "en"
+          }
+        }
+      ]
+    },
+    {
+      "step": "db_iap_transactions",
+      "count": 2,
+      "rows": [
+        {
+          "transaction_id": "sim_google_e9814a04deab4f",
+          "amount": 15.99,
+          "amount_gross": 17.15,
+          "amount_usd": 15.99,
+          "base_plan_price": 15.99,
+          "notification_sent": true,
+          "payment_status": "completed",
+          "plan_id": "premium",
+          "total_amount": 22.3,
+          "admin_receipt_sent": true,
+          "receipt_delivery_ok": true,
+          "receipt_number": "RCT-20260520-2028F32FE3",
+          "user_receipt_sent": true
+        },
+        {
+          "transaction_id": "sim_google_8108b061268c4c",
+          "amount": 5.99,
+          "amount_gross": 6.42,
+          "amount_usd": 5.99,
+          "base_plan_price": 5.99,
+          "notification_sent": true,
+          "payment_status": "completed",
+          "plan_id": "basic",
+          "total_amount": 8.35,
+          "admin_receipt_sent": true,
+          "receipt_delivery_ok": true,
+          "receipt_number": "RCT-20260520-2056162C83",
+          "user_receipt_sent": true
+        }
+      ]
+    },
+    {
+      "step": "receipt_pdf_sim_google_e9814a04deab4f",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320062,
+      "body": "binary"
+    },
+    {
+      "step": "receipt_pdf_sim_google_8108b061268c4c",
+      "status_code": 200,
+      "content_type": "application/pdf",
+      "bytes": 320058,
+      "body": "binary"
+    }
+  ],
+  "finished_at": "2026-05-20T13:35:26.322967+00:00"
+}

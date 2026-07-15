@@ -1,0 +1,26 @@
+{
+  "summary": "Iteration_859 bundle-freshness re-verification after main agent rebuilt PaymentHistoryV2 bundle (PaymentHistoryV2-abc53e01a643afcceef7f42ebd1727bc.js, grep confirms 2 matches for canAccessInvoice/invoiceUpgradeNotice). Frontend-only test. Logged in free user p1.free.1779113329@example.com via /welcome -> welcome-nav-signin, navigated to /payment-history, opened detail sheet for txn_a98b73968e034fe7 via payment-history-row-0. All acceptance criteria PASS: (a) invoice buttons view/download/email are DISABLED with aria-disabled=true, opacity=0.45, pointer-events=none; (b) upgrade notice payment-history-detail-invoice-upgrade-notice VISIBLE with text 'Invoice documents require a Basic plan or higher. Upgrade to unlock invoice downloads.'; (c) receipt buttons (view/download/email) also disabled at opacity 0.45 with the Pending gating message 'Receipt actions unlock once the payment status becomes Paid or Completed.'; (d) no app-level console errors, only expected 401/403 network responses from plan-gated endpoints; sheet renders correctly in both light and dark themes.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_858.json",
+    "/app/test_reports/iteration_857.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Bundle freshness verified: /app/frontend/dist/client/_expo/static/js/web/PaymentHistoryV2-abc53e01a643afcceef7f42ebd1727bc.js contains 2 grep hits for canAccessInvoice|invoiceUpgradeNotice; runtime confirms fix is shipped. Consider adding a CI/handoff freshness gate that fails if any src/**/*.{ts,tsx} mtime > dist/index.html mtime to prevent the stale-bundle regression seen in iter_858.",
+    "Runtime i18n key paymentHistory.detail.invoiceUpgradeNotice resolves correctly to the expected English string in both light and dark themes."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "not-tested (per request)", "frontend": "100% (all iteration_858 CRITICAL blockers resolved)" },
+  "test_credentials": "Free: p1.free.1779113329@example.com / P1Free#2026!Aa (txn_a98b73968e034fe7).",
+  "seed_data_creation": "None. Used existing free user + existing pending PayPal payment record.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend was FULLY green in iter_858 (37/37 pytest) and was explicitly out of scope this iteration. Frontend invoice-gating fix is now LIVE — runtime inspection confirms: [data-testid=payment-history-detail-view-invoice-button|download-invoice-button|email-invoice-button] all render with aria-disabled=true and computed opacity=0.45 and pointer-events=none for the free user; [data-testid=payment-history-detail-invoice-upgrade-notice] is present in DOM with text about Basic plan. Receipt buttons continue to reflect Pending gating (opacity 0.45, aria-disabled=true) independently. Bundle hash to check on future rebuild verifications: PaymentHistoryV2-abc53e01a643afcceef7f42ebd1727bc.js (2 grep matches for canAccessInvoice|invoiceUpgradeNotice).",
+  "rca of the issue": "Not applicable — iteration_858 root cause (stale production bundle) has been fully mitigated by main agent's `yarn export:web` rebuild. Runtime inspection now matches source implementation."
+}

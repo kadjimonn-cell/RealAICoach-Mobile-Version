@@ -1,0 +1,58 @@
+{
+  "summary": "iteration_847: Full-stack verification of Travel Visa Certificate polish round 2 (3 user-approved items). BACKEND: 10/10 pytest PASS via http://localhost:8001. Programmatically verified with PyMuPDF (fitz 1.27.1) on GET /api/travel-visa/certificate/download/TV-6B604E13 that: (a) SIGNATURE — an embedded image of 104.0pt x 64.0pt is present in the lower-left quadrant at rect (86.0,421.3,190.0,485.3), satisfying >=100x45pt requirement (x<300, y>380); (b) MASTHEAD — vertical gap between 'RealAICoach' baseline (y1=79.22) and the spaced 'T R A V E L V I S A A C A D E M Y' academy line baseline (y1=102.54) is 23.32pt, satisfying >=20pt requirement (previously ~15pt); (c) REGRESSION — 'Adjimon Kouatonou — Program Director' present, 'VERIFY AUTHENTICITY' spaced label right edge = 755.42pt < 770pt panel edge (no overflow), zero raw ISO timestamps (T\\d{2}:\\d{2}:\\d{2}), month-name issue date 'Issued July 11, 2026' rendered. Public verify endpoint: HTML+JSON both 200 valid for TV-6B604E13, both 404 for unknown IDs. FRONTEND: on http://localhost:3000, admin login via /auth/login form submit succeeds; /features/travel-visa loads; onboarding skipped; tv-v2-tab-certificates active; the NEW button tv-certificate-share-linkedin-TV-6B604E13 renders with 'Partager sur LinkedIn' (French locale) plus the Ionicons logo-linkedin glyph U+F3FE; all 3 pre-existing buttons (download/email/verify) still visible on every card; window.open stub captured the exact URL 'https://www.linkedin.com/feed/?shareActive=true&text=...' whose decoded text contains 'RealAICoach Travel Visa Academy' AND '/api/travel-visa/certificate/verify/TV-6B604E13'; no raw 'travelVisa.certificates.' keys visible; certificate cards render legibly on dark surface (rgb(15,23,42)).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "pdf_content_evidence": {
+    "signature_rect": "(86.0, 421.3, 190.0, 485.3) pt, width=104.0pt, height=64.0pt — lower-left quadrant (x<300, y>380), size >= 100x45pt PASS",
+    "masthead_baseline_gap": "23.32pt (RealAICoach y1=79.22 -> 'T R A V E L V I S A A C A D E M Y' y1=102.54) — >= 20pt PASS",
+    "signatory": "'Adjimon Kouatonou — Program Director' present",
+    "verify_panel_right_edge": "max x1 of VERIFY AUTHENTICITY spans = 755.42pt < 770pt panel edge (14.58pt margin)",
+    "iso_timestamp_hits": "0",
+    "issue_date_format": "'Issued July 11, 2026' (month-name format, no raw ISO)",
+    "embedded_images_on_page": "4 (logo, QR, signature, certified-stamp)"
+  },
+  "frontend_evidence": {
+    "share_button_testid": "tv-certificate-share-linkedin-TV-6B604E13 present",
+    "share_button_label": "'Partager sur LinkedIn' (French — localized correctly via i18n key travelVisa.certificates.shareLinkedIn)",
+    "linkedin_icon_glyph": "Ionicons U+F3FE (logo-linkedin) inside button — visible on screenshot",
+    "regression_buttons_visible": "tv-certificate-download-TV-6B604E13, tv-certificate-email-TV-6B604E13, tv-certificate-verify-TV-6B604E13 — all visible",
+    "captured_share_url_prefix": "https://www.linkedin.com/feed/?shareActive=true&text=...",
+    "decoded_share_text": "\"Je viens d'obtenir un certificat vérifié de RealAICoach Travel Visa Academy — US F1 Student Visa Interview Mastery. Vérifiez-le instantanément : http://localhost:3000/api/travel-visa/certificate/verify/TV-6B604E13\"",
+    "share_text_contains_brand": true,
+    "share_text_contains_verify_link": true,
+    "stray_i18n_keys_visible": false,
+    "dark_mode_card_bg": "rgb(15, 23, 42)"
+  },
+  "curl_evidence": {
+    "POST /api/auth/login (admin, X-Requested-With)": "200",
+    "GET /api/travel-visa/certificate/download/TV-6B604E13": "200 %PDF (parsed with PyMuPDF)",
+    "GET /api/travel-visa/certificate/verify/TV-6B604E13": "200 HTML contains 'VALID CERTIFICATE'",
+    "GET /api/travel-visa/certificate/verify/TV-6B604E13?format=json": "200 valid=true",
+    "GET /api/travel-visa/certificate/verify/TV-DOESNOTEXIST999": "404",
+    "GET /api/travel-visa/certificate/verify/TV-DOESNOTEXIST999?format=json": "404"
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_travel_visa_certificate_polish_round2.py",
+    "/app/test_reports/pytest/iter847_tv_cert_polish_round2.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "travel_visa_ext.py::_generate_certificate_pdf lines 582-599: PIL ImageChops.difference bbox crop with 10pt padding then rescale to 64pt height (max width 150) works as intended — measured 104x64pt on TV-6B604E13, well above the 100x45pt threshold. drawImage sits at y=base_y+36=110pt from bottom which sits directly above the underline at base_y+34; visually the signature now dominates the signature block (was too small pre-fix).",
+    "travel_visa_ext.py lines 490-512: masthead now uses y-26 (previously appeared to be y-15) for the spaced 'TRAVEL VISA ACADEMY' line; measured 23.32pt baseline gap on the rendered PDF — comfortable >= 20pt threshold with a 3pt safety margin. The eyebrow 'CERTIFICATE OF COMPLETION' still starts at y -= 64 below the masthead — no crowding.",
+    "TravelVisaCertificates.tsx line 89-96: onShareLinkedIn correctly encodes localized text (i18n key travelVisa.certificates.sharePost with {course}/{link} placeholders) into the LinkedIn feed composer URL. Falls back to Linking.openURL on native. The verify URL used is `${api.defaults.baseURL}/travel-visa/certificate/verify/${cert_id}` — in test env this evaluates to 'http://localhost:3000/api/travel-visa/certificate/verify/...' which contains the required substring; in production this becomes the public FRONTEND_BASE_URL. No hardcoded URLs.",
+    "TravelVisaCertificates.tsx line 189-192: Share button uses accent styling (colors.primary + primarySoft) consistent with the Download button — visual balance across the 4 action buttons is preserved on dark mode. data-testid + testID both present.",
+    "en.ts i18n keys travelVisa.certificates.shareLinkedIn / sharePost verified to be picked up by other locales (fr shown in test) — no stray 'travelVisa.certificates.' literal keys leak into the DOM."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_travel_visa_certificate_polish_round2.py (new — 10 tests, all PASS)",
+    "/app/test_reports/pytest/iter847_tv_cert_polish_round2.xml (pytest JUnit output)",
+    "/app/test_reports/iteration_847.json (this file)"
+  ],
+  "success_rate": {"backend": "100% (10/10 pytest passed)", "frontend": "100% (all 6 assertions passed)"},
+  "test_credentials": "admin@realaicoach.app / NewAdminPass2026! (user_id user_4b5a68d2f7c6). Backend cookie via POST /api/auth/login + X-Requested-With: XMLHttpRequest. Frontend login via form submit on /auth/login (SIGN IN button — pick the last match to avoid the header 'Sign In' link).",
+  "seed_data_creation": "No new data created — existing TV-6B604E13 certificate (already regenerated by main agent) exercised for both backend PDF assertions and frontend share flow.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend testing uses http://localhost:8001 directly (external URL Cloudflare-challenged). Frontend testing uses http://localhost:3000 (Cloudflare on external URL blocks Playwright automation). Login form on /auth/login has TWO 'Sign In' buttons — a header link and the form submit — pick .last (or button:has-text('SIGN IN') last). Travel Visa page shows an onboarding wizard on first load — dismiss via clicking 'Ignorer' (fr) / 'Skip' (en). Certificates tab data-testid = tv-v2-tab-certificates. Ionicons on RN-Web render as unicode PUA glyphs inside <Text> (NOT <i>/<svg>) — detect via charCodeAt in the 0xE000-0xF8FF range; logo-linkedin = U+F3FE. window.open on web needs to be stubbed BEFORE clicking share to intercept the LinkedIn feed URL. Admin currently has 4 certificates: TV-1E4B4C7A, TV-3B9E5136, TV-8379AE50, TV-6B604E13.",
+  "rca of the issue": "N/A — all 3 polish-round-2 items verified: (1) signature enlarged from small drawing to 104x64pt PNG dominating the signature block (ink-bbox crop + rescale); (2) 'Share on LinkedIn' button wired end-to-end with i18n and window.open capture of exact LinkedIn feed composer URL containing both brand phrase and public verify link; (3) masthead spacing gap grew from ~15pt to 23.32pt (>= 20pt requirement). All prior regressions from iterations 841-846 still pass."
+}

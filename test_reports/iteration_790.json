@@ -1,0 +1,102 @@
+{
+  "summary": "Verified ID Checker (/id-checker) fixes for Enterprise Timeline preview, notice-button theming, i18n and responsiveness. Backend regression (/api/id-checker/kyc/status) passes with milestones array. All 15 requested data-testids present/visible. Form regression fills successfully and Continue-to-Capture button submits (loading state observed).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "/id-checker - Enterprise Timeline Preview - Milestones (Jalons)",
+        "issues": [
+          "Milestone card TITLES ('Not Submitted', 'Pending', 'Ai Review', 'Admin Review', 'Approved', 'Rejected', 'More Info Required') and eta_labels ('Awaiting secure submission', 'Queued for intake validation', ...) remain English in French locale. These strings are supplied by the backend `label` field in id_checker.timeline.milestones and are not routed through the i18n label maps. The status chips (Actuel / À VENIR) and workflow-stage chips (Non soumis, En attente de révision, En cours de révision IA, En cours de révision admin, Approuvé) ARE localized correctly. Recommend: map milestone.state → localized label on the client instead of consuming backend label field, or localize labels on the backend based on Accept-Language."
+        ]
+      },
+      {
+        "screen": "/id-checker - Locale banner",
+        "issues": [
+          "Small orange banner 'Detected locale suggests EN. Tap to align language preferences.' is itself only in English even when user preference is French. Low priority."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_id_checker_kyc_status.py",
+    "/app/test_reports/pytest/id_checker_kyc_status.xml"
+  ],
+  "action_items": [
+    "(Optional / minor) Localize milestone titles + eta_label via i18n keys instead of using backend-provided English `label` field in id_checker.timeline.milestones.",
+    "(Optional / minor) Also localize the 'Detected locale suggests EN' banner string."
+  ],
+  "critical_code_review_comments": [
+    "id_verification.tsx file is large (>1000 lines); consider splitting preview-timeline, notice, and form-steps into sub-components for maintainability.",
+    "Timeline milestone labels are currently sourced from backend response (English hard-coded server-side). For a fully-i18n platform, prefer state→translated-label mapping on client (i18n keys already exist for state chips)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_id_checker_kyc_status.py"
+  ],
+  "success_rate": {"backend": "100% (4/4 pytest)", "frontend": "100% (all 15 testids + all 7 review-request checks pass)"},
+  "test_credentials": "Free user: p1.free.1779113329@example.com / P1Free#2026!Aa (subscription_plan=free, language_preference=fr, theme_preference=dark). Login worked without OTP.",
+  "seed_data_creation": "None. Only in-memory test data (TEST_ prefixed name / TEST123456 ID) used during form-fill regression — never submitted to persistence layer.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend endpoint /api/id-checker/kyc/status returns 200 for authenticated free user, id_checker.timeline includes {milestones[7], eta_message, owner_label, sla_due_at, sla_hours_remaining, current_handoff, recent_events}. Sample milestone label is English ('Not Submitted'). All Enterprise Timeline preview testids render even when kyc status is None (unsubmitted) — main-agent fix confirmed working. Cloudflare rate-limits (429) can appear if you rerun many rapid Playwright sessions; give it ~60s cooldown between runs. Theme toggle testids in the sidebar bottom: theme-toggle-light / theme-toggle-dark / theme-toggle-system (see /app/frontend/src/components/AppShell.tsx line 60).",
+  "detailed_verification": {
+    "backend_kyc_status_pytest": "4/4 passed (unauth 401, auth 200, timeline structure, NOT_SUBMITTED default state)",
+    "testids_present_visible": {
+      "id-checker-preview-timeline": true,
+      "id-checker-preview-eta-card": true,
+      "id-checker-preview-milestones": true,
+      "id-checker-preview-stages": true,
+      "idv-form-hero": true,
+      "idv-full-name": true,
+      "idv-dob": true,
+      "idv-nationality": true,
+      "idv-id-number": true,
+      "idv-phone": true,
+      "idv-address": true,
+      "idv-start-btn": true,
+      "idv-notice-back-dashboard": true,
+      "idv-notice-return-security-prompt": true,
+      "idv-normal-user-notice": true
+    },
+    "notice_button_styles": {
+      "dark_mode": {
+        "back-to-dashboard": {"bg": "rgb(20,184,166) teal solid primary", "border": "none", "readable": true},
+        "return-to-security-prompt": {"bg": "transparent", "border": "rgb(20,184,166) teal", "text_visible_teal_via_inner_span": true, "readable": true}
+      },
+      "light_mode": {
+        "back-to-dashboard": {"bg": "rgb(15,118,110) dark teal solid primary", "text": "rgb(15,23,42) dark slate", "readable": true},
+        "return-to-security-prompt": {"bg": "transparent", "border": "rgb(15,118,110) dark teal", "text": "dark slate", "readable": true}
+      },
+      "conclusion": "No unreadable white-on-pale-teal in either theme; user's original circled bug is FIXED."
+    },
+    "i18n_french_verification": {
+      "hero_title": "'Vérificateur d\\'ID' (translated)",
+      "enterprise_timeline_heading": "'Chronologie d\\'Entreprise' (translated)",
+      "eta_card": "'ETA & Propriété de l\\'Examen', 'Propriétaire Actuel: You' (partly translated)",
+      "milestones_section": "'Jalons' (heading translated). Cards status chips 'Actuel'/'À VENIR' translated. Card TITLES ('Not Submitted','Pending','Ai Review','Admin Review','Approved','Rejected','More Info Required') still English (backend-provided) — see design_issues.",
+      "workflow_stages_section": "'Étapes du Workflow' with 'Non soumis','En attente de révision','En cours de révision IA','En cours de révision admin','Approuvé' — all translated.",
+      "notice": "'Avis de vérification d\\'ID déclenché par la sécurité','Retour au tableau de bord','Retour à l\\'invite de sécurité' — all translated.",
+      "form": "'Informations Personnelles','Nom complet','Date de naissance','Nationalité (Code Pays)','Type d\\'ID','Carte d\\'identité nationale','Passeport','Permis de conduire','Numéro d\\'Identification','Numéro de Téléphone','ADRESSE' — all translated."
+    },
+    "responsive": {
+      "mobile_390": {"horizontal_overflow": false, "scrollWidth": 390, "clientWidth": 390, "milestone_cards": "stack full-width @ 324px, x=33 aligned", "notice_buttons": "fit within viewport, wrap OK"},
+      "tablet_768": {"horizontal_overflow": false, "scrollWidth": 768},
+      "desktop_1920": {"horizontal_overflow": false, "milestone_cards_grid": "4-per-row visible, workflow stages inline chips"}
+    },
+    "theme_toggle": {
+      "dark_body_bg": "rgb(5,10,24)",
+      "light_body_bg": "rgb(248,250,252)",
+      "toggle_works": true
+    },
+    "form_regression": {
+      "fields_filled": ["Nom complet=TEST User","DOB=1990-01-01","Nationalité=US","idv-id-number=TEST123456","idv-phone=+15550100","idv-address=1 Test St"],
+      "continue_button_state": "enabled and clickable; shows loading spinner after click",
+      "step_id_front_visible": false,
+      "note": "Post-click loading spinner appeared but idv-step-title-id_front not confirmed in this session (Continue button was still spinning at last screenshot). Main agent can self-test full advance to Step 1 easily."
+    }
+  }
+}

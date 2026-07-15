@@ -1,0 +1,37 @@
+name: i18n Zero Lock
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/scripts/i18n-missing-keys-baseline.json'
+      - 'frontend/scripts/i18n-zero-lock.js'
+      - 'frontend/src/**'
+      - 'frontend/app/**'
+      - 'frontend/package.json'
+      - '.github/workflows/i18n-zero-lock.yml'
+  push:
+    paths:
+      - 'frontend/scripts/i18n-missing-keys-baseline.json'
+      - 'frontend/scripts/i18n-zero-lock.js'
+      - 'frontend/src/**'
+      - 'frontend/app/**'
+      - 'frontend/package.json'
+      - '.github/workflows/i18n-zero-lock.yml'
+
+jobs:
+  i18n-zero-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enforce i18n baseline zero (hard fail)
+        working-directory: frontend
+        run: node scripts/i18n-zero-lock.js

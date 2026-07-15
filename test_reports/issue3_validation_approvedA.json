@@ -1,0 +1,35 @@
+{
+  "task": "Issue 3 validation-only (Approved A)",
+  "timestamp_utc": "2026-05-25T02:19:55.010238Z",
+  "checkpoint_c": "No code changes executed (validate-only).",
+  "evidence_snapshot": {
+    "error_boundary": {
+      "manual_ui_present": true,
+      "general_runtime_auto_reload_removed": true,
+      "hooks_auto_reload_only": true,
+      "recovery_window_ms": 30000
+    },
+    "language_context": {
+      "non_blocking_indicator": true,
+      "stale_locale_fallback": true,
+      "blocking_overlay": false
+    },
+    "middleware": {
+      "sanitization_scoped_to_auth_only": true
+    }
+  },
+  "backend_tests": {
+    "command": "pytest -q backend/tests/test_issue3_white_screen_guards_contract.py backend/tests/test_issue7_hydration_state_resilience_contract.py backend/tests/test_stale_url_ci_guard.py",
+    "result": "10 passed"
+  },
+  "frontend_tests": {
+    "command": "E2E_BASE_URL=<preview> playwright test core @component suite + screenshot smoke",
+    "result": "9 passed (+ screenshot smoke pass)"
+  },
+  "artifacts": {
+    "playwright_report_dir": "/app/frontend/playwright-report",
+    "playwright_results_dir": "/app/frontend/test-results",
+    "screenshot_console_log": "/root/.emergent/automation_output/20260525_021931/console_20260525_021931.log"
+  },
+  "conclusion": "Issue 3 requested controls are already present and pass validation."
+}

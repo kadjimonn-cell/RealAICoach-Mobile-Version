@@ -1,0 +1,13 @@
+{
+  "contrast_violations": 0,
+  "fails": 0,
+  "files_clean": 406,
+  "files_scanned": 454,
+  "grade": "A",
+  "grade_rank": 5,
+  "infos": 68,
+  "locked_at": "2026-04-20T20:45:58.338207+00:00",
+  "locked_by": "manual",
+  "locked_via": "theme_gate.py --update-baseline",
+  "warns": 0
+}

@@ -1,0 +1,83 @@
+{
+  "summary": "Public visitor paywall routing for /mini-apps/mobile-money PASSED - Unauthenticated visitors are correctly redirected to /auth/register with proper source tracking and return_to context",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "test_1_visitor_redirect_to_register": {
+      "status": "PASS",
+      "route": "/mini-apps/mobile-money",
+      "expected": "/auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money",
+      "actual": "/auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money",
+      "notes": "Unauthenticated visitor correctly redirected to register page instead of /subscription/plans"
+    },
+    "test_2_source_tracking_preserved": {
+      "status": "PASS",
+      "parameter": "source",
+      "expected_value": "mini-apps-mobile-money",
+      "actual_value": "mini-apps-mobile-money",
+      "notes": "Source tracking parameter correctly preserved for analytics"
+    },
+    "test_3_return_to_context_preserved": {
+      "status": "PASS",
+      "parameter": "return_to",
+      "expected_value": "%2Fmini-apps%2Fmobile-money",
+      "actual_value": "%2Fmini-apps%2Fmobile-money",
+      "notes": "Return-to context correctly preserved for post-registration redirect"
+    },
+    "test_4_route_resolves_deterministically": {
+      "status": "PASS",
+      "notes": "Multiple navigations to /mini-apps/mobile-money consistently redirect to the same /auth/register URL"
+    },
+    "test_5_register_page_loads_correctly": {
+      "status": "PASS",
+      "notes": "Register page displays correctly with form fields (Full Name, Email, Password, Confirm Password), social login options (Google, Microsoft, Apple), and plan context indicator"
+    },
+    "test_6_no_protected_route_bypass": {
+      "status": "PASS",
+      "notes": "This change only affects public pre-auth routing; RBAC guardrails remain intact as confirmed by 401 responses for /api/auth/me"
+    }
+  },
+  "code_review": {
+    "miniAppRedirects.ts": {
+      "status": "CORRECT",
+      "notes": "Uses resolveVisitorCtaPath() with isAuthenticated flag and proper fallback to MOBILE_MONEY_VISITOR_REGISTER_FALLBACK"
+    },
+    "visitorCtaPolicy.ts": {
+      "status": "CORRECT",
+      "notes": "Correctly blocks /subscription prefix for unauthenticated visitors and returns fallback path"
+    },
+    "_layout.tsx": {
+      "status": "CORRECT",
+      "notes": "MiniAppRouteRedirector passes isAuthenticated to resolveMiniAppRedirect()"
+    },
+    "mobile-money.tsx": {
+      "status": "CORRECT",
+      "notes": "Uses resolveMiniAppRedirect with isAuthenticated context"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend only test)",
+    "frontend": "100%"
+  },
+  "test_credentials": "None required - visitor-only flows",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Public visitor paywall routing for /mini-apps/mobile-money is working correctly. Unauthenticated visitors are redirected to /auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money instead of /subscription/plans. The implementation uses resolveVisitorCtaPath() in miniAppRedirects.ts with proper fallback handling. RBAC guardrails remain intact - this is only a public pre-auth routing hygiene fix.",
+  "external_preview_verification": {
+    "url": "https://visa-polish-v2.preview.emergentagent.com/mini-apps/mobile-money",
+    "status": "VERIFIED",
+    "final_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money"
+  }
+}

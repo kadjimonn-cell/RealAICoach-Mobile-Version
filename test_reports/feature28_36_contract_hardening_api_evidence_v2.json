@@ -1,0 +1,1046 @@
+{
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "accounts": {
+    "free": {
+      "email": "p1.free.1779113329@example.com",
+      "login_status": 200,
+      "user_id": "user_798c19018cad",
+      "subscription_plan": "free",
+      "token_present": false
+    },
+    "basic": {
+      "email": "f22.basic.20260613@example.com",
+      "login_status": 200,
+      "user_id": "user_f22_f22_basic_20260613",
+      "subscription_plan": "basic",
+      "token_present": false
+    },
+    "premium": {
+      "email": "f22.premium.20260613@example.com",
+      "login_status": 200,
+      "user_id": "user_f22_f22_premium_20260613",
+      "subscription_plan": "premium",
+      "token_present": false
+    },
+    "admin": {
+      "email": "admin@realaicoach.app",
+      "login_status": 200,
+      "user_id": "user_4b5a68d2f7c6",
+      "subscription_plan": "premium",
+      "token_present": true
+    }
+  },
+  "features": {
+    "28_audio_studio": {
+      "free": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/audio-studio/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/audio-studio/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/audio-studio/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/audio-studio/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/audio-studio/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/audio-studio/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      }
+    },
+    "29_my_podcasts": {
+      "free": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/podcasts/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/podcasts/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/podcasts/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/podcasts/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/podcasts/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/podcasts/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      }
+    },
+    "30_sports": {
+      "free": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/sports/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/sports/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/sports/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/sports/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/videos/sports/bootstrap",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "feature_id",
+              "label",
+              "quota",
+              "categories",
+              "total_catalog",
+              "total_visible",
+              "featured_item",
+              "catalog",
+              "locked_premium_picks",
+              "adaptive_next_queue",
+              "behavioral_ai",
+              "ml_pipeline_enabled"
+            ]
+          },
+          {
+            "path": "/api/videos/sports/daily-drop-inbox",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "surface",
+              "total",
+              "unread",
+              "items"
+            ]
+          }
+        ]
+      }
+    },
+    "31_ai_problem_solver": {
+      "free": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/ai-solver/categories",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "categories",
+              "agent_catalog"
+            ]
+          },
+          {
+            "path": "/api/ai-solver/context-sources",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "data_sources",
+              "plan",
+              "plan_policy",
+              "usage_limits",
+              "entitlement_ai",
+              "zero_mock_mode"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/ai-solver/categories",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "categories",
+              "agent_catalog"
+            ]
+          },
+          {
+            "path": "/api/ai-solver/context-sources",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "data_sources",
+              "plan",
+              "plan_policy",
+              "usage_limits",
+              "entitlement_ai",
+              "zero_mock_mode"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/ai-solver/categories",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "categories",
+              "agent_catalog"
+            ]
+          },
+          {
+            "path": "/api/ai-solver/context-sources",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "data_sources",
+              "plan",
+              "plan_policy",
+              "usage_limits",
+              "entitlement_ai",
+              "zero_mock_mode"
+            ]
+          }
+        ]
+      }
+    },
+    "32_ai_briefing": {
+      "free": {
+        "status": "PASS_GATED",
+        "expected_statuses": [
+          403
+        ],
+        "calls": [
+          {
+            "path": "/api/ai-briefing/preferences",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          },
+          {
+            "path": "/api/ai-briefing/today",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/ai-briefing/preferences",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "interests",
+              "industry",
+              "briefing_time",
+              "include_news",
+              "include_tips",
+              "include_motivation"
+            ]
+          },
+          {
+            "path": "/api/ai-briefing/today",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "briefing_id",
+              "user_id",
+              "date",
+              "greeting",
+              "weather_mood",
+              "top_priorities",
+              "learning_picks",
+              "industry_insights",
+              "motivation",
+              "wellness_tip",
+              "fun_fact",
+              "goals_snapshot"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/ai-briefing/preferences",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "interests",
+              "industry",
+              "briefing_time",
+              "include_news",
+              "include_tips",
+              "include_motivation"
+            ]
+          },
+          {
+            "path": "/api/ai-briefing/today",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "briefing_id",
+              "user_id",
+              "date",
+              "greeting",
+              "weather_mood",
+              "top_priorities",
+              "learning_picks",
+              "industry_insights",
+              "motivation",
+              "wellness_tip",
+              "fun_fact",
+              "goals_snapshot"
+            ]
+          }
+        ]
+      }
+    },
+    "33_library": {
+      "free": {
+        "status": "PASS_GATED",
+        "expected_statuses": [
+          403
+        ],
+        "calls": [
+          {
+            "path": "/api/content/library",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/content/library",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "items",
+              "total",
+              "page",
+              "per_page",
+              "total_pages",
+              "categories",
+              "types"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/content/library",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "items",
+              "total",
+              "page",
+              "per_page",
+              "total_pages",
+              "categories",
+              "types"
+            ]
+          }
+        ]
+      }
+    },
+    "34_book_meeting": {
+      "free": {
+        "status": "PASS_GATED",
+        "expected_statuses": [
+          403
+        ],
+        "calls": [
+          {
+            "path": "/api/calendar/status",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          },
+          {
+            "path": "/api/calendar/events/user_798c19018cad",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/calendar/status",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "google_available",
+              "google_connected",
+              "connection_lost",
+              "provider",
+              "auth_endpoint",
+              "sync_mode",
+              "selected_calendar_id",
+              "timezone"
+            ]
+          },
+          {
+            "path": "/api/calendar/events/user_f22_f22_basic_20260613",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "events",
+              "source"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/calendar/status",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "google_available",
+              "google_connected",
+              "connection_lost",
+              "provider",
+              "auth_endpoint",
+              "sync_mode",
+              "selected_calendar_id",
+              "timezone"
+            ]
+          },
+          {
+            "path": "/api/calendar/events/user_f22_f22_premium_20260613",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "events",
+              "source"
+            ]
+          }
+        ]
+      }
+    },
+    "35_integrations": {
+      "free": {
+        "status": "PASS_GATED",
+        "expected_statuses": [
+          403
+        ],
+        "calls": [
+          {
+            "path": "/api/integrations/available",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          },
+          {
+            "path": "/api/integrations/dashboard/stats",
+            "status_code": 403,
+            "ok": true,
+            "sample_keys": [
+              "error",
+              "message",
+              "current_plan",
+              "required_plan",
+              "upgrade_url"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/integrations/available",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "integrations"
+            ]
+          },
+          {
+            "path": "/api/integrations/dashboard/stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "total_candidates",
+              "total_jobs",
+              "candidates_by_source",
+              "jobs_by_source",
+              "candidates_by_stage",
+              "recent_syncs",
+              "active_integrations",
+              "integrations"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/integrations/available",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "integrations"
+            ]
+          },
+          {
+            "path": "/api/integrations/dashboard/stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "total_candidates",
+              "total_jobs",
+              "candidates_by_source",
+              "jobs_by_source",
+              "candidates_by_stage",
+              "recent_syncs",
+              "active_integrations",
+              "integrations"
+            ]
+          }
+        ]
+      }
+    },
+    "36_referrals": {
+      "free": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/referrals/my-stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referral_code",
+              "referral_link",
+              "total_clicks",
+              "total_signups",
+              "active_subscribers",
+              "conversion_rate",
+              "total_earnings",
+              "pending_earnings",
+              "paid_earnings",
+              "monthly_earnings",
+              "commission_rate",
+              "discount_rate"
+            ]
+          },
+          {
+            "path": "/api/referrals/my-referrals",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referrals",
+              "total"
+            ]
+          }
+        ]
+      },
+      "basic": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/referrals/my-stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referral_code",
+              "referral_link",
+              "total_clicks",
+              "total_signups",
+              "active_subscribers",
+              "conversion_rate",
+              "total_earnings",
+              "pending_earnings",
+              "paid_earnings",
+              "monthly_earnings",
+              "commission_rate",
+              "discount_rate"
+            ]
+          },
+          {
+            "path": "/api/referrals/my-referrals",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referrals",
+              "total"
+            ]
+          }
+        ]
+      },
+      "premium": {
+        "status": "PASS",
+        "expected_statuses": [
+          200
+        ],
+        "calls": [
+          {
+            "path": "/api/referrals/my-stats",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referral_code",
+              "referral_link",
+              "total_clicks",
+              "total_signups",
+              "active_subscribers",
+              "conversion_rate",
+              "total_earnings",
+              "pending_earnings",
+              "paid_earnings",
+              "monthly_earnings",
+              "commission_rate",
+              "discount_rate"
+            ]
+          },
+          {
+            "path": "/api/referrals/my-referrals",
+            "status_code": 200,
+            "ok": true,
+            "sample_keys": [
+              "referrals",
+              "total"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "admin": {
+    "30_sports_admin": {
+      "status": "PASS",
+      "status_code": 200,
+      "sample_keys": [
+        "generated_at",
+        "summary",
+        "sources",
+        "auto_replacement_history",
+        "category_curation"
+      ]
+    },
+    "36_referrals_admin": {
+      "status": "PASS",
+      "status_code": 200,
+      "sample_keys": [
+        "total_referrers",
+        "total_clicks",
+        "total_signups",
+        "total_events",
+        "active_subscribers",
+        "conversion_rate",
+        "total_commission_paid",
+        "monthly_recurring_commission",
+        "recent_30d_signups",
+        "recent_7d_signups",
+        "commission_rate",
+        "discount_rate"
+      ]
+    }
+  },
+  "summary": {
+    "28_audio_studio": {
+      "free": "PASS",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "29_my_podcasts": {
+      "free": "PASS",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "30_sports": {
+      "free": "PASS",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "31_ai_problem_solver": {
+      "free": "PASS",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "32_ai_briefing": {
+      "free": "PASS_GATED",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "33_library": {
+      "free": "PASS_GATED",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "34_book_meeting": {
+      "free": "PASS_GATED",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "35_integrations": {
+      "free": "PASS_GATED",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    },
+    "36_referrals": {
+      "free": "PASS",
+      "basic": "PASS",
+      "premium": "PASS",
+      "all_tiers_ok": true
+    }
+  }
+}

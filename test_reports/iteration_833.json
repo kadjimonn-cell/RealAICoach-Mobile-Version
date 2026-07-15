@@ -1,0 +1,41 @@
+{
+  "summary": "Validated i18n auto-translate performance fix (bulk cache lookup + parallel LLM chunks + asyncio.to_thread offload). All 6 backend pytest cases pass; frontend E2E language switch English<->French completes in <0.3s. Event loop remains responsive during large uncached translation batch.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_i18n_auto_translate_perf_fix.py",
+    "/app/test_reports/pytest/i18n_auto_translate_perf_fix.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "utils/llm_helper.py::_send_message_blocking uses asyncio.run(chat.send_message(...)) inside asyncio.to_thread. This works because it spawns a NEW event loop per worker thread — no interference with the main FastAPI loop — but it does create/tear down a fresh loop per LLM call which has small overhead. If throughput becomes an issue later, consider a persistent loop-per-thread pool or migrating emergentintegrations to a true async client. Not blocking for this fix.",
+    "backend/services/auto_translate.py::_safe_batch_chunk_size falls back to 30 on ValueError but defaults to 10 when env is unset, and clamps to [10,250]. Inconsistent fallback (10 vs 30) — minor cosmetic, does not affect correctness.",
+    "backend/routes/i18n.py auto_translate_batch has a burst-cache but no per-user/IP rate limit surfaced; ok for now since batch size is capped at 100."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_i18n_auto_translate_perf_fix.py"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (used for FE E2E)",
+  "seed_data_creation": "None - tests use unique random-suffixed strings (<=155 uncached LLM calls total per full suite run) to avoid measuring burst-cache or persistent Mongo translation_cache.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Regression pytest file: /app/backend/tests/test_i18n_auto_translate_perf_fix.py. It generates fresh random-suffixed English strings each run so each execution costs ~55-90 LLM calls via Emergent LLM key. Perf thresholds: fresh 30-string batch <=15s, cached <=3s, event-loop worst-case /api/health <2s during in-flight translate. If run twice in rapid succession, the 2nd run may see 3-4s /api/health worst-case latency due to lingering LLM thread activity from the previous run — this is a test-order artefact, not a real regression. Run tests individually or with a 10s sleep between suite invocations for cleanest metrics.",
+  "measured_metrics": {
+    "fresh_30_string_batch_french": "5.4-5.6s (target <=15s; historical pre-fix was ~16.6s for 60 strings)",
+    "cached_25_string_batch_french": "0.10-0.11s (idempotent, identical values)",
+    "brand_protected_3_strings_french": "1.55-1.75s (RealAICoach preserved literal in all 3 French outputs)",
+    "event_loop_health_latency_during_50_string_translate": "worst 0.18-0.30s (target <2s)",
+    "background_50_string_translate_time": "~4.5-5.6s",
+    "frontend_en_to_fr_switch": "0.26s (target <3s, no stuck overlay)",
+    "frontend_fr_to_en_switch": "0.25s"
+  },
+  "rca_of_the_issue": "Root cause identified by E1 (main agent) and validated by this test agent: (1) per-string find_one on translation_cache -> replaced with bulk $in lookup (get_cached_translations_bulk) + bulk_write upserts; (2) chunks previously processed serially -> now asyncio.gather with Semaphore(6) concurrency; (3) THE DEEPEST FIX in utils/llm_helper.py::generate_verified_json: the emergentintegrations LlmChat.send_message internally awaits SYNCHRONOUS litellm.completion, blocking the FastAPI event loop and serialising every 'parallel' LLM call. Wrapping it via asyncio.to_thread (through _send_message_blocking) restores true parallelism and keeps /api/health responsive during large batches. Fix confirmed correct: 30 fresh French strings now translate in ~5.5s (was ~16.6s for 60), health stays <300ms during translation."
+}

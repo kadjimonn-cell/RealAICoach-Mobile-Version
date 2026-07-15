@@ -1,0 +1,154 @@
+{
+  "started_at": "2026-05-20T13:21:27.023584+00:00",
+  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "user": {
+    "email": "googleiap.prod.retest.80ea42d3@gmail.com",
+    "password": "GoogleIAP#2026Aa!",
+    "name": "Google IAP Prod User"
+  },
+  "steps": [
+    {
+      "step": "register",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_ebece90eee7b",
+        "email": "googleiap.prod.retest.80ea42d3@gmail.com",
+        "name": "Google IAP Prod User",
+        "roles": [
+          "user"
+        ],
+        "role": "user"
+      }
+    },
+    {
+      "step": "auth_me_initial",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_ebece90eee7b",
+        "email": "googleiap.prod.retest.80ea42d3@gmail.com",
+        "subscription_plan": "free",
+        "subscription_status": "active"
+      }
+    },
+    {
+      "step": "admin_login",
+      "status_code": 200
+    },
+    {
+      "step": "simulate_basic",
+      "status_code": 500,
+      "body": {
+        "success": null,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "notifications": null,
+        "checks": null,
+        "pricing_breakdown": null
+      }
+    },
+    {
+      "step": "simulate_premium",
+      "status_code": 500,
+      "body": {
+        "success": null,
+        "transaction_id": null,
+        "subscription_plan": null,
+        "subscription_status": null,
+        "notifications": null,
+        "checks": null,
+        "pricing_breakdown": null
+      }
+    },
+    {
+      "step": "auth_me_after",
+      "status_code": 200,
+      "body": {
+        "user_id": "user_ebece90eee7b",
+        "email": "googleiap.prod.retest.80ea42d3@gmail.com",
+        "subscription_plan": "premium",
+        "subscription_status": "active",
+        "iap_platform": null
+      }
+    },
+    {
+      "step": "iap_status",
+      "status_code": 200,
+      "body": {
+        "plan": "premium",
+        "status": "active",
+        "platform": "google",
+        "product_id": "com.realaicoach.premium.monthly",
+        "expires_at": "2026-06-19T13:21:29.469724+00:00",
+        "auto_renewing": true,
+        "latest_transaction": {
+          "transaction_id": "sim_google_fca683e81d3248",
+          "platform": "google",
+          "created_at": "2026-05-20T13:21:29.472393+00:00"
+        },
+        "jurisdiction_context": {
+          "country": "US",
+          "state": "",
+          "postal_code": "",
+          "source": {
+            "country": "default",
+            "state": "none",
+            "postal_code": "request_header"
+          },
+          "label": "US"
+        }
+      }
+    },
+    {
+      "step": "notifications_snapshot",
+      "status_code": 200,
+      "payment_notification_count": 0,
+      "latest_payment_notifications": []
+    },
+    {
+      "step": "db_iap_transactions",
+      "count": 2,
+      "rows": [
+        {
+          "transaction_id": "sim_google_fca683e81d3248",
+          "amount": 17.15,
+          "amount_gross": 17.15,
+          "created_at": "2026-05-20T13:21:29.472393+00:00",
+          "currency": "USD",
+          "notification_sent": false,
+          "payment_status": "completed",
+          "plan_id": "premium",
+          "provider": "iap_google",
+          "session_id": "sim_google_fca683e81d3248",
+          "status": "completed"
+        },
+        {
+          "transaction_id": "sim_google_52130754b20d4b",
+          "amount": 6.42,
+          "amount_gross": 6.42,
+          "created_at": "2026-05-20T13:21:29.118231+00:00",
+          "currency": "USD",
+          "notification_sent": false,
+          "payment_status": "completed",
+          "plan_id": "basic",
+          "provider": "iap_google",
+          "session_id": "sim_google_52130754b20d4b",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "step": "receipt_pdf_sim_google_fca683e81d3248",
+      "status_code": 409,
+      "content_type": "application/json",
+      "bytes": 0
+    },
+    {
+      "step": "receipt_pdf_sim_google_52130754b20d4b",
+      "status_code": 409,
+      "content_type": "application/json",
+      "bytes": 0
+    }
+  ],
+  "finished_at": "2026-05-20T13:21:32.806778+00:00"
+}

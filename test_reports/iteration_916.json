@@ -1,0 +1,26 @@
+{
+  "summary": "Iter916 — Verified GTEC directive self-heal fix. 8/8 pytest cases pass. enforce_directive_on_boot() correctly self-heals from packaged canonical copy (/app/backend/assets/gtec_directive_canonical.md → /app/memory/GTEC_DIRECTIVE.md) when the memory file is missing OR truncated (<200 chars). Compliance gate still enforced: RuntimeError raised only when BOTH copies are unavailable (monkeypatched PACKAGED_DIRECTIVE_FILE + memory file removed). Live regression clean: /api/health returns 200, admin login (cookie + X-Requested-With) works, /api/gtec/directive/state reports loaded=true / always_active=true / byte_size=12708, and every API response carries X-GTEC-Directive-Status=ALWAYS-ACTIVE + X-GTEC-Directive-Version headers. Original /app/memory/GTEC_DIRECTIVE.md preserved (byte-identical to packaged copy, 12708 bytes) after test run via finally-block restore.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_gtec_directive_selfheal_iter916.py",
+    "/app/test_reports/pytest/iter916_gtec_selfheal.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "middleware_gtec_directive.py self-heal logic is correct: order (a) missing file → try packaged restore, (b) truncated file → try packaged restore then re-check length, (c) both unavailable → raise. Path resolution uses Path(__file__).resolve().parent which is stable across working directories.",
+    "_restore_directive_from_package() validates packaged copy length (>200 chars) before writing, preventing a bad packaged asset from silently ratifying a corrupted state. Ensures parent dir with mkdir(parents=True, exist_ok=True) — safe in read-only containers only if /app/memory is writable at runtime, which is standard.",
+    "Public route registered under /api prefix at api_router.include_router(gtec_directive_public_router) in server.py:1906, giving final URL /api/gtec/directive/state. Verified live.",
+    "Suggestion (non-blocking): the packaged copy is currently a byte-for-byte snapshot — consider a lightweight CI check (e.g. sha256 comparison in tests) to catch divergence between /app/memory and /app/backend/assets on future edits. Test_packaged_copy_matches_memory_directive already covers this at test time."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_gtec_directive_selfheal_iter916.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "N/A (frontend testing skipped per request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (verified via cookie login + X-Requested-With header)",
+  "seed_data_creation": "None. Tests use snapshot-and-restore pattern for /app/memory/GTEC_DIRECTIVE.md via preserve_directive fixture (finally-block restore of original bytes).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "GTEC directive self-heal fix is production-ready. Packaged canonical copy at /app/backend/assets/gtec_directive_canonical.md (12708 bytes) is currently byte-identical to /app/memory/GTEC_DIRECTIVE.md. When editing the memory copy, remember to sync the packaged asset too (or the packaged-copy-matches-memory pytest assertion will fail). Public state endpoint: GET /api/gtec/directive/state (no auth). Every API response carries X-GTEC-Directive-Status and X-GTEC-Directive-Version headers via GtecDirectiveMiddleware. Live URL: https://visa-polish-v2.preview.emergentagent.com.",
+  "rca of the issue": "Root cause: production Docker image did not include /app/memory (sandbox-only dir), so enforce_directive_on_boot() unconditionally raised RuntimeError, crashing container startup. Fix ships a canonical copy of the directive inside the backend package (/app/backend/assets/gtec_directive_canonical.md) which is always bundled, and adds _restore_directive_from_package() that writes the packaged copy to /app/memory/GTEC_DIRECTIVE.md on-demand. Boot logic now only fails hard if BOTH copies are unavailable — preserving the compliance gate while eliminating the false-positive prod crash."
+}

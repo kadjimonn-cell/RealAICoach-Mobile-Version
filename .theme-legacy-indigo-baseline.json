@@ -1,0 +1,4 @@
+{
+  "count": 0,
+  "notes": "Drained to zero on 2026-04-21. All legitimate indigo/violet usage is marked with `@theme-ok` (inline) or `@theme-audit-file-ok` (file-level), covering premium-tier SubscriptionBadge gradient, payment document export hero gradient, and soft-bg light-mode branches of the ThemeAuditPanel."
+}

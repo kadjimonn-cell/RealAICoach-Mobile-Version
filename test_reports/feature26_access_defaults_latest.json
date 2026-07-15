@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-06-19T13:48:24.705388+00:00",
+  "scope": "feature26_access_defaults_after_rebuild",
+  "locked_protocol": {
+    "feature_number": 26,
+    "feature_id": "jobs-portal"
+  },
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "results": {
+    "free_user": {
+      "actor": "free_user",
+      "login_status": 200,
+      "is_admin": false,
+      "is_employer": false,
+      "role": "user",
+      "roles": [
+        "user"
+      ],
+      "employer_tab_visible": 0,
+      "admin_route_visible_on_direct_open": 0,
+      "employer_onboarding_route_visible": 0,
+      "employer_onboarding_title_visible": 0,
+      "employer_full_route_visible": 0,
+      "employer_full_title_visible": 0,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer"
+    },
+    "admin_user": {
+      "actor": "admin_user",
+      "login_status": 200,
+      "is_admin": true,
+      "is_employer": false,
+      "role": "admin",
+      "roles": [
+        "admin",
+        "premium",
+        "user"
+      ],
+      "employer_tab_visible": 0,
+      "admin_route_visible_on_direct_open": 0,
+      "employer_onboarding_route_visible": 0,
+      "employer_onboarding_title_visible": 0,
+      "employer_full_route_visible": 0,
+      "employer_full_title_visible": 0,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer"
+    },
+    "approved_employer_fixture": {
+      "actor": "approved_employer_fixture",
+      "login_status": 200,
+      "is_admin": false,
+      "is_employer": false,
+      "role": "premium",
+      "roles": [
+        "premium",
+        "user"
+      ],
+      "employer_tab_visible": 0,
+      "admin_route_visible_on_direct_open": 0,
+      "employer_onboarding_route_visible": 0,
+      "employer_onboarding_title_visible": 0,
+      "employer_full_route_visible": 0,
+      "employer_full_title_visible": 0,
+      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer"
+    }
+  },
+  "verdicts": {
+    "non_admin_no_admin_surface": true,
+    "non_admin_employer_tab_visible": false,
+    "non_admin_onboarding_first": false,
+    "approved_employer_full_access": false,
+    "admin_still_has_admin_surface": false
+  },
+  "overall_verdict": "fail"
+}

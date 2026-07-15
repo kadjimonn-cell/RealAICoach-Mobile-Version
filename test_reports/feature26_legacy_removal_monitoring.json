@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-06-16T19:54:14.068131+00:00",
+  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "feature_number": 26,
+  "feature_id": "jobs-portal",
+  "login_status": 200,
+  "queries": [
+    {
+      "label": "strict_default",
+      "query": "mode=strict_zero&exclude_synthetic=false",
+      "status_code": 200,
+      "summary": {
+        "mode": "strict_zero",
+        "exclude_synthetic": false,
+        "sustained_gate_met": false,
+        "ready_for_legacy_code_removal": false,
+        "recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+        "failing_windows": [
+          {
+            "window_label": "72h",
+            "lookback_hours": 72,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          },
+          {
+            "window_label": "7d",
+            "lookback_hours": 168,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          },
+          {
+            "window_label": "14d",
+            "lookback_hours": 336,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          },
+          {
+            "window_label": "30d",
+            "lookback_hours": 720,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "near_zero_default",
+      "query": "mode=near_zero&exclude_synthetic=false&near_zero_max_events=5&near_zero_max_active_users=2",
+      "status_code": 200,
+      "summary": {
+        "mode": "near_zero",
+        "exclude_synthetic": false,
+        "sustained_gate_met": false,
+        "ready_for_legacy_code_removal": false,
+        "recommended_action": "Continue monitoring legacy telemetry windows before hard route removal.",
+        "failing_windows": [
+          {
+            "window_label": "72h",
+            "lookback_hours": 72,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          },
+          {
+            "window_label": "7d",
+            "lookback_hours": 168,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          },
+          {
+            "window_label": "14d",
+            "lookback_hours": 336,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          },
+          {
+            "window_label": "30d",
+            "lookback_hours": 720,
+            "failing_families": [
+              {
+                "route_family": "jobs",
+                "total_events": 7,
+                "active_users": 2
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
