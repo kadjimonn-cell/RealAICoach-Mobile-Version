@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /app/backend/routes -name \"*.py\" -type f -exec grep -l \"eval\\\\|exec\\\\|__import__\" {} \\\\;)"
+    ]
+  }
+}

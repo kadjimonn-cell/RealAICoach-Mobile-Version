@@ -12,6 +12,7 @@ import argparse
 import asyncio
 import json
 import re
+import shutil
 import sys
 import time
 from datetime import datetime, timezone
@@ -527,6 +528,16 @@ async def run(
     }
 
 
+def _prune_artifact_runs(keep: int = 10) -> None:
+    """Retention: keep only the newest `keep` run dirs to prevent disk exhaustion."""
+    try:
+        runs = sorted(d for d in ARTIFACT_BASE.iterdir() if d.is_dir())
+        for old in runs[:-keep] if len(runs) > keep else []:
+            shutil.rmtree(old, ignore_errors=True)
+    except FileNotFoundError:
+        pass
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="GTEC C5 white-screen sentry")
     parser.add_argument("--base-url", required=True)
@@ -583,6 +594,7 @@ def main() -> None:
 
     out_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(json.dumps(payload, indent=2))
+    _prune_artifact_runs(keep=10)
 
     if args.strict_exit and not bool(payload.get("white_screen_gate_passed")):
         raise SystemExit(1)
