@@ -367,3 +367,9 @@ KNOWN NOISE (pre-existing, non-blocking): /api/auth/me 401/403 console noise bef
 - Prod Cloud Build fails at InitialDeploy.BuildImage with opaque terminal error; static scans pass → likely platform-side build template issue (previously escalated).
 - Code-level de-risking applied: (1) CORS_ORIGINS="*" added to backend/.env (deploy-scanner convention; runtime CORS uses ALLOWED_ORIGINS allowlist in middleware.py — unchanged, verified); (2) /app/frontend/scripts/build.js rewritten to emit STANDARD static-site layout (root index.html + per-route htmls + assets, client/+server/ flattened, server htmls overlay client); (3) server.js resolveRouteHtml probes both layouts.
 - Verified: testing_agent iteration_920 (5/5) — build output, both serving layouts, CORS regression, preview regression.
+
+## 2026-07-16 — Save to GitHub Failure: Git Repo Repaired (Root Cause of All Deploy Issues)
+- ROOT CAUSE: /app/.git/objects was a symlink to /tmp/git-objects-* (May 6, disk-space hack); /tmp wipe destroyed the object DB → 'fatal: not a git repository' → Save to GitHub 500, silent platform auto-commit failures, and STALE production deploy snapshots.
+- FIX: symlink removed, real objects dir recreated, stale index/refs/logs cleared, fresh initial commit eae27c9 (13,367 files, 189MB pack, largest file 9.8MB). Old local history unrecoverable (user accepted).
+- RULE: NEVER symlink .git contents to /tmp.
+- Verified: testing_agent iteration_921 (100% — fsck clean, commit-ability, content sanity, services regression).
