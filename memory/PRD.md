@@ -1373,3 +1373,9 @@ MINOR BACKLOG: /blog (and /gdpr, /language-selector, /privacy-request) are stand
 - Endpoints verified: /api/iap/admin/simulate-production-e2e, /api/admin/payments/simulate-{stripe,paypal,fedapay}-production-e2e, bonus /api/webhook-events/simulate.
 - Matrix: anon=403, non-admin(valid body)=403, garbage bearer=401/403, admin passes guard. Regression suite: /app/backend/tests/test_payment_simulate_admin_guard.py.
 - Minor (optional, backlog): body validation (422) precedes manual admin check on empty body → leaks schema field names; suggestion: promote inline guard to Depends(require_admin). Not a security bypass.
+
+## 2026-07-16 — Schema-Leak Fix: 403-before-422 on Simulate Endpoints (Checkpoint A-D approved 'a'; VERIFIED testing_agent iteration_927: 35/35, 100%)
+- RCA: inline admin guards ran AFTER FastAPI Pydantic body validation → non-admins with empty bodies got 422 exposing request-schema field names.
+- Fix: promoted inline guards to `Depends(require_admin)` (routes/db.py:773 — adds security-event logging + admin risk-profile enforcement) on all 5 endpoints: iap.py, payments_stripe_routes.py, payments_paypal_routes.py, payments_fedapay_routes.py, team_analytics.py (webhook-events/simulate).
+- Result: anon/non-admin empty body → 401/403 (no schema leak); admin passes guard (422 payment endpoints / 200 webhook). Regression suites: tests/test_payment_simulate_admin_guard.py (20) + tests/test_payment_simulate_schema_leak_fix.py (15).
+- Backlog item "optional require_admin Depends refactor" from iteration_926 is now DONE.
