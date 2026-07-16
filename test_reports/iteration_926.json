@@ -1,0 +1,46 @@
+{
+  "summary": "Security verification: all 4 payment simulate endpoints + bonus webhook-events/simulate are admin-only. 20/20 pytest cases passed. Anonymous, non-admin, and garbage-token requests are all blocked; admin passes the auth guard. No security bypass found.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/iap/admin/simulate-production-e2e",
+        "issue": "When a non-admin sends an EMPTY body, FastAPI's Pydantic body validation runs BEFORE the manual admin check, returning 422 (field required) instead of 403. When a valid-shaped body is sent, the admin check correctly returns 403. Not a security bypass (endpoint is still admin-only), but the ordering leaks the request-schema field names to non-admins. Suggestion: move admin check to a FastAPI Depends() so it runs before body validation, OR mirror Stripe/PayPal/FedaPay handlers (they also fail this way for empty body but with fewer required fields; test used valid bodies for all to normalize)."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_payment_simulate_admin_guard.py",
+    "/app/test_reports/pytest/payment_simulate_admin_guard.xml"
+  ],
+  "action_items": [
+    "OPTIONAL / DEFENCE-IN-DEPTH: consider promoting the inline `get_current_user + is_admin` check to a FastAPI dependency (e.g. `Depends(require_admin)`) so 403 is emitted before body validation. Not a functional bug; endpoints ARE admin-gated today."
+  ],
+  "critical_code_review_comments": [
+    "All 5 endpoints use the SAME inline admin-guard pattern (`admin = await get_current_user(request); if not admin or not admin.is_admin: raise 403 Admin access required`) — consistent and correct.",
+    "Consider extracting into a shared `require_admin` FastAPI dependency to reduce duplication across iap.py / payments_stripe_routes.py / payments_paypal_routes.py / payments_fedapay_routes.py / team_analytics.py.",
+    "Body validation runs before manual guard checks in FastAPI. If you want 403 to precede 422 for non-admins, use `Depends()`-based guards."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_payment_simulate_admin_guard.py (new file)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "N/A (skipped per request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / Rt#vzsuRlMXGvOF!7a ; Free user: p1.free.1779113329@example.com / Rt#Fhtx0loztn7Y!7a (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The pytest suite /app/backend/tests/test_payment_simulate_admin_guard.py can be re-run any time as a regression check for admin-only enforcement on the payment simulate endpoints. It logs in with two accounts (admin + free) and covers 4 legs per endpoint: anon-blocked, non-admin-blocked, admin-passes-guard, and garbage-bearer-blocked. Valid-shaped request bodies are used so Pydantic 422 does not preempt the manual 403 check.",
+  "verification_matrix": {
+    "/api/iap/admin/simulate-production-e2e":                     {"anon": "403", "non_admin_valid_body": "403", "admin_empty_body": "422 (passed guard)", "garbage_token": "401/403"},
+    "/api/admin/payments/simulate-stripe-production-e2e":         {"anon": "403", "non_admin_valid_body": "403", "admin_empty_body": "422 (passed guard)", "garbage_token": "401/403"},
+    "/api/admin/payments/simulate-paypal-production-e2e":         {"anon": "403", "non_admin_valid_body": "403", "admin_empty_body": "422 (passed guard)", "garbage_token": "401/403"},
+    "/api/admin/payments/simulate-fedapay-production-e2e":        {"anon": "403", "non_admin_valid_body": "403", "admin_empty_body": "422 (passed guard)", "garbage_token": "401/403"},
+    "/api/webhook-events/simulate":                                {"anon": "403", "non_admin_valid_body": "403", "admin_empty_body": "4xx (passed guard)", "garbage_token": "401/403"}
+  },
+  "rca of the issue": "N/A — no vulnerability found. Independent verification via 20-case pytest suite CONFIRMS main agent's audit: all payment simulate endpoints are admin-only in the live preview environment."
+}
