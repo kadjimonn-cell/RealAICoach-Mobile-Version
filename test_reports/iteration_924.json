@@ -1,0 +1,49 @@
+{
+  "summary": "Admin Console REAL-DATA verification (iter924). Backend: 23/23 pytest tests pass — /api/admin/overview, /api/admin/subscriptions/analytics, /api/admin/ai/monitor, /api/admin/billing/overview and observability heartbeats all return DB-derived JSON whose values match direct MongoDB ground truth queries exactly (users total=857, premium=2, basic=1, free=854, revenue=$8082.38 across 210 payments; sso_callback_liveness_daily heartbeat present). Non-admin free user (p1.free.*) blocked with 401/403 on all admin endpoints; anonymous also blocked. Frontend: admin login flow works end-to-end, /admin-console loads Operations Console with real numbers (Duplication Drift 57.06% 1239/17/2201, Global Parity PASS 22/2 fail, Live Alerts 12), /admin/llm-billing shows real cost telemetry ($0.0017 today / $1.9662 MTD / 21,980 calls / real model+feature cost breakdown), /admin/email-delivery-ledger shows real recipients (admin@realaicoach.app, p1.free.1779113329@example.com) with real idempotency + timestamps, /admin/observability-center shows real samples (3854 LCP/CLS samples, 3172 security events, 16 SIEM open, real correlation coverage). NO placeholder / lorem / TODO / mock strings found on the loaded panels. HOWEVER — /admin/subscription-dashboard is BROKEN with a JS runtime error 'ReferenceError: s is not defined' (crashes to error-boundary), so its real-data content cannot be verified in the UI even though the backing API /api/admin/subscriptions/analytics returns correct DB-matched data.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "/admin/subscription-dashboard (SubscriptionDashboard screen, /app/frontend/app/admin/subscription-dashboard.tsx, 921 lines)",
+        "issue": "Screen crashes to error-boundary with 'ReferenceError: s is not defined' on load. Bundled JS trace: index-d687888ab612f63525bb4d9898eb6757.js:1979:12152 -> Y -> Ha. UI shows generic 'Something went wrong / ERROR DETAILS: s is not defined / Reload Page / Try Again'. Since the backing endpoints (/api/admin/subscriptions/analytics, /api/admin/payment-analytics/subscriptions/*) all return 200 with correct DB-matched data, this is purely a frontend rendering bug — likely a variable referenced in a hook or callback before declaration, or a minifier-hoisting issue in the 921-line file.",
+        "selector": "route:/admin/subscription-dashboard (error boundary text 'ERROR DETAILS s is not defined')",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_console_real_data_iter924.py",
+    "/app/test_reports/pytest/iter924_admin_console_real_data.xml"
+  ],
+  "action_items": [
+    "FIX /admin/subscription-dashboard runtime error 'ReferenceError: s is not defined'. Grep /app/frontend/app/admin/subscription-dashboard.tsx for out-of-scope identifiers (likely a state setter or a helper used inside a closure before its declaration, or a stale name after a rename). Repro: log in as admin -> navigate to /admin/subscription-dashboard -> error boundary is rendered instead of the dashboard. Once fixed, the API side is already correct (verified in TestSubscriptionAnalyticsMatchesDB).",
+    "OPTIONAL: /api/auth/me is called once BEFORE the session cookie is set at startup (401), then re-called after login (200). This is intentional bootstrap probing, but if you want to silence the noisy 'Failed to load resource: 401' console error, gate the first /api/auth/me until cookie hydration completes."
+  ],
+  "critical_code_review_comments": [
+    "/api/admin/overview aggregates users + payments in a single pipeline; matches DB exactly (857/2/1/854/0 + $8082.38/210). Good.",
+    "/api/admin/subscriptions/analytics correctly derives subscribers, revenue (status=completed only), monthly_trend, and churn from real collections — no hardcoded fallbacks.",
+    "/api/admin/ai/monitor counts search_logs / playback_events / conversations from three collections; currently all 0 in this env (which is an honest empty state, not fabrication).",
+    "SubscriptionDashboard screen at /app/frontend/app/admin/subscription-dashboard.tsx is 921 lines — recommend splitting into smaller focused sub-components (>700-line guideline). The 's is not defined' error is very likely a symptom of a monolithic file with tangled scope.",
+    "/admin/security is a thin deeplink to /admin-console?category=security — correct pattern, no rendering issues.",
+    "iter923 heartbeat (sso_callback_liveness_daily) is present in scheduler_heartbeats with status=healthy — surfaced correctly in observability-center's Correlation Coverage.",
+    "Free user account (p1.free.1779113329@example.com) properly returns 403 on all /api/admin/* endpoints; anonymous returns 401. RBAC verified."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_admin_console_real_data_iter924.py"
+  ],
+  "success_rate": {
+    "backend": "100% (23/23 pytest, all admin analytics DB cross-checks match ground truth exactly)",
+    "frontend": "~83% — 5 of 6 key admin screens load real data cleanly; /admin/subscription-dashboard crashes to error boundary"
+  },
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! (worked). Free p1.free.1779113329@example.com / P1Free#2026!Aa (worked, correctly blocked from admin).",
+  "seed_data_creation": "None — used live DB + live cookie auth. No test users or docs created.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend admin-analytics side is fully green and DB-matched — /api/admin/overview, /api/admin/subscriptions/analytics, /api/admin/billing/overview, /api/admin/ai/monitor all match Mongo ground truth exactly and 4 hard DB cross-checks were performed (total users, plan distribution, revenue/payments, AI counters). The ONE thing to retest after the main agent fixes the SubscriptionDashboard bug is: (a) reload /admin/subscription-dashboard as admin — should render without error boundary, (b) confirm the numbers on screen match what /api/admin/subscriptions/analytics returns (see TestSubscriptionAnalyticsMatchesDB for the exact expected values). Also, 227 admin panel components exist — only the primary Operations Console tabs + the 5 listed key screens were exercised. A future iteration can sweep the remaining Operations Console tabs (Growth, Hiring, Revenue, Security, Platform) individually by clicking each in the sidebar Progress Map.",
+  "rca of the issue": "SubscriptionDashboard crash — ROOT CAUSE (probable, not confirmed by opening the file): a minified variable name collision or a reference-before-declaration inside the 921-line /app/frontend/app/admin/subscription-dashboard.tsx. The error 's is not defined' surfaces at bundled index-<hash>.js:1979:12152 inside functions Y and Ha (both are minified names of React components in this file). REPRO: 1) login as admin@realaicoach.app, 2) GET /admin/subscription-dashboard, 3) observe the error-boundary UI ('Something went wrong / ERROR DETAILS: s is not defined'). MITIGATION for main agent: grep the file for `s` used as an identifier outside of a declared scope (setState 's', function param 's', etc.), or split the file into smaller components. The backend contract is correct — do NOT change /api/admin/subscriptions/analytics; only fix the client-side render path."
+}

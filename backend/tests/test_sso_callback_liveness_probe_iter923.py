@@ -169,7 +169,7 @@ class TestMismatchAutofixAndAlert:
         assert active_base, "SSO_REDIRECT_BASE_URL / FRONTEND_BASE_URL not configured"
 
         original_env_text = ENV_PATH.read_text(encoding="utf-8")
-        original_os_value = os.environ.get("MS_SSO_REGISTERED_REDIRECT_URIS", "")
+        os.environ.get("MS_SSO_REGISTERED_REDIRECT_URIS", "")
 
         # Mutate: drop active base, keep only realaicoach.app
         mutated_value = "https://realaicoach.app"
