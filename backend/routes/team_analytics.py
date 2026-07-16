@@ -1,8 +1,8 @@
 """Team Analytics & Webhook Event Stream APIs."""
 
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Depends, Request, HTTPException
 from datetime import datetime, timezone, timedelta
-from .db import db, require_auth
+from .db import db, require_auth, require_admin
 
 router = APIRouter(prefix="/team-analytics", tags=["Team Analytics"])
 
@@ -86,11 +86,8 @@ async def get_webhook_event_stream(request: Request, limit: int = 50, integratio
 
 
 @webhook_event_router.post("/simulate")
-async def simulate_webhook_event(request: Request):
+async def simulate_webhook_event(request: Request, user=Depends(require_admin)):
     """Simulate a webhook event for testing."""
-    user = await require_auth(request)
-    if not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin only")
     import random
 
     event_types = [

@@ -18,7 +18,7 @@ import uuid
 from urllib.parse import urlparse
 
 import httpx
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from pymongo import ReturnDocument
@@ -43,7 +43,7 @@ from utils.tax_compliance_engine import (
     resolve_product_type,
 )
 
-from .db import db, get_current_user, require_admin_or_employee_permission
+from .db import db, get_current_user, require_admin, require_admin_or_employee_permission
 from .payments_catalog import get_subscription_plan_from_gps, require_paid_subscription_plan
 from .subscription_enforcement import dispatch_subscription_expiry_notification
 
@@ -1988,11 +1988,7 @@ class FedaPaySimulationRequest(BaseModel):
 
 
 @router.post("/admin/payments/simulate-fedapay-production-e2e")
-async def simulate_fedapay_production_e2e(body: FedaPaySimulationRequest, request: Request):
-    admin = await get_current_user(request)
-    if not admin or not admin.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
+async def simulate_fedapay_production_e2e(body: FedaPaySimulationRequest, request: Request, admin=Depends(require_admin)):
     plan_id = str(body.plan or "premium").lower()
     period = str(body.period or "monthly").lower()
     if period not in {"monthly", "yearly"}:

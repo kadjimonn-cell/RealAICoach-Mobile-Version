@@ -13,11 +13,11 @@ import os
 import uuid
 
 import httpx
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 from utils.email_service import is_email_configured
-from .db import db, get_current_user
+from .db import db, get_current_user, require_admin
 from .payments_catalog import get_subscription_plan_from_gps, require_paid_subscription_plan
 from .payments_pricing_guard import safe_amount_value as _safe_amount_value
 from .payments_simulation_core import ProviderSimulationRequest, run_provider_payment_simulation
@@ -1017,10 +1017,7 @@ class PayPalSimulationRequest(ProviderSimulationRequest):
 
 
 @router.post("/admin/payments/simulate-paypal-production-e2e")
-async def simulate_paypal_production_e2e(body: PayPalSimulationRequest, request: Request):
-    admin = await get_current_user(request)
-    if not admin or not admin.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
+async def simulate_paypal_production_e2e(body: PayPalSimulationRequest, request: Request, admin=Depends(require_admin)):
     return await run_provider_payment_simulation(
         body,
         provider="paypal",

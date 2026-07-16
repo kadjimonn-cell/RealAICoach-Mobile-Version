@@ -1,0 +1,40 @@
+{
+  "summary": "SCHEMA-LEAK FIX VERIFIED. Promoted inline admin guards to Depends(require_admin) on all 5 payment/webhook simulate endpoints. New pytest suite (15 cases) + prior regression suite (20 cases) = 35/35 PASS. Anon and non-admin free user now receive 401/403 (never 422) for empty bodies, and no Pydantic body-validation schema field names leak. Admin positive control confirms guard still passes admin through: 422 on the 4 payment endpoints (empty body -> Pydantic validation) and 200 on webhook (no required body).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_payment_simulate_admin_guard.py",
+    "/app/backend/tests/test_payment_simulate_schema_leak_fix.py",
+    "/app/test_reports/pytest/iter927_schema_leak_fix.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fix implementation is clean and idiomatic — Depends(require_admin) is the canonical FastAPI pattern for auth-before-body-validation.",
+    "All 5 endpoints now share the same guard (routes/db.py:773 require_admin), which enforces admin risk profile and emits admin_access_denied security events on failure.",
+    "Non-admin non-anon on /api/webhook-events/simulate hits upstream subscription-tier middleware first (returns a 'Subscription Required' 403 with current_plan/required_plan text). This is orthogonal to the schema-leak fix — still 403 (not 422), and the 'plan' text refers to subscription tier, not the endpoint's request schema. Not a security regression."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_payment_simulate_schema_leak_fix.py (new file with 15 cases for the schema-leak fix)"
+  ],
+  "success_rate": {"backend": "100% (35/35)", "frontend": "N/A (skipped per request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / Rt#vzsuRlMXGvOF!7a ; Free user: p1.free.1779113329@example.com / Rt#Fhtx0loztn7Y!7a",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Two pytest files now protect the 5 payment/webhook simulate endpoints: (1) test_payment_simulate_admin_guard.py — canonical admin-only regression from iter_926 (20 cases with valid-shaped bodies); (2) test_payment_simulate_schema_leak_fix.py — iter_927 fix verification (15 cases with EMPTY bodies). Run both together as one suite for full coverage. Both use REACT_APP_BACKEND_URL from frontend/.env.",
+  "verification_matrix": {
+    "/api/iap/admin/simulate-production-e2e":              {"anon_empty": "401 (no leak)", "non_admin_empty": "401 (no leak)", "admin_empty": "422 (guard passed)"},
+    "/api/admin/payments/simulate-stripe-production-e2e":  {"anon_empty": "403 (no leak)", "non_admin_empty": "403 (no leak)", "admin_empty": "422 (guard passed)"},
+    "/api/admin/payments/simulate-paypal-production-e2e":  {"anon_empty": "403 (no leak)", "non_admin_empty": "403 (no leak)", "admin_empty": "422 (guard passed)"},
+    "/api/admin/payments/simulate-fedapay-production-e2e": {"anon_empty": "403 (no leak)", "non_admin_empty": "403 (no leak)", "admin_empty": "422 (guard passed)"},
+    "/api/webhook-events/simulate":                        {"anon_empty": "401 (no leak)", "non_admin_empty": "403 subscription (no schema leak)", "admin_empty": "200 (handler reached)"}
+  },
+  "rca of the issue": "N/A — the fix (Depends(require_admin)) is behaving exactly as designed. Auth guard now runs before Pydantic body validation, so empty bodies from anon/non-admin get 401/403 with a generic auth error envelope instead of a 422 that would echo request-schema field names."
+}

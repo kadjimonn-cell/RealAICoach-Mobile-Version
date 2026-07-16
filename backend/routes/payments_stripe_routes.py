@@ -12,13 +12,13 @@ import logging
 import uuid
 
 import httpx
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from emergentintegrations.payments.stripe.checkout import StripeCheckout, CheckoutSessionRequest
 
 from utils.email_service import is_email_configured
 from utils.tax_compliance_engine import append_financial_ledger_entry, build_financial_totals, log_tax_calculation
 
-from .db import db, get_current_user
+from .db import db, get_current_user, require_admin
 from .payments_simulation_core import ProviderSimulationRequest, run_provider_payment_simulation
 from .payments_catalog import get_subscription_plan_from_gps
 from .payments_pricing_guard import safe_amount_value
@@ -790,10 +790,7 @@ class StripeSimulationRequest(ProviderSimulationRequest):
 
 
 @router.post("/admin/payments/simulate-stripe-production-e2e")
-async def simulate_stripe_production_e2e(body: StripeSimulationRequest, request: Request):
-    admin = await get_current_user(request)
-    if not admin or not admin.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
+async def simulate_stripe_production_e2e(body: StripeSimulationRequest, request: Request, admin=Depends(require_admin)):
     return await run_provider_payment_simulation(
         body,
         provider="stripe",

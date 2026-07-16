@@ -23,11 +23,11 @@ from shared.pricing_policy import get_plan_amount
 
 import httpx
 import jwt as pyjwt
-from fastapi import APIRouter, Request, HTTPException, Response
+from fastapi import APIRouter, Depends, Request, HTTPException, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from routes.db import db, get_current_user
+from routes.db import db, get_current_user, require_admin
 from utils.pdf_v15_filename import build_pdf_v15_filename
 from utils.tax_compliance_engine import (
     append_financial_ledger_entry,
@@ -1938,11 +1938,7 @@ async def get_iap_manage_links(request: Request):
 
 
 @router.post("/admin/simulate-production-e2e")
-async def simulate_iap_production_e2e(body: IAPSimulationRequest, request: Request):
-    admin = await get_current_user(request)
-    if not admin or not admin.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
+async def simulate_iap_production_e2e(body: IAPSimulationRequest, request: Request, admin=Depends(require_admin)):
     plan = str(body.plan or "basic").lower()
     period = str(body.period or "monthly").lower()
     platform = str(body.platform or "google").lower()
