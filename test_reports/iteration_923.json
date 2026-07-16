@@ -1,0 +1,40 @@
+{
+  "summary": "Validated the new DAILY SSO callback liveness scheduler job end-to-end: happy-path probe run, live derived-callback reachability, scheduler registration (CronTrigger hour=6 minute=20, id sso_callback_liveness_daily), mismatch detection + safe additive auto-fix (env + backend/.env persistence), realtime alert emission (admin_push_notifications collection, alert_type sso_callback_liveness), heartbeat recording (scheduler_heartbeats), and regression sanity (/api/health 200, admin login 200, no sso_auth_health errors in backend.err.log). 7/7 pytest tests pass. backend/.env was restored exactly to original state in finally-block; a final healthy re-run overwrote the transient 'unhealthy' latest-report doc so no false drift is left behind.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "scheduled_sso_callback_liveness_probe",
+        "issue": "emit_realtime_alert has a per-alert-type cooldown (COOLDOWN_SECONDS in routes/admin_push_notifications.py). If the daily probe fires twice within the cooldown window (e.g. manual re-runs during an incident) subsequent drift/failure alerts are silently suppressed. For a DAILY job this is fine in production, but operators triggering ad-hoc runs during remediation may miss alerts. Consider making the cooldown alert-type-plus-severity aware or exempting scheduler-emitted alerts."
+      },
+      {
+        "endpoint": "scheduled_sso_callback_liveness_probe",
+        "issue": "Alert severity is derived as 'warning' only when there are unreachable callbacks; a pure registry drift (mismatch-only) emits severity='info' even though it represents an active provider-console misconfiguration. Consider bumping mismatch-only cases to 'warning' so ops dashboards surface them."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_sso_callback_liveness_probe_iter923.py",
+    "/app/test_reports/pytest/iter923_sso_callback_liveness.xml"
+  ],
+  "action_items": [
+    "OPTIONAL: consider promoting registry-drift-only (no failures) alerts from 'info' to 'warning' severity in scheduled_sso_callback_liveness_probe so they are less likely to be filtered by admin dashboards.",
+    "OPTIONAL: consider bypassing the emit_realtime_alert per-alert-type cooldown for scheduler-driven alerts, so repeated intra-day re-runs during a live incident don't silently suppress notifications."
+  ],
+  "critical_code_review_comments": [
+    "Auto-fix is correctly additive: `fixed = registered + [base]; ','.join(dict.fromkeys(fixed))` preserves order and dedupes without removing entries. Verified by mutating MS_SSO_REGISTERED_REDIRECT_URIS to 'https://realaicoach.app' — original entry preserved after auto-fix.",
+    "Env persistence path uses a regex `re.sub(rf'^{cfg[\\'registry_key\\']}=.*$', ..., flags=re.M)`. Confirmed the mutated .env line was updated in place with no other lines touched.",
+    "Report doc snapshots `registered_bases` BEFORE the auto-fix append, which is intentional (records drift evidence) but not obvious — recommend a brief inline comment in sso_auth_health.py to prevent future maintainers from 'fixing' this as a bug.",
+    "scheduler_jobs facade re-export at __init__.py line 146 is correct; job is importable as `from scheduler_jobs import scheduled_sso_callback_liveness_probe`.",
+    "Heartbeat status set to 'warning' when mismatches>0 (no failures). If callbacks were unreachable (failures>0), a distinct 'error' status may be more actionable than 'warning' for oncall dashboards."
+  ],
+  "updated_files": ["/app/backend/tests/test_sso_callback_liveness_probe_iter923.py"],
+  "success_rate": {"backend": "100%", "frontend": "n/a (backend-only test scope)"},
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! — used for login regression only.",
+  "seed_data_creation": "None — test uses live env + Mongo state and restores backend/.env exactly.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The mismatch test writes an 'unhealthy' latest doc into sso_callback_liveness_reports and a 'warning' heartbeat — the test itself re-runs the probe in the happy-path case earlier, and this iteration added a final healthy re-run so the persisted latest doc is currently {healthy: True, mismatches: [], autofixes: []}. Env is restored to MS_SSO_REGISTERED_REDIRECT_URIS=https://visa-polish-v2.preview.emergentagent.com,https://realaicoach.app and APPLE_SSO_REGISTERED_REDIRECT_URIS=<same>. If you re-run the mismatch test, remember to (a) clear `routes.admin_push_notifications._last_pushed['sso_callback_liveness']` before the run so the alert is not suppressed by cooldown, and (b) restore backend/.env in a finally block using the exact literal `MS_SSO_REGISTERED_REDIRECT_URIS=https://visa-polish-v2.preview.emergentagent.com,https://realaicoach.app`. Do NOT restart the backend during the mutation — the job persists .env atomically and hot-reload otherwise triggers on a partial write.",
+  "rca of the issue": "N/A — this is a feature-addition verification, no bug reproduction required. All acceptance criteria in the review_request were exercised and passed. Detailed per-criterion mapping: (1) HAPPY PATH → TestHappyPathProbe.test_probe_runs_healthy_and_persists PASS; (2) PROBE LOGIC → TestBackendSanity.test_derived_callback_urls_reachable PASS (MS=307, Apple=405 — both non-404/<500); (3) MISMATCH+AUTO-FIX → TestMismatchAutofixAndAlert.test_autofix_appends_active_base_and_emits_alert PASS incl. env+DB assertions + alert record + additive-only guarantee + full restore verified; (4) SCHEDULER REGISTRATION → TestImportAndSchedulerRegistration.{test_facade_exposes_probe,test_scheduler_registers_daily_job,test_no_import_errors_in_backend_log} PASS; (5) HEARTBEAT → asserted inside TestHappyPathProbe (scheduler_heartbeats doc for sso_callback_liveness_daily has status=healthy, last_run set); (6) REGRESSION → /api/health 200 and admin login 200 confirmed post-mutation."
+}

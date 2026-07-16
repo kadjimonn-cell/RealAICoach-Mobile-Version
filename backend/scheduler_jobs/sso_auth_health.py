@@ -931,3 +931,136 @@ async def scheduled_cia_trust_heartbeat():
     except Exception as e:
         await _record_scheduler_heartbeat(job_id, "error", str(e))
         return {"status": "error", "error": str(e)}
+
+
+async def scheduled_sso_callback_liveness_probe():
+    """Daily: verify derived Apple/Microsoft callback URLs respond on the live domain.
+
+    Detects provider-console registration drift against the *_SSO_REGISTERED_REDIRECT_URIS
+    env lists, applies a safe additive auto-fix (append active base, never remove),
+    and alerts the Operations Console on probe failure or mismatch.
+    """
+    job_id = "sso_callback_liveness_daily"
+    try:
+        import httpx
+        from pathlib import Path
+        from routes.db import db
+
+        def _norm_base(raw: str) -> str:
+            val = str(raw or "").strip().rstrip("/")
+            if val and not (val.startswith("https://") or val.startswith("http://")):
+                val = f"https://{val}"
+            return val.rstrip("/")
+
+        base = _norm_base(
+            os.environ.get("SSO_REDIRECT_BASE_URL") or os.environ.get("FRONTEND_BASE_URL") or ""
+        )
+        if not base:
+            await _record_scheduler_heartbeat(job_id, "warning", "no active base configured")
+            return {"status": "skipped", "reason": "no_active_base"}
+
+        providers = {
+            "microsoft": {
+                "callback": f"{base}/api/auth/microsoft/callback",
+                "registry_key": "MS_SSO_REGISTERED_REDIRECT_URIS",
+                "console": "Microsoft Entra (Azure AD)",
+            },
+            "apple": {
+                "callback": f"{base}/api/auth/apple/callback",
+                "registry_key": "APPLE_SSO_REGISTERED_REDIRECT_URIS",
+                "console": "Apple Developer",
+            },
+        }
+
+        results: dict = {}
+        failures: list[str] = []
+        mismatches: list[str] = []
+        autofixes: list[str] = []
+
+        async with httpx.AsyncClient(timeout=20.0, follow_redirects=False) as client:
+            for name, cfg in providers.items():
+                probe = {"callback_url": cfg["callback"], "reachable": False, "http_status": None}
+                try:
+                    resp = await client.get(cfg["callback"])
+                    probe["http_status"] = resp.status_code
+                    probe["reachable"] = resp.status_code not in (404,) and resp.status_code < 500
+                except Exception as exc:
+                    probe["error"] = str(exc)[:300]
+                if not probe["reachable"]:
+                    failures.append(f"{name}: {probe.get('http_status') or probe.get('error')}")
+
+                registered_raw = str(os.environ.get(cfg["registry_key"], "") or "")
+                registered = [_norm_base(x) for x in registered_raw.split(",") if x.strip()]
+                probe["registered_bases"] = registered
+                probe["registry_aligned"] = base in registered
+                if not probe["registry_aligned"]:
+                    mismatches.append(f"{name}: active base {base} missing from {cfg['registry_key']}")
+                    fixed = registered + [base]
+                    next_value = ",".join(dict.fromkeys(fixed))
+                    os.environ[cfg["registry_key"]] = next_value
+                    try:
+                        env_path = Path("/app/backend/.env")
+                        env_text = env_path.read_text()
+                        import re as _re_mod
+
+                        if f"{cfg['registry_key']}=" in env_text:
+                            env_text = _re_mod.sub(
+                                rf"^{cfg['registry_key']}=.*$",
+                                f"{cfg['registry_key']}={next_value}",
+                                env_text,
+                                flags=_re_mod.M,
+                            )
+                        else:
+                            env_text += f"\n{cfg['registry_key']}={next_value}\n"
+                        env_path.write_text(env_text)
+                        probe["autofix_applied"] = True
+                        autofixes.append(f"{name}: appended {base} to {cfg['registry_key']}")
+                    except Exception as exc:
+                        probe["autofix_applied"] = False
+                        probe["autofix_error"] = str(exc)[:200]
+                results[name] = probe
+
+        now_iso = datetime.now(timezone.utc).isoformat()
+        report = {
+            "report_id": "latest",
+            "checked_at": now_iso,
+            "active_base": base,
+            "providers": results,
+            "failures": failures,
+            "mismatches": mismatches,
+            "autofixes": autofixes,
+            "healthy": not failures and not mismatches,
+        }
+        await db.sso_callback_liveness_reports.update_one(
+            {"report_id": "latest"}, {"$set": report}, upsert=True
+        )
+
+        if failures or mismatches:
+            from routes.admin_push_notifications import emit_realtime_alert
+
+            parts = []
+            if failures:
+                parts.append(f"Unreachable callbacks: {'; '.join(failures)}.")
+            if mismatches:
+                parts.append(
+                    f"Registry drift: {'; '.join(mismatches)}. "
+                    f"Safe auto-fix {'applied — verify the URI is also registered in the provider console' if autofixes else 'FAILED — manual env fix required'}: "
+                    f"Microsoft Entra needs {providers['microsoft']['callback']}, Apple Developer needs {providers['apple']['callback']}."
+                )
+            await emit_realtime_alert(
+                alert_type="sso_callback_liveness",
+                severity="warning" if failures else "info",
+                title="SSO callback liveness: issues detected",
+                message=" ".join(parts),
+            )
+
+        status = "healthy" if report["healthy"] else "warning"
+        await _record_scheduler_heartbeat(
+            job_id, status,
+            f"base={base} failures={len(failures)} mismatches={len(mismatches)} autofixes={len(autofixes)}",
+        )
+        return {"status": "ok", **{k: report[k] for k in ('healthy', 'failures', 'mismatches', 'autofixes')}}
+    except Exception as e:
+        logger.error(f"SSO callback liveness probe failed: {e}")
+        await _record_scheduler_heartbeat(job_id, "error", str(e))
+        return {"status": "error", "error": str(e)}

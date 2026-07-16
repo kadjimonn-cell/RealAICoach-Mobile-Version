@@ -143,6 +143,7 @@ from scheduler_jobs.sso_auth_health import (  # noqa: F401
     scheduled_auth_fallback_link_guardian,
     scheduled_cia_trust_heartbeat,
     scheduled_multi_region_auth_probe,
+    scheduled_sso_callback_liveness_probe,
     scheduled_sso_e2e_validation_alerts,
     scheduled_sso_provider_registration_alignment_auto,
     scheduled_sso_redirect_auto_sync,

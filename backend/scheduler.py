@@ -1185,6 +1185,15 @@ def register(app):
             replace_existing=True,
             max_instances=1)
 
+        # ── SSO Callback Liveness Probe (daily, 06:20 UTC): derived Apple/MS callback reachability + registry auto-fix ──
+        from scheduler_jobs import scheduled_sso_callback_liveness_probe
+        scheduler.add_job(
+            scheduled_sso_callback_liveness_probe,
+            CronTrigger(hour=6, minute=20),
+            id="sso_callback_liveness_daily",
+            replace_existing=True,
+            max_instances=1)
+
         # ── Multi-region Synthetic Auth Probe + Route SLO Alerting (every 10 minutes) ──
         from scheduler_jobs import scheduled_multi_region_auth_probe
         scheduler.add_job(
