@@ -1367,3 +1367,9 @@ MINOR BACKLOG: /blog (and /gdpr, /language-selector, /privacy-request) are stand
 - Verified: iteration_917 (100%).
 
 ## 2026-07-16 — Mono conversion REVERTED (support guidance). Structure is Expo-only again: /app/frontend = Expo app (web export via export:web incl. SEO inject), /app/backend = FastAPI. The 2026-07-15 Mono maintenance rules are OBSOLETE. SEO lives at frontend/scripts/seo-inject.js. Verified iteration_922 (100%).
+
+## 2026-07-16 — Payment Simulate Endpoints Admin-Only Verification (Checkpoint A-D approved 'a'; VERIFIED testing_agent iteration_926: 20/20 pytest, 100%)
+- Scope: verify all payment "simulate" endpoints are admin-only, not publicly reachable. NO code changes needed — audit found no vulnerability.
+- Endpoints verified: /api/iap/admin/simulate-production-e2e, /api/admin/payments/simulate-{stripe,paypal,fedapay}-production-e2e, bonus /api/webhook-events/simulate.
+- Matrix: anon=403, non-admin(valid body)=403, garbage bearer=401/403, admin passes guard. Regression suite: /app/backend/tests/test_payment_simulate_admin_guard.py.
+- Minor (optional, backlog): body validation (422) precedes manual admin check on empty body → leaks schema field names; suggestion: promote inline guard to Depends(require_admin). Not a security bypass.
