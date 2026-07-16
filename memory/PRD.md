@@ -1379,3 +1379,10 @@ MINOR BACKLOG: /blog (and /gdpr, /language-selector, /privacy-request) are stand
 - Fix: promoted inline guards to `Depends(require_admin)` (routes/db.py:773 — adds security-event logging + admin risk-profile enforcement) on all 5 endpoints: iap.py, payments_stripe_routes.py, payments_paypal_routes.py, payments_fedapay_routes.py, team_analytics.py (webhook-events/simulate).
 - Result: anon/non-admin empty body → 401/403 (no schema leak); admin passes guard (422 payment endpoints / 200 webhook). Regression suites: tests/test_payment_simulate_admin_guard.py (20) + tests/test_payment_simulate_schema_leak_fix.py (15).
 - Backlog item "optional require_admin Depends refactor" from iteration_926 is now DONE.
+
+## 2026-07-16 — Global Admin-Surface Schema-Leak Sweep (Checkpoint A-D approved; VERIFIED testing_agent iteration_928: 78/78, 100%)
+- AST-scanned all 147 inline-guard route handlers across /app/backend/routes; 15 had Pydantic body params (422-before-403 leak candidates).
+- Promoted 14 to `Depends(require_admin)`: ai_alerting, ai_auto_support, auto_scaling (x3), email_notifications (x3 overrides), executive_dashboard risk-actions, iap (commission-policy + sandbox-validation), job_platform (x2 admin), self_repair_engine.
+- Intentionally SKIPPED id_verification.py id_checker_send_message (mixed user↔admin messaging endpoint; non-admins must POST). Verified still works for free users.
+- GET endpoints with inline guards left unchanged (no body → no 422 leak).
+- 3 permanent regression suites: tests/test_payment_simulate_admin_guard.py (20) + tests/test_payment_simulate_schema_leak_fix.py (15) + tests/test_admin_schema_leak_sweep_iter928.py (43).
