@@ -1,6 +1,6 @@
 """C-Suite Executive Dashboard API - CEO/CFO level analytics."""
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from datetime import datetime, timezone, timedelta
 import logging
 import random
@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 from pydantic import BaseModel
 
-from routes.db import db, get_current_user, log_security_event
+from routes.db import db, get_current_user, log_security_event, require_admin
 from utils.progressive_risk_engine import format_risk_engine_output
 
 logger = logging.getLogger(__name__)
@@ -1068,11 +1068,7 @@ class RiskActionRequest(BaseModel):
 
 
 @router.post("/admin/executive/risk-actions")
-async def run_risk_action(payload: RiskActionRequest, request: Request):
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
+async def run_risk_action(payload: RiskActionRequest, request: Request, user=Depends(require_admin)):
     target_user_id = str(payload.user_id or "").strip()
     action = str(payload.action or "").strip().lower()
     reason = str(payload.reason or "").strip() or "Action executed from executive risk control"

@@ -2600,10 +2600,7 @@ async def get_iap_commission_policy(request: Request):
 
 
 @router.put("/admin/commission-policy")
-async def update_iap_commission_policy(body: IAPCommissionPolicyUpdate, request: Request):
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
+async def update_iap_commission_policy(body: IAPCommissionPolicyUpdate, request: Request, user=Depends(require_admin)):
     payload = body.model_dump()
     return await _save_commission_policy(payload)
 
@@ -2630,11 +2627,7 @@ async def retry_iap_webhooks(request: Request):
 
 
 @router.post("/admin/run-live-sandbox-validation")
-async def run_live_sandbox_validation(body: IAPSandboxValidationRequest, request: Request):
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
+async def run_live_sandbox_validation(body: IAPSandboxValidationRequest, request: Request, user=Depends(require_admin)):
     started = datetime.now(timezone.utc)
     apple_tx = body.apple_transaction_id or os.environ.get("APPLE_SANDBOX_TEST_TRANSACTION_ID")
     google_product = body.google_product_id or os.environ.get("GOOGLE_SANDBOX_TEST_PRODUCT_ID")

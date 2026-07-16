@@ -4,7 +4,7 @@ Adds employer approval workflow, admin review panel, fraud risk scoring,
 and support ticket system to the existing job platform.
 """
 
-from fastapi import APIRouter, HTTPException, Request, Response, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, UploadFile, File, Form
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timezone
@@ -15,7 +15,7 @@ import base64
 import binascii
 import re
 
-from routes.db import db, require_auth
+from routes.db import db, require_auth, require_admin
 from utils.field_encryption import encrypt_field, hash_lookup, decrypt_doc
 from utils.object_storage_service import put_bytes, get_bytes
 from utils.file_security_service import enforce_file_security
@@ -416,12 +416,8 @@ class AdminDecisionRequest(BaseModel):
 
 
 @router.post("/admin/approvals/decide")
-async def admin_decide_approval(payload: AdminDecisionRequest, request: Request):
+async def admin_decide_approval(payload: AdminDecisionRequest, request: Request, user=Depends(require_admin)):
     """Admin: Make decision on employer approval."""
-    user = await require_auth(request)
-    if not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
     if payload.decision not in ("approve", "deny", "need_more_info", "suspend"):
         raise HTTPException(status_code=400, detail="Invalid decision")
 
@@ -671,12 +667,8 @@ class TicketResponseRequest(BaseModel):
 
 
 @router.post("/admin/support/respond")
-async def admin_respond_ticket(payload: TicketResponseRequest, request: Request):
+async def admin_respond_ticket(payload: TicketResponseRequest, request: Request, user=Depends(require_admin)):
     """Admin: Respond to a support ticket."""
-    user = await require_auth(request)
-    if not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
     response = {
         "from": user.email,
         "message": payload.message,

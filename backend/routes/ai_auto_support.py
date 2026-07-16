@@ -11,14 +11,14 @@ API:
 - GET  /api/admin/ai-support/log           — AI resolution log
 """
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 import uuid
 import logging
 
-from routes.db import db, get_current_user
+from routes.db import db, get_current_user, require_admin
 from services.ai_helpers import ai_generate_json, ai_generate
 
 logger = logging.getLogger(__name__)
@@ -398,10 +398,7 @@ async def support_dashboard(request: Request):
 
 
 @router.post("/admin/ai-support/configure")
-async def configure_support(request: Request, body: ConfigUpdate):
-    user = await get_current_user(request)
-    if not user or not (user.is_admin or user.role == "admin"):
-        raise HTTPException(403, "Admin access required")
+async def configure_support(request: Request, body: ConfigUpdate, user=Depends(require_admin)):
     update = {k: v for k, v in body.dict().items() if v is not None}
     if update:
         await db.ai_support_config.update_one(

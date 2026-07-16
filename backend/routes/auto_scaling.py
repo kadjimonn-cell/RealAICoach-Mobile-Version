@@ -20,12 +20,12 @@ import psutil
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 
-from routes.db import db, get_current_user
+from routes.db import db, get_current_user, require_admin
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -311,11 +311,8 @@ async def list_rules(request: Request):
 
 
 @router.post("/admin/scaling/rules")
-async def create_rule(request: Request, body: ScalingRule):
+async def create_rule(request: Request, body: ScalingRule, user=Depends(require_admin)):
     """Create a new scaling rule."""
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(403, "Admin required")
     rule = {
         "rule_id": f"rule_{uuid.uuid4().hex[:8]}",
         **body.dict(),
@@ -327,11 +324,8 @@ async def create_rule(request: Request, body: ScalingRule):
 
 
 @router.put("/admin/scaling/rules/{rule_id}")
-async def update_rule(request: Request, rule_id: str, body: UpdateScalingRule):
+async def update_rule(request: Request, rule_id: str, body: UpdateScalingRule, user=Depends(require_admin)):
     """Update a scaling rule."""
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(403, "Admin required")
     updates = {k: v for k, v in body.dict().items() if v is not None}
     if not updates:
         raise HTTPException(400, "No updates")
@@ -354,12 +348,8 @@ async def delete_rule(request: Request, rule_id: str):
 
 
 @router.post("/admin/scaling/trigger")
-async def manual_scale(request: Request, body: ManualScale):
+async def manual_scale(request: Request, body: ManualScale, user=Depends(require_admin)):
     """Manually trigger scaling."""
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(403, "Admin required")
-
     state = await db.scaling_state.find_one({"type": "global"}, {"_id": 0})
     if not state:
         state = {

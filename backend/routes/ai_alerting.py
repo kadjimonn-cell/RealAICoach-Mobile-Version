@@ -11,14 +11,14 @@ Endpoints:
 - POST /api/admin/ai-alerts/check-now — Trigger immediate alert check
 """
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 import logging
 import uuid
 
-from routes.db import db, get_current_user
+from routes.db import db, get_current_user, require_admin
 from utils.ws_manager import ws_manager
 
 logger = logging.getLogger(__name__)
@@ -268,12 +268,8 @@ async def get_alert_config(request: Request):
 
 
 @router.put("/admin/ai-alerts/config")
-async def update_alert_config(body: AlertConfigUpdate, request: Request):
+async def update_alert_config(body: AlertConfigUpdate, request: Request, user=Depends(require_admin)):
     """Update alert thresholds."""
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
     updates = {k: v for k, v in body.dict().items() if v is not None}
     if not updates:
         raise HTTPException(status_code=400, detail="No fields to update")

@@ -1,0 +1,52 @@
+{
+  "summary": "FULL ADMIN-SURFACE SCHEMA-LEAK SWEEP VERIFIED (iter 928). All 14 newly-promoted endpoints protected by Depends(require_admin) — anon/non-admin empty-body requests are blocked (401/403 canonical; 410 on 2 legacy jobs paths) with ZERO Pydantic schema field leaks. Admin positive control confirms guard now passes admin through on every endpoint. The 1 intentionally-skipped mixed-role endpoint (id_checker_send_message) still allows non-admin authenticated users. Prior 35-case regression suite (payment simulate endpoints) still 100% pass. Total: 78/78 tests pass in 9.8s.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_schema_leak_sweep_iter928.py",
+    "/app/backend/tests/test_payment_simulate_admin_guard.py",
+    "/app/backend/tests/test_payment_simulate_schema_leak_fix.py",
+    "/app/test_reports/pytest/iter928_admin_schema_leak_sweep.xml",
+    "/app/test_reports/pytest/iter928_full_regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "All 14 endpoints (12 in main files + 2 email_notifications overrides + 2 jobs admin) now correctly use Depends(require_admin) as the auth guard — canonical FastAPI pattern that runs BEFORE Pydantic body validation, closing the 422 schema-leak vector.",
+    "The 2 /api/jobs/admin/* endpoints legitimately return 410 (Gone) to authenticated non-admin free users because the legacy jobs write-family is retired via a middleware that runs after auth attach but before route dispatch. Anon still gets 401/403 and admin can access; response body contains no schema field names — no security regression, orthogonal to schema-leak fix.",
+    "id_verification.id_checker_send_message correctly kept without require_admin — it's a user↔admin messaging endpoint and non-admins must be able to POST there. Verified free user is NOT rejected with an 'admin required' 403."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_admin_schema_leak_sweep_iter928.py (NEW — 43 parameterized cases across 14 endpoints × {anon, non-admin, admin} + 1 id_checker skip-verification)"
+  ],
+  "success_rate": {"backend": "100% (78/78 across all 3 admin-guard suites)", "frontend": "N/A (skipped per request)"},
+  "test_credentials": "Admin: admin@realaicoach.app / Rt#vzsuRlMXGvOF!7a ; Free user: p1.free.1779113329@example.com / Rt#Fhtx0loztn7Y!7a",
+  "seed_data_creation": "None (empty-body probes only — no destructive full-body execution against risk-actions / scaling trigger, as instructed).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The security workstream now has 3 pytest suites protecting admin surfaces: (1) test_payment_simulate_admin_guard.py — 20 cases, canonical admin-only for 5 simulate endpoints; (2) test_payment_simulate_schema_leak_fix.py — 15 cases, empty-body schema-leak checks for the same 5; (3) test_admin_schema_leak_sweep_iter928.py — 43 cases across the 14 newly promoted endpoints + 1 skip verification. Run all 3 together with: pytest tests/test_admin_schema_leak_sweep_iter928.py tests/test_payment_simulate_admin_guard.py tests/test_payment_simulate_schema_leak_fix.py -v",
+  "verification_matrix": {
+    "PUT /api/admin/ai-alerts/config":                                                     {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/admin/ai-support/configure":                                                {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/admin/scaling/rules":                                                       {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "PUT /api/admin/scaling/rules/test123":                                                {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/admin/scaling/trigger":                                                     {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/admin/executive/risk-actions":                                              {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "PUT /api/iap/admin/commission-policy":                                                {"anon": "401/403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/iap/admin/run-live-sandbox-validation":                                     {"anon": "401/403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/admin/system/repair-config":                                                {"anon": "403 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/email-notifications/template-policies/override-approval":                   {"anon": "401 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/email-notifications/template-policies/override-revoke":                     {"anon": "401 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/email-notifications/overrides/manual":                                      {"anon": "401 (no leak)", "non_admin": "403 (no leak)", "admin": "guard passed"},
+    "POST /api/jobs/admin/approvals/decide":                                               {"anon": "401 (no leak)", "non_admin": "410 legacy-retired (no leak, not 422)", "admin": "guard passed"},
+    "POST /api/jobs/admin/support/respond":                                                {"anon": "401 (no leak)", "non_admin": "410 legacy-retired (no leak, not 422)", "admin": "guard passed"},
+    "POST /api/id-checker/messages (INTENTIONALLY NOT PROMOTED)":                          {"free_user_authed": "NOT admin-blocked (mixed-role endpoint preserved as intended)"}
+  },
+  "rca of the issue": "N/A — fix is behaving as designed. Depends(require_admin) runs BEFORE Pydantic body validation, so empty bodies from anon/non-admin surface auth errors (401/403) instead of 422 schema envelopes. The 2 jobs-admin endpoints return 410 to non-admin authed users because the legacy jobs write-family is hard-retired by dedicated middleware — the middleware body contains no request-schema field names, so it satisfies the same anti-leak goal via a different (equally acceptable) mechanism."
+}

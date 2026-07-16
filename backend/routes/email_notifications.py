@@ -1,6 +1,6 @@
 """Email Notification Routes — Email preferences, logs, delivery tracking, admin dashboard."""
 
-from fastapi import APIRouter, HTTPException, Request, Query
+from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from fastapi.responses import Response, RedirectResponse
 from datetime import datetime, timezone, timedelta
 import asyncio
@@ -261,11 +261,7 @@ async def sync_protected_template_policies(request: Request):
 
 
 @router.post("/template-policies/override-approval")
-async def approve_override_policy(payload: dict, request: Request):
-    user = await require_auth(request)
-    if not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin only")
-
+async def approve_override_policy(payload: dict, request: Request, user=Depends(require_admin)):
     template_key = str(payload.get("template_key") or "").strip().lower()
     approved = bool(payload.get("approved") is True)
     note = str(payload.get("note") or "").strip()
@@ -324,11 +320,7 @@ async def approve_override_policy(payload: dict, request: Request):
 
 
 @router.post("/template-policies/override-revoke")
-async def revoke_override_policy(payload: dict, request: Request):
-    user = await require_auth(request)
-    if not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin only")
-
+async def revoke_override_policy(payload: dict, request: Request, user=Depends(require_admin)):
     template_key = str(payload.get("template_key") or "").strip().lower()
     revoke_reason = str(payload.get("revoke_reason") or "").strip()
     if not template_key:
@@ -368,12 +360,8 @@ async def revoke_override_policy(payload: dict, request: Request):
 
 
 @router.post("/overrides/manual")
-async def create_manual_override(payload: dict, request: Request):
+async def create_manual_override(payload: dict, request: Request, user=Depends(require_admin)):
     """Phase-2 write-time policy enforcement for manual override writes."""
-    user = await require_auth(request)
-    if not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin only")
-
     template_key = str(payload.get("template_key") or payload.get("email_type") or "").strip().lower()
     optimized_subject = str(payload.get("optimized_subject") or payload.get("subject_line") or "").strip()
     if not template_key:

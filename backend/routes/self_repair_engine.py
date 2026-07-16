@@ -10,14 +10,14 @@ API:
 - POST /api/admin/system/repair-config — Configure repair intervals and alerts
 """
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 import logging
 import psutil
 
-from routes.db import db, get_current_user
+from routes.db import db, get_current_user, require_admin
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -376,12 +376,8 @@ async def repair_history(request: Request):
 
 
 @router.post("/admin/system/repair-config")
-async def update_repair_config(request: Request, body: RepairConfigUpdate):
+async def update_repair_config(request: Request, body: RepairConfigUpdate, user=Depends(require_admin)):
     """Configure self-repair settings."""
-    user = await get_current_user(request)
-    if not user or not user.is_admin:
-        raise HTTPException(status_code=403, detail="Admin access required")
-
     update = {k: v for k, v in body.dict().items() if v is not None}
     if update:
         await db.repair_config.update_one(
