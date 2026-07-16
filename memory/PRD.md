@@ -1365,3 +1365,5 @@ MINOR BACKLOG: /blog (and /gdpr, /language-selector, /privacy-request) are stand
 - Preview served by expo_manual (/app/mobile/serve-production.js, port 3000). Web shell validated standalone (build.js → build/, server.js).
 - MAINTENANCE RULES: (1) never delete /app/frontend/.env (preview_host_guard); (2) after mobile web export run `cd /app/frontend && yarn sync:rnw`; (3) rnw_dist is git-tracked (web deploy self-containment).
 - Verified: iteration_917 (100%).
+
+## 2026-07-16 — Mono conversion REVERTED (support guidance). Structure is Expo-only again: /app/frontend = Expo app (web export via export:web incl. SEO inject), /app/backend = FastAPI. The 2026-07-15 Mono maintenance rules are OBSOLETE. SEO lives at frontend/scripts/seo-inject.js. Verified iteration_922 (100%).

@@ -378,3 +378,10 @@ KNOWN NOISE (pre-existing, non-blocking): /api/auth/me 401/403 console noise bef
 - Reclaimed ~500MB (86% → 81%): pruned gtec_c5_viewport_matrix sentry artifacts (396MB, 140 runs → 10), removed frontend/build (regenerable), __pycache__, stale root logs, junk ANSI-named dirs.
 - Added retention to gtec_white_screen_sentry.py (_prune_artifact_runs keep=10 after each run) — prevents future disk exhaustion (the original cause of the /tmp git hack).
 - Committed as ab08007; platform auto-commits confirmed working again.
+
+## 2026-07-16 — Mono Conversion REVERTED (per Emergent support)
+- Restored original Expo-only structure to fix mobile deployment pipeline: /app/mobile → /app/frontend, standalone React web shell removed, all backend/scripts/supervisor path refs reverted (0 leftover app/mobile refs).
+- SEO preserved: /app/frontend/scripts/seo-inject.js (wired into export:web chain: '&& node scripts/seo-inject.js dist'), og-image at frontend/assets/og-image.png; sitemap/robots/OG tags remain live in dist.
+- Disk now 78%. Revert committed (4e8894f). USER must Save to GitHub again + redeploy.
+- Verified: testing_agent iteration_922 — 100% backend (35/35) + 100% frontend.
+- NOTE: PRD entry about Mono maintenance rules is now obsolete — structure is Expo-only again.
