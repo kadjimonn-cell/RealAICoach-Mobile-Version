@@ -27,19 +27,65 @@ const _V = {
   warning: 'var(--app-warning)' as any,
   error: 'var(--app-error)' as any,
   purple: 'var(--app-info)' as any,
+  primaryText: 'var(--app-primary-text)' as any,
+  successText: 'var(--app-success-text)' as any,
+  warningText: 'var(--app-warning-text)' as any,
 };
 const DARK = {
   bg: _V.bg, card: _V.card, cardAlt: _V.cardMuted, border: _V.border,
   text: _V.text, textSec: _V.textSec, textMuted: _V.textMuted,
   primary: _V.primary, success: _V.success, warning: _V.warning, error: _V.error,
   stripe: 'var(--app-primary)', paypal: 'var(--app-primary)', accent: _V.purple,
+  primaryText: _V.primaryText, successText: _V.successText, warningText: _V.warningText,
 };
 const LIGHT = {
   bg: _V.bg, card: _V.card, cardAlt: _V.cardMuted, border: _V.border,
   text: _V.text, textSec: _V.textSec, textMuted: _V.textMuted,
   primary: _V.primary, success: _V.success, warning: _V.warning, error: _V.error,
   stripe: 'var(--app-primary)', paypal: 'var(--app-primary)', accent: _V.purple,
+  primaryText: _V.primaryText, successText: _V.successText, warningText: _V.warningText,
 };
+
+const s = StyleSheet.create({
+  container: { flex: 1 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, padding: 16, paddingBottom: 8 },
+  title: { fontSize: 20, fontWeight: '800', color: _V.text },
+  subtitle: { fontSize: 12, color: _V.textSec, marginTop: 3 },
+  exportBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 8, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 7 },
+  grid: { gap: 10, paddingHorizontal: 16, marginTop: 8 },
+  row: { gap: 10 },
+  kpi: { flex: 1, minWidth: 150, borderRadius: 10, borderWidth: 1, borderColor: _V.border, borderLeftWidth: 3, backgroundColor: _V.card, padding: 12 },
+  kpiIcon: { width: 34, height: 34, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  kpiLabel: { fontSize: 11, color: _V.textMuted, fontWeight: '600' },
+  kpiValue: { fontSize: 18, fontWeight: '800', marginTop: 1 },
+  kpiSub: { fontSize: 10, color: _V.textSec, marginTop: 2 },
+  panel: { marginHorizontal: 16, borderRadius: 12, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.card, padding: 14 },
+  panelTitle: { fontSize: 14, fontWeight: '700', color: _V.text },
+  periodBtn: { borderRadius: 999, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.cardMuted, paddingHorizontal: 12, paddingVertical: 6 },
+  periodActive: { backgroundColor: _V.primary, borderColor: _V.primary },
+  periodText: { fontSize: 11, color: _V.textSec, fontWeight: '700' },
+  periodActiveText: { color: _V.primaryText },
+  tab: { borderRadius: 8, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.cardMuted, paddingHorizontal: 12, paddingVertical: 7 },
+  tabActive: { backgroundColor: _V.primary, borderColor: _V.primary },
+  tabText: { fontSize: 12, color: _V.textSec, fontWeight: '700' },
+  tabActiveText: { color: _V.primaryText },
+  searchBox: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 8, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.cardMuted, paddingHorizontal: 10 },
+  searchInput: { flex: 1, paddingVertical: 8, fontSize: 12, color: _V.text },
+  tableHeader: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: _V.border, paddingVertical: 8, marginTop: 8 },
+  tableRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: _V.border, paddingVertical: 9, alignItems: 'center' },
+  th: { flex: 1, fontSize: 10, color: _V.textMuted, fontWeight: '800', textTransform: 'uppercase' as any },
+  td: { flex: 1, fontSize: 12, color: _V.text },
+  badge: { borderRadius: 999, paddingHorizontal: 8, paddingVertical: 3, alignSelf: 'flex-start' },
+  currBadge: { borderRadius: 999, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.cardMuted, paddingHorizontal: 8, paddingVertical: 3 },
+  pageBtn: { borderRadius: 8, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.cardMuted, paddingHorizontal: 12, paddingVertical: 6 },
+  providerRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
+  providerDot: { width: 10, height: 10, borderRadius: 5 },
+  providerLabel: { flex: 1, fontSize: 12, color: _V.textSec, fontWeight: '600' },
+  providerValue: { fontSize: 12, color: _V.text, fontWeight: '800' },
+  integrityPill: { borderRadius: 10, borderWidth: 1, borderColor: _V.border, backgroundColor: _V.cardMuted, padding: 10, minWidth: 130 },
+  integrityLabel: { fontSize: 10, color: _V.textMuted, fontWeight: '700' },
+  integrityValue: { fontSize: 14, color: _V.text, fontWeight: '800', marginTop: 3 },
+});
 
 const KpiCard = ({ label, value, icon, color, sub }: any) => (
   <View style={[s.kpi, { borderLeftColor: color }]} data-testid={`kpi-${label.toLowerCase().replace(/\s/g,'-')}`} testID={`kpi-${label.toLowerCase().replace(/\s/g,'-')}`}>
@@ -906,11 +952,11 @@ export default function SubscriptionDashboard() {
           {/* Pagination */}
           {subPages > 1 && (
             <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 8, marginTop: 16 }}>
-              <TouchableOpacity onPress={() => setSubPage(Math.max(1, subPage - 1))} style={s.pageBtn}>
+              <TouchableOpacity data-testid="pagination-prev" onPress={() => setSubPage(Math.max(1, subPage - 1))} style={s.pageBtn}>
                 <Ionicons name="chevron-back" size={16} color={T.text} />
               </TouchableOpacity>
-              <Text style={{ color: T.text, alignSelf: 'center' }}>{subPage} / {subPages}</Text>
-              <TouchableOpacity onPress={() => setSubPage(Math.min(subPages, subPage + 1))} style={s.pageBtn}>
+              <Text data-testid="pagination-page" style={{ color: T.text, alignSelf: 'center' }}>{subPage} / {subPages}</Text>
+              <TouchableOpacity data-testid="pagination-next" onPress={() => setSubPage(Math.min(subPages, subPage + 1))} style={s.pageBtn}>
                 <Ionicons name="chevron-forward" size={16} color={T.text} />
               </TouchableOpacity>
             </View>

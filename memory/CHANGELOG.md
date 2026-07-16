@@ -389,3 +389,9 @@ KNOWN NOISE (pre-existing, non-blocking): /api/auth/me 401/403 console noise bef
 ## 2026-07-16 — Daily SSO Callback Liveness Probe + Safe Auto-Fix (Feature)
 - New scheduler job scheduled_sso_callback_liveness_probe (scheduler_jobs/sso_auth_health.py, CronTrigger 06:20 UTC, id sso_callback_liveness_daily): probes derived {base}/api/auth/{microsoft,apple}/callback reachability, detects registry drift vs MS/APPLE_SSO_REGISTERED_REDIRECT_URIS, applies additive-only auto-fix (env + backend/.env), alerts Ops Console (emit_realtime_alert, severity=warning) with exact URIs to register in provider consoles, records heartbeat + report doc (sso_callback_liveness_reports).
 - Verified: testing_agent iteration_923 (100% — happy path, mismatch+auto-fix cycle with env restoration, alert emission, scheduler registration, heartbeat, regression). Minor severity fix applied post-test.
+
+## 2026-07-16 — Admin Console Verification + Subscription Dashboard Crash Fix
+- Full admin verification (iteration_924): login, Operations Console panels, key admin screens, 4+ analytics DB cross-checks — ALL REAL DATA, no mocks (23/23 backend checks).
+- Bug found & fixed: /admin/subscription-dashboard crashed with 'ReferenceError: s is not defined' — the entire StyleSheet was missing. Reconstructed 37-key StyleSheet with theme CSS vars (passed strict theme gate), added primaryText/successText/warningText palette keys, added pagination data-testids.
+- Retest (iteration_925): 100% — dashboard renders real KPIs/subscribers, light/dark clean, no console errors.
+- '/admin Something went wrong' texts = REAL crash telemetry in the Top Broken Admin Panels card (recording the pre-fix crashes) — not a bug; will decay in 24h.

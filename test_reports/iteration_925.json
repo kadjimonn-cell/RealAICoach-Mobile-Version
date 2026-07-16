@@ -1,0 +1,86 @@
+{
+  "summary": "RETEST of /admin/subscription-dashboard fix verified: dashboard now renders cleanly with no ReferenceError and no error boundary. All required elements present with real platform data. Regression spot-check on /admin/security and /admin/observability-center also fine.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "primary_verification": {
+    "subscription_dashboard_testid_present": true,
+    "reference_error_in_body": false,
+    "error_boundary_shown": false,
+    "kpi_cards": {
+      "count": 6,
+      "testids": ["kpi-mrr", "kpi-arr", "kpi-active-subs", "kpi-churn-rate", "kpi-arpu", "kpi-total-revenue"],
+      "real_values_observed": {
+        "MRR": "$7.3k",
+        "ARR": "$87.9k",
+        "Active Subs": "105 (89 new this period)",
+        "Churn Rate": "0% (0 canceled)",
+        "ARPU": "$69.74",
+        "Total Revenue": "$7.3k (147 payments)"
+      }
+    },
+    "panels_rendered": [
+      "subscription-payment-e2e-panel (Payment E2E Control Center - HEALTHY, 19/19 checks, 100% pass rate)",
+      "subscription-reliability-trend-panel (Weekly Reliability Trend chart)",
+      "subscription-integrity-panel (Nightly Integrity Health - Severity HIGH, Entitlement Drift 102, Auto Fixes 102)",
+      "prayer-audio-funnel-panel",
+      "prayer-audio-category-attribution-panel"
+    ],
+    "tabs": {
+      "found": ["tab-overview", "tab-subscribers"],
+      "switching_works": true
+    },
+    "period_selector": {
+      "found": ["period-selector", "period-7d", "period-30d", "period-90d", "period-1y"],
+      "period_switch_reload_worked": true,
+      "kpi_after_switch_count": 6
+    },
+    "subscribers_table": {
+      "rows_rendered": 20,
+      "row_testids_sample": ["subscriber-row-0", "subscriber-row-1", "..."],
+      "search_testid": "search-subscribers",
+      "real_emails_sample": ["appleiap.prod.retest.b2191d07@gmail.com", "googleiap.prod.final.6dfbe881@gmail.com", "paypal.prod.retest.63e810b9@gmail.com", "fedapay.prod.retest.219df6d8@gmail.com", "kadjimonn@gmail.com", "admin@realaicoach.app"],
+      "total_label_shown": "105 total (matches kpi-active-subs value)"
+    },
+    "export_btn_testid": "export-btn (present) + subscription-payment-e2e-export-json-button + subscription-payment-e2e-export-csv-button",
+    "theme_toggle_testid": "theme-toggle (present, click executed both to dark and back to light without errors)",
+    "console_reference_errors": 0,
+    "console_error_msgs": "Only 2 non-blocking [error] entries from expected 401 on /api/auth/me before login (bootstrap)"
+  },
+  "data_reality_check": {
+    "kpi_active_subs": 105,
+    "subscribers_table_total_label": "105 total",
+    "match": true,
+    "note": "UI 'Active Subs' KPI and subscribers table total both show 105 - consistent with previously-verified /api/admin/subscriptions/analytics endpoint (iteration_924)."
+  },
+  "theme_toggle_check": {
+    "toggled_to_dark": true,
+    "toggled_back_to_light": true,
+    "unreadable_text_or_broken_styles_observed": false
+  },
+  "regression_spot_check": {
+    "/admin/security": {"loaded": true, "reference_error": false, "error_boundary": false, "note": "Redirected to /admin-console?category=security&tab=security-trust-hub, page loaded with admin console shell + content."},
+    "/admin/observability-center": {"loaded": true, "reference_error": false, "error_boundary": false, "note": "Loaded successfully with admin nav + content."},
+    "/admin (ops-command-center)": {"loaded": true, "reference_error": false, "note": "Redirected to /admin-console?category=overview&tab=ops-command-center. Body scan detected the substring 'Something went wrong' somewhere on the page — could be an inline card empty/error state rather than a full page error boundary (page shell and admin nav rendered). Not part of primary task scope; recommend a follow-up glance by main agent."}
+  },
+  "test_report_links": ["/app/test_reports/screenshots/subdash_925_v2.png", "/app/test_reports/screenshots/subdash_925_subscribers.png", "/app/test_reports/screenshots/subdash_925_dark.png"],
+  "action_items": [
+    "OPTIONAL: Confirm pagination controls for /admin/subscription-dashboard subscribers tab — with 105 total subscribers and 20 rows shown, no [data-testid='pagination-prev' | 'pagination-next' | 'pagination-page'] were found. If pagination is expected, add controls; otherwise ignore.",
+    "OPTIONAL: Investigate 'Something went wrong' text detected on /admin (ops-command-center) — likely an inline card empty state, but worth a manual glance. Not a regression tied to this iteration's fix."
+  ],
+  "critical_code_review_comments": [
+    "Fix is stable: subscription-dashboard StyleSheet `s` is now defined and all 37 referenced style keys resolve. ReferenceError from iteration_924 fully eliminated.",
+    "Payment E2E buttons (Run Checks / Run Full E2E Suite) render correctly and were NOT clicked per task instruction (Stripe LIVE)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "skipped (per request)", "frontend": "100% on primary criteria"},
+  "test_credentials": "Admin: admin@realaicoach.app / NewAdminPass2026! (from /app/memory/test_credentials.md — worked)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Login testids: login-email-input, login-password-input, login-submit-button (button text 'SIGN IN', not 'Log In'). Subscription dashboard route: /admin/subscription-dashboard, testids: subscription-dashboard, kpi-*, tab-overview/tab-subscribers, period-selector/period-7d/30d/90d/1y, theme-toggle, export-btn, subscriber-row-{0..19}, search-subscribers, subscription-payment-e2e-panel, subscription-reliability-trend-panel, subscription-integrity-panel. Backend /api/admin/subscriptions/analytics returns Active Subs=105, matches UI.",
+  "rca_of_the_issue": "N/A — this run was a retest confirming main agent's fix. Prior RCA (iteration_924): StyleSheet const `s` object was missing from /app/frontend/app/admin/subscription-dashboard.tsx while 37 style keys were referenced, causing 'ReferenceError: s is not defined' -> full-page error boundary. Fix: reconstructed the StyleSheet plus palette keys (primaryText/successText/warningText). Verified working in this iteration."
+}
