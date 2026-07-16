@@ -1,6 +1,6 @@
 {
-  "run_id": "wss_20260716T004838Z",
-  "generated_at": "2026-07-16T00:50:03.317980+00:00",
+  "run_id": "wss_20260716T035853Z",
+  "generated_at": "2026-07-16T04:00:30.425907+00:00",
   "base_url": "http://127.0.0.1:3000",
   "route_source": "dynamic_inventory",
   "routes_tested": [
@@ -34,13 +34,13 @@
     "en"
   ],
   "total_checks": 60,
-  "failed_checks": 4,
+  "failed_checks": 6,
   "white_screen_gate_passed": false,
   "failure_reason": "blank_loader_or_fatal_surface_detected_over_5s",
   "matrix_summary": {
     "mobile": {
-      "pass": 19,
-      "fail": 1,
+      "pass": 18,
+      "fail": 2,
       "total": 20
     },
     "tablet": {
@@ -49,16 +49,16 @@
       "total": 20
     },
     "desktop": {
-      "pass": 19,
-      "fail": 1,
+      "pass": 18,
+      "fail": 2,
       "total": 20
     }
   },
   "matrix_summary_by_language": {
     "mobile": {
       "en": {
-        "pass": 19,
-        "fail": 1,
+        "pass": 18,
+        "fail": 2,
         "total": 20
       }
     },
@@ -71,8 +71,8 @@
     },
     "desktop": {
       "en": {
-        "pass": 19,
-        "fail": 1,
+        "pass": 18,
+        "fail": 2,
         "total": 20
       }
     }
@@ -89,16 +89,16 @@
       "probe_url": "/admin",
       "viewport": "mobile",
       "language": "en",
-      "status": "pass",
-      "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin__mobile__en.png",
+      "status": "fail",
+      "reason": "loader_persisted_over_5s",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin__mobile__en.png",
       "status_code": 200,
-      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
-      "text_len": 146,
+      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en",
+      "text_len": 4082,
       "body_height": 844,
-      "loader_detected": false,
+      "loader_detected": true,
       "blank_like": false,
-      "render_ms": 3692
+      "render_ms": 5393
     },
     {
       "route": "/admin-activity-log",
@@ -107,14 +107,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-activity-log__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-activity-log__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-activity-log?lang=en&locale=en&hl=en",
       "text_len": 854,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1097
+      "render_ms": 2455
     },
     {
       "route": "/admin-console",
@@ -123,14 +123,14 @@
       "language": "en",
       "status": "fail",
       "reason": "loader_persisted_over_5s",
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-console__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-console__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
       "text_len": 5089,
       "body_height": 844,
       "loader_detected": true,
       "blank_like": false,
-      "render_ms": 5392
+      "render_ms": 5408
     },
     {
       "route": "/admin-system",
@@ -139,14 +139,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-system__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-system__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-system?lang=en&locale=en&hl=en",
-      "text_len": 830,
+      "text_len": 2780,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1066
+      "render_ms": 1320
     },
     {
       "route": "/executive-dashboard",
@@ -155,14 +155,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/executive-dashboard__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/executive-dashboard__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/executive-dashboard?lang=en&locale=en&hl=en",
       "text_len": 131,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 522
+      "render_ms": 546
     },
     {
       "route": "/route-health-report",
@@ -171,14 +171,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/route-health-report__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/route-health-report__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
-      "text_len": 5754,
+      "text_len": 5771,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 3347
+      "render_ms": 3854
     },
     {
       "route": "/system-status",
@@ -187,14 +187,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/system-status__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/system-status__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/system-status?lang=en&locale=en&hl=en",
       "text_len": 250,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 575
+      "render_ms": 833
     },
     {
       "route": "/careers",
@@ -203,14 +203,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/careers?lang=en&locale=en&hl=en",
       "text_len": 882,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 555
+      "render_ms": 658
     },
     {
       "route": "/achievements",
@@ -219,14 +219,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/achievements__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/achievements__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/achievements?lang=en&locale=en&hl=en",
       "text_len": 780,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 697
+      "render_ms": 787
     },
     {
       "route": "/careers/portal/[token]",
@@ -235,14 +235,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-portal-SAMPLE_TOKEN_gtec_probe__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-portal-SAMPLE_TOKEN_gtec_probe__mobile__en.png",
       "status_code": 404,
       "final_url": "http://127.0.0.1:3000/+not-found",
       "text_len": 184,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1477
+      "render_ms": 1494
     },
     {
       "route": "/careers/schedule/[token]",
@@ -251,14 +251,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__mobile__en.png",
       "status_code": 404,
       "final_url": "http://127.0.0.1:3000/+not-found",
       "text_len": 78,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1463
+      "render_ms": 1479
     },
     {
       "route": "/careers/track/[id]",
@@ -267,14 +267,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-track-gtec_probe__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-track-gtec_probe__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/track-application?lang=en&locale=en&hl=en&id=gtec_probe&ref=legacy-careers-track-link",
       "text_len": 1443,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 617
+      "render_ms": 639
     },
     {
       "route": "/",
@@ -283,14 +283,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/root__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/root__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/?lang=en&locale=en&hl=en",
       "text_len": 57,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 573
+      "render_ms": 592
     },
     {
       "route": "/welcome",
@@ -299,14 +299,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/welcome__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/welcome__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/welcome?lang=en&locale=en&hl=en",
       "text_len": 57,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 573
+      "render_ms": 595
     },
     {
       "route": "/auth/login",
@@ -315,14 +315,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/auth-login__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/auth-login__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/auth/login?lang=en&locale=en&hl=en",
       "text_len": 579,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 629
+      "render_ms": 660
     },
     {
       "route": "/features/travel-visa",
@@ -331,14 +331,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/features-travel-visa__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/features-travel-visa__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/features/travel-visa?lang=en&locale=en&hl=en",
       "text_len": 115,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 546
+      "render_ms": 595
     },
     {
       "route": "/features/daily-meditation",
@@ -347,14 +347,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/features-daily-meditation__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/features-daily-meditation__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/features/daily-meditation?lang=en&locale=en&hl=en",
       "text_len": 108,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 546
+      "render_ms": 616
     },
     {
       "route": "/pricing",
@@ -363,14 +363,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/pricing__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/pricing__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/pricing?lang=en&locale=en&hl=en",
       "text_len": 1309,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 602
+      "render_ms": 673
     },
     {
       "route": "/contact",
@@ -379,14 +379,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/contact__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/contact__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/contact?lang=en&locale=en&hl=en",
       "text_len": 2445,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 679
+      "render_ms": 683
     },
     {
       "route": "/about",
@@ -395,14 +395,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/about__mobile__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/about__mobile__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/about?lang=en&locale=en&hl=en",
       "text_len": 1309,
       "body_height": 844,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 654
+      "render_ms": 692
     },
     {
       "route": "/admin",
@@ -411,14 +411,14 @@
       "language": "en",
       "status": "fail",
       "reason": "loader_persisted_over_5s",
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
       "text_len": 5234,
       "body_height": 1024,
       "loader_detected": true,
       "blank_like": false,
-      "render_ms": 5451
+      "render_ms": 5457
     },
     {
       "route": "/admin-activity-log",
@@ -427,14 +427,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-activity-log__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-activity-log__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-activity-log?lang=en&locale=en&hl=en",
       "text_len": 899,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1393
+      "render_ms": 1524
     },
     {
       "route": "/admin-console",
@@ -443,14 +443,14 @@
       "language": "en",
       "status": "fail",
       "reason": "loader_persisted_over_5s",
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-console__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-console__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
       "text_len": 5205,
       "body_height": 1024,
       "loader_detected": true,
       "blank_like": false,
-      "render_ms": 5403
+      "render_ms": 5474
     },
     {
       "route": "/admin-system",
@@ -459,14 +459,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-system__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-system__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-system?lang=en&locale=en&hl=en",
       "text_len": 875,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1103
+      "render_ms": 1145
     },
     {
       "route": "/executive-dashboard",
@@ -475,14 +475,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/executive-dashboard__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/executive-dashboard__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/executive-dashboard?lang=en&locale=en&hl=en",
       "text_len": 131,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 560
+      "render_ms": 622
     },
     {
       "route": "/route-health-report",
@@ -491,14 +491,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/route-health-report__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/route-health-report__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
-      "text_len": 5759,
+      "text_len": 5762,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 3449
+      "render_ms": 3731
     },
     {
       "route": "/system-status",
@@ -507,14 +507,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/system-status__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/system-status__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/system-status?lang=en&locale=en&hl=en",
-      "text_len": 842,
+      "text_len": 250,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 594
+      "render_ms": 625
     },
     {
       "route": "/careers",
@@ -523,14 +523,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/careers?lang=en&locale=en&hl=en",
       "text_len": 894,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 568
+      "render_ms": 686
     },
     {
       "route": "/achievements",
@@ -539,14 +539,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/achievements__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/achievements__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/achievements?lang=en&locale=en&hl=en",
       "text_len": 780,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 698
+      "render_ms": 766
     },
     {
       "route": "/careers/portal/[token]",
@@ -555,14 +555,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-portal-SAMPLE_TOKEN_gtec_probe__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-portal-SAMPLE_TOKEN_gtec_probe__tablet__en.png",
       "status_code": 404,
       "final_url": "http://127.0.0.1:3000/+not-found",
       "text_len": 184,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1474
+      "render_ms": 1556
     },
     {
       "route": "/careers/schedule/[token]",
@@ -571,14 +571,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__tablet__en.png",
       "status_code": 404,
       "final_url": "http://127.0.0.1:3000/+not-found",
       "text_len": 78,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1477
+      "render_ms": 1490
     },
     {
       "route": "/careers/track/[id]",
@@ -587,14 +587,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-track-gtec_probe__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-track-gtec_probe__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/track-application?lang=en&locale=en&hl=en&id=gtec_probe&ref=legacy-careers-track-link",
-      "text_len": 1455,
+      "text_len": 1416,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 622
+      "render_ms": 2167
     },
     {
       "route": "/",
@@ -603,14 +603,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/root__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/root__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/?lang=en&locale=en&hl=en",
       "text_len": 57,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 576
+      "render_ms": 619
     },
     {
       "route": "/welcome",
@@ -619,14 +619,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/welcome__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/welcome__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/welcome?lang=en&locale=en&hl=en",
       "text_len": 57,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 603
+      "render_ms": 624
     },
     {
       "route": "/auth/login",
@@ -635,14 +635,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/auth-login__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/auth-login__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/auth/login?lang=en&locale=en&hl=en",
       "text_len": 535,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 710
+      "render_ms": 692
     },
     {
       "route": "/features/travel-visa",
@@ -651,14 +651,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/features-travel-visa__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/features-travel-visa__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/features/travel-visa?lang=en&locale=en&hl=en",
       "text_len": 115,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 581
+      "render_ms": 642
     },
     {
       "route": "/features/daily-meditation",
@@ -667,14 +667,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/features-daily-meditation__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/features-daily-meditation__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/features/daily-meditation?lang=en&locale=en&hl=en",
       "text_len": 108,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 612
+      "render_ms": 641
     },
     {
       "route": "/pricing",
@@ -683,7 +683,7 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/pricing__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/pricing__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/pricing?lang=en&locale=en&hl=en",
       "text_len": 1321,
@@ -699,14 +699,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/contact__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/contact__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/contact?lang=en&locale=en&hl=en",
       "text_len": 2481,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 674
+      "render_ms": 751
     },
     {
       "route": "/about",
@@ -715,30 +715,30 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/about__tablet__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/about__tablet__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/about?lang=en&locale=en&hl=en",
       "text_len": 1321,
       "body_height": 1024,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 600
+      "render_ms": 684
     },
     {
       "route": "/admin",
       "probe_url": "/admin",
       "viewport": "desktop",
       "language": "en",
-      "status": "pass",
-      "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin__desktop__en.png",
+      "status": "fail",
+      "reason": "loader_persisted_over_5s",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin__desktop__en.png",
       "status_code": 200,
-      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en&__bp=59d643fce9d1bb56312f&__bpr=1",
-      "text_len": 191,
+      "final_url": "http://127.0.0.1:3000/admin?lang=en&locale=en&hl=en",
+      "text_len": 4371,
       "body_height": 900,
-      "loader_detected": false,
+      "loader_detected": true,
       "blank_like": false,
-      "render_ms": 1265
+      "render_ms": 5448
     },
     {
       "route": "/admin-activity-log",
@@ -747,14 +747,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-activity-log__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-activity-log__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-activity-log?lang=en&locale=en&hl=en",
-      "text_len": 1168,
+      "text_len": 1086,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1081
+      "render_ms": 1676
     },
     {
       "route": "/admin-console",
@@ -763,14 +763,14 @@
       "language": "en",
       "status": "fail",
       "reason": "loader_persisted_over_5s",
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-console__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-console__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-console?lang=en&locale=en&hl=en",
       "text_len": 5378,
       "body_height": 900,
       "loader_detected": true,
       "blank_like": false,
-      "render_ms": 5472
+      "render_ms": 5510
     },
     {
       "route": "/admin-system",
@@ -779,14 +779,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/admin-system__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/admin-system__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/admin-system?lang=en&locale=en&hl=en",
-      "text_len": 1122,
+      "text_len": 1077,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1232
+      "render_ms": 1313
     },
     {
       "route": "/executive-dashboard",
@@ -795,14 +795,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/executive-dashboard__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/executive-dashboard__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/executive-dashboard?lang=en&locale=en&hl=en",
       "text_len": 131,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 565
+      "render_ms": 634
     },
     {
       "route": "/route-health-report",
@@ -811,14 +811,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/route-health-report__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/route-health-report__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/route-health-report?lang=en&locale=en&hl=en",
-      "text_len": 5950,
+      "text_len": 5936,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 3526
+      "render_ms": 3765
     },
     {
       "route": "/system-status",
@@ -827,14 +827,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/system-status__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/system-status__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/system-status?lang=en&locale=en&hl=en",
       "text_len": 250,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 589
+      "render_ms": 643
     },
     {
       "route": "/careers",
@@ -843,14 +843,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/careers?lang=en&locale=en&hl=en",
       "text_len": 894,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 688
+      "render_ms": 677
     },
     {
       "route": "/achievements",
@@ -859,14 +859,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/achievements__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/achievements__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/achievements?lang=en&locale=en&hl=en",
       "text_len": 2164,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 826
+      "render_ms": 866
     },
     {
       "route": "/careers/portal/[token]",
@@ -875,14 +875,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-portal-SAMPLE_TOKEN_gtec_probe__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-portal-SAMPLE_TOKEN_gtec_probe__desktop__en.png",
       "status_code": 404,
       "final_url": "http://127.0.0.1:3000/+not-found",
       "text_len": 184,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1499
+      "render_ms": 1532
     },
     {
       "route": "/careers/schedule/[token]",
@@ -891,14 +891,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-schedule-SAMPLE_TOKEN_gtec_probe__desktop__en.png",
       "status_code": 404,
       "final_url": "http://127.0.0.1:3000/+not-found",
       "text_len": 78,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 1477
+      "render_ms": 1527
     },
     {
       "route": "/careers/track/[id]",
@@ -907,14 +907,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/careers-track-gtec_probe__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/careers-track-gtec_probe__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/track-application?lang=en&locale=en&hl=en&id=gtec_probe&ref=legacy-careers-track-link",
       "text_len": 1480,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 628
+      "render_ms": 718
     },
     {
       "route": "/",
@@ -923,14 +923,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/root__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/root__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/?lang=en&locale=en&hl=en",
       "text_len": 57,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 589
+      "render_ms": 633
     },
     {
       "route": "/welcome",
@@ -939,14 +939,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/welcome__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/welcome__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/welcome?lang=en&locale=en&hl=en",
       "text_len": 57,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 601
+      "render_ms": 623
     },
     {
       "route": "/auth/login",
@@ -955,14 +955,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/auth-login__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/auth-login__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/auth/login?lang=en&locale=en&hl=en",
       "text_len": 934,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 732
+      "render_ms": 772
     },
     {
       "route": "/features/travel-visa",
@@ -971,14 +971,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/features-travel-visa__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/features-travel-visa__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/features/travel-visa?lang=en&locale=en&hl=en",
       "text_len": 115,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 575
+      "render_ms": 629
     },
     {
       "route": "/features/daily-meditation",
@@ -987,14 +987,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/features-daily-meditation__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/features-daily-meditation__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/features/daily-meditation?lang=en&locale=en&hl=en",
       "text_len": 108,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 587
+      "render_ms": 638
     },
     {
       "route": "/pricing",
@@ -1003,14 +1003,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/pricing__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/pricing__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/pricing?lang=en&locale=en&hl=en",
       "text_len": 1346,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 644
+      "render_ms": 738
     },
     {
       "route": "/contact",
@@ -1019,14 +1019,14 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/contact__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/contact__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/contact?lang=en&locale=en&hl=en",
       "text_len": 2481,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 690
+      "render_ms": 691
     },
     {
       "route": "/about",
@@ -1035,15 +1035,15 @@
       "language": "en",
       "status": "pass",
       "reason": null,
-      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T004838Z/about__desktop__en.png",
+      "screenshot": "test_reports/gtec_c5_viewport_matrix/wss_20260716T035853Z/about__desktop__en.png",
       "status_code": 200,
       "final_url": "http://127.0.0.1:3000/about?lang=en&locale=en&hl=en",
       "text_len": 1346,
       "body_height": 900,
       "loader_detected": false,
       "blank_like": false,
-      "render_ms": 615
+      "render_ms": 710
     }
   ],
-  "duration_ms": 85004
+  "duration_ms": 96987
 }

@@ -1,329 +1,254 @@
 {
-  "task_id": "gtec_c5_ddbb603c36ae",
-  "execution_hash": "1d274b42a7a8ad27",
-  "status": "FAIL",
+  "task_id": "gtec_c5_c0d557056757",
+  "execution_hash": "37133d637f6eca27",
+  "status": "INFRA_BLOCKED",
   "critical_vulns": 0,
-  "high_vulns": 0,
-  "medium_vulns": 3,
+  "high_vulns": 1,
+  "medium_vulns": 0,
   "low_vulns": 0,
   "regressions": "NO",
   "security_scan": "FAIL",
-  "e2e_tests": "PASS",
-  "responsiveness": "PASS",
-  "performance": "PASS",
-  "rbac_status": "PASS",
-  "subscription_enforcement": "PASS",
-  "i18n_status": "PASS",
+  "e2e_tests": "FAIL",
+  "responsiveness": "FAIL",
+  "performance": "FAIL",
+  "rbac_status": "FAIL",
+  "subscription_enforcement": "FAIL",
+  "i18n_status": "FAIL",
   "learning_memory_updated": "YES",
-  "summary": "Auto-escalated 2 finding(s) into incidents with containment: react_dangerous_inner_html, dom_innerhtml_write \u00b7 no root-cause fix available this iteration \u2014 auto-escalated with containment (\u00a74 bans silent suppression)",
+  "summary": "INFRA_BLOCKED \u2014 runtime preflight did not reach required stability (1/3 checks). Reasons: external_preview_unstable.",
   "severity_counts": {
     "critical": 0,
-    "high": 0,
-    "medium": 3,
+    "high": 1,
+    "medium": 0,
     "low": 0,
-    "info": 14
+    "info": 0
   },
   "sections": {
-    "sast": {
-      "status": "PASS",
+    "preflight": {
+      "status": "FAIL",
       "findings": [
         {
-          "severity": "medium",
-          "category": "sast",
-          "label": "react_dangerous_inner_html",
-          "count": 2,
-          "sample_files": [
-            "frontend/rnw_dist/client/_expo/static/js/web/index-d687888ab612f63525bb4d9898eb6757.js",
-            "frontend/rnw_dist/client/_expo/static/js/web/AutomationEnginePanel-f0a76a818bda43a0825bee6adf5489cf.js"
-          ]
-        },
-        {
-          "severity": "medium",
-          "category": "sast",
-          "label": "dom_innerhtml_write",
+          "severity": "high",
+          "category": "infra",
+          "label": "scan_preflight_unstable",
+          "detail": "INFRA_BLOCKED \u2014 runtime preflight did not reach required stability (1/3 checks). Reasons: external_preview_unstable.",
           "count": 1,
-          "sample_files": [
-            "frontend/rnw_dist/client/_expo/static/js/web/index-d687888ab612f63525bb4d9898eb6757.js"
-          ]
+          "sample": {
+            "required_checks": 3,
+            "attempts_completed": 1,
+            "reasons": [
+              "external_preview_unstable"
+            ]
+          }
         }
       ],
       "counts": {
         "critical": 0,
-        "high": 0,
-        "medium": 3,
+        "high": 1,
+        "medium": 0,
         "low": 0,
         "info": 0
       },
-      "elapsed_ms": 5805,
-      "theme_violations": 0
+      "elapsed_ms": 0
+    },
+    "sast": {
+      "status": "FAIL",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "sast",
+          "label": "sast_skipped_preflight",
+          "detail": "sast validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
+        }
+      ],
+      "counts": {
+        "critical": 0,
+        "high": 1,
+        "medium": 0,
+        "low": 0,
+        "info": 0
+      },
+      "elapsed_ms": 0
     },
     "dep": {
-      "status": "PASS",
+      "status": "FAIL",
       "findings": [
         {
-          "severity": "info",
-          "category": "dependency",
-          "label": "python_outdated_maintenance",
-          "count": 4,
-          "sample_packages": [
-            "pip@24.0\u219226.1.2",
-            "playwright@1.58.0\u21921.61.0",
-            "setuptools@79.0.1\u219283.0.0",
-            "wheel@0.46.3\u21920.47.0"
-          ],
-          "note": "version drift inventory; security severity is determined by advisory feeds"
-        },
-        {
-          "severity": "info",
-          "category": "dependency",
-          "label": "node_outdated_maintenance",
-          "count": 1,
-          "sample_packages": [
-            "express@4.22.2\u21925.2.1"
-          ],
-          "note": "maintenance drift; actionable security risk is tracked via yarn audit findings"
-        },
-        {
-          "severity": "info",
-          "category": "dependency",
-          "label": "node_outdated_blocked_upstream",
-          "count": 2,
-          "sample_packages": [
-            "react@18.3.1\u219219.2.7",
-            "react-dom@18.3.1\u219219.2.7"
-          ],
-          "waived": true,
-          "note": "tracked in gtec_upstream_watchlist.json until upstream blockers clear"
+          "severity": "high",
+          "category": "dep",
+          "label": "dep_skipped_preflight",
+          "detail": "dep validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
         }
       ],
       "counts": {
         "critical": 0,
-        "high": 0,
+        "high": 1,
         "medium": 0,
         "low": 0,
-        "info": 3
+        "info": 0
       },
-      "elapsed_ms": 7331
+      "elapsed_ms": 0
     },
     "dast": {
-      "status": "PASS",
+      "status": "FAIL",
       "findings": [
         {
-          "severity": "info",
+          "severity": "high",
           "category": "dast",
-          "label": "public_api_auth_rate_limit_artifact",
-          "count": 9,
-          "detail": "Public-route auth/rate-limit API noise (401/429) on healthy pages; excluded from actionable defects.",
-          "sample": [
-            {
-              "url": "/auth",
-              "apis": [
-                {
-                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/me",
-                  "status": 401
-                }
-              ]
-            },
-            {
-              "url": "/auth/register",
-              "apis": [
-                {
-                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/me",
-                  "status": 401
-                }
-              ]
-            },
-            {
-              "url": "/login",
-              "apis": [
-                {
-                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/me",
-                  "status": 401
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "severity": "info",
-          "category": "dast",
-          "label": "rate_limit_only_artifact",
-          "count": 2,
-          "detail": "Rows with 429-only API failures and rate-limit console noise on otherwise healthy pages; treated as transient edge artifacts.",
-          "sample": [
-            {
-              "url": "/mini-apps/music-streaming",
-              "apis": [
-                {
-                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/config/v2-compliance/runtime",
-                  "status": 429
-                }
-              ]
-            },
-            {
-              "url": "/pricing",
-              "apis": [
-                {
-                  "url": "https://visa-polish-v2.preview.emergentagent.com/api/vitals/page-optimizations",
-                  "status": 429
-                }
-              ]
-            }
-          ]
+          "label": "dast_skipped_preflight",
+          "detail": "dast validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
         }
       ],
       "counts": {
         "critical": 0,
-        "high": 0,
+        "high": 1,
         "medium": 0,
         "low": 0,
-        "info": 11
+        "info": 0
       },
-      "elapsed_ms": 91090,
+      "elapsed_ms": 0,
       "crawler_totals": {
-        "scans": 128,
-        "passing": 117,
-        "failing": 11,
-        "routes_scanned": 128
+        "scans": 0,
+        "passing": 0
       },
-      "actionable_failures": 0,
-      "artifact_failures_ignored": 11,
-      "responsiveness_status": "PASS",
-      "performance_status": "PASS",
-      "performance_p50_ms": 541
+      "responsiveness_status": "FAIL",
+      "performance_status": "FAIL",
+      "performance_p50_ms": 0
     },
     "acl": {
-      "rbac_status": "PASS",
-      "subscription_status": "PASS",
-      "rbac_pass": 5,
-      "rbac_total": 5,
-      "subscription_pass": 2,
-      "subscription_total": 2,
-      "findings": [],
-      "counts": {
-        "critical": 0,
-        "high": 0,
-        "medium": 0,
-        "low": 0,
-        "info": 0
-      },
-      "elapsed_ms": 506
-    },
-    "i18n": {
-      "status": "PASS",
-      "probes_passed": 5,
-      "probes_total": 5,
-      "probe_results": [
+      "rbac_status": "FAIL",
+      "subscription_status": "FAIL",
+      "findings": [
         {
-          "name": "auto-translate (no headers)",
-          "method": "POST",
-          "path": "/api/i18n/auto-translate",
-          "status": 200,
-          "ok": true,
-          "detail": "ok \u2014 'Sign In' \u2192 'Se connecter'"
-        },
-        {
-          "name": "auto-translate (with X-Requested-With)",
-          "method": "POST",
-          "path": "/api/i18n/auto-translate",
-          "status": 200,
-          "ok": true,
-          "detail": "ok"
-        },
-        {
-          "name": "auto-translate (english passthrough)",
-          "method": "POST",
-          "path": "/api/i18n/auto-translate",
-          "status": 200,
-          "ok": true,
-          "detail": "ok"
-        },
-        {
-          "name": "fallback-hit batch telemetry",
-          "method": "POST",
-          "path": "/api/i18n/fallback-hit/batch",
-          "status": 200,
-          "ok": true,
-          "detail": "ok"
-        },
-        {
-          "name": "languages list GET",
-          "method": "GET",
-          "path": "/api/i18n/languages",
-          "status": 200,
-          "ok": true,
-          "detail": "ok"
+          "severity": "high",
+          "category": "acl",
+          "label": "acl_checks_skipped_preflight",
+          "detail": "ACL probes unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
         }
       ],
-      "findings": [],
       "counts": {
         "critical": 0,
-        "high": 0,
+        "high": 1,
         "medium": 0,
         "low": 0,
         "info": 0
       },
-      "elapsed_ms": 674
+      "elapsed_ms": 0,
+      "rbac_pass": 0,
+      "rbac_total": 0,
+      "subscription_pass": 0,
+      "subscription_total": 0
+    },
+    "i18n": {
+      "status": "FAIL",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "i18n",
+          "label": "i18n_skipped_preflight",
+          "detail": "i18n validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
+        }
+      ],
+      "counts": {
+        "critical": 0,
+        "high": 1,
+        "medium": 0,
+        "low": 0,
+        "info": 0
+      },
+      "elapsed_ms": 0
     },
     "duplicate": {
-      "status": "PASS",
-      "findings": [],
+      "status": "FAIL",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "duplicate",
+          "label": "duplicate_skipped_preflight",
+          "detail": "duplicate validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
+        }
+      ],
       "counts": {
         "critical": 0,
-        "high": 0,
+        "high": 1,
         "medium": 0,
         "low": 0,
         "info": 0
       },
-      "scanned_files": 444,
-      "elapsed_ms": 91
+      "elapsed_ms": 0
     },
     "api_contract": {
-      "status": "PASS",
-      "findings": [],
+      "status": "FAIL",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "api_contract",
+          "label": "api_contract_skipped_preflight",
+          "detail": "api_contract validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
+        }
+      ],
       "counts": {
         "critical": 0,
-        "high": 0,
+        "high": 1,
         "medium": 0,
         "low": 0,
         "info": 0
       },
-      "probes_passed": 4,
-      "probes_total": 4,
-      "elapsed_ms": 215
+      "elapsed_ms": 0
     },
     "threat_model": {
-      "status": "PASS",
-      "findings": [],
+      "status": "FAIL",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "threat_model",
+          "label": "threat_model_skipped_preflight",
+          "detail": "threat_model validation unavailable due to preflight instability: external_preview_unstable",
+          "count": 1
+        }
+      ],
       "counts": {
         "critical": 0,
-        "high": 0,
+        "high": 1,
         "medium": 0,
         "low": 0,
         "info": 0
       },
-      "route_count": 3044,
-      "admin_path_count": 516,
-      "elapsed_ms": 28
+      "elapsed_ms": 0
     }
   },
-  "steps_skipped": [],
+  "steps_skipped": [
+    "acl",
+    "api_contract",
+    "dast",
+    "dep",
+    "duplicate",
+    "i18n",
+    "sast",
+    "threat_model"
+  ],
   "directive_version": "3ab3a705bf380cab",
-  "generated_at": "2026-07-15T23:30:48.297334+00:00",
+  "generated_at": "2026-07-16T03:27:25.574033+00:00",
   "v3_output": {
-    "SYSTEM_STATUS": "FAIL",
+    "SYSTEM_STATUS": "INFRA_BLOCKED",
     "SECURITY_STATUS": "FAIL",
-    "PERFORMANCE_STATUS": "PASS",
-    "I18N_STATUS": "PASS",
-    "RBAC_STATUS": "PASS",
+    "PERFORMANCE_STATUS": "FAIL",
+    "I18N_STATUS": "FAIL",
+    "RBAC_STATUS": "FAIL",
     "REGRESSION_STATUS": "PASS",
-    "ERROR_COUNT": "3",
+    "ERROR_COUNT": "1",
     "ACTIVE_FIXES": "YES",
     "MONITORING": "ACTIVE",
     "LEARNING_MEMORY": "UPDATED",
     "CONFIDENCE_LEVEL": "LOW"
   },
-  "elapsed_ms": 98574,
   "triggered_by": "scheduler",
   "actor": "apscheduler",
   "attempt_tag": "initial",
@@ -331,16 +256,18 @@
   "scan_mode": "STRICT_GLOBAL",
   "strict_global_mode": true,
   "transient_artifact_count": 0,
-  "strict_gate_passed": true,
+  "strict_gate_passed": false,
   "preflight": {
-    "passed": true,
+    "passed": false,
     "required_checks": 3,
-    "attempts_completed": 3,
-    "reasons": [],
+    "attempts_completed": 1,
+    "reasons": [
+      "external_preview_unstable"
+    ],
     "attempts": [
       {
         "attempt": 1,
-        "ok": true,
+        "ok": false,
         "local_backend": {
           "base_url": "http://127.0.0.1:8001",
           "url": "http://127.0.0.1:8001/api/health",
@@ -351,90 +278,28 @@
         },
         "external_preview": {
           "base_url": "https://visa-polish-v2.preview.emergentagent.com",
-          "stable": true,
+          "stable": false,
           "checks": [
             {
               "path": "/_preview/health",
-              "status_code": 200,
-              "ok": true,
+              "status_code": 502,
+              "ok": false,
               "error": null
             },
             {
               "path": "/auth/login",
-              "status_code": 200,
-              "ok": true,
+              "status_code": 502,
+              "ok": false,
               "error": null
             }
           ],
-          "checked_at": "2026-07-15T23:29:06.990595+00:00"
-        }
-      },
-      {
-        "attempt": 2,
-        "ok": true,
-        "local_backend": {
-          "base_url": "http://127.0.0.1:8001",
-          "url": "http://127.0.0.1:8001/api/health",
-          "ok": true,
-          "status_code": 200,
-          "error": null,
-          "body_excerpt": "{\"status\":\"healthy\",\"service\":\"RealAICoach API\"}"
-        },
-        "external_preview": {
-          "base_url": "https://visa-polish-v2.preview.emergentagent.com",
-          "stable": true,
-          "checks": [
-            {
-              "path": "/_preview/health",
-              "status_code": 200,
-              "ok": true,
-              "error": null
-            },
-            {
-              "path": "/auth/login",
-              "status_code": 200,
-              "ok": true,
-              "error": null
-            }
-          ],
-          "checked_at": "2026-07-15T23:29:08.363301+00:00"
-        }
-      },
-      {
-        "attempt": 3,
-        "ok": true,
-        "local_backend": {
-          "base_url": "http://127.0.0.1:8001",
-          "url": "http://127.0.0.1:8001/api/health",
-          "ok": true,
-          "status_code": 200,
-          "error": null,
-          "body_excerpt": "{\"status\":\"healthy\",\"service\":\"RealAICoach API\"}"
-        },
-        "external_preview": {
-          "base_url": "https://visa-polish-v2.preview.emergentagent.com",
-          "stable": true,
-          "checks": [
-            {
-              "path": "/_preview/health",
-              "status_code": 200,
-              "ok": true,
-              "error": null
-            },
-            {
-              "path": "/auth/login",
-              "status_code": 200,
-              "ok": true,
-              "error": null
-            }
-          ],
-          "checked_at": "2026-07-15T23:29:09.714702+00:00"
+          "checked_at": "2026-07-16T03:27:25.566305+00:00"
         }
       }
     ],
     "require_external_preview": true,
     "require_local_backend": true,
-    "checked_at": "2026-07-15T23:29:09.714726+00:00"
+    "checked_at": "2026-07-16T03:27:25.566331+00:00"
   },
   "preflight_policy": {
     "require_external_preview": true,
@@ -442,36 +307,10 @@
     "required_stable_checks": 3
   },
   "restart_count": 0,
-  "remediation_ledgers": [
-    {
-      "attempted": 0,
-      "fixed": 0,
-      "failed": 0,
-      "skipped": 0,
-      "auto_escalated": 2,
-      "actions": [
-        {
-          "label": "react_dangerous_inner_html",
-          "severity": "medium",
-          "status": "auto_escalated",
-          "action_taken": "open_incident_and_contain",
-          "incident_id": "gtec_inc_5b0c9fac4553",
-          "detail": "no safe auto-remediator registered \u2014 auto-escalated to incident with containment"
-        },
-        {
-          "label": "dom_innerhtml_write",
-          "severity": "medium",
-          "status": "auto_escalated",
-          "action_taken": "open_incident_and_contain",
-          "incident_id": "gtec_inc_d743867c3a57",
-          "detail": "no safe auto-remediator registered \u2014 auto-escalated to incident with containment"
-        }
-      ]
-    }
-  ],
+  "remediation_ledgers": [],
   "incident_auto_closure": {
     "evaluated_incidents": 12,
-    "active_finding_keys": 2,
+    "active_finding_keys": 9,
     "transitioned_to_pending_verification": 0,
     "auto_closed": 4,
     "reopened": 0,
@@ -480,103 +319,89 @@
       "clean_rescans_required": 3,
       "pending_verification_hours": 24
     },
-    "evaluated_at": "2026-07-15T23:30:48.332002+00:00"
+    "evaluated_at": "2026-07-16T03:27:25.574081+00:00"
   },
   "c5_notification_snapshot": {
     "snapshot_version": "c5-notification-snapshot.v2",
-    "source_task_id": "gtec_c5_ddbb603c36ae",
-    "source_execution_hash": "1d274b42a7a8ad27",
-    "source_generated_at": "2026-07-15T23:30:48.297334+00:00",
+    "source_task_id": "gtec_c5_c0d557056757",
+    "source_execution_hash": "37133d637f6eca27",
+    "source_generated_at": "2026-07-16T03:27:25.574033+00:00",
     "global_binding": {
       "bound_to_latest_trust_task": false,
-      "latest_trust_task_id": "gtec_c5_10c6dc4c5b56"
+      "latest_trust_task_id": ""
     },
     "trust": {
-      "score_percent": 100.0,
-      "passed_gates": 9,
-      "total_gates": 9,
-      "generated_at": "2026-07-15T23:30:50.783721+00:00"
+      "score_percent": 0.0,
+      "passed_gates": 0,
+      "total_gates": 0,
+      "generated_at": "2026-07-16T03:27:25.583081+00:00"
     },
     "white_screen_sentry": {
-      "status": "FAIL",
-      "run_id": "wss_20260715T232424Z",
-      "failed_checks": 5,
-      "total_checks": 60,
-      "routes_tested": 20,
-      "route_source": "dynamic_inventory",
-      "generated_at": "2026-07-15T23:25:55.926230+00:00"
+      "status": "UNKNOWN",
+      "run_id": "",
+      "failed_checks": 0,
+      "total_checks": 0,
+      "routes_tested": 0,
+      "route_source": "",
+      "generated_at": "2026-07-16T03:27:25.583088+00:00"
     },
     "responsive_viewport_matrix": {
-      "artifact_count": 60,
+      "artifact_count": 0,
       "viewports": [
         "mobile",
         "tablet",
         "desktop"
       ],
-      "matrix_summary": {
-        "mobile": {
-          "pass": 19,
-          "fail": 1,
-          "total": 20
-        },
-        "tablet": {
-          "pass": 18,
-          "fail": 2,
-          "total": 20
-        },
-        "desktop": {
-          "pass": 18,
-          "fail": 2,
-          "total": 20
-        }
-      }
+      "matrix_summary": {}
     },
     "external_host_certification": {
-      "status": "skipped_proxy_unstable",
-      "certification_id": "ext_cert_d21559917143",
-      "reason": "external_preview_proxy_not_stable",
-      "started_at": "2026-07-15T01:37:44.031153+00:00",
-      "finished_at": "2026-07-15T01:37:49.290839+00:00",
+      "status": "skipped_preflight_unstable",
+      "certification_id": "",
+      "reason": "external_preview_unstable",
+      "started_at": null,
+      "finished_at": null,
       "retry_plan": {
-        "needs_retry": false,
-        "reasons": []
+        "needs_retry": true,
+        "reasons": [
+          "external_preview_unstable"
+        ]
       }
     },
     "incident_auto_closure": {
-      "evaluated_incidents": 12,
+      "evaluated_incidents": 0,
       "transitioned_to_pending_verification": 0,
-      "auto_closed": 4,
+      "auto_closed": 0,
       "reopened": 0,
       "streak_resets": 0,
       "policy": {
         "clean_rescans_required": 3,
         "pending_verification_hours": 24
       },
-      "evaluated_at": "2026-07-15T23:30:48.332002+00:00"
+      "evaluated_at": "2026-07-16T03:27:25.583093+00:00"
     },
     "run_policy": {
       "scan_mode": "STRICT_GLOBAL",
       "strict_global_mode": true,
       "transient_artifact_count": 0,
-      "strict_gate_passed": true,
+      "strict_gate_passed": false,
       "preflight_require_external_preview": true,
       "preflight_require_local_backend": true
     },
-    "generated_at": "2026-07-15T23:30:50.843438+00:00",
-    "fail_reason_summary": "FAIL because: security_scan=FAIL; white_screen_sentry=5/60 failed",
-    "snapshot_status": "COMPLETE",
-    "data_freshness": "STALE_OR_PARTIAL",
+    "generated_at": "2026-07-16T03:27:25.583098+00:00",
+    "snapshot_status": "INCOMPLETE",
+    "data_freshness": "INFRA_BLOCKED",
     "consistency": {
-      "passed": true,
+      "passed": false,
       "issues": [
-        "not_bound_to_latest_trust_task"
+        "scan_preflight_unstable"
       ]
-    }
+    },
+    "fail_reason_summary": "INFRA_BLOCKED because: runtime preflight stability not met (1/3); reasons=external_preview_unstable"
   },
   "canonical_model_write": {
     "execution_graph_written": true,
-    "finding_catalog_rows": 7,
-    "remediation_plans_updated": 2,
+    "finding_catalog_rows": 9,
+    "remediation_plans_updated": 0,
     "canonical_incidents_synced": 106,
     "policy_store_written": true
   }
