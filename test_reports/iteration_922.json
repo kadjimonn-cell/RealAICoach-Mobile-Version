@@ -1,0 +1,90 @@
+{
+  "summary": "Full regression after Mono→Expo revert. All 6 review categories PASS: (1) structure — /app/frontend contains Expo (expo 54.0.34), app.json/eas.json/serve-production.js/scripts/seo-inject.js/assets/og-image.png present, /app/mobile absent, zero 'app/mobile' leftover refs in backend/scripts; (2) backend — /api/health 200, backend.err.log clean of FileNotFound/Traceback for reverted paths, admin + free logins 200; (3) backend suites — 4 files, 38 items, 35 PASS / 3 SKIP (lock-off/telemetry conditional skips) / 0 FAIL; (4) frontend routes — /, /welcome, /auth/login, /features/travel-visa, /sitemap.xml, /robots.txt, /og-image.png all 200; SEO <title> on /welcome = 'RealAICoach — Elevate Your Professional Trajectory'; login flow + /features/travel-visa?country=US deep-link opens US Country Track view (B1/B2, F1, H1B... tracks visible with FREE/BASIC/PREMIUM chips); (5) Stripe LIVE — free user POST /api/subscriptions/create-checkout {plan_id:'basic',payment_method:'stripe'} → 200, checkout_url = https://checkout.stripe.com/c/pay/cs_live_… (LIVE, not completed); (6) git — status works, HEAD = 4e8894f (Revert Mono conversion…), working tree only has expected runtime churn (backend/.runtime/gps_last_known_good.json, test_reports/gtec_routes.json, gtec_c5_viewport_matrix wss dir).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "verification_results": {
+    "structure": {
+      "frontend_package_expo_version": "54.0.34",
+      "frontend_key_files_present": ["app.json", "eas.json", "serve-production.js", "scripts/seo-inject.js", "assets/og-image.png"],
+      "app_mobile_removed": true,
+      "app_mobile_refs_in_backend_scripts": 0
+    },
+    "backend": {
+      "api_health_status": 200,
+      "api_health_body": "{\"status\":\"healthy\",\"service\":\"RealAICoach API\"}",
+      "backend_err_log_clean": true,
+      "admin_login_status": 200,
+      "admin_is_admin": true,
+      "free_user_login_status": 200,
+      "supervisor_services": {"backend": "RUNNING", "expo": "RUNNING", "expo_manual": "RUNNING", "mongodb": "RUNNING"}
+    },
+    "backend_suites": {
+      "total": 38,
+      "passed": 35,
+      "skipped": 3,
+      "failed": 0,
+      "skipped_reason": "3 skips are lock-state-conditional (former_premium_when_lock_active, no_nonadmin_paid_users_when_lock_active) and telemetry_insert_on_call — all expected while lock is OFF",
+      "junit_xml": "/app/test_reports/pytest/iter922_results.xml",
+      "files_run": [
+        "backend/tests/test_preprod_entitlement_lock.py",
+        "backend/tests/test_travel_visa_country_track_iter915.py",
+        "backend/tests/test_gtec_directive_selfheal_iter916.py",
+        "backend/tests/test_gtec_directive_selfheal_iter919.py"
+      ]
+    },
+    "frontend_routes": {
+      "/": 200,
+      "/welcome": 200,
+      "/auth/login": 200,
+      "/features/travel-visa": 200,
+      "/sitemap.xml": 200,
+      "/robots.txt": 200,
+      "/og-image.png": 200,
+      "welcome_seo_title": "RealAICoach — Elevate Your Professional Trajectory",
+      "sitemap_xml_valid": true,
+      "login_flow_works": true,
+      "travel_visa_country_cards_render": true,
+      "deep_link_country_US_opens_country_track": true,
+      "us_track_content_seen": "United States • North America • high difficulty • 3 embassies; B1/B2 Tourist, F1 Student, H1B Work, J1 Exchange, K1 Fiancé, L1 Intracompany, EB5 Investor, O1 Extraordinary; Tourist Visa Guide (FREE), Family Visa Guide (BASIC)"
+    },
+    "stripe_live_checkout": {
+      "http_status": 200,
+      "checkout_url_prefix": "https://checkout.stripe.com/c/pay/cs_live_",
+      "session_mode": "LIVE",
+      "payment_completed": false,
+      "plan_id": "basic",
+      "payment_method": "stripe"
+    },
+    "git": {
+      "status_works": true,
+      "head_commit": "4e8894f Revert Mono conversion: restore Expo app at /app/frontend, remove standalone web shell, keep SEO via scripts/seo-inject.js in export pipeline",
+      "working_tree_source_changes": 0,
+      "working_tree_runtime_churn_only": [
+        "backend/.runtime/gps_last_known_good.json",
+        "test_reports/gtec_routes.json",
+        "test_reports/gtec_c5_viewport_matrix/wss_20260716T000838Z/"
+      ]
+    }
+  },
+  "test_report_links": [
+    "/app/test_reports/pytest/iter922_results.xml",
+    "/app/backend/tests/test_preprod_entitlement_lock.py",
+    "/app/backend/tests/test_travel_visa_country_track_iter915.py",
+    "/app/backend/tests/test_gtec_directive_selfheal_iter916.py",
+    "/app/backend/tests/test_gtec_directive_selfheal_iter919.py"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Revert is clean — Expo layout at /app/frontend is fully restored and healthy. No dangling /app/mobile references remain in /app/backend or /app/scripts (grep 0 hits). SEO pipeline preserved via scripts/seo-inject.js wired into export:web.",
+    "Bootstrap phase 401 on /api/auth/me is expected (unauthenticated cookie-only probe on public pages) — logged as warning, not error. Non-issue.",
+    "Static <title> on /welcome is correctly baked into the exported HTML by seo-inject.js (verified via curl); SPA hydration then takes over. Search engines will see the correct SEO title."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (35/35 non-skipped)", "frontend": "100% (7/7 routes + login + deep-link)"},
+  "test_credentials": "Admin admin@realaicoach.app / NewAdminPass2026! → 200 is_admin=true. Free p1.free.1779113329@example.com / P1Free#2026!Aa → 200.",
+  "seed_data_creation": "None. Stripe LIVE checkout session cs_live_a1NNRhNrka5zFTYiwJ… created but NOT completed (per constraint).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Revert to Expo (/app/frontend) is verified clean at HEAD 4e8894f. /app/mobile does not exist and must not be recreated. Entitlement lock is OFF (3 pytest skips are expected under lock-off). Stripe is LIVE — never complete payments. Login is at /auth/login with email placeholder 'you@example.com'. Travel Visa page shows an onboarding overlay ('Welcome to Travel Visa — Where are you planning to go?') that can be dismissed via Skip; the underlying page still renders and the ?country=US deep-link opens the Country Track view directly beneath the overlay.",
+  "rca of the issue": "N/A — revert regression test only; no issues found."
+}
