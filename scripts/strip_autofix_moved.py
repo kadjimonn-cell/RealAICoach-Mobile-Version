@@ -26,7 +26,7 @@ import pathlib
 import re
 import sys
 
-ROOT = pathlib.Path("/app/mobile/src/components/admin")
+ROOT = pathlib.Path("/app/frontend/src/components/admin")
 
 # Matches lines like:
 #   // @autofix-moved: was module-level const STATUS_META

@@ -380,8 +380,8 @@ async def _run_all_checks():
 
             elif cid == "exp_login_page_no_live_data":
                 # Verify login page doesn't import useLiveMetrics
-                login_file = "/app/mobile/src/components/pages/LoginInner.tsx"
-                intel_file = "/app/mobile/src/components/pages/login/IntelligencePanel.tsx"
+                login_file = "/app/frontend/src/components/pages/LoginInner.tsx"
+                intel_file = "/app/frontend/src/components/pages/login/IntelligencePanel.tsx"
                 issues = []
                 if os.path.exists(login_file):
                     with open(login_file, "r") as f:
@@ -400,7 +400,7 @@ async def _run_all_checks():
 
             elif cid == "exp_unauth_route_guard":
                 # Check RouteAccessGuard exists and covers non-public routes
-                guard_file = "/app/mobile/src/components/RouteAccessGuard.tsx"
+                guard_file = "/app/frontend/src/components/RouteAccessGuard.tsx"
                 if os.path.exists(guard_file):
                     with open(guard_file, "r") as f:
                         content = f.read()

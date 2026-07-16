@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-THEME_CONTEXT_PATH = Path('/app/mobile/src/context/ThemeContext.tsx')
+THEME_CONTEXT_PATH = Path('/app/frontend/src/context/ThemeContext.tsx')
 
 
 def test_web_system_dark_initialized_from_match_media_synchronously() -> None:

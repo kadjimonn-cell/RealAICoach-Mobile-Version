@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-REALTIME_CONTEXT_PATH = Path('/app/mobile/src/context/RealtimeContext.tsx')
-USE_LIVE_DATA_PATH = Path('/app/mobile/src/hooks/useLiveData.ts')
+REALTIME_CONTEXT_PATH = Path('/app/frontend/src/context/RealtimeContext.tsx')
+USE_LIVE_DATA_PATH = Path('/app/frontend/src/hooks/useLiveData.ts')
 WS_ENDPOINTS_PATH = Path('/app/backend/ws_endpoints.py')
 WS_HEARTBEAT_UTIL_PATH = Path('/app/backend/utils/ws_heartbeat.py')
 VIDEO_INTERVIEW_PATH = Path('/app/backend/routes/video_interview.py')

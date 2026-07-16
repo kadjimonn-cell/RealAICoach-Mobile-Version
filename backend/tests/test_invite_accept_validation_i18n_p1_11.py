@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-INVITE_ACCEPT_PATH = Path('/app/mobile/app/invite-accept.tsx')
-EN_LOCALE_PATH = Path('/app/mobile/src/i18n/locales/en.ts')
+INVITE_ACCEPT_PATH = Path('/app/frontend/app/invite-accept.tsx')
+EN_LOCALE_PATH = Path('/app/frontend/src/i18n/locales/en.ts')
 
 
 def test_invite_accept_uses_i18n_validation_keys() -> None:

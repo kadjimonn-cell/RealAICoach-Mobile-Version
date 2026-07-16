@@ -1,12 +1,12 @@
 from pathlib import Path
 
 
-HOME_TABS_INDEX_PATH = Path('/app/mobile/app/(tabs)/index.tsx')
-AI_DASHBOARD_PATH = Path('/app/mobile/app/ai-feature-dashboard.tsx')
-ADMIN_ACTIVITY_PATH = Path('/app/mobile/app/admin-activity-log.tsx')
-INTERVIEW_ROOM_PATH = Path('/app/mobile/app/interview-room.tsx')
-USE_LIVE_DATA_PATH = Path('/app/mobile/src/hooks/useLiveData.ts')
-USE_LIVE_QUERY_PATH = Path('/app/mobile/src/hooks/useLiveQuery.ts')
+HOME_TABS_INDEX_PATH = Path('/app/frontend/app/(tabs)/index.tsx')
+AI_DASHBOARD_PATH = Path('/app/frontend/app/ai-feature-dashboard.tsx')
+ADMIN_ACTIVITY_PATH = Path('/app/frontend/app/admin-activity-log.tsx')
+INTERVIEW_ROOM_PATH = Path('/app/frontend/app/interview-room.tsx')
+USE_LIVE_DATA_PATH = Path('/app/frontend/src/hooks/useLiveData.ts')
+USE_LIVE_QUERY_PATH = Path('/app/frontend/src/hooks/useLiveQuery.ts')
 SUB_ANALYTICS_PATH = Path('/app/backend/routes/admin_subscription_analytics.py')
 
 

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-SOURCE_PATH = Path("/app/mobile/app/messages.tsx")
+SOURCE_PATH = Path("/app/frontend/app/messages.tsx")
 
 
 def test_messages_screen_no_longer_uses_15s_polling_interval() -> None:

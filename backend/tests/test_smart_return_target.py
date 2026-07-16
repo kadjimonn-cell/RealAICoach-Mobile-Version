@@ -203,7 +203,7 @@ class TestReturnTargetNormalization:
     def test_normalize_return_target_logic(self):
         """Verify normalizeReturnTarget logic matches expected behavior"""
         # This tests the contract that the frontend utility should follow
-        # Based on /app/mobile/src/utils/subscriptionReturnTarget.ts
+        # Based on /app/frontend/src/utils/subscriptionReturnTarget.ts
         
         test_cases = [
             # (input, expected_output)

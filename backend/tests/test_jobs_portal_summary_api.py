@@ -240,7 +240,7 @@ class TestNoSilentFallbackDependency:
     def test_frontend_code_does_not_reference_employers_my_jobs(self):
         """Verify job-platform.tsx doesn't reference /employers/my-jobs."""
         from pathlib import Path
-        source = Path("/app/mobile/app/job-platform.tsx").read_text(encoding="utf-8")
+        source = Path("/app/frontend/app/job-platform.tsx").read_text(encoding="utf-8")
         
         # Should NOT contain reference to /employers/my-jobs
         assert "/employers/my-jobs" not in source, "Frontend should not reference /employers/my-jobs"

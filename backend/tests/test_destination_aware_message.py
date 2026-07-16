@@ -61,7 +61,7 @@ class TestDestinationAwareMessageContract:
     def test_dashboard_message_contract(self):
         """Dashboard return target should have specific message"""
         # Read the source file
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         # Verify dashboard message
@@ -70,7 +70,7 @@ class TestDestinationAwareMessageContract:
             
     def test_profile_message_contract(self):
         """Profile return target should have specific message"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "Your profile access is restored, and your settings are ready to review." in content, \
@@ -78,7 +78,7 @@ class TestDestinationAwareMessageContract:
             
     def test_features_root_message_contract(self):
         """Features root return target should have specific message"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "Your premium tools are unlocked in Features and ready to explore." in content, \
@@ -86,7 +86,7 @@ class TestDestinationAwareMessageContract:
             
     def test_features_subpath_message_contract(self):
         """Features subpath return target should have dynamic message"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "Your upgraded access is ready in ${destinationLabel}." in content, \
@@ -94,7 +94,7 @@ class TestDestinationAwareMessageContract:
             
     def test_booking_message_contract(self):
         """Booking return target should have specific message"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "Your booking space is restored so you can continue planning right away." in content, \
@@ -102,7 +102,7 @@ class TestDestinationAwareMessageContract:
             
     def test_fallback_message_contract(self):
         """Fallback return target should have dynamic message"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "Your access is restored in ${destinationLabel} and ready to use." in content, \
@@ -110,7 +110,7 @@ class TestDestinationAwareMessageContract:
             
     def test_appshell_uses_payload_toast_fields(self):
         """AppShell should prefer payload.toastTitle and payload.toastMessage"""
-        with open('/app/mobile/src/components/AppShell.tsx', 'r') as f:
+        with open('/app/frontend/src/components/AppShell.tsx', 'r') as f:
             content = f.read()
         
         assert "payload.toastTitle" in content, \
@@ -120,7 +120,7 @@ class TestDestinationAwareMessageContract:
             
     def test_getmessageconfig_function_exists(self):
         """getMessageConfig function should exist in subscriptionReturnToast.ts"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "function getMessageConfig(returnTarget: string, destinationLabel: string, planName?: string | null)" in content, \
@@ -128,7 +128,7 @@ class TestDestinationAwareMessageContract:
             
     def test_stash_function_stores_message_fields(self):
         """stashSubscriptionReturnToast should store toastTitle and toastMessage"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "toastTitleFallback: message.toastTitleFallback" in content, \
@@ -142,7 +142,7 @@ class TestDestinationAwareCTAContract:
     
     def test_profile_cta_mapping(self):
         """Profile path should map to 'Profile settings' CTA"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "actionLabelFallback: 'Profile settings'" in content
@@ -150,7 +150,7 @@ class TestDestinationAwareCTAContract:
         
     def test_features_cta_mapping(self):
         """Features path should map to 'Explore premium tools' CTA"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "actionLabelFallback: 'Explore premium tools'" in content
@@ -158,7 +158,7 @@ class TestDestinationAwareCTAContract:
         
     def test_booking_cta_mapping(self):
         """Booking path should map to 'Review agenda' CTA"""
-        with open('/app/mobile/src/utils/subscriptionReturnToast.ts', 'r') as f:
+        with open('/app/frontend/src/utils/subscriptionReturnToast.ts', 'r') as f:
             content = f.read()
         
         assert "actionLabelFallback: 'Review agenda'" in content

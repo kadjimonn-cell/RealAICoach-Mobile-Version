@@ -6,10 +6,10 @@ from pathlib import Path
 
 sys.path.insert(0, "/app/scripts")
 FILES = [
-    Path("/app/mobile/app/job-search.tsx"),
-    *Path("/app/mobile/src/components/jobSearch").glob("*.tsx"),
+    Path("/app/frontend/app/job-search.tsx"),
+    *Path("/app/frontend/src/components/jobSearch").glob("*.tsx"),
 ]
-EN = Path("/app/mobile/src/i18n/locales/en.ts")
+EN = Path("/app/frontend/src/i18n/locales/en.ts")
 
 pairs = {
     "nav.jobSearch": "Job Search",

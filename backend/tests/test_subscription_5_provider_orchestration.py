@@ -320,7 +320,7 @@ class TestThemeExceptionAllowlist:
 
     def test_subscription_payment_not_in_allowlist(self):
         """Verify app/subscription/payment.tsx is NOT in theme-exception-allowlist"""
-        allowlist_path = "/app/mobile/scripts/theme-exception-allowlist.json"
+        allowlist_path = "/app/frontend/scripts/theme-exception-allowlist.json"
         import json
         with open(allowlist_path, 'r') as f:
             allowlist = json.load(f)
@@ -333,7 +333,7 @@ class TestThemeExceptionAllowlist:
 
     def test_subscription_plans_not_in_allowlist(self):
         """Verify app/subscription/plans.tsx is NOT in theme-exception-allowlist"""
-        allowlist_path = "/app/mobile/scripts/theme-exception-allowlist.json"
+        allowlist_path = "/app/frontend/scripts/theme-exception-allowlist.json"
         import json
         with open(allowlist_path, 'r') as f:
             allowlist = json.load(f)
@@ -346,7 +346,7 @@ class TestThemeExceptionAllowlist:
 
     def test_subscription_mobile_money_in_allowlist(self):
         """Verify app/subscription/mobile-money.tsx IS in theme-exception-allowlist (expected)"""
-        allowlist_path = "/app/mobile/scripts/theme-exception-allowlist.json"
+        allowlist_path = "/app/frontend/scripts/theme-exception-allowlist.json"
         import json
         with open(allowlist_path, 'r') as f:
             allowlist = json.load(f)

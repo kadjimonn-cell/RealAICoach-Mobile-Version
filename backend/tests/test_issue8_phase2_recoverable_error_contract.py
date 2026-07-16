@@ -8,15 +8,15 @@ import re
 
 
 # File paths for the pages being tested
-HOME_INDEX_PATH = Path('/app/mobile/app/(tabs)/index.tsx')
-PROFILE_PATH = Path('/app/mobile/app/(tabs)/profile.tsx')
-INTERVIEW_ROOM_PATH = Path('/app/mobile/app/interview-room.tsx')
-CAREERS_PATH = Path('/app/mobile/app/careers.tsx')
-JOB_PLATFORM_PATH = Path('/app/mobile/app/job-platform.tsx')
-BLOG_INDEX_PATH = Path('/app/mobile/app/blog/index.tsx')
-CONTACT_PATH = Path('/app/mobile/app/contact.tsx')
-HELP_PATH = Path('/app/mobile/app/help.tsx')
-APP_RECOVERABLE_ERROR_PATH = Path('/app/mobile/src/utils/appRecoverableError.ts')
+HOME_INDEX_PATH = Path('/app/frontend/app/(tabs)/index.tsx')
+PROFILE_PATH = Path('/app/frontend/app/(tabs)/profile.tsx')
+INTERVIEW_ROOM_PATH = Path('/app/frontend/app/interview-room.tsx')
+CAREERS_PATH = Path('/app/frontend/app/careers.tsx')
+JOB_PLATFORM_PATH = Path('/app/frontend/app/job-platform.tsx')
+BLOG_INDEX_PATH = Path('/app/frontend/app/blog/index.tsx')
+CONTACT_PATH = Path('/app/frontend/app/contact.tsx')
+HELP_PATH = Path('/app/frontend/app/help.tsx')
+APP_RECOVERABLE_ERROR_PATH = Path('/app/frontend/src/utils/appRecoverableError.ts')
 
 
 def test_app_recoverable_error_utility_exists_with_correct_structure():

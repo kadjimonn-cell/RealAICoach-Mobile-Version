@@ -11,7 +11,7 @@ from pathlib import Path
 import re
 
 
-ROOT = Path('/app/mobile')
+ROOT = Path('/app/frontend')
 APP_DIR = ROOT / 'app'
 SRC_DIR = ROOT / 'src'
 

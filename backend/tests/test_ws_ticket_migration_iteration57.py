@@ -314,14 +314,14 @@ class TestFrontendWSURLPatterns:
         import subprocess
         
         files_to_check = [
-            "/app/mobile/src/components/admin/LiveActivityFeedPanel.tsx",
-            "/app/mobile/src/components/admin/AutomationEnginePanel.tsx",
-            "/app/mobile/src/components/admin/CompetitorKeywordPanel.tsx",
-            "/app/mobile/src/components/admin/SIEMPanel.tsx",
-            "/app/mobile/src/components/admin/PerformanceDashboardPanel.tsx",
-            "/app/mobile/src/components/admin/SystemMonitorPanel.tsx",
-            "/app/mobile/src/components/admin/OperationsDashboard.tsx",
-            "/app/mobile/src/components/jobs/EmployerPipelineBoard.tsx",
+            "/app/frontend/src/components/admin/LiveActivityFeedPanel.tsx",
+            "/app/frontend/src/components/admin/AutomationEnginePanel.tsx",
+            "/app/frontend/src/components/admin/CompetitorKeywordPanel.tsx",
+            "/app/frontend/src/components/admin/SIEMPanel.tsx",
+            "/app/frontend/src/components/admin/PerformanceDashboardPanel.tsx",
+            "/app/frontend/src/components/admin/SystemMonitorPanel.tsx",
+            "/app/frontend/src/components/admin/OperationsDashboard.tsx",
+            "/app/frontend/src/components/jobs/EmployerPipelineBoard.tsx",
         ]
         
         results = {"pass": [], "fail": []}

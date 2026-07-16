@@ -2,9 +2,9 @@ from pathlib import Path
 
 
 ASSISTANT_ROUTE_PATH = Path('/app/backend/routes/personal_assistant.py')
-AI_CHATBOT_PAGE_PATH = Path('/app/mobile/app/features/ai-chatbot.tsx')
+AI_CHATBOT_PAGE_PATH = Path('/app/frontend/app/features/ai-chatbot.tsx')
 SERVER_PATH = Path('/app/backend/server.py')
-ASSISTANT_E2E_PATH = Path('/app/mobile/e2e/ai-chatbot.spec.ts')
+ASSISTANT_E2E_PATH = Path('/app/frontend/e2e/ai-chatbot.spec.ts')
 
 
 def test_personal_assistant_route_exists_with_core_endpoints() -> None:

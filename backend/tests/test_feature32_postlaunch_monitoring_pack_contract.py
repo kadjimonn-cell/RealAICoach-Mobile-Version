@@ -22,9 +22,9 @@ def test_feature32_reliability_payload_contract_markers_present() -> None:
 
 
 def test_feature32_email_reliability_tab_wired_in_admin_console() -> None:
-    panel_source = _read("/app/mobile/src/components/admin/EmailTemplatesPanel.tsx")
-    console_source = _read("/app/mobile/src/components/OperationsConsoleView.tsx")
-    phase_b_source = _read("/app/mobile/src/config/phaseBTabConsolidation.ts")
+    panel_source = _read("/app/frontend/src/components/admin/EmailTemplatesPanel.tsx")
+    console_source = _read("/app/frontend/src/components/OperationsConsoleView.tsx")
+    phase_b_source = _read("/app/frontend/src/config/phaseBTabConsolidation.ts")
 
     assert "{ id: 'reliability', label: 'Reliability'" in panel_source
     assert "case 'email-reliability':" in console_source

@@ -31,7 +31,7 @@ import re
 import sys
 from pathlib import Path
 
-REPO = Path("/app/mobile")
+REPO = Path("/app/frontend")
 SCAN_DIRS = [REPO / "src", REPO / "app"]
 EXTENSIONS = (".tsx", ".ts", ".jsx", ".js")
 

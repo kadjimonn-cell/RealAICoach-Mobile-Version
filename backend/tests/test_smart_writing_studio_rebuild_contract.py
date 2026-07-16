@@ -2,9 +2,9 @@ from pathlib import Path
 
 
 WRITING_STUDIO_ROUTE_PATH = Path('/app/backend/routes/writing_studio.py')
-AI_WRITER_PAGE_PATH = Path('/app/mobile/app/features/ai-writer.tsx')
+AI_WRITER_PAGE_PATH = Path('/app/frontend/app/features/ai-writer.tsx')
 SERVER_PATH = Path('/app/backend/server.py')
-AI_WRITER_E2E_PATH = Path('/app/mobile/e2e/ai-writer.spec.ts')
+AI_WRITER_E2E_PATH = Path('/app/frontend/e2e/ai-writer.spec.ts')
 
 
 def test_writing_studio_route_exists_with_core_endpoints() -> None:

@@ -24,8 +24,8 @@ def test_jobs_portal_summary_exposes_canonical_fields():
 
 
 def test_job_platform_frontend_uses_canonical_summary_api():
-    route_source = Path("/app/mobile/app/job-platform.tsx").read_text(encoding="utf-8")
-    hook_source = Path("/app/mobile/src/hooks/useJobsPortalSummary.ts").read_text(encoding="utf-8")
+    route_source = Path("/app/frontend/app/job-platform.tsx").read_text(encoding="utf-8")
+    hook_source = Path("/app/frontend/src/hooks/useJobsPortalSummary.ts").read_text(encoding="utf-8")
     assert "api.get('/jobs/portal-summary'" in hook_source
     assert "useJobsPortalSummary" in route_source
     assert "/employers/my-jobs" not in route_source

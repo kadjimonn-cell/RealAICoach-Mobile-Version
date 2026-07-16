@@ -1,9 +1,9 @@
 from pathlib import Path
 
 
-APP_STORE_PATH = Path('/app/mobile/src/store/appStore.ts')
-THEME_CONTEXT_PATH = Path('/app/mobile/src/context/ThemeContext.tsx')
-LIVE_QUERY_PATH = Path('/app/mobile/src/hooks/useLiveQuery.ts')
+APP_STORE_PATH = Path('/app/frontend/src/store/appStore.ts')
+THEME_CONTEXT_PATH = Path('/app/frontend/src/context/ThemeContext.tsx')
+LIVE_QUERY_PATH = Path('/app/frontend/src/hooks/useLiveQuery.ts')
 
 
 def test_app_store_uses_typed_scenario_and_uuid_user_id_generation() -> None:

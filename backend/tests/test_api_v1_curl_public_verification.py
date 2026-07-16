@@ -17,7 +17,7 @@ import requests
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 if not BASE_URL:
     # Fallback: read frontend/.env directly if env not exported
-    with open("/app/mobile/.env", "r", encoding="utf-8") as fh:
+    with open("/app/frontend/.env", "r", encoding="utf-8") as fh:
         for line in fh:
             if line.startswith("REACT_APP_BACKEND_URL="):
                 BASE_URL = line.split("=", 1)[1].strip().rstrip("/")

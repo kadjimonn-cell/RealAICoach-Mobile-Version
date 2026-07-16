@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path("/app")
-APP_SHELL_FILE = REPO_ROOT / "mobile/src/components/AppShell.tsx"
+APP_SHELL_FILE = REPO_ROOT / "frontend/src/components/AppShell.tsx"
 DEFAULT_METADATA_FILE = REPO_ROOT / ".nav-key-lock-metadata.json"
 DEFAULT_HISTORY_FILE = REPO_ROOT / ".nav-key-lock-history.jsonl"
 LOCK_SCHEMA_VERSION = 1

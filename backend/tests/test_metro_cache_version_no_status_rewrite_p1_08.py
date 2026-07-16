@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-METRO_CONFIG_PATH = Path('/app/mobile/metro.config.js')
+METRO_CONFIG_PATH = Path('/app/frontend/metro.config.js')
 
 
 def test_metro_config_sets_cache_version_from_package_version() -> None:

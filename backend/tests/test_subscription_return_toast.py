@@ -188,7 +188,7 @@ class TestSubscriptionReturnToastContract:
         """
         Contract: stashSubscriptionReturnToast() stores payload in sessionStorage
         
-        From /app/mobile/src/utils/subscriptionReturnToast.ts:
+        From /app/frontend/src/utils/subscriptionReturnToast.ts:
         - SUBSCRIPTION_RETURN_TOAST_KEY = 'rac:subscription-return-toast'
         - stashSubscriptionReturnToast(returnTarget, planName) stores:
           - returnTarget: the destination path
@@ -202,7 +202,7 @@ class TestSubscriptionReturnToastContract:
         """
         Contract: consumeSubscriptionReturnToast() retrieves and clears payload
         
-        From /app/mobile/src/utils/subscriptionReturnToast.ts:
+        From /app/frontend/src/utils/subscriptionReturnToast.ts:
         - consumeSubscriptionReturnToast() returns:
           - returnTarget: string
           - destinationLabel: string
@@ -216,7 +216,7 @@ class TestSubscriptionReturnToastContract:
         """
         Contract: labelForReturnTarget() returns human-readable labels
         
-        From /app/mobile/src/utils/subscriptionReturnToast.ts:
+        From /app/frontend/src/utils/subscriptionReturnToast.ts:
         - /dashboard, /home, /(tabs), / -> 'dashboard'
         - /profile, /edit-profile/* -> 'profile'
         - /book-meeting, /book/* -> 'booking space'
@@ -265,7 +265,7 @@ class TestAppShellToastConsumption:
         """
         Contract: AppShell consumes toast payload after navigation
         
-        From /app/mobile/src/components/AppShell.tsx lines 516-530:
+        From /app/frontend/src/components/AppShell.tsx lines 516-530:
         - useEffect runs when isAuthenticated or pathname changes
         - consumeSubscriptionReturnToast() is called
         - If payload exists and current pathname matches returnTarget:
@@ -280,7 +280,7 @@ class TestAppShellToastConsumption:
         """
         Contract: Toast is only emitted once (sessionStorage cleared after consumption)
         
-        From /app/mobile/src/utils/subscriptionReturnToast.ts:
+        From /app/frontend/src/utils/subscriptionReturnToast.ts:
         - consumeSubscriptionReturnToast() removes the sessionStorage item
         - Subsequent calls return null
         - This prevents stale repeated toasts
@@ -291,7 +291,7 @@ class TestAppShellToastConsumption:
         """
         Contract: Toast is only emitted if current pathname matches returnTarget
         
-        From /app/mobile/src/components/AppShell.tsx lines 521-523:
+        From /app/frontend/src/components/AppShell.tsx lines 521-523:
         - normalizedCurrent = pathname.split(/[?#]/)[0]
         - normalizedTarget = payload.returnTarget.split(/[?#]/)[0]
         - if (normalizedCurrent !== normalizedTarget) return;
@@ -308,7 +308,7 @@ class TestRealtimeToastSuccessType:
         """
         Contract: RealtimeToast supports 'success' type with correct styling
         
-        From /app/mobile/src/components/RealtimeToast.tsx:
+        From /app/frontend/src/components/RealtimeToast.tsx:
         - TYPE_CONFIG includes 'success' entry
         - success: { icon: 'checkmark-circle', color: colors.successText, bg: colors.successSoft }
         """
@@ -322,7 +322,7 @@ class TestSuccessEmitterIntegration:
         """
         Contract: payment.tsx calls stashSubscriptionReturnToast before navigation
         
-        From /app/mobile/app/subscription/payment.tsx:
+        From /app/frontend/app/subscription/payment.tsx:
         - Line 1303: stashSubscriptionReturnToast(returnTo, planName) in PayPal success Alert
         - Line 1410: stashSubscriptionReturnToast(returnTo, planName) in Stripe success Alert
         - Line 1549: stashSubscriptionReturnToast(returnTo, planName) in success button onPress
@@ -333,7 +333,7 @@ class TestSuccessEmitterIntegration:
         """
         Contract: success.tsx calls stashSubscriptionReturnToast before navigation
         
-        From /app/mobile/app/subscription/success.tsx:
+        From /app/frontend/app/subscription/success.tsx:
         - Line 267: stashSubscriptionReturnToast(smartReturnTarget, details?.plan || null)
         """
         print("PASS: Contract verified - success.tsx stashes toast before navigation")
@@ -342,7 +342,7 @@ class TestSuccessEmitterIntegration:
         """
         Contract: payment-result.tsx calls stashSubscriptionReturnToast before navigation
         
-        From /app/mobile/app/subscription/payment-result.tsx:
+        From /app/frontend/app/subscription/payment-result.tsx:
         - Line 191: stashSubscriptionReturnToast(smartReturnTarget, null)
         """
         print("PASS: Contract verified - payment-result.tsx stashes toast before navigation")
@@ -351,7 +351,7 @@ class TestSuccessEmitterIntegration:
         """
         Contract: mobile-money.tsx calls stashSubscriptionReturnToast before navigation
         
-        From /app/mobile/app/subscription/mobile-money.tsx:
+        From /app/frontend/app/subscription/mobile-money.tsx:
         - Line 760: stashSubscriptionReturnToast(returnTo, planName)
         """
         print("PASS: Contract verified - mobile-money.tsx stashes toast before navigation")

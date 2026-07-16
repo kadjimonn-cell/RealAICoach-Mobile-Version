@@ -62,10 +62,10 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin/platform-health", tags=["Platform Health"])
 
-FRONTEND_SRC = "/app/mobile/src"
-FRONTEND_APP = "/app/mobile/app"
-FRONTEND_DIST = "/app/mobile/dist"
-FRONTEND_ROOT = "/app/mobile"
+FRONTEND_SRC = "/app/frontend/src"
+FRONTEND_APP = "/app/frontend/app"
+FRONTEND_DIST = "/app/frontend/dist"
+FRONTEND_ROOT = "/app/frontend"
 FRONTEND_EXPORT_LOCKFILE = "/tmp/frontend_export_build.lock"
 FRONTEND_EXPORT_NODE_OPTIONS = str(
     os.environ.get("FRONTEND_EXPORT_NODE_OPTIONS") or "--max-old-space-size=3072"
@@ -83,10 +83,10 @@ SAFE_PATTERN = "window.location"
 SKIP_DIRS = {"node_modules", "dist", ".expo", ".git", "__pycache__", ".next", "build"}
 
 CACHE_DIRS = [
-    {"path": "/app/mobile/.expo", "label": "Expo Cache"},
-    {"path": "/app/mobile/.metro-cache", "label": "Metro Bundler Cache"},
-    {"path": "/app/mobile/node_modules/.cache", "label": "Node Modules Cache"},
-    {"path": "/app/mobile/dist", "label": "Production Build"},
+    {"path": "/app/frontend/.expo", "label": "Expo Cache"},
+    {"path": "/app/frontend/.metro-cache", "label": "Metro Bundler Cache"},
+    {"path": "/app/frontend/node_modules/.cache", "label": "Node Modules Cache"},
+    {"path": "/app/frontend/dist", "label": "Production Build"},
 ]
 
 ROLLBACK_POLICIES = {
@@ -242,7 +242,7 @@ def _resolve_global_parity_external_base_url() -> str:
         str(os.environ.get("FRONTEND_BASE_URL") or "").strip(),
     ]
 
-    frontend_env_path = Path("/app/mobile/.env")
+    frontend_env_path = Path("/app/frontend/.env")
     if frontend_env_path.exists():
         try:
             for line in frontend_env_path.read_text(encoding="utf-8").splitlines():
@@ -658,8 +658,8 @@ def _resolve_assigned_host_expected_base() -> str:
         str(os.environ.get("preview_endpoint") or "").strip(),
         _read_proc_env_value("PREVIEW_ENDPOINT"),
         _read_proc_env_value("preview_endpoint"),
-        _read_env_key(Path("/app/mobile/.env"), "REACT_APP_BACKEND_URL"),
-        _read_env_key(Path("/app/mobile/.env"), "EXPO_PUBLIC_BACKEND_URL"),
+        _read_env_key(Path("/app/frontend/.env"), "REACT_APP_BACKEND_URL"),
+        _read_env_key(Path("/app/frontend/.env"), "EXPO_PUBLIC_BACKEND_URL"),
         str(os.environ.get("FRONTEND_BASE_URL") or "").strip(),
     ]
 
@@ -694,7 +694,7 @@ def _sync_assigned_host_env(expected_base_url: str) -> Dict[str, Any]:
     expected_host = str(parsed.netloc or "").strip().lower()
     expected_subdomain = expected_host.split(".preview.emergentagent.com", 1)[0] if expected_host.endswith(".preview.emergentagent.com") else ""
 
-    frontend_path = Path("/app/mobile/.env")
+    frontend_path = Path("/app/frontend/.env")
     backend_path = Path("/app/backend/.env")
     updated_keys: List[str] = []
 
@@ -860,7 +860,7 @@ async def _run_assigned_host_probe() -> Dict[str, Any]:
     expected_host = str(urlparse(expected_base_url).netloc or "").lower() if expected_base_url else ""
     resolved_host = str(urlparse(resolved_external_base_url).netloc or "").lower() if resolved_external_base_url else ""
 
-    frontend_env_path = Path("/app/mobile/.env")
+    frontend_env_path = Path("/app/frontend/.env")
     backend_env_path = Path("/app/backend/.env")
 
     frontend_react = _read_env_key(frontend_env_path, "REACT_APP_BACKEND_URL")
@@ -3453,7 +3453,7 @@ def _scan_files_for_patterns(base_dirs: List[str], patterns: List[str], extensio
                                 if has_safe_base and re.match(r"^\s*const\s+\w+\s*=\s*process\.env\.\w+;\s*$", line):
                                     continue
                                 issues.append({
-                                    "file": fpath.replace("/app/mobile/", ""),
+                                    "file": fpath.replace("/app/frontend/", ""),
                                     "line": i + 1,
                                     "code": line.strip()[:120],
                                     "pattern": pat.split(r"\.")[2] if r"\." in pat else pat[:40],
@@ -3532,7 +3532,7 @@ def _check_cache_health() -> List[Dict[str, Any]]:
         if not os.path.exists(path):
             results.append({
                 "label": cache["label"],
-                "path": path.replace("/app/mobile/", ""),
+                "path": path.replace("/app/frontend/", ""),
                 "exists": False,
                 "size_mb": 0,
                 "age_hours": 0,
@@ -3566,7 +3566,7 @@ def _check_cache_health() -> List[Dict[str, Any]]:
 
         results.append({
             "label": cache["label"],
-            "path": path.replace("/app/mobile/", ""),
+            "path": path.replace("/app/frontend/", ""),
             "exists": True,
             "size_mb": size_mb,
             "age_hours": age_hours,
@@ -3647,7 +3647,7 @@ def _auto_fix_stale_urls(issues: List[Dict]) -> Dict[str, Any]:
     for issue in issues:
         if not issue.get("fixable"):
             continue
-        fpath = os.path.join("/app/mobile", issue["file"])
+        fpath = os.path.join("/app/frontend", issue["file"])
         if not os.path.exists(fpath):
             failed_files.append({"file": issue["file"], "reason": "File not found"})
             continue
@@ -3709,7 +3709,7 @@ def _auto_fix_caches(stale_caches: List[Dict]) -> List[str]:
     for cache in stale_caches:
         if not cache["stale"] or "dist" in cache["path"]:
             continue
-        full_path = os.path.join("/app/mobile", cache["path"])
+        full_path = os.path.join("/app/frontend", cache["path"])
         if os.path.exists(full_path):
             try:
                 subprocess.run(["rm", "-rf", full_path], timeout=30)
@@ -3822,7 +3822,7 @@ async def auto_fix_platform(user=Depends(get_current_user)):
         if rebuild_feature_enabled:
             try:
                 export_cmd = (
-                    "cd /app/mobile && "
+                    "cd /app/frontend && "
                     f"CI=1 EXPO_NO_INTERACTIVE=1 NODE_OPTIONS={shlex.quote(FRONTEND_EXPORT_NODE_OPTIONS)} "
                     "node node_modules/expo/bin/cli export --platform web && "
                     "sudo supervisorctl restart expo_manual"
@@ -4473,7 +4473,7 @@ async def run_full_system_audit(
 
 def _audit_admin_tabs_structure() -> dict:
     """Scan admin tab/page files and enforce unique normalized naming map."""
-    admin_paths = list(Path("/app/mobile/app/admin").glob("*.tsx")) + list(Path("/app/mobile/app/(tabs)").glob("admin*.tsx"))
+    admin_paths = list(Path("/app/frontend/app/admin").glob("*.tsx")) + list(Path("/app/frontend/app/(tabs)").glob("admin*.tsx"))
     normalized: dict[str, list[str]] = {}
     for path in admin_paths:
         stem = path.stem.lower().replace("_", "-")
@@ -4493,8 +4493,8 @@ def _cleanup_platform_caches() -> dict:
     """Safe cleanup for known transient caches/temp files in preview runtime."""
     cleaned = []
     targets = [
-        Path("/app/mobile/.cache"),
-        Path("/app/mobile/.expo"),
+        Path("/app/frontend/.cache"),
+        Path("/app/frontend/.expo"),
         Path("/tmp"),
     ]
     for target in targets:

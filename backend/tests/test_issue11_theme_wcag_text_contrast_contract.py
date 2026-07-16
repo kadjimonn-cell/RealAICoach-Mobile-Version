@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 
 
-V2_THEME_PATH = Path('/app/mobile/src/theme/v2.ts')
+V2_THEME_PATH = Path('/app/frontend/src/theme/v2.ts')
 AA_MIN_CONTRAST = 4.5
 
 

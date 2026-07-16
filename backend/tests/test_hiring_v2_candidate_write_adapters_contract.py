@@ -14,6 +14,6 @@ def test_hiring_v2_candidate_write_endpoints_present() -> None:
 
 
 def test_apply_jobs_tab_uses_hiring_v2_candidate_writes() -> None:
-    source = Path('/app/mobile/src/components/jobs/ApplyJobsTab.tsx').read_text(encoding='utf-8')
+    source = Path('/app/frontend/src/components/jobs/ApplyJobsTab.tsx').read_text(encoding='utf-8')
     assert "api.post('/hiring/v2/candidate/apply'" in source
     assert "api.post(`/hiring/v2/candidate/save/${jobId}`)" in source

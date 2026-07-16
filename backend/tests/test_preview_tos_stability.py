@@ -149,7 +149,7 @@ class TestTOSAutoAcceptLogic:
     
     def test_tos_modal_component_has_auto_accept_logic(self):
         """Verify TOS modal component file exists and has auto-accept logic"""
-        tos_modal_path = "/app/mobile/src/components/TosAcceptanceModal.tsx"
+        tos_modal_path = "/app/frontend/src/components/TosAcceptanceModal.tsx"
         
         with open(tos_modal_path, 'r') as f:
             content = f.read()
@@ -162,7 +162,7 @@ class TestTOSAutoAcceptLogic:
     
     def test_e2e_helper_has_tos_functions(self):
         """Verify E2E helper has TOS acceptance functions"""
-        helper_path = "/app/mobile/e2e/helpers/tos.ts"
+        helper_path = "/app/frontend/e2e/helpers/tos.ts"
         
         with open(helper_path, 'r') as f:
             content = f.read()

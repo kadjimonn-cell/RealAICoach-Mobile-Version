@@ -6,14 +6,14 @@ def _read(path: str) -> str:
 
 
 def test_feature29_page_uses_dedicated_v2_component_not_shared_audio_catalog_tab() -> None:
-    source = _read("/app/mobile/app/features/my-podcasts.tsx")
+    source = _read("/app/frontend/app/features/my-podcasts.tsx")
 
     assert "PodcastsFeature29" in source
     assert "AudioCatalogTab mode=\"podcasts\"" not in source
 
 
 def test_feature29_ui_has_no_manual_input_or_upload_controls() -> None:
-    source = _read("/app/mobile/src/components/feature29/PodcastsFeature29.tsx").lower()
+    source = _read("/app/frontend/src/components/feature29/PodcastsFeature29.tsx").lower()
 
     blocked_signals = [
         "<textinput",

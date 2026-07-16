@@ -24,10 +24,10 @@ PROJECT_ROOT = Path("/app")
 SENSITIVE_GLOBS = (
     "backend/routes/**/*.py",
     "backend/services/**/*.py",
-    "mobile/src/**/*.ts",
-    "mobile/src/**/*.tsx",
-    "mobile/app/**/*.ts",
-    "mobile/app/**/*.tsx",
+    "frontend/src/**/*.ts",
+    "frontend/src/**/*.tsx",
+    "frontend/app/**/*.ts",
+    "frontend/app/**/*.tsx",
 )
 
 RISKY_PATTERNS: tuple[tuple[str, str], ...] = (
@@ -43,9 +43,9 @@ ALLOWLIST_PATH_MARKERS: dict[str, tuple[str, ...]] = {
     "backend/tests/test_admin_legacy_diagnostics_effective_plan.py": tuple(),
     "backend/tests/test_entitlement_drift_audit_job.py": tuple(),
     "backend/tests/test_scheduler_all_jobs_max_instances_contract.py": tuple(),
-    "mobile/src/context/AccessControlContext.tsx": ("effectivePlan",),
-    "mobile/src/context/SubscriptionContext.tsx": ("effectivePlan",),
-    "mobile/src/utils/subscription.ts": ("effective_plan",),
+    "frontend/src/context/AccessControlContext.tsx": ("effectivePlan",),
+    "frontend/src/context/SubscriptionContext.tsx": ("effectivePlan",),
+    "frontend/src/utils/subscription.ts": ("effective_plan",),
 }
 
 BASELINE_ALLOWLIST_PATHS: set[str] = {
@@ -119,7 +119,7 @@ def scan_entitlement_drift() -> dict[str, Any]:
                         "line": line_no,
                         "pattern": label,
                         "snippet": content.splitlines()[line_no - 1].strip()[:220],
-                        "severity": "high" if rel_path.startswith("backend/routes/") or rel_path.startswith("mobile/src/context/") else "medium",
+                        "severity": "high" if rel_path.startswith("backend/routes/") or rel_path.startswith("frontend/src/context/") else "medium",
                     }
                 )
 

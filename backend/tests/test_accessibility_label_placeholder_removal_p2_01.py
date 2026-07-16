@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 
 
-FRONTEND_ROOT = Path('/app/mobile')
+FRONTEND_ROOT = Path('/app/frontend')
 
 
 def test_no_generic_interactive_element_accessibility_label_remains() -> None:

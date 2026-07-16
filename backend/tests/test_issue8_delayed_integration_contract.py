@@ -2,12 +2,12 @@ from pathlib import Path
 import re
 
 
-AI_DASHBOARD_PATH = Path('/app/mobile/app/ai-feature-dashboard.tsx')
-INTERVIEW_ROOM_PATH = Path('/app/mobile/app/interview-room.tsx')
+AI_DASHBOARD_PATH = Path('/app/frontend/app/ai-feature-dashboard.tsx')
+INTERVIEW_ROOM_PATH = Path('/app/frontend/app/interview-room.tsx')
 SUB_ANALYTICS_PATH = Path('/app/backend/routes/admin_subscription_analytics.py')
 ADMIN_SESSIONS_PATH = Path('/app/backend/routes/admin_sessions.py')
 MIDDLEWARE_PATH = Path('/app/backend/middleware.py')
-FRONTEND_APP_DIR = Path('/app/mobile/app')
+FRONTEND_APP_DIR = Path('/app/frontend/app')
 
 
 def _middleware_segment() -> str:
@@ -87,18 +87,18 @@ def test_issue8_batch4_no_weak_catch_only_console_or_plain_error_setters() -> No
     ]
     offenders: list[str] = []
     batch4_targets = [
-        Path('/app/mobile/app/admin-system.tsx'),
-        Path('/app/mobile/app/messages.tsx'),
-        Path('/app/mobile/app/employer-apply.tsx'),
-        Path('/app/mobile/app/executive-dashboard.tsx'),
-        Path('/app/mobile/app/admin/mobile-money-dashboard.tsx'),
-        Path('/app/mobile/app/admin/subscription-dashboard.tsx'),
-        Path('/app/mobile/app/subscription/plans.tsx'),
-        Path('/app/mobile/app/book/[token].tsx'),
-        Path('/app/mobile/app/features/fitness.tsx'),
-        Path('/app/mobile/app/features/medimate.tsx'),
-        Path('/app/mobile/app/features/smartbuy.tsx'),
-        Path('/app/mobile/app/careers.tsx'),
+        Path('/app/frontend/app/admin-system.tsx'),
+        Path('/app/frontend/app/messages.tsx'),
+        Path('/app/frontend/app/employer-apply.tsx'),
+        Path('/app/frontend/app/executive-dashboard.tsx'),
+        Path('/app/frontend/app/admin/mobile-money-dashboard.tsx'),
+        Path('/app/frontend/app/admin/subscription-dashboard.tsx'),
+        Path('/app/frontend/app/subscription/plans.tsx'),
+        Path('/app/frontend/app/book/[token].tsx'),
+        Path('/app/frontend/app/features/fitness.tsx'),
+        Path('/app/frontend/app/features/medimate.tsx'),
+        Path('/app/frontend/app/features/smartbuy.tsx'),
+        Path('/app/frontend/app/careers.tsx'),
     ]
 
     for path in batch4_targets:
@@ -125,19 +125,19 @@ def test_issue8_batch5_no_weak_catches_in_auth_policy_privacy_scan_payment_route
     ]
     offenders: list[str] = []
     batch5_targets = [
-        Path('/app/mobile/app/auth/register.tsx'),
-        Path('/app/mobile/app/auth/qr-approve.tsx'),
-        Path('/app/mobile/app/auth/forgot-password.tsx'),
-        Path('/app/mobile/app/auth/sso-debug.tsx'),
-        Path('/app/mobile/app/policy-console.tsx'),
-        Path('/app/mobile/app/privacy-request.tsx'),
-        Path('/app/mobile/app/privacy-security.tsx'),
-        Path('/app/mobile/app/scan-history.tsx'),
-        Path('/app/mobile/app/payment-document-v2.tsx'),
-        Path('/app/mobile/app/payment-history-export-v2.tsx'),
-        Path('/app/mobile/app/subscription/payment.tsx'),
-        Path('/app/mobile/app/subscription/mobile-money.tsx'),
-        Path('/app/mobile/app/subscription/kyc.tsx'),
+        Path('/app/frontend/app/auth/register.tsx'),
+        Path('/app/frontend/app/auth/qr-approve.tsx'),
+        Path('/app/frontend/app/auth/forgot-password.tsx'),
+        Path('/app/frontend/app/auth/sso-debug.tsx'),
+        Path('/app/frontend/app/policy-console.tsx'),
+        Path('/app/frontend/app/privacy-request.tsx'),
+        Path('/app/frontend/app/privacy-security.tsx'),
+        Path('/app/frontend/app/scan-history.tsx'),
+        Path('/app/frontend/app/payment-document-v2.tsx'),
+        Path('/app/frontend/app/payment-history-export-v2.tsx'),
+        Path('/app/frontend/app/subscription/payment.tsx'),
+        Path('/app/frontend/app/subscription/mobile-money.tsx'),
+        Path('/app/frontend/app/subscription/kyc.tsx'),
     ]
 
     for path in batch5_targets:

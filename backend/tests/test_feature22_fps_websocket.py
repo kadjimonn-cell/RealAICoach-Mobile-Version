@@ -25,7 +25,7 @@ import requests
 import websockets
 from dotenv import load_dotenv
 
-load_dotenv("/app/mobile/.env")
+load_dotenv("/app/frontend/.env")
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 WS_URL = BASE_URL.replace("https://", "wss://").replace("http://", "ws://")
 

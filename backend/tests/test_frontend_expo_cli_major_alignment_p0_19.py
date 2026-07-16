@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 
 
-FRONTEND_PACKAGE_JSON = Path("/app/mobile/package.json")
+FRONTEND_PACKAGE_JSON = Path("/app/frontend/package.json")
 
 
 def _major(version_spec: str) -> int:

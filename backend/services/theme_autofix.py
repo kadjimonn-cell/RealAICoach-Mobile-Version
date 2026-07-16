@@ -2,7 +2,7 @@
 pioneered in the Home/admin cleanup batches.
 
 Scope rules:
-  - Only files under /app/mobile/app/ and /app/mobile/src/ (prevents traversal)
+  - Only files under /app/frontend/app/ and /app/frontend/src/ (prevents traversal)
   - Only .tsx / .ts / .jsx / .js files
   - Only `color:`, `backgroundColor:`, `borderColor:` style-attr string literals
   - Leaves template literals, comments, CSS backticks, and rgba() alone
@@ -16,7 +16,7 @@ import re
 from pathlib import Path
 from typing import Tuple
 
-FRONTEND_ROOT = Path("/app/mobile").resolve()
+FRONTEND_ROOT = Path("/app/frontend").resolve()
 ALLOWED_SUBDIRS = ("app", "src")
 ALLOWED_SUFFIXES = (".tsx", ".ts", ".jsx", ".js")
 
@@ -195,7 +195,7 @@ def _validate_path(rel_or_abs: str) -> Path:
     """Resolve a caller-supplied path and refuse anything outside frontend/app|src."""
     if not rel_or_abs or not isinstance(rel_or_abs, str):
         raise AutofixError("path is required")
-    # Normalise: accept both "src/components/Foo.tsx" and "/app/mobile/src/..."
+    # Normalise: accept both "src/components/Foo.tsx" and "/app/frontend/src/..."
     p = Path(rel_or_abs)
     if not p.is_absolute():
         p = FRONTEND_ROOT / rel_or_abs.lstrip("/")

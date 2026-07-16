@@ -23,7 +23,7 @@ def resolve_external_base_url() -> Optional[str]:
     if direct:
         return direct.rstrip("/")
 
-    env_path = "/app/mobile/.env"
+    env_path = "/app/frontend/.env"
     try:
         if os.path.exists(env_path):
             with open(env_path, "r", encoding="utf-8") as f:

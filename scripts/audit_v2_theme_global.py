@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deep, GLOBAL V2-theme audit — scans every .tsx file in /app/mobile
+"""Deep, GLOBAL V2-theme audit — scans every .tsx file in /app/frontend
 (app/** AND src/**), detects every pattern that bypasses the V2 theme,
 and prints a ranked list so we can triage + fix.
 
@@ -30,7 +30,7 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path("/app/mobile")
+ROOT = Path("/app/frontend")
 SCAN_DIRS = [ROOT / "app", ROOT / "src"]
 
 # CSS vars actually INJECTED by ThemeContext (post-fix). Anything else in a

@@ -2,7 +2,7 @@
 """
 GTEC Route Extractor
 --------------------
-Walks /app/mobile/app and extracts all Expo Router routes,
+Walks /app/frontend/app and extracts all Expo Router routes,
 converts filesystem paths to URL paths, and categorizes them.
 
 Output: /app/test_reports/gtec_routes.json
@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 from datetime import datetime, timezone
 
-FRONTEND_APP = Path("/app/mobile/app")
+FRONTEND_APP = Path("/app/frontend/app")
 OUTPUT = Path("/app/test_reports/gtec_routes.json")
 
 # Routes that are known to require authentication (matched by prefix)

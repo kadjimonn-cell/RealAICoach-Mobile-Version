@@ -3507,7 +3507,7 @@ Current date: {now.strftime('%B %d, %Y')}. Generate entries reflecting real impr
                     be_vulns = [{"package": v.get("name","?"), "installed": v.get("version","?"), "id": v.get("id","?"), "fix": (v.get("fix_versions") or ["N/A"])[0], "description": v.get("description","")[:200]} for v in d.get("vulnerabilities", [])[:50]]
                 be_sum = {"total": len(be_vulns)}
 
-                fe_proc = subprocess.run(["yarn", "audit", "--json"], capture_output=True, text=True, timeout=120, cwd="/app/mobile")
+                fe_proc = subprocess.run(["yarn", "audit", "--json"], capture_output=True, text=True, timeout=120, cwd="/app/frontend")
                 fe_vulns, fe_sum = [], {"total": 0, "critical": 0, "high": 0, "moderate": 0, "low": 0}
                 for line in (fe_proc.stdout or "").split("\n"):
                     if not line.strip():

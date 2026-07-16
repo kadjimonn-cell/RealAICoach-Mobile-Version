@@ -272,7 +272,7 @@ class TestSecurityCIGate:
             "/app/backend/google_play_service_account.json",
             "/app/backend/AuthKey_34YP9488M8.p8",
             "/app/backend/SubscriptionKey_848DFKTZ47.p8",
-            "/app/mobile/cookies.txt",
+            "/app/frontend/cookies.txt",
         ]
         for filepath in disallowed_files:
             assert not os.path.exists(filepath), f"Disallowed file exists: {filepath}"

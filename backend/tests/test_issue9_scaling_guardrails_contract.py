@@ -2,25 +2,25 @@ from pathlib import Path
 import re
 
 
-FRONTEND_APP_ROOT = Path('/app/mobile/app')
-FRONTEND_SRC_ROOT = Path('/app/mobile/src')
+FRONTEND_APP_ROOT = Path('/app/frontend/app')
+FRONTEND_SRC_ROOT = Path('/app/frontend/src')
 
-MANAGED_WS_HOOK = Path('/app/mobile/src/hooks/useManagedWebSocket.ts')
-RECOVERABLE_ERROR_UTIL = Path('/app/mobile/src/utils/handleRecoverableError.ts')
-WHITEBOARD_COMPONENT = Path('/app/mobile/src/components/WhiteboardCanvas.tsx')
-COLLAB_DOCS_COMPONENT = Path('/app/mobile/src/components/CollaborativeDocsContent.tsx')
-SYSTEM_MONITOR_PANEL = Path('/app/mobile/src/components/admin/SystemMonitorPanel.tsx')
-PERFORMANCE_DASHBOARD_PANEL = Path('/app/mobile/src/components/admin/PerformanceDashboardPanel.tsx')
-LIVE_ACTIVITY_FEED_PANEL = Path('/app/mobile/src/components/admin/LiveActivityFeedPanel.tsx')
-OPERATIONS_DASHBOARD = Path('/app/mobile/src/components/admin/OperationsDashboard.tsx')
-SUPPORT_TICKETS_PANEL = Path('/app/mobile/src/components/admin/SupportTicketsPanel.tsx')
-MY_TICKETS_INNER = Path('/app/mobile/src/components/pages/MyTicketsInner.tsx')
-EMPLOYER_PIPELINE_BOARD = Path('/app/mobile/src/components/jobs/EmployerPipelineBoard.tsx')
-FPS_ARENA = Path('/app/mobile/src/components/fpsGame/FpsArena.tsx')
-SIEM_PANEL = Path('/app/mobile/src/components/admin/SIEMPanel.tsx')
-COMPETITOR_KEYWORD_PANEL = Path('/app/mobile/src/components/admin/CompetitorKeywordPanel.tsx')
-AUTOMATION_ENGINE_PANEL = Path('/app/mobile/src/components/admin/AutomationEnginePanel.tsx')
-INTERVIEW_ROOM_PAGE = Path('/app/mobile/app/interview-room.tsx')
+MANAGED_WS_HOOK = Path('/app/frontend/src/hooks/useManagedWebSocket.ts')
+RECOVERABLE_ERROR_UTIL = Path('/app/frontend/src/utils/handleRecoverableError.ts')
+WHITEBOARD_COMPONENT = Path('/app/frontend/src/components/WhiteboardCanvas.tsx')
+COLLAB_DOCS_COMPONENT = Path('/app/frontend/src/components/CollaborativeDocsContent.tsx')
+SYSTEM_MONITOR_PANEL = Path('/app/frontend/src/components/admin/SystemMonitorPanel.tsx')
+PERFORMANCE_DASHBOARD_PANEL = Path('/app/frontend/src/components/admin/PerformanceDashboardPanel.tsx')
+LIVE_ACTIVITY_FEED_PANEL = Path('/app/frontend/src/components/admin/LiveActivityFeedPanel.tsx')
+OPERATIONS_DASHBOARD = Path('/app/frontend/src/components/admin/OperationsDashboard.tsx')
+SUPPORT_TICKETS_PANEL = Path('/app/frontend/src/components/admin/SupportTicketsPanel.tsx')
+MY_TICKETS_INNER = Path('/app/frontend/src/components/pages/MyTicketsInner.tsx')
+EMPLOYER_PIPELINE_BOARD = Path('/app/frontend/src/components/jobs/EmployerPipelineBoard.tsx')
+FPS_ARENA = Path('/app/frontend/src/components/fpsGame/FpsArena.tsx')
+SIEM_PANEL = Path('/app/frontend/src/components/admin/SIEMPanel.tsx')
+COMPETITOR_KEYWORD_PANEL = Path('/app/frontend/src/components/admin/CompetitorKeywordPanel.tsx')
+AUTOMATION_ENGINE_PANEL = Path('/app/frontend/src/components/admin/AutomationEnginePanel.tsx')
+INTERVIEW_ROOM_PAGE = Path('/app/frontend/app/interview-room.tsx')
 
 # Issue 9 baseline captured after guardrail rollout.
 # Core allowlist floor: only RealtimeContext + useManagedWebSocket should own raw constructor calls.

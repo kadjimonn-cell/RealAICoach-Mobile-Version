@@ -264,7 +264,7 @@ class TestWebSuccessRouteContract:
         # This is a source code contract test
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "payment-web-unlocked", "/app/mobile/app/subscription/payment.tsx"],
+            ["grep", "-l", "payment-web-unlocked", "/app/frontend/app/subscription/payment.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "payment-web-unlocked not found in payment.tsx"
@@ -274,7 +274,7 @@ class TestWebSuccessRouteContract:
         """Verify success.tsx has payment-redirect-unlocked testIdPrefix"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "payment-redirect-unlocked", "/app/mobile/app/subscription/success.tsx"],
+            ["grep", "-l", "payment-redirect-unlocked", "/app/frontend/app/subscription/success.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "payment-redirect-unlocked not found in success.tsx"
@@ -284,7 +284,7 @@ class TestWebSuccessRouteContract:
         """Verify payment-result.tsx has payment-result-unlocked testIdPrefix"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "payment-result-unlocked", "/app/mobile/app/subscription/payment-result.tsx"],
+            ["grep", "-l", "payment-result-unlocked", "/app/frontend/app/subscription/payment-result.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "payment-result-unlocked not found in payment-result.tsx"
@@ -294,7 +294,7 @@ class TestWebSuccessRouteContract:
         """Verify mobile-money.tsx has mobile-money-unlocked testIdPrefix"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "mobile-money-unlocked", "/app/mobile/app/subscription/mobile-money.tsx"],
+            ["grep", "-l", "mobile-money-unlocked", "/app/frontend/app/subscription/mobile-money.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "mobile-money-unlocked not found in mobile-money.tsx"
@@ -304,7 +304,7 @@ class TestWebSuccessRouteContract:
         """Verify MobileSubscriptionsViewV2.tsx has iap-native-unlocked testIdPrefix"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "iap-native-unlocked", "/app/mobile/src/components/MobileSubscriptionsViewV2.tsx"],
+            ["grep", "-l", "iap-native-unlocked", "/app/frontend/src/components/MobileSubscriptionsViewV2.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "iap-native-unlocked not found in MobileSubscriptionsViewV2.tsx"
@@ -318,7 +318,7 @@ class TestSharedComponentContract:
         """Verify SubscriptionSuccessPanel accepts preCtaContent prop"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-c", "preCtaContent", "/app/mobile/src/components/payment/SubscriptionSuccessPanel.tsx"],
+            ["grep", "-c", "preCtaContent", "/app/frontend/src/components/payment/SubscriptionSuccessPanel.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0
@@ -330,7 +330,7 @@ class TestSharedComponentContract:
         """Verify SubscriptionSuccessPanel renders payment-success-pre-cta-content"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "payment-success-pre-cta-content", "/app/mobile/src/components/payment/SubscriptionSuccessPanel.tsx"],
+            ["grep", "-l", "payment-success-pre-cta-content", "/app/frontend/src/components/payment/SubscriptionSuccessPanel.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "payment-success-pre-cta-content not found"
@@ -340,7 +340,7 @@ class TestSharedComponentContract:
         """Verify SubscriptionUnlockedDestinationSummary uses buildSubscriptionReturnToastPayload"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-l", "buildSubscriptionReturnToastPayload", "/app/mobile/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx"],
+            ["grep", "-l", "buildSubscriptionReturnToastPayload", "/app/frontend/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0, "buildSubscriptionReturnToastPayload not found"
@@ -350,7 +350,7 @@ class TestSharedComponentContract:
         """Verify SubscriptionUnlockedDestinationSummary uses testIdPrefix"""
         import subprocess
         result = subprocess.run(
-            ["grep", "-c", "testIdPrefix", "/app/mobile/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx"],
+            ["grep", "-c", "testIdPrefix", "/app/frontend/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx"],
             capture_output=True, text=True
         )
         assert result.returncode == 0
@@ -367,7 +367,7 @@ class TestContractTestAssertions:
         import subprocess
         result = subprocess.run(
             ["grep", "-c", "payment-web-unlocked\\|payment-redirect-unlocked\\|payment-result-unlocked\\|mobile-money-unlocked\\|iap-native-unlocked",
-             "/app/mobile/src/__tests__/homeDashboardAuthLock.contract.test.ts"],
+             "/app/frontend/src/__tests__/homeDashboardAuthLock.contract.test.ts"],
             capture_output=True, text=True
         )
         assert result.returncode == 0

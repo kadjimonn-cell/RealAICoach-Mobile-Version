@@ -10,7 +10,7 @@ Handles remaining patterns:
 import re
 from pathlib import Path
 
-FRONTEND = Path('/app/mobile')
+FRONTEND = Path('/app/frontend')
 SCAN_DIRS = [FRONTEND / 'src', FRONTEND / 'app']
 
 # Semantic-only map (no structural colors to avoid corrupting data objects)

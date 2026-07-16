@@ -185,7 +185,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_career_inner_uses_v2_endpoints(self):
         """CareerInner.tsx should use /hiring/v2/ endpoints for writes"""
-        file_path = "/app/mobile/src/components/pages/CareerInner.tsx"
+        file_path = "/app/frontend/src/components/pages/CareerInner.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -222,7 +222,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_employer_apply_uses_v2_endpoints(self):
         """employer-apply.tsx should use /hiring/v2/ endpoints for writes"""
-        file_path = "/app/mobile/app/employer-apply.tsx"
+        file_path = "/app/frontend/app/employer-apply.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -253,7 +253,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_employer_management_panel_uses_v2_endpoints(self):
         """EmployerManagementPanel.tsx should use /hiring/v2/ endpoints"""
-        file_path = "/app/mobile/src/components/admin/EmployerManagementPanel.tsx"
+        file_path = "/app/frontend/src/components/admin/EmployerManagementPanel.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -273,7 +273,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_employer_portal_panel_uses_v2_endpoints(self):
         """EmployerPortalPanel.tsx should use /hiring/v2/ endpoints"""
-        file_path = "/app/mobile/src/components/admin/EmployerPortalPanel.tsx"
+        file_path = "/app/frontend/src/components/admin/EmployerPortalPanel.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -293,7 +293,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_employer_pipeline_board_uses_v2_endpoints(self):
         """EmployerPipelineBoard.tsx should use /hiring/v2/ endpoints"""
-        file_path = "/app/mobile/src/components/jobs/EmployerPipelineBoard.tsx"
+        file_path = "/app/frontend/src/components/jobs/EmployerPipelineBoard.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -320,7 +320,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_exec_inline_panels_uses_v2_endpoints(self):
         """ExecInlinePanels.tsx should use /hiring/v2/ endpoints"""
-        file_path = "/app/mobile/src/components/executive/ExecInlinePanels.tsx"
+        file_path = "/app/frontend/src/components/executive/ExecInlinePanels.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -338,7 +338,7 @@ class TestFrontendMigrationCodeInspection:
 
     def test_job_platform_mini_app_uses_v2_endpoints(self):
         """job-platform.tsx should use /hiring/v2/ endpoints"""
-        file_path = "/app/mobile/app/mini-apps/job-platform.tsx"
+        file_path = "/app/frontend/app/mini-apps/job-platform.tsx"
         with open(file_path, 'r') as f:
             content = f.read()
         

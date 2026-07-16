@@ -19,7 +19,7 @@ from utils.email_service import ops_alert_template_enforcer
 router = APIRouter(prefix="/admin/accessibility")
 logger = logging.getLogger("accessibility")
 
-FRONTEND_SRC = "/app/mobile/src"
+FRONTEND_SRC = "/app/frontend/src"
 # WCAG AA thresholds
 NORMAL_TEXT_RATIO = 4.5
 LARGE_TEXT_RATIO = 3.0

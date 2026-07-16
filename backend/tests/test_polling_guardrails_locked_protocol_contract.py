@@ -6,7 +6,7 @@ def _read(path: str) -> str:
 
 
 def test_api_has_hard_429_cooldown_rules_for_critical_endpoints() -> None:
-    source = _read("/app/mobile/src/services/api.ts")
+    source = _read("/app/frontend/src/services/api.ts")
     assert "const HARD_429_COOLDOWN_RULES" in source
     for endpoint in [
         "/gps/state",
@@ -19,14 +19,14 @@ def test_api_has_hard_429_cooldown_rules_for_critical_endpoints() -> None:
 
 
 def test_appshel_route_scopes_noncritical_pollers() -> None:
-    source = _read("/app/mobile/src/components/AppShell.tsx")
+    source = _read("/app/frontend/src/components/AppShell.tsx")
     assert "enableHeavyBackgroundPollers" in source
     assert "shouldShowRenewalBanner" in source
     assert "shouldShowOnboarding" in source
 
 
 def test_gps_hook_uses_slow_interval_and_no_consistency_post() -> None:
-    source = _read("/app/mobile/src/hooks/useGlobalPlatformState.ts")
+    source = _read("/app/frontend/src/hooks/useGlobalPlatformState.ts")
     assert "const GPS_MAX_POLL_INTERVAL_MS = 300_000;" in source
     assert "const GPS_MIN_POLL_INTERVAL_MS = 45_000;" in source
     assert "const fallbackIntervalMs = shouldRunFastFallback" in source
@@ -48,8 +48,8 @@ def test_p2_gtec_write_path_hydration_and_dast_shared_utility_contract() -> None
 
 
 def test_onboarding_and_renewal_have_session_markers() -> None:
-    onboarding = _read("/app/mobile/src/components/SmartOnboarding.tsx")
-    renewal = _read("/app/mobile/src/components/RenewalBanner.tsx")
+    onboarding = _read("/app/frontend/src/components/SmartOnboarding.tsx")
+    renewal = _read("/app/frontend/src/components/RenewalBanner.tsx")
     assert "onboarding:ab:assigned:" in onboarding
     assert "setSessionAssignMarker(currentUserId)" in onboarding
     assert "renewal:banner:fetched:" in renewal
@@ -57,14 +57,14 @@ def test_onboarding_and_renewal_have_session_markers() -> None:
 
 
 def test_notifications_workspace_avoids_duplicate_provider_polling() -> None:
-    source = _read("/app/mobile/src/components/notifications/NotificationsWorkspace.tsx")
+    source = _read("/app/frontend/src/components/notifications/NotificationsWorkspace.tsx")
     assert "const providerActive = scope == 'user'".replace("==", "===") in source
     assert "setInterval(() => { void fetchNotificationsRef.current(); }, 120000)" in source
 
 
 def test_support_tickets_uses_websocket_first_hybrid_fallback_polling() -> None:
-    source = _read("/app/mobile/src/components/admin/SupportTicketsPanel.tsx")
-    helper = _read("/app/mobile/src/utils/hybridPolling.ts")
+    source = _read("/app/frontend/src/components/admin/SupportTicketsPanel.tsx")
+    helper = _read("/app/frontend/src/utils/hybridPolling.ts")
 
     assert "export function getHybridPollingInterval(config: HybridPollingConfig): number" in helper
     assert "export type WorkflowPollingPresetKey" in helper
@@ -86,7 +86,7 @@ def test_support_tickets_uses_websocket_first_hybrid_fallback_polling() -> None:
 
 
 def test_batch_ai_workflow_panel_uses_shared_polling_preset() -> None:
-    source = _read("/app/mobile/src/components/admin/BatchAIPanel.tsx")
+    source = _read("/app/frontend/src/components/admin/BatchAIPanel.tsx")
     assert "const WORKFLOW_POLLING_PRESET = getWorkflowPollingPreset('batch-job-status');" in source
     assert "runOnMount: WORKFLOW_POLLING_PRESET.runOnMount" in source
     assert "slowIntervalMs: WORKFLOW_POLLING_PRESET.slowIntervalMs" in source
@@ -95,7 +95,7 @@ def test_batch_ai_workflow_panel_uses_shared_polling_preset() -> None:
 
 
 def test_webhook_event_stream_workflow_panel_uses_shared_polling_preset() -> None:
-    source = _read("/app/mobile/src/components/admin/WebhookEventStreamPanel.tsx")
+    source = _read("/app/frontend/src/components/admin/WebhookEventStreamPanel.tsx")
     assert "const WORKFLOW_POLLING_PRESET = getWorkflowPollingPreset('webhook-stream-fallback');" in source
     assert "runOnMount: WORKFLOW_POLLING_PRESET.runOnMount" in source
     assert "slowIntervalMs: WORKFLOW_POLLING_PRESET.slowIntervalMs" in source
@@ -104,7 +104,7 @@ def test_webhook_event_stream_workflow_panel_uses_shared_polling_preset() -> Non
 
 
 def test_seo_dashboard_uses_hybrid_polling_policy_helper() -> None:
-    source = _read("/app/mobile/src/components/admin/SEODashboardPanel.tsx")
+    source = _read("/app/frontend/src/components/admin/SEODashboardPanel.tsx")
     assert "const SEO_POLL_MAX_INTERVAL_MS = 30000;" in source
     assert "const SEO_POLL_MIN_INTERVAL_MS = 12000;" in source
     assert "useHybridPolling({" in source
@@ -115,7 +115,7 @@ def test_seo_dashboard_uses_hybrid_polling_policy_helper() -> None:
 
 
 def test_performance_guardian_uses_hybrid_polling_policy_helper() -> None:
-    source = _read("/app/mobile/src/components/admin/PerformanceGuardianPanel.tsx")
+    source = _read("/app/frontend/src/components/admin/PerformanceGuardianPanel.tsx")
     assert "const PERFORMANCE_POLL_MAX_INTERVAL_MS = 30000;" in source
     assert "const PERFORMANCE_POLL_MIN_INTERVAL_MS = 12000;" in source
     assert "useHybridPolling({" in source
@@ -126,7 +126,7 @@ def test_performance_guardian_uses_hybrid_polling_policy_helper() -> None:
 
 
 def test_web_vitals_uses_hybrid_polling_policy_helper() -> None:
-    source = _read("/app/mobile/src/components/admin/WebVitalsPanel.tsx")
+    source = _read("/app/frontend/src/components/admin/WebVitalsPanel.tsx")
     assert "const VITALS_POLL_MAX_INTERVAL_MS = 30000;" in source
     assert "const VITALS_POLL_MIN_INTERVAL_MS = 12000;" in source
     assert "useHybridPolling({" in source
@@ -137,11 +137,11 @@ def test_web_vitals_uses_hybrid_polling_policy_helper() -> None:
 
 
 def test_gps_label_blockers_require_live_runtime_mode_on_all_surfaces() -> None:
-    welcome = _read("/app/mobile/app/welcome.tsx")
-    help_screen = _read("/app/mobile/app/help.tsx")
-    features = _read("/app/mobile/app/features/index.tsx")
-    home = _read("/app/mobile/app/(tabs)/index.tsx")
-    notifications = _read("/app/mobile/src/components/notifications/NotificationsWorkspace.tsx")
+    welcome = _read("/app/frontend/app/welcome.tsx")
+    help_screen = _read("/app/frontend/app/help.tsx")
+    features = _read("/app/frontend/app/features/index.tsx")
+    home = _read("/app/frontend/app/(tabs)/index.tsx")
+    notifications = _read("/app/frontend/src/components/notifications/NotificationsWorkspace.tsx")
 
     assert (
         "if (!gpsFallbackActive && missingWelcomeDataKeys.length > 0 && !gpsError && gpsStatus === 'healthy' "

@@ -11,7 +11,7 @@ Handles:
 import re
 from pathlib import Path
 
-FRONTEND = Path('/app/mobile')
+FRONTEND = Path('/app/frontend')
 SCAN_DIRS = [FRONTEND / 'src', FRONTEND / 'app']
 
 # ── COMPLETE map: ANY hex → token (built from full semantic + structural) ─────

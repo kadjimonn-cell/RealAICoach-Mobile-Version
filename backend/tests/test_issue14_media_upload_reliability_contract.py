@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-VIDEO_QA_FRONTEND_PATH = Path('/app/mobile/app/careers/video-qa/[token].tsx')
+VIDEO_QA_FRONTEND_PATH = Path('/app/frontend/app/careers/video-qa/[token].tsx')
 CAREERS_TIER3_PATH = Path('/app/backend/routes/careers_tier3.py')
 MIDDLEWARE_PATH = Path('/app/backend/middleware.py')
 CAREERS_ATTACHMENTS_PATH = Path('/app/backend/routes/careers_attachments.py')

@@ -81,11 +81,11 @@ async def scheduled_platform_cache_freshness_guard():
 
         if disk_pressure:
             for cleanup_target in [
-                "/app/mobile/.metro-cache",
-                "/app/mobile/test-results",
-                "/app/mobile/playwright-report",
+                "/app/frontend/.metro-cache",
+                "/app/frontend/test-results",
+                "/app/frontend/playwright-report",
                 "/app/.screenshots",
-                "/app/mobile/.screenshots",
+                "/app/frontend/.screenshots",
                 "/app/tmp",
             ]:
                 if _clear_dir_contents(cleanup_target):
@@ -127,7 +127,7 @@ async def scheduled_platform_cache_freshness_guard():
             if should_rebuild and rebuild_feature_enabled:
                 try:
                     export_cmd = (
-                        "cd /app/mobile && "
+                        "cd /app/frontend && "
                         f"CI=1 EXPO_NO_INTERACTIVE=1 NODE_OPTIONS={shlex.quote(FRONTEND_EXPORT_NODE_OPTIONS)} "
                         "node node_modules/expo/bin/cli export --platform web"
                     )

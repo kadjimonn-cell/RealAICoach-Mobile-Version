@@ -481,7 +481,7 @@ async def dependency_vulnerability_scan(request: Request):
 
     # Frontend: yarn audit
     try:
-        proc = subprocess.run(["yarn", "audit", "--json"], capture_output=True, text=True, timeout=120, cwd="/app/mobile")
+        proc = subprocess.run(["yarn", "audit", "--json"], capture_output=True, text=True, timeout=120, cwd="/app/frontend")
         yarn_vulns, yarn_summary = [], {"total": 0, "critical": 0, "high": 0, "moderate": 0, "low": 0}
         for line in (proc.stdout or "").strip().split("\n"):
             if not line.strip():

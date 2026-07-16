@@ -11,7 +11,7 @@ Handles remaining patterns not caught by Pass 1:
 import re
 from pathlib import Path
 
-FRONTEND = Path('/app/mobile')
+FRONTEND = Path('/app/frontend')
 SCAN_DIRS = [FRONTEND / 'src', FRONTEND / 'app']
 
 # ── All-alpha SEMANTIC mapping (lowercase hex → token) ───────────────────────

@@ -1,9 +1,9 @@
 from pathlib import Path
 
 
-REALTIME_CONTEXT_PATH = Path('/app/mobile/src/context/RealtimeContext.tsx')
-RECONNECT_BANNER_PATH = Path('/app/mobile/src/components/RealtimeReconnectBanner.tsx')
-LAYOUT_PATH = Path('/app/mobile/app/_layout.tsx')
+REALTIME_CONTEXT_PATH = Path('/app/frontend/src/context/RealtimeContext.tsx')
+RECONNECT_BANNER_PATH = Path('/app/frontend/src/components/RealtimeReconnectBanner.tsx')
+LAYOUT_PATH = Path('/app/frontend/app/_layout.tsx')
 
 
 def test_realtime_context_has_auto_reconnect_cap_and_manual_resume() -> None:

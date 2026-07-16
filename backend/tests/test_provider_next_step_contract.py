@@ -23,7 +23,7 @@ class TestProviderNextStepSourceContract:
     
     def test_subscription_unlocked_destination_summary_has_provider_next_step_mapping(self):
         """Verify SubscriptionUnlockedDestinationSummary has provider-specific next-step config"""
-        file_path = '/app/mobile/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx'
+        file_path = '/app/frontend/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -49,7 +49,7 @@ class TestProviderNextStepSourceContract:
     
     def test_subscription_unlocked_destination_summary_has_next_step_testids(self):
         """Verify next-step data-testid attributes are present"""
-        file_path = '/app/mobile/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx'
+        file_path = '/app/frontend/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -64,7 +64,7 @@ class TestProviderNextStepSourceContract:
     
     def test_subscription_unlocked_destination_summary_has_provider_props(self):
         """Verify providerKey and providerLabel props are defined"""
-        file_path = '/app/mobile/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx'
+        file_path = '/app/frontend/src/components/payment/SubscriptionUnlockedDestinationSummary.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -83,7 +83,7 @@ class TestPaymentWebUnlockedProviderWiring:
     
     def test_payment_tsx_passes_provider_context(self):
         """Verify payment.tsx passes providerKey and providerLabel"""
-        file_path = '/app/mobile/app/subscription/payment.tsx'
+        file_path = '/app/frontend/app/subscription/payment.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -104,7 +104,7 @@ class TestPaymentRedirectUnlockedProviderWiring:
     
     def test_success_tsx_passes_provider_context(self):
         """Verify success.tsx passes providerKey and providerLabel"""
-        file_path = '/app/mobile/app/subscription/success.tsx'
+        file_path = '/app/frontend/app/subscription/success.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -125,7 +125,7 @@ class TestPaymentResultUnlockedProviderWiring:
     
     def test_payment_result_tsx_passes_provider_context(self):
         """Verify payment-result.tsx passes providerKey and providerLabel"""
-        file_path = '/app/mobile/app/subscription/payment-result.tsx'
+        file_path = '/app/frontend/app/subscription/payment-result.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -146,7 +146,7 @@ class TestMobileMoneyUnlockedProviderWiring:
     
     def test_mobile_money_tsx_passes_provider_context(self):
         """Verify mobile-money.tsx passes providerKey and providerLabel"""
-        file_path = '/app/mobile/app/subscription/mobile-money.tsx'
+        file_path = '/app/frontend/app/subscription/mobile-money.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -167,7 +167,7 @@ class TestIAPNativeUnlockedProviderWiring:
     
     def test_mobile_subscriptions_view_passes_provider_context(self):
         """Verify MobileSubscriptionsViewV2.tsx passes providerKey and providerLabel"""
-        file_path = '/app/mobile/src/components/MobileSubscriptionsViewV2.tsx'
+        file_path = '/app/frontend/src/components/MobileSubscriptionsViewV2.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -188,7 +188,7 @@ class TestI18nProviderNextStepKeys:
     
     def test_en_locale_has_provider_next_step_keys(self):
         """Verify en.ts has all provider-next-step translation keys"""
-        file_path = '/app/mobile/src/i18n/locales/en.ts'
+        file_path = '/app/frontend/src/i18n/locales/en.ts'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -226,7 +226,7 @@ class TestContractTestAssertions:
     
     def test_contract_test_has_provider_next_step_assertions(self):
         """Verify homeDashboardAuthLock.contract.test.ts has provider-next-step assertions"""
-        file_path = '/app/mobile/src/__tests__/homeDashboardAuthLock.contract.test.ts'
+        file_path = '/app/frontend/src/__tests__/homeDashboardAuthLock.contract.test.ts'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -247,7 +247,7 @@ class TestUnifiedPaymentSuccessContractIntact:
     
     def test_subscription_success_panel_has_pre_cta_content(self):
         """Verify SubscriptionSuccessPanel still accepts preCtaContent"""
-        file_path = '/app/mobile/src/components/payment/SubscriptionSuccessPanel.tsx'
+        file_path = '/app/frontend/src/components/payment/SubscriptionSuccessPanel.tsx'
         with open(file_path, 'r') as f:
             content = f.read()
         
@@ -259,11 +259,11 @@ class TestUnifiedPaymentSuccessContractIntact:
     def test_all_five_providers_use_subscription_unlocked_destination_summary(self):
         """Verify all 5 providers use SubscriptionUnlockedDestinationSummary"""
         files_to_check = [
-            ('/app/mobile/app/subscription/payment.tsx', 'SubscriptionUnlockedDestinationSummary'),
-            ('/app/mobile/app/subscription/success.tsx', 'SubscriptionUnlockedDestinationSummary'),
-            ('/app/mobile/app/subscription/payment-result.tsx', 'SubscriptionUnlockedDestinationSummary'),
-            ('/app/mobile/app/subscription/mobile-money.tsx', 'SubscriptionUnlockedDestinationSummary'),
-            ('/app/mobile/src/components/MobileSubscriptionsViewV2.tsx', 'SubscriptionUnlockedDestinationSummary'),
+            ('/app/frontend/app/subscription/payment.tsx', 'SubscriptionUnlockedDestinationSummary'),
+            ('/app/frontend/app/subscription/success.tsx', 'SubscriptionUnlockedDestinationSummary'),
+            ('/app/frontend/app/subscription/payment-result.tsx', 'SubscriptionUnlockedDestinationSummary'),
+            ('/app/frontend/app/subscription/mobile-money.tsx', 'SubscriptionUnlockedDestinationSummary'),
+            ('/app/frontend/src/components/MobileSubscriptionsViewV2.tsx', 'SubscriptionUnlockedDestinationSummary'),
         ]
         
         for file_path, expected_import in files_to_check:

@@ -423,7 +423,7 @@ class TestThemeAllowlistCleanup:
 
     def test_subscription_payment_not_in_allowlist(self):
         """theme-exception-allowlist.json does not contain app/subscription/payment.tsx."""
-        allowlist_path = "/app/mobile/scripts/theme-exception-allowlist.json"
+        allowlist_path = "/app/frontend/scripts/theme-exception-allowlist.json"
         with open(allowlist_path, "r") as f:
             allowlist = json.load(f)
         
@@ -434,7 +434,7 @@ class TestThemeAllowlistCleanup:
 
     def test_subscription_plans_not_in_allowlist(self):
         """theme-exception-allowlist.json does not contain app/subscription/plans.tsx."""
-        allowlist_path = "/app/mobile/scripts/theme-exception-allowlist.json"
+        allowlist_path = "/app/frontend/scripts/theme-exception-allowlist.json"
         with open(allowlist_path, "r") as f:
             allowlist = json.load(f)
         
@@ -445,7 +445,7 @@ class TestThemeAllowlistCleanup:
 
     def test_subscription_mobile_money_not_in_allowlist(self):
         """theme-exception-allowlist.json does not contain app/subscription/mobile-money.tsx."""
-        allowlist_path = "/app/mobile/scripts/theme-exception-allowlist.json"
+        allowlist_path = "/app/frontend/scripts/theme-exception-allowlist.json"
         with open(allowlist_path, "r") as f:
             allowlist = json.load(f)
         

@@ -353,7 +353,7 @@ async def generate_platform_integrity_artifact(
 
     try:
         proc = subprocess.run(
-            ["node", "/app/mobile/scripts/theme-build-gate.js"],
+            ["node", "/app/frontend/scripts/theme-build-gate.js"],
             capture_output=True,
             text=True,
             check=False,

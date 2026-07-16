@@ -28,7 +28,7 @@ def _load_env_file(p):
         out[k.strip()] = v.strip().strip('"').strip("'")
     return out
 
-_FRONT_ENV = _load_env_file('/app/mobile/.env')
+_FRONT_ENV = _load_env_file('/app/frontend/.env')
 _BACK_ENV = _load_env_file('/app/backend/.env')
 
 BASE_URL = (os.environ.get('REACT_APP_BACKEND_URL') or _FRONT_ENV.get('REACT_APP_BACKEND_URL')).rstrip('/')

@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 
 
-FRONTEND_PACKAGE = Path('/app/mobile/package.json')
-FRONTEND_RESOLUTION_AUDIT = Path('/app/mobile/resolutions_audit.md')
+FRONTEND_PACKAGE = Path('/app/frontend/package.json')
+FRONTEND_RESOLUTION_AUDIT = Path('/app/frontend/resolutions_audit.md')
 BACKEND_REQUIREMENTS = Path('/app/backend/requirements.txt')
 
 

@@ -67,7 +67,7 @@ def _extract_strict_label_keys_from_frontend() -> set[str]:
         re.compile(r"strictLabel\(\s*['\"]([^'\"]+)['\"]\s*\)"),
         re.compile(r"getMissingLabels\(\s*\[([^\]]+)\]\s*\)", re.DOTALL),
     ]
-    for path in ROOT.glob("mobile/**/*.tsx"):
+    for path in ROOT.glob("frontend/**/*.tsx"):
         if not path.is_file():
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")

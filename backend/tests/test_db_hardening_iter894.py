@@ -29,7 +29,7 @@ load_dotenv("/app/backend/.env")
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 if not BASE_URL:
     # fallback to frontend .env
-    load_dotenv("/app/mobile/.env")
+    load_dotenv("/app/frontend/.env")
     BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 
 MONGO_URL = os.environ.get("MONGO_URL")

@@ -33,7 +33,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path("/app/mobile")
+ROOT = Path("/app/frontend")
 
 # ── Canonical V2 token value clusters ─────────────────────────────────
 # Matches any "dark-ish" hex seen in the wild mapped to the V2 dark value.
@@ -234,7 +234,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", default=False)
     ap.add_argument("--apply", action="store_true", default=False)
-    ap.add_argument("paths", nargs="*", help="files (relative to /app/mobile) or absolute; empty = use audit JSON")
+    ap.add_argument("paths", nargs="*", help="files (relative to /app/frontend) or absolute; empty = use audit JSON")
     args = ap.parse_args()
 
     if not args.dry_run and not args.apply:

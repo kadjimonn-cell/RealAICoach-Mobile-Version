@@ -520,8 +520,8 @@ def _theme_surface_label(file_path: str) -> str:
         return "Unknown surface"
 
     normalized = value.replace("\\", "/")
-    if normalized.startswith("mobile/app/"):
-        route = normalized.replace("mobile/app", "", 1)
+    if normalized.startswith("frontend/app/"):
+        route = normalized.replace("frontend/app", "", 1)
         route = route.replace("index.tsx", "")
         route = route.replace(".tsx", "")
         route = route.replace(".ts", "")
@@ -530,8 +530,8 @@ def _theme_surface_label(file_path: str) -> str:
         route = route.rstrip("/") or "/"
         return route
 
-    if normalized.startswith("mobile/src/components/"):
-        return normalized.replace("mobile/src/components/", "component/")
+    if normalized.startswith("frontend/src/components/"):
+        return normalized.replace("frontend/src/components/", "component/")
 
     return normalized
 

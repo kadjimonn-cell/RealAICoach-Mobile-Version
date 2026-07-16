@@ -1,12 +1,12 @@
 from pathlib import Path
 
 
-LANGUAGE_CONTEXT_PATH = Path('/app/mobile/src/i18n/LanguageContext.tsx')
-TRANSLATION_LOADER_PATH = Path('/app/mobile/src/i18n/translationLoader.ts')
-VIDEO_QA_PATH = Path('/app/mobile/app/careers/video-qa/[token].tsx')
-EDIT_PROFILE_PATH = Path('/app/mobile/app/edit-profile.tsx')
-INTERVIEW_ROOM_PATH = Path('/app/mobile/app/interview-room.tsx')
-LOCALES_DIR = Path('/app/mobile/src/i18n/locales')
+LANGUAGE_CONTEXT_PATH = Path('/app/frontend/src/i18n/LanguageContext.tsx')
+TRANSLATION_LOADER_PATH = Path('/app/frontend/src/i18n/translationLoader.ts')
+VIDEO_QA_PATH = Path('/app/frontend/app/careers/video-qa/[token].tsx')
+EDIT_PROFILE_PATH = Path('/app/frontend/app/edit-profile.tsx')
+INTERVIEW_ROOM_PATH = Path('/app/frontend/app/interview-room.tsx')
+LOCALES_DIR = Path('/app/frontend/src/i18n/locales')
 
 
 def test_issue12_language_context_is_stale_while_revalidate_nonblocking() -> None:

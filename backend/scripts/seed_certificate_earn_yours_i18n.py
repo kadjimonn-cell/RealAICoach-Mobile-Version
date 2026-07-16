@@ -3,7 +3,7 @@
 import re
 from pathlib import Path
 
-LOCALES_DIR = Path("/app/mobile/src/i18n/locales")
+LOCALES_DIR = Path("/app/frontend/src/i18n/locales")
 
 T = {
     "en": ["START YOUR JOURNEY", "Earn yours", "This credential was earned through RealAICoach's AI-powered courses. Start learning today and earn your own verifiable certificate.", "Start Learning Free", "Explore RealAICoach"],

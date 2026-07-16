@@ -36,7 +36,7 @@ if str(BACKEND_DIR) not in sys.path:
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 if not BASE_URL:
     # fallback: pull from frontend/.env
-    _env = Path("/app/mobile/.env").read_text().splitlines()
+    _env = Path("/app/frontend/.env").read_text().splitlines()
     for line in _env:
         if line.startswith("REACT_APP_BACKEND_URL="):
             BASE_URL = line.split("=", 1)[1].strip().rstrip("/")

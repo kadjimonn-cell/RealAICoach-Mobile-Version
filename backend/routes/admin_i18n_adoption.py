@@ -23,8 +23,8 @@ from routes.db import db, require_admin
 router = APIRouter()
 
 SCAN_ROOTS = [
-    Path("/app/mobile/app"),
-    Path("/app/mobile/src/components"),
+    Path("/app/frontend/app"),
+    Path("/app/frontend/src/components"),
 ]
 
 SKIP_FILES = {
@@ -70,7 +70,7 @@ IMPORT_LINE_RE = re.compile(r"^\s*(?:import\b[^\n]*|\} from [^\n]*|from ['\"][^\
 # Aligned with frontend scripts/i18n-new-missing-keys-check.js KEY_PATTERNS (t, tx, strictLabel)
 I18N_T_CALL_RE = re.compile(r"\b(?:t|tx|tr|strictLabel)\s*\(")
 NIGHTLY_DRIFT_REPORT = Path("/app/test_reports/i18n_new_missing_keys_report.json")
-MISSING_KEYS_BASELINE = Path("/app/mobile/scripts/i18n-missing-keys-baseline.json")
+MISSING_KEYS_BASELINE = Path("/app/frontend/scripts/i18n-missing-keys-baseline.json")
 BURNDOWN_REPORT = Path("/app/test_reports/i18n_baseline_burndown_report.json")
 
 
@@ -172,7 +172,7 @@ def _build_route_report_card(rows: list[dict[str, Any]]) -> list[dict[str, Any]]
 
 
 def _scan_file(file: Path) -> dict[str, Any]:
-    rel = file.as_posix().replace("/app/mobile/", "")
+    rel = file.as_posix().replace("/app/frontend/", "")
     try:
         text = file.read_text(encoding="utf-8", errors="ignore")
     except Exception:
@@ -216,7 +216,7 @@ def _scan_adoption() -> dict[str, Any]:
 
     rows: list[dict[str, Any]] = []
     for f in files:
-        rel = f.as_posix().replace("/app/mobile/", "")
+        rel = f.as_posix().replace("/app/frontend/", "")
         if rel in SKIP_FILES:
             continue
         rows.append(_scan_file(f))

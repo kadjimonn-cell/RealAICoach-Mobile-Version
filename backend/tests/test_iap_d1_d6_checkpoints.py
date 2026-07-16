@@ -231,7 +231,7 @@ class TestD4SecurityGateAlignment:
             "/app/backend/google_play_service_account.json",
             "/app/backend/AuthKey_34YP9488M8.p8",
             "/app/backend/SubscriptionKey_848DFKTZ47.p8",
-            "/app/mobile/cookies.txt",
+            "/app/frontend/cookies.txt",
         ]
         for filepath in disallowed_files:
             assert not os.path.exists(filepath), f"Disallowed file exists: {filepath}"
@@ -343,7 +343,7 @@ class TestFrontendLoaderHelper:
     
     def test_html_tsx_has_challenge_detection(self):
         """Frontend +html.tsx should have challenge-aware loader code"""
-        html_path = Path("/app/mobile/app/+html.tsx")
+        html_path = Path("/app/frontend/app/+html.tsx")
         assert html_path.exists(), "+html.tsx should exist"
         
         content = html_path.read_text(encoding="utf-8")

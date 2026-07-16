@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /auth
-Disallow: /api
-
-Sitemap: https://visa-polish-v2.preview.emergentagent.com/sitemap.xml

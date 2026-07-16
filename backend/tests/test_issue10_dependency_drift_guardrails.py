@@ -2,10 +2,10 @@ import json
 from pathlib import Path
 
 
-FRONTEND_PACKAGE_JSON = Path('/app/mobile/package.json')
-FRONTEND_PACKAGE_LOCK = Path('/app/mobile/package-lock.json')
-EXPO_PACKAGE_JSON = Path('/app/mobile/node_modules/expo/package.json')
-EXPO_CLI_PACKAGE_JSON = Path('/app/mobile/node_modules/@expo/cli/package.json')
+FRONTEND_PACKAGE_JSON = Path('/app/frontend/package.json')
+FRONTEND_PACKAGE_LOCK = Path('/app/frontend/package-lock.json')
+EXPO_PACKAGE_JSON = Path('/app/frontend/node_modules/expo/package.json')
+EXPO_CLI_PACKAGE_JSON = Path('/app/frontend/node_modules/@expo/cli/package.json')
 
 
 def _has_range_prefix(version_spec: str) -> bool:

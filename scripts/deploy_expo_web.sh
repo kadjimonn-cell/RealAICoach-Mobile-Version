@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Safe re-export + deploy of the Expo Web production bundle.
-# Replaces /app/mobile/dist atomically to avoid partial-merge bugs
+# Replaces /app/frontend/dist atomically to avoid partial-merge bugs
 # (cp -r into an existing folder silently merges and can leave stale _expo bundles → white screens).
 set -euo pipefail
 
-cd /app/mobile
+cd /app/frontend
 
 # ── Pre-deploy env guard ──────────────────────────────────────────────
 # Fails loud BEFORE building if REACT_APP_BACKEND_URL / EXPO_PUBLIC_BACKEND_URL
@@ -13,14 +13,14 @@ cd /app/mobile
 # break every component that reads process.env.REACT_APP_BACKEND_URL
 # (CSV exports, WebSockets, direct API calls that bypass window.location.host).
 echo "▶ Running pre-deploy env guard …"
-if [ ! -f /app/mobile/.env ]; then
-  echo "✗ /app/mobile/.env missing — cannot verify backend URL alignment." >&2
+if [ ! -f /app/frontend/.env ]; then
+  echo "✗ /app/frontend/.env missing — cannot verify backend URL alignment." >&2
   exit 1
 fi
 
 env_get() {
-  # Reads a KEY=value pair from /app/mobile/.env (first match, last wins).
-  grep -E "^${1}=" /app/mobile/.env | tail -1 | cut -d= -f2- | tr -d '"' | tr -d "'"
+  # Reads a KEY=value pair from /app/frontend/.env (first match, last wins).
+  grep -E "^${1}=" /app/frontend/.env | tail -1 | cut -d= -f2- | tr -d '"' | tr -d "'"
 }
 
 SUBDOMAIN=$(env_get EXPO_TUNNEL_SUBDOMAIN)
@@ -28,15 +28,15 @@ REACT_URL=$(env_get REACT_APP_BACKEND_URL)
 EXPO_URL=$(env_get EXPO_PUBLIC_BACKEND_URL)
 
 if [ -z "$SUBDOMAIN" ]; then
-  echo "✗ EXPO_TUNNEL_SUBDOMAIN is empty in /app/mobile/.env" >&2
+  echo "✗ EXPO_TUNNEL_SUBDOMAIN is empty in /app/frontend/.env" >&2
   exit 1
 fi
 if [ -z "$REACT_URL" ]; then
-  echo "✗ REACT_APP_BACKEND_URL is empty in /app/mobile/.env" >&2
+  echo "✗ REACT_APP_BACKEND_URL is empty in /app/frontend/.env" >&2
   exit 1
 fi
 if [ -z "$EXPO_URL" ]; then
-  echo "✗ EXPO_PUBLIC_BACKEND_URL is empty in /app/mobile/.env" >&2
+  echo "✗ EXPO_PUBLIC_BACKEND_URL is empty in /app/frontend/.env" >&2
   exit 1
 fi
 
@@ -48,7 +48,7 @@ expo_host=$(echo "$EXPO_URL" | sed -E 's|^https?://||; s|/.*$||')
 # and process.env fallbacks don't diverge in the compiled bundle.
 if [ "$react_host" != "$expo_host" ]; then
   echo "✗ REACT_APP_BACKEND_URL host ($react_host) does not match EXPO_PUBLIC_BACKEND_URL host ($expo_host)" >&2
-  echo "  Aborting build — fix /app/mobile/.env so both point to the same hostname." >&2
+  echo "  Aborting build — fix /app/frontend/.env so both point to the same hostname." >&2
   exit 1
 fi
 
@@ -57,7 +57,7 @@ expected_prefix="${SUBDOMAIN}."
 if [[ "$react_host" != ${expected_prefix}* ]]; then
   echo "✗ Backend URL host ($react_host) does not start with EXPO_TUNNEL_SUBDOMAIN ($SUBDOMAIN)" >&2
   echo "  The deployed bundle would reference a stale preview URL." >&2
-  echo "  Fix: update REACT_APP_BACKEND_URL + EXPO_PUBLIC_BACKEND_URL in /app/mobile/.env so their host starts with '${expected_prefix}'" >&2
+  echo "  Fix: update REACT_APP_BACKEND_URL + EXPO_PUBLIC_BACKEND_URL in /app/frontend/.env so their host starts with '${expected_prefix}'" >&2
   exit 1
 fi
 
@@ -110,15 +110,15 @@ if [ -n "$stale_matches" ]; then
   echo "✗ Stale preview URL(s) detected in bundle:" >&2
   echo "$stale_matches" | sed 's/^/    /' >&2
   echo "  Expected only: https://visa-polish-v2.preview.emergentagent.com" >&2
-  echo "  Run: cd /app/mobile && rm -rf .metro-cache && $(basename "$0")" >&2
+  echo "  Run: cd /app/frontend && rm -rf .metro-cache && $(basename "$0")" >&2
   rm -rf "$TMP_DIR"
   exit 1
 fi
 echo "✓ Bundle scan clean — only https://visa-polish-v2.preview.emergentagent.com referenced."
 
-echo "▶ Replacing /app/mobile/dist atomically …"
-rm -rf /app/mobile/dist
-mv "$TMP_DIR" /app/mobile/dist
+echo "▶ Replacing /app/frontend/dist atomically …"
+rm -rf /app/frontend/dist
+mv "$TMP_DIR" /app/frontend/dist
 
 echo "▶ Restarting expo_manual …"
 sudo supervisorctl restart expo_manual >/dev/null

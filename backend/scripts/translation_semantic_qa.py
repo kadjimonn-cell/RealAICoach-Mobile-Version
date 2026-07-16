@@ -15,7 +15,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path("/app/mobile/src/i18n/locales")
+ROOT = Path("/app/frontend/src/i18n/locales")
 REPORT_DIR = Path("/app/test_reports")
 REPORT_JSON = REPORT_DIR / "translation_semantic_qa.json"
 REPORT_MD = REPORT_DIR / "translation_semantic_qa.md"

@@ -12,7 +12,7 @@ Strategy:
 import re, os, sys
 from pathlib import Path
 
-FRONTEND = Path('/app/mobile')
+FRONTEND = Path('/app/frontend')
 SCAN_DIRS = [FRONTEND / 'src', FRONTEND / 'app']
 
 SKIP_CONTAINS = ['node_modules', '.d.ts']

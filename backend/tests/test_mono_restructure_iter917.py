@@ -1,6 +1,6 @@
 """Iter917 — Mono cross-platform restructure regression.
 
-Verifies backend is healthy after /app/frontend -> /app/mobile move and new web shell
+Verifies backend is healthy after /app/frontend -> /app/frontend move and new web shell
 was added at /app/frontend, and preview_host_guard still passes at boot.
 """
 import os
@@ -25,12 +25,12 @@ class TestStructure:
         assert '"expo"' not in pkg
 
     def test_mobile_has_expo(self):
-        pkg = Path("/app/mobile/package.json").read_text()
+        pkg = Path("/app/frontend/package.json").read_text()
         assert '"expo"' in pkg
 
     def test_mobile_eas_and_app_json_present(self):
-        assert Path("/app/mobile/eas.json").exists()
-        assert Path("/app/mobile/app.json").exists()
+        assert Path("/app/frontend/eas.json").exists()
+        assert Path("/app/frontend/app.json").exists()
 
     def test_web_shell_files_present(self):
         for p in [

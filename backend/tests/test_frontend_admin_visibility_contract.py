@@ -6,16 +6,16 @@ def _read(path: str) -> str:
 
 
 def test_appshell_admin_keys_not_rendered_for_non_admin() -> None:
-    source = _read('/app/mobile/src/components/AppShell.tsx')
+    source = _read('/app/frontend/src/components/AppShell.tsx')
     assert "'admin-console'" in source
     assert "if (isAdmin) return true;" in source
     assert "return !target.includes('/admin-console');" in source
 
 
 def test_admin_routes_use_admin_visibility_guard() -> None:
-    admin_index = _read('/app/mobile/app/admin/index.tsx')
-    executive = _read('/app/mobile/app/executive-dashboard.tsx')
-    sub_dash = _read('/app/mobile/app/admin/subscription-dashboard.tsx')
+    admin_index = _read('/app/frontend/app/admin/index.tsx')
+    executive = _read('/app/frontend/app/executive-dashboard.tsx')
+    sub_dash = _read('/app/frontend/app/admin/subscription-dashboard.tsx')
 
     assert 'hasAdminConsoleVisibility' in admin_index
     assert 'hasAdminConsoleVisibility' in executive

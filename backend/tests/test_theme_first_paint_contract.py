@@ -1,9 +1,9 @@
 from pathlib import Path
 
 
-HTML_SHELL_PATH = Path('/app/mobile/app/+html.tsx')
+HTML_SHELL_PATH = Path('/app/frontend/app/+html.tsx')
 CI_WORKFLOW_PATH = Path('/app/.github/workflows/ci-quality-gate.yml')
-FIRST_PAINT_SPEC_PATH = Path('/app/mobile/e2e/theme-first-paint.spec.ts')
+FIRST_PAINT_SPEC_PATH = Path('/app/frontend/e2e/theme-first-paint.spec.ts')
 
 
 def test_html_shell_contains_pre_hydration_theme_bootstrap_and_tokens() -> None:

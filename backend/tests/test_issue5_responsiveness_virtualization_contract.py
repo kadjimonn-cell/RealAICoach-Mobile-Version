@@ -1,11 +1,11 @@
 from pathlib import Path
 
 
-HOME_TABS_INDEX_PATH = Path('/app/mobile/app/(tabs)/index.tsx')
-SESSION_HISTORY_PATH = Path('/app/mobile/app/session-history.tsx')
-GLS_PATH = Path('/app/mobile/src/components/layout/GlobalLayoutSystem.tsx')
-AI_DASHBOARD_PATH = Path('/app/mobile/app/ai-feature-dashboard.tsx')
-ADMIN_ACTIVITY_PATH = Path('/app/mobile/app/admin-activity-log.tsx')
+HOME_TABS_INDEX_PATH = Path('/app/frontend/app/(tabs)/index.tsx')
+SESSION_HISTORY_PATH = Path('/app/frontend/app/session-history.tsx')
+GLS_PATH = Path('/app/frontend/src/components/layout/GlobalLayoutSystem.tsx')
+AI_DASHBOARD_PATH = Path('/app/frontend/app/ai-feature-dashboard.tsx')
+ADMIN_ACTIVITY_PATH = Path('/app/frontend/app/admin-activity-log.tsx')
 
 
 def test_home_tabs_index_uses_flatlist_virtualization_for_heavy_sections() -> None:

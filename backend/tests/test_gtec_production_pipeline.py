@@ -19,7 +19,7 @@ def _load_base_url() -> str:
     if env:
         return env.rstrip("/")
 
-    env_file = Path("/app/mobile/.env")
+    env_file = Path("/app/frontend/.env")
     if env_file.exists():
         text = env_file.read_text(encoding="utf-8", errors="ignore")
         m = re.search(r"^REACT_APP_BACKEND_URL=(.+)$", text, re.M)

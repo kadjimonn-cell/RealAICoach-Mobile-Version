@@ -442,7 +442,7 @@ class TestSSOMessagingSecurity:
 
     def test_sso_messaging_security_file_exists(self):
         """ssoMessagingSecurity.ts should exist"""
-        sso_path = "/app/mobile/src/utils/ssoMessagingSecurity.ts"
+        sso_path = "/app/frontend/src/utils/ssoMessagingSecurity.ts"
         with open(sso_path, "r") as f:
             content = f.read()
         
@@ -452,7 +452,7 @@ class TestSSOMessagingSecurity:
 
     def test_no_wildcard_postmessage_in_login_sso(self):
         """useLoginSso.ts should not use wildcard postMessage"""
-        sso_path = "/app/mobile/src/components/pages/login/useLoginSso.ts"
+        sso_path = "/app/frontend/src/components/pages/login/useLoginSso.ts"
         with open(sso_path, "r") as f:
             content = f.read()
         
@@ -463,7 +463,7 @@ class TestSSOMessagingSecurity:
 
     def test_no_wildcard_postmessage_in_auth_context(self):
         """AuthContext.tsx should not use wildcard postMessage"""
-        auth_path = "/app/mobile/src/context/AuthContext.tsx"
+        auth_path = "/app/frontend/src/context/AuthContext.tsx"
         with open(auth_path, "r") as f:
             content = f.read()
         
@@ -477,7 +477,7 @@ class TestWebCookieOnlyAuthFlag:
 
     def test_storage_has_cookie_only_flag(self):
         """storage.ts should have WEB_COOKIE_ONLY_AUTH = true"""
-        storage_path = "/app/mobile/src/context/auth/storage.ts"
+        storage_path = "/app/frontend/src/context/auth/storage.ts"
         with open(storage_path, "r") as f:
             content = f.read()
         
@@ -486,7 +486,7 @@ class TestWebCookieOnlyAuthFlag:
 
     def test_api_has_cookie_only_flag(self):
         """api.ts should have WEB_COOKIE_ONLY_AUTH = true"""
-        api_path = "/app/mobile/src/services/api.ts"
+        api_path = "/app/frontend/src/services/api.ts"
         with open(api_path, "r") as f:
             content = f.read()
         
@@ -495,7 +495,7 @@ class TestWebCookieOnlyAuthFlag:
 
     def test_storage_returns_null_for_web(self):
         """getSessionToken should return null for web when cookie-only"""
-        storage_path = "/app/mobile/src/context/auth/storage.ts"
+        storage_path = "/app/frontend/src/context/auth/storage.ts"
         with open(storage_path, "r") as f:
             content = f.read()
         
@@ -533,7 +533,7 @@ class TestTokenInURLRejection:
 
     def test_ms_token_in_url_rejection_code_exists(self):
         """AuthContext should reject ms_session_token in URL hash"""
-        auth_path = "/app/mobile/src/context/AuthContext.tsx"
+        auth_path = "/app/frontend/src/context/AuthContext.tsx"
         with open(auth_path, "r") as f:
             content = f.read()
         
@@ -544,7 +544,7 @@ class TestTokenInURLRejection:
 
     def test_login_sso_rejects_token_in_url(self):
         """useLoginSso should reject token-in-URL callbacks"""
-        sso_path = "/app/mobile/src/components/pages/login/useLoginSso.ts"
+        sso_path = "/app/frontend/src/components/pages/login/useLoginSso.ts"
         with open(sso_path, "r") as f:
             content = f.read()
         

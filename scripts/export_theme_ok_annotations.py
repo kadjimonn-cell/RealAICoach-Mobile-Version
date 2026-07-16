@@ -16,7 +16,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-FRONTEND_ROOTS = [Path("/app/mobile/src"), Path("/app/mobile/app"), Path("/app/mobile/components")]
+FRONTEND_ROOTS = [Path("/app/frontend/src"), Path("/app/frontend/app"), Path("/app/frontend/components")]
 SKIP = ("node_modules", "__tests__", ".expo", "dist", "build")
 SUFFIXES = {".tsx", ".jsx", ".ts"}
 
@@ -44,7 +44,7 @@ def _scan():
                 text = fp.read_text(encoding="utf-8")
             except Exception:
                 continue
-            rel = str(fp).replace("/app/mobile/", "")
+            rel = str(fp).replace("/app/frontend/", "")
             # File-level pragma (only consider first 20 lines)
             head = "\n".join(text.splitlines()[:20])
             m = FILE_RE.search(head)

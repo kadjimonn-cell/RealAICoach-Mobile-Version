@@ -364,9 +364,9 @@ class TestVideoStudioE2EParityFile:
     """Verify E2E parity file exists"""
     
     def test_e2e_parity_file_exists(self):
-        """Test that /app/mobile/e2e/ai-video.spec.ts exists"""
+        """Test that /app/frontend/e2e/ai-video.spec.ts exists"""
         import os
-        e2e_file = "/app/mobile/e2e/ai-video.spec.ts"
+        e2e_file = "/app/frontend/e2e/ai-video.spec.ts"
         
         assert os.path.exists(e2e_file), f"E2E parity file not found: {e2e_file}"
         

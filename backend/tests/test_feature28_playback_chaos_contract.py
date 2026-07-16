@@ -6,7 +6,7 @@ def _read(path: str) -> str:
 
 
 def test_feature28_playback_resilience_chaos_harness_contract() -> None:
-    source = _read("/app/mobile/src/components/feature28/playbackResilience.ts")
+    source = _read("/app/frontend/src/components/feature28/playbackResilience.ts")
 
     assert "export const MAX_RETRY_ATTEMPTS = 3" in source
     assert "export const RETRY_BACKOFF_MS = [1500, 3000, 5000]" in source
@@ -19,7 +19,7 @@ def test_feature28_playback_resilience_chaos_harness_contract() -> None:
 
 
 def test_feature28_frontend_uses_chaos_harness_in_resilience_loop() -> None:
-    source = _read("/app/mobile/src/components/feature28/AudioStudioFeature28.tsx")
+    source = _read("/app/frontend/src/components/feature28/AudioStudioFeature28.tsx")
 
     assert "PlaybackChaosController" in source
     assert "evaluateResilienceDecision" in source

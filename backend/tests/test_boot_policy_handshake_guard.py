@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-ROOT_LAYOUT_PATH = Path("/app/mobile/app/_layout.tsx")
+ROOT_LAYOUT_PATH = Path("/app/frontend/app/_layout.tsx")
 
 
 def test_boot_policy_handshake_listener_and_timeout_fallback_exist() -> None:

@@ -1,11 +1,11 @@
 from pathlib import Path
 
 
-AI_DASHBOARD_PATH = Path('/app/mobile/app/ai-feature-dashboard.tsx')
-ADMIN_ACTIVITY_PATH = Path('/app/mobile/app/admin-activity-log.tsx')
-INTERVIEW_ROOM_PATH = Path('/app/mobile/app/interview-room.tsx')
-AUTH_CONTEXT_PATH = Path('/app/mobile/src/context/AuthContext.tsx')
-API_SERVICE_PATH = Path('/app/mobile/src/services/api.ts')
+AI_DASHBOARD_PATH = Path('/app/frontend/app/ai-feature-dashboard.tsx')
+ADMIN_ACTIVITY_PATH = Path('/app/frontend/app/admin-activity-log.tsx')
+INTERVIEW_ROOM_PATH = Path('/app/frontend/app/interview-room.tsx')
+AUTH_CONTEXT_PATH = Path('/app/frontend/src/context/AuthContext.tsx')
+API_SERVICE_PATH = Path('/app/frontend/src/services/api.ts')
 
 
 def test_ai_dashboard_uses_realtime_context_instead_of_page_level_ws() -> None:

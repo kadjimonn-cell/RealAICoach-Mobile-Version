@@ -30,7 +30,7 @@ from routes.db import require_admin
 
 router = APIRouter()
 
-LOCALES_DIR = Path("/app/mobile/src/i18n/locales")
+LOCALES_DIR = Path("/app/frontend/src/i18n/locales")
 EN_FILE = LOCALES_DIR / "en.ts"
 CACHE_FILE = Path("/app/.i18n_seed_cache.json")
 SOURCE_LOCALES = {"en"}

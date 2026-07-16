@@ -1,9 +1,9 @@
 from pathlib import Path
 
 
-V2_THEME_PATH = Path('/app/mobile/src/theme/v2.ts')
-THEME_CONTEXT_PATH = Path('/app/mobile/src/context/ThemeContext.tsx')
-HTML_SHELL_PATH = Path('/app/mobile/app/+html.tsx')
+V2_THEME_PATH = Path('/app/frontend/src/theme/v2.ts')
+THEME_CONTEXT_PATH = Path('/app/frontend/src/context/ThemeContext.tsx')
+HTML_SHELL_PATH = Path('/app/frontend/app/+html.tsx')
 
 
 def test_issue11_v2_dark_primary_and_button_text_are_wcag_safe_white() -> None:

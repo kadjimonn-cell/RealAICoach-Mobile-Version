@@ -285,7 +285,7 @@ def get_current_webhook_url() -> str:
     frontend_file_base = ""
 
     try:
-        with open("/app/mobile/.env") as f:
+        with open("/app/frontend/.env") as f:
             for line in f:
                 if line.startswith("REACT_APP_BACKEND_URL="):
                     frontend_file_base = _normalize(line.strip().split("=", 1)[1])

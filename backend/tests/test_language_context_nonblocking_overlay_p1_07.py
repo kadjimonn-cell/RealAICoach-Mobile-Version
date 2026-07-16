@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-SOURCE_PATH = Path('/app/mobile/src/i18n/LanguageContext.tsx')
-ROOT_LAYOUT_PATH = Path('/app/mobile/app/_layout.tsx')
+SOURCE_PATH = Path('/app/frontend/src/i18n/LanguageContext.tsx')
+ROOT_LAYOUT_PATH = Path('/app/frontend/app/_layout.tsx')
 
 
 def test_language_context_has_sync_localstorage_locale_warm_start() -> None:

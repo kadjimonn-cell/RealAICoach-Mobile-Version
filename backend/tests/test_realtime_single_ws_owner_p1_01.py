@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-REALTIME_CONTEXT = Path("/app/mobile/src/context/RealtimeContext.tsx")
-HOOK_LIVE_DATA = Path("/app/mobile/src/hooks/useLiveData.ts")
+REALTIME_CONTEXT = Path("/app/frontend/src/context/RealtimeContext.tsx")
+HOOK_LIVE_DATA = Path("/app/frontend/src/hooks/useLiveData.ts")
 
 
 def test_realtime_context_remains_notifications_ws_owner() -> None:
@@ -13,7 +13,7 @@ def test_realtime_context_remains_notifications_ws_owner() -> None:
 
 
 def test_legacy_notifications_hook_is_removed() -> None:
-    assert not Path("/app/mobile/src/hooks/useRealtimeNotifications.ts").exists()
+    assert not Path("/app/frontend/src/hooks/useRealtimeNotifications.ts").exists()
 
 
 def test_live_data_hook_uses_context_subscription_not_local_socket() -> None:

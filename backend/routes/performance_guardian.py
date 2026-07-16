@@ -699,7 +699,7 @@ async def run_auto_fix(request: Request):
     for fix_id in fix_ids:
         proposal = {"fix_id": fix_id, "status": "proposed", "details": "", "risk": "none"}
         if fix_id == "clear_metro_cache":
-            cache_dir = "/app/mobile/.metro-cache"
+            cache_dir = "/app/frontend/.metro-cache"
             if os.path.exists(cache_dir):
                 size = sum(os.path.getsize(os.path.join(dp, f)) for dp, dn, filenames in os.walk(cache_dir) for f in filenames)
                 proposal["details"] = f"Clear {size / 1024 / 1024:.1f}MB stale Metro cache causing slow bundle loading"
@@ -708,7 +708,7 @@ async def run_auto_fix(request: Request):
                 proposal["status"] = "not_needed"
                 proposal["details"] = "Metro cache directory does not exist"
         elif fix_id == "disable_lazy_loading":
-            env_path = "/app/mobile/.env"
+            env_path = "/app/frontend/.env"
             if os.path.exists(env_path):
                 with open(env_path, "r") as f:
                     content = f.read()
@@ -885,7 +885,7 @@ async def _apply_fix(fix_id: str) -> dict:
     result = {"fix_id": fix_id, "status": "skipped", "details": ""}
     try:
         if fix_id == "clear_metro_cache":
-            cache_dir = "/app/mobile/.metro-cache"
+            cache_dir = "/app/frontend/.metro-cache"
             if os.path.exists(cache_dir):
                 import shutil
                 shutil.rmtree(cache_dir, ignore_errors=True)
@@ -895,7 +895,7 @@ async def _apply_fix(fix_id: str) -> dict:
                 result["status"] = "not_needed"
                 result["details"] = "Metro cache directory does not exist"
         elif fix_id == "disable_lazy_loading":
-            env_path = "/app/mobile/.env"
+            env_path = "/app/frontend/.env"
             if os.path.exists(env_path):
                 with open(env_path, "r") as f:
                     content = f.read()
@@ -1054,14 +1054,14 @@ async def auto_fix_check():
         fixes_applied = []
 
         # 1. Clear metro cache (only if cache exists)
-        cache_dir = "/app/mobile/.metro-cache"
+        cache_dir = "/app/frontend/.metro-cache"
         if os.path.exists(cache_dir):
             import shutil
             shutil.rmtree(cache_dir, ignore_errors=True)
             fixes_applied.append({"fix_id": "clear_metro_cache", "status": "applied", "details": "Metro cache cleared successfully"})
 
         # 2. Ensure lazy loading disabled (only if not already set)
-        env_path = "/app/mobile/.env"
+        env_path = "/app/frontend/.env"
         if os.path.exists(env_path):
             with open(env_path, "r") as f:
                 content = f.read()

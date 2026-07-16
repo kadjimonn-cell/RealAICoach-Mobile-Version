@@ -89,7 +89,7 @@ async def scheduled_admin_tabs_theme_drift_report():
         now = datetime.now(timezone.utc)
         stamp = now.strftime("%Y%m%d")
         report_path = Path(f"/app/memory/theme_drift_reports/admin_tabs_theme_drift_{stamp}.json")
-        script_path = Path("/app/mobile/scripts/theme_hex_guard.py")
+        script_path = Path("/app/frontend/scripts/theme_hex_guard.py")
 
         cmd = [
             "python",

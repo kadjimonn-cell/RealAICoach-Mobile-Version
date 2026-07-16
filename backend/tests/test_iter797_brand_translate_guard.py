@@ -49,10 +49,10 @@ def test_auto_translate_preserves_nova_and_no_brand_token():
 
 
 def test_locale_files_free_of_brand_token():
-    """FIX 4 static assurance: no '{BRAND}' left inside any /app/mobile/src/i18n/locales/*.ts."""
+    """FIX 4 static assurance: no '{BRAND}' left inside any /app/frontend/src/i18n/locales/*.ts."""
     import glob
     hits = []
-    for path in glob.glob('/app/mobile/src/i18n/locales/*.ts'):
+    for path in glob.glob('/app/frontend/src/i18n/locales/*.ts'):
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()

@@ -35,7 +35,7 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path("/app/mobile")
+ROOT = Path("/app/frontend")
 SRC = ROOT / "src"
 APP = ROOT / "app"
 

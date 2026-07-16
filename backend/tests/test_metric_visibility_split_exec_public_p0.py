@@ -2,9 +2,9 @@ from pathlib import Path
 
 
 BACKEND_SOURCE = Path("/app/backend/routes/admin_subscription_analytics.py")
-HOME_HERO_SOURCE = Path("/app/mobile/src/components/home/HomeHero.tsx")
-WELCOME_METRICS_SOURCE = Path("/app/mobile/src/components/welcome/WelcomeMetrics.tsx")
-EXEC_REVENUE_SOURCE = Path("/app/mobile/src/components/executive/RevenueBillingEnterpriseWorkspace.tsx")
+HOME_HERO_SOURCE = Path("/app/frontend/src/components/home/HomeHero.tsx")
+WELCOME_METRICS_SOURCE = Path("/app/frontend/src/components/welcome/WelcomeMetrics.tsx")
+EXEC_REVENUE_SOURCE = Path("/app/frontend/src/components/executive/RevenueBillingEnterpriseWorkspace.tsx")
 
 
 def test_admin_subscription_analytics_exposes_live_online_users_kpi() -> None:

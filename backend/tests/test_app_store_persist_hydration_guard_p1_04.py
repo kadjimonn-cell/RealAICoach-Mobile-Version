@@ -1,13 +1,13 @@
 from pathlib import Path
 
 
-STORE_PATH = Path("/app/mobile/src/store/appStore.ts")
-ROOT_LAYOUT_PATH = Path("/app/mobile/app/_layout.tsx")
-PROFILE_PATH = Path("/app/mobile/app/(tabs)/profile.tsx")
-ACHIEVEMENTS_PATH = Path("/app/mobile/app/achievements.tsx")
-CHAT_PATH = Path("/app/mobile/app/chat/[id].tsx")
-SCENARIO_PATH = Path("/app/mobile/app/scenario/[id].tsx")
-SESSION_HISTORY_PATH = Path("/app/mobile/app/session-history.tsx")
+STORE_PATH = Path("/app/frontend/src/store/appStore.ts")
+ROOT_LAYOUT_PATH = Path("/app/frontend/app/_layout.tsx")
+PROFILE_PATH = Path("/app/frontend/app/(tabs)/profile.tsx")
+ACHIEVEMENTS_PATH = Path("/app/frontend/app/achievements.tsx")
+CHAT_PATH = Path("/app/frontend/app/chat/[id].tsx")
+SCENARIO_PATH = Path("/app/frontend/app/scenario/[id].tsx")
+SESSION_HISTORY_PATH = Path("/app/frontend/app/session-history.tsx")
 
 
 def test_app_store_uses_persist_with_async_storage_and_hydration_flag() -> None:

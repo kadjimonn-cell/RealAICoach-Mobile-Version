@@ -18,7 +18,7 @@ ARTIFACT_JSON = ARTIFACT_DIR / "id_checker_wording_guard.json"
 ARTIFACT_PR_COMMENT = ARTIFACT_DIR / "id_checker_wording_guard_pr_comment.md"
 
 TARGET_GLOBS = [
-    "mobile/src/i18n/locales/*.ts",
+    "frontend/src/i18n/locales/*.ts",
     "backend/utils/email_templates.py",
     "backend/routes/id_verification.py",
     "backend/routes/auth.py",

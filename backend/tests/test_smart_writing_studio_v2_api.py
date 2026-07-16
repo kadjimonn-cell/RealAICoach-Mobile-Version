@@ -502,7 +502,7 @@ class TestWritingStudioContractFiles:
         """Frontend E2E spec file should exist"""
         from pathlib import Path
         
-        spec_path = Path("/app/mobile/e2e/ai-writer.spec.ts")
+        spec_path = Path("/app/frontend/e2e/ai-writer.spec.ts")
         assert spec_path.exists(), "Frontend E2E spec file not found"
         
         content = spec_path.read_text()

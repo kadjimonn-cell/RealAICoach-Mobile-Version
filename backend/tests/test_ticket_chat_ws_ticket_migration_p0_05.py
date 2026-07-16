@@ -5,8 +5,8 @@ from pathlib import Path
 TICKET_CHAT_BACKEND_FILE = Path("/app/backend/routes/ticket_chat.py")
 AUTH_FILE = Path("/app/backend/routes/auth.py")
 FRONTEND_TICKET_CHAT_FILES = [
-    Path("/app/mobile/src/components/pages/MyTicketsInner.tsx"),
-    Path("/app/mobile/src/components/admin/SupportTicketsPanel.tsx"),
+    Path("/app/frontend/src/components/pages/MyTicketsInner.tsx"),
+    Path("/app/frontend/src/components/admin/SupportTicketsPanel.tsx"),
 ]
 
 

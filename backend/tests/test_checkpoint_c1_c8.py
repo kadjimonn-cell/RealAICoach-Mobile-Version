@@ -277,7 +277,7 @@ class TestC6ThemeBuildGate:
     def test_theme_build_gate_exists(self):
         """Verify theme-build-gate.js exists"""
         import os
-        gate_path = "/app/mobile/scripts/theme-build-gate.js"
+        gate_path = "/app/frontend/scripts/theme-build-gate.js"
         assert os.path.exists(gate_path), f"Theme build gate not found at {gate_path}"
         print("C6 Theme build gate file exists")
     
@@ -285,10 +285,10 @@ class TestC6ThemeBuildGate:
         """Run theme build gate and check output"""
         import subprocess
         result = subprocess.run(
-            ["node", "/app/mobile/scripts/theme-build-gate.js"],
+            ["node", "/app/frontend/scripts/theme-build-gate.js"],
             capture_output=True,
             text=True,
-            cwd="/app/mobile",
+            cwd="/app/frontend",
             timeout=60
         )
         

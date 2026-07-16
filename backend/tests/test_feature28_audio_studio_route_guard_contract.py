@@ -6,7 +6,7 @@ def _read(path: str) -> str:
 
 
 def test_access_control_explicitly_allows_feature28_audio_studio_route() -> None:
-    source = _read("/app/mobile/src/context/AccessControlContext.tsx")
+    source = _read("/app/frontend/src/context/AccessControlContext.tsx")
 
     assert "Explicit allowlist for Feature 28 (Audio Studio)" in source
     assert "normalizedPath.startsWith('/features/audio-studio')" in source

@@ -17,7 +17,7 @@ def test_audio_studio_bootstrap_exposes_source_health_contract() -> None:
 
 
 def test_audio_studio_frontend_uses_cookie_auth_only_and_source_health_banner() -> None:
-    source = _read("/app/mobile/src/components/AudioCatalogTab.tsx")
+    source = _read("/app/frontend/src/components/AudioCatalogTab.tsx")
 
     assert "const getAuthHeaders = useCallback(() => ({} as Record<string, string>), [])" in source
     assert 'data-testid="audio-studio-source-health-banner"' in source

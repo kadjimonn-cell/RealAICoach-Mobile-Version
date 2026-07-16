@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-PAGE_PATH = Path('/app/mobile/app/nova-curation-hub.tsx')
-EN_LOCALE_PATH = Path('/app/mobile/src/i18n/locales/en.ts')
+PAGE_PATH = Path('/app/frontend/app/nova-curation-hub.tsx')
+EN_LOCALE_PATH = Path('/app/frontend/src/i18n/locales/en.ts')
 
 
 def test_nova_curation_hub_header_uses_translation_keys() -> None:

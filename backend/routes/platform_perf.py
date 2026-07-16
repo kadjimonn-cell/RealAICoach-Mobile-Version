@@ -190,11 +190,11 @@ ROUTE_HEALTH_REDIRECT_EXPECTATIONS = {
     "/mini-apps/local-music": "/features/ai-speech",
 }
 
-ROUTE_RESOLUTION_FILE = Path("/app/mobile/src/utils/routeResolution.ts")
-FRONTEND_APP_ROOT = Path("/app/mobile/app")
-ADMIN_CONSOLE_CATEGORY_FILE = Path("/app/mobile/src/components/admin-console/AdminConsoleExtracted.tsx")
-ADMIN_CONSOLE_VIEW_FILE = Path("/app/mobile/src/components/AdminConsoleView.tsx")
-APP_SHELL_FILE = Path("/app/mobile/src/components/AppShell.tsx")
+ROUTE_RESOLUTION_FILE = Path("/app/frontend/src/utils/routeResolution.ts")
+FRONTEND_APP_ROOT = Path("/app/frontend/app")
+ADMIN_CONSOLE_CATEGORY_FILE = Path("/app/frontend/src/components/admin-console/AdminConsoleExtracted.tsx")
+ADMIN_CONSOLE_VIEW_FILE = Path("/app/frontend/src/components/AdminConsoleView.tsx")
+APP_SHELL_FILE = Path("/app/frontend/src/components/AppShell.tsx")
 EXPECTED_LOCKED_ADMIN_NAV_KEYS = {"team-management", "admin", "admin-console"}
 ROUTE_INTEGRITY_CRITICAL_ROUTES = [
     "/admin-console",
@@ -215,8 +215,8 @@ ROUTE_INTEGRITY_PROTECTED_SEGMENTS = {
 }
 
 THEME_VISIBILITY_AUDIT_ROOTS = [
-    Path("/app/mobile/app"),
-    Path("/app/mobile/src/components"),
+    Path("/app/frontend/app"),
+    Path("/app/frontend/src/components"),
 ]
 
 # ── KNOWN DARK / LIGHT HEX VALUES ────────────────────────────────────────────
@@ -543,7 +543,7 @@ async def _collect_db_metrics(db) -> dict:
 
 
 def _collect_bundle_metrics() -> dict:
-    web_dist = Path("/app/mobile/dist/client/_expo/static/js/web")
+    web_dist = Path("/app/frontend/dist/client/_expo/static/js/web")
     if not web_dist.exists():
         return {
             "status": "missing",
@@ -1067,7 +1067,7 @@ def _build_theme_visibility_audit() -> dict:
 
     file_results: list[dict] = []
     for fp in files_to_scan:
-        rel = str(fp).replace("/app/mobile/", "")
+        rel = str(fp).replace("/app/frontend/", "")
         file_results.append(_scan_file_for_theme_issues(fp, rel))
 
     active = [r for r in file_results if not r.get("skipped") and not r.get("error")]
@@ -1258,7 +1258,7 @@ async def _build_v2_compliance_report() -> dict:
     scanned = [
         _scan_file_for_v2_compliance(
             fp,
-            str(fp).replace("/app/mobile/", ""),
+            str(fp).replace("/app/frontend/", ""),
             strict_route_prefixes=strict_route_prefixes,
             strict_no_bypass=strict_no_bypass,
         )
@@ -2780,9 +2780,9 @@ async def theme_visibility_audit_top_offenders(request: Request, limit: int = 20
         offending_patterns = [p for p in breakdown.keys() if p in PATTERN_GREP]
         if offending_patterns:
             combined = "|".join(f"({PATTERN_GREP[p]})" for p in offending_patterns)
-            grep_cmd = f"grep -nE \"{combined}\" /app/mobile/{path}"
+            grep_cmd = f"grep -nE \"{combined}\" /app/frontend/{path}"
         else:
-            grep_cmd = f"grep -nE \"#[0-9A-Fa-f]{{3,8}}\" /app/mobile/{path}"
+            grep_cmd = f"grep -nE \"#[0-9A-Fa-f]{{3,8}}\" /app/frontend/{path}"
 
         first_issue = issues[0] if issues else None
         sample_line = None
@@ -2990,7 +2990,7 @@ async def theme_visibility_audit_autofix_batch(request: Request):
     if compile_check and batch_result["files_changed"] > 0:
         try:
             proc = await asyncio.create_subprocess_shell(
-                "cd /app/mobile && npx expo export -p web --output-dir /tmp/dist_batch_check 2>&1 | tail -15",
+                "cd /app/frontend && npx expo export -p web --output-dir /tmp/dist_batch_check 2>&1 | tail -15",
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.STDOUT,
             )

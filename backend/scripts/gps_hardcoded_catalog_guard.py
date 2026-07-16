@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 TARGET_GLOBS = [
     "backend/**/*.py",
-    "mobile/**/*.ts",
-    "mobile/**/*.tsx",
+    "frontend/**/*.ts",
+    "frontend/**/*.tsx",
 ]
 
 IGNORE_PARTS = {

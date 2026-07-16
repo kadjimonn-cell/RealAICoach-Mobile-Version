@@ -157,7 +157,7 @@ class TestPreviewShellMismatchBannerLogic:
     def test_banner_component_has_correct_testids(self):
         """Feature 2 & 3: Verify banner component has required data-testid attributes"""
         # This is a code review test - we verify the component file has the right structure
-        component_path = "/app/mobile/src/components/PreviewShellMismatchBanner.tsx"
+        component_path = "/app/frontend/src/components/PreviewShellMismatchBanner.tsx"
         
         with open(component_path, 'r') as f:
             content = f.read()
@@ -178,7 +178,7 @@ class TestPreviewShellMismatchBannerLogic:
     
     def test_banner_component_has_wrapper_detection_logic(self):
         """Feature 2: Verify banner has wrapper shell host detection"""
-        component_path = "/app/mobile/src/components/PreviewShellMismatchBanner.tsx"
+        component_path = "/app/frontend/src/components/PreviewShellMismatchBanner.tsx"
         
         with open(component_path, 'r') as f:
             content = f.read()
@@ -192,7 +192,7 @@ class TestPreviewShellMismatchBannerLogic:
     
     def test_banner_component_has_direct_preview_cta(self):
         """Feature 3: Verify banner has direct preview CTA functionality"""
-        component_path = "/app/mobile/src/components/PreviewShellMismatchBanner.tsx"
+        component_path = "/app/frontend/src/components/PreviewShellMismatchBanner.tsx"
         
         with open(component_path, 'r') as f:
             content = f.read()
@@ -206,7 +206,7 @@ class TestPreviewShellMismatchBannerLogic:
     
     def test_banner_wired_in_layout(self):
         """Feature 2: Verify banner is wired in _layout.tsx"""
-        layout_path = "/app/mobile/app/_layout.tsx"
+        layout_path = "/app/frontend/app/_layout.tsx"
         
         with open(layout_path, 'r') as f:
             content = f.read()

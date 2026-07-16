@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 
-FRONTEND_ROOT = Path('/app/mobile')
+FRONTEND_ROOT = Path('/app/frontend')
 E2E_DIR = FRONTEND_ROOT / 'e2e'
 PLAYWRIGHT_CONFIG = FRONTEND_ROOT / 'playwright.config.ts'
 CI_WORKFLOW = Path('/app/.github/workflows/ci-quality-gate.yml')

@@ -1911,7 +1911,7 @@ async def run_perf_audit(triggered_by: str = "manual") -> dict:
     # ── 2. Bundle Size Tracking ──
     bundle_size_bytes = 0
     bundle_files = {}
-    dist_dir = "/app/mobile/dist"
+    dist_dir = "/app/frontend/dist"
     try:
         for root, dirs, files in os.walk(dist_dir):
             for f in files:

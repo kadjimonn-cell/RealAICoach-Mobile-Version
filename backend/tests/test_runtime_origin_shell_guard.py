@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-HTML_SHELL_PATH = Path("/app/mobile/app/+html.tsx")
+HTML_SHELL_PATH = Path("/app/frontend/app/+html.tsx")
 
 
 def test_head_bootstrap_reads_saved_theme_before_react_mount() -> None:

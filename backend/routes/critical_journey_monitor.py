@@ -101,7 +101,7 @@ def _is_preview_url(url: str) -> bool:
 
 
 def _frontend_env_base_url() -> str:
-    frontend_env_path = "/app/mobile/.env"
+    frontend_env_path = "/app/frontend/.env"
     if not os.path.exists(frontend_env_path):
         return ""
     try:

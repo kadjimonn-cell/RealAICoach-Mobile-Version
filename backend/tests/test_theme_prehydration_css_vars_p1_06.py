@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-HTML_ENTRY_PATH = Path("/app/mobile/app/+html.tsx")
+HTML_ENTRY_PATH = Path("/app/frontend/app/+html.tsx")
 
 
 def test_early_theme_script_sets_css_variables_before_hydration() -> None:

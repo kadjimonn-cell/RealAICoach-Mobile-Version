@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 
 
-METRO_CONFIG_PATH = Path("/app/mobile/metro.config.js")
+METRO_CONFIG_PATH = Path("/app/frontend/metro.config.js")
 
 
 def test_metro_does_not_monkey_patch_write_head_for_status_rewrites() -> None:

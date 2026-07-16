@@ -45,7 +45,7 @@ def scan_files_for_patterns(
                                 continue
                             issues.append(
                                 {
-                                    "file": fpath.replace("/app/mobile/", ""),
+                                    "file": fpath.replace("/app/frontend/", ""),
                                     "line": index + 1,
                                     "code": line.strip()[:120],
                                     "pattern": pattern.split(r"\.")[2] if r"\." in pattern else pattern[:40],
@@ -123,7 +123,7 @@ def check_cache_health(cache_dirs: Sequence[Dict[str, Any]]) -> List[Dict[str, A
             results.append(
                 {
                     "label": cache["label"],
-                    "path": path.replace("/app/mobile/", ""),
+                    "path": path.replace("/app/frontend/", ""),
                     "exists": False,
                     "size_mb": 0,
                     "age_hours": 0,
@@ -157,7 +157,7 @@ def check_cache_health(cache_dirs: Sequence[Dict[str, Any]]) -> List[Dict[str, A
         results.append(
             {
                 "label": cache["label"],
-                "path": path.replace("/app/mobile/", ""),
+                "path": path.replace("/app/frontend/", ""),
                 "exists": True,
                 "size_mb": size_mb,
                 "age_hours": age_hours,
@@ -242,7 +242,7 @@ def compute_health_score(stale_urls: List[Dict[str, Any]], build_info: Dict[str,
     return max(0, min(100, score))
 
 
-def auto_fix_stale_urls(issues: List[Dict[str, Any]], frontend_root: str = "/app/mobile") -> Dict[str, Any]:
+def auto_fix_stale_urls(issues: List[Dict[str, Any]], frontend_root: str = "/app/frontend") -> Dict[str, Any]:
     """Auto-fix stale URL patterns by replacing with window.location.origin."""
     fixed_files = []
     failed_files = []
@@ -298,7 +298,7 @@ def auto_fix_stale_urls(issues: List[Dict[str, Any]], frontend_root: str = "/app
     return {"fixed": fixed_files, "failed": failed_files, "fixed_count": len(fixed_files)}
 
 
-def auto_fix_caches(stale_caches: List[Dict[str, Any]], frontend_root: str = "/app/mobile") -> List[str]:
+def auto_fix_caches(stale_caches: List[Dict[str, Any]], frontend_root: str = "/app/frontend") -> List[str]:
     """Clear stale caches (excluding dist)."""
     cleared = []
     for cache in stale_caches:

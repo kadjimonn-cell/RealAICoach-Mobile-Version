@@ -32,12 +32,12 @@ import requests
 
 
 def _load_backend_url() -> str:
-    env_path = Path("/app/mobile/.env")
+    env_path = Path("/app/frontend/.env")
     for line in env_path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if line.startswith("REACT_APP_BACKEND_URL="):
             return line.split("=", 1)[1].strip().rstrip("/")
-    raise RuntimeError("REACT_APP_BACKEND_URL missing from /app/mobile/.env")
+    raise RuntimeError("REACT_APP_BACKEND_URL missing from /app/frontend/.env")
 
 
 BASE_URL = _load_backend_url()

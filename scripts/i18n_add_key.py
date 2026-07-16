@@ -2,7 +2,7 @@
 """Add/update an i18n key in en.ts and auto-run locale seeding.
 
 Usage:
-  yarn --cwd /app/mobile i18n:add <key> "<English text>"
+  yarn --cwd /app/frontend i18n:add <key> "<English text>"
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-EN_FILE = Path("/app/mobile/src/i18n/locales/en.ts")
+EN_FILE = Path("/app/frontend/src/i18n/locales/en.ts")
 SEED_CMD = ["python3", "/app/scripts/i18n_v2_seed_locales.py"]
 KEY_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)+$")
 

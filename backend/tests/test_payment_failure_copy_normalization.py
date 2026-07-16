@@ -27,7 +27,7 @@ class TestPaymentFailureCopyFrontendContract:
     
     def test_payment_failure_copy_has_all_states(self):
         """Verify paymentFailureCopy.ts exports normalizePaymentFailureState and getPaymentFailureCopy."""
-        with open('/app/mobile/src/utils/paymentFailureCopy.ts', 'r') as f:
+        with open('/app/frontend/src/utils/paymentFailureCopy.ts', 'r') as f:
             content = f.read()
         
         # Check exports
@@ -50,7 +50,7 @@ class TestPaymentFailureCopyFrontendContract:
     
     def test_payment_failure_copy_has_tone_property(self):
         """Verify each state has a tone property (warning or error)."""
-        with open('/app/mobile/src/utils/paymentFailureCopy.ts', 'r') as f:
+        with open('/app/frontend/src/utils/paymentFailureCopy.ts', 'r') as f:
             content = f.read()
         
         # Check tone assignments
@@ -68,7 +68,7 @@ class TestPlansPageReturnStatusBanner:
     
     def test_plans_uses_payment_failure_copy(self):
         """Verify plans.tsx imports and uses getPaymentFailureCopy."""
-        with open('/app/mobile/app/subscription/plans.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/plans.tsx', 'r') as f:
             content = f.read()
         
         # Check imports
@@ -85,7 +85,7 @@ class TestPlansPageReturnStatusBanner:
     
     def test_plans_emits_toast_for_nonsuccess(self):
         """Verify plans.tsx emits toast notifications for non-success states."""
-        with open('/app/mobile/app/subscription/plans.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/plans.tsx', 'r') as f:
             content = f.read()
         
         assert "notificationEvents.emit('toast'" in content
@@ -98,7 +98,7 @@ class TestStripeRedirectNonSuccessCopy:
     
     def test_success_uses_payment_failure_copy(self):
         """Verify success.tsx imports and uses getPaymentFailureCopy."""
-        with open('/app/mobile/app/subscription/success.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/success.tsx', 'r') as f:
             content = f.read()
         
         assert 'getPaymentFailureCopy' in content
@@ -116,7 +116,7 @@ class TestFedaPayPaymentResultNonSuccessCopy:
     
     def test_payment_result_uses_payment_failure_copy(self):
         """Verify payment-result.tsx imports and uses getPaymentFailureCopy."""
-        with open('/app/mobile/app/subscription/payment-result.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/payment-result.tsx', 'r') as f:
             content = f.read()
         
         assert 'getPaymentFailureCopy' in content
@@ -135,7 +135,7 @@ class TestAppleGoogleIAPInactiveToast:
     
     def test_mobile_subscriptions_uses_payment_failure_copy(self):
         """Verify MobileSubscriptionsViewV2.tsx imports and uses getPaymentFailureCopy."""
-        with open('/app/mobile/src/components/MobileSubscriptionsViewV2.tsx', 'r') as f:
+        with open('/app/frontend/src/components/MobileSubscriptionsViewV2.tsx', 'r') as f:
             content = f.read()
         
         assert 'getPaymentFailureCopy' in content
@@ -144,7 +144,7 @@ class TestAppleGoogleIAPInactiveToast:
     
     def test_mobile_subscriptions_handles_inactive_store_status(self):
         """Verify hasObservedInactiveStoreStatus triggers toast with normalized copy."""
-        with open('/app/mobile/src/components/MobileSubscriptionsViewV2.tsx', 'r') as f:
+        with open('/app/frontend/src/components/MobileSubscriptionsViewV2.tsx', 'r') as f:
             content = f.read()
         
         assert 'hasObservedInactiveStoreStatus' in content
@@ -252,7 +252,7 @@ class TestI18nLocaleKeys:
     
     def test_en_locale_has_banner_keys(self):
         """Verify en.ts has subscriptionPlans.banner.* keys."""
-        with open('/app/mobile/src/i18n/locales/en.ts', 'r') as f:
+        with open('/app/frontend/src/i18n/locales/en.ts', 'r') as f:
             content = f.read()
         
         # Check all banner keys exist
@@ -275,7 +275,7 @@ class TestRealtimeToastTypes:
     
     def test_realtime_toast_has_payment_failed_type(self):
         """Verify RealtimeToast.tsx has payment_failed type config."""
-        with open('/app/mobile/src/components/RealtimeToast.tsx', 'r') as f:
+        with open('/app/frontend/src/components/RealtimeToast.tsx', 'r') as f:
             content = f.read()
         
         assert "payment_failed: { icon: 'close-circle'" in content
@@ -287,7 +287,7 @@ class TestContractTestCoverage:
     
     def test_contract_test_has_nonsuccess_assertions(self):
         """Verify contract test file has assertions for non-success payment notifications."""
-        with open('/app/mobile/src/__tests__/homeDashboardAuthLock.contract.test.ts', 'r') as f:
+        with open('/app/frontend/src/__tests__/homeDashboardAuthLock.contract.test.ts', 'r') as f:
             content = f.read()
         
         assert "it('keeps non-success payment notifications visible across providers'" in content
@@ -303,7 +303,7 @@ class TestProviderCopyParity:
     def test_all_providers_use_same_copy_structure(self):
         """Verify all providers use the same copy structure: title, message, tone."""
         # Frontend paymentFailureCopy.ts
-        with open('/app/mobile/src/utils/paymentFailureCopy.ts', 'r') as f:
+        with open('/app/frontend/src/utils/paymentFailureCopy.ts', 'r') as f:
             frontend_copy = f.read()
         
         # Check structure
@@ -337,7 +337,7 @@ class TestPaymentWebUnlockedTestIds:
     
     def test_payment_tsx_has_success_testids(self):
         """Verify payment.tsx has payment-web-unlocked testIdPrefix."""
-        with open('/app/mobile/app/subscription/payment.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/payment.tsx', 'r') as f:
             content = f.read()
         
         assert 'testIdPrefix="payment-web-unlocked"' in content
@@ -350,7 +350,7 @@ class TestPaymentRedirectUnlockedTestIds:
     
     def test_success_tsx_has_success_testids(self):
         """Verify success.tsx has payment-redirect-unlocked testIdPrefix."""
-        with open('/app/mobile/app/subscription/success.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/success.tsx', 'r') as f:
             content = f.read()
         
         assert 'testIdPrefix="payment-redirect-unlocked"' in content
@@ -363,7 +363,7 @@ class TestPaymentResultUnlockedTestIds:
     
     def test_payment_result_tsx_has_success_testids(self):
         """Verify payment-result.tsx has payment-result-unlocked testIdPrefix."""
-        with open('/app/mobile/app/subscription/payment-result.tsx', 'r') as f:
+        with open('/app/frontend/app/subscription/payment-result.tsx', 'r') as f:
             content = f.read()
         
         assert 'testIdPrefix="payment-result-unlocked"' in content
@@ -375,7 +375,7 @@ class TestIAPNativeUnlockedTestIds:
     
     def test_mobile_subscriptions_has_success_testids(self):
         """Verify MobileSubscriptionsViewV2.tsx has iap-native-unlocked testIdPrefix."""
-        with open('/app/mobile/src/components/MobileSubscriptionsViewV2.tsx', 'r') as f:
+        with open('/app/frontend/src/components/MobileSubscriptionsViewV2.tsx', 'r') as f:
             content = f.read()
         
         assert 'testIdPrefix="iap-native-unlocked"' in content

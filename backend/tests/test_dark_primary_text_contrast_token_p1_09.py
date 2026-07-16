@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-THEME_PATH = Path('/app/mobile/src/theme/v2.ts')
-HTML_PATH = Path('/app/mobile/app/+html.tsx')
+THEME_PATH = Path('/app/frontend/src/theme/v2.ts')
+HTML_PATH = Path('/app/frontend/app/+html.tsx')
 
 
 def test_dark_theme_primary_text_uses_light_neutral_token() -> None:

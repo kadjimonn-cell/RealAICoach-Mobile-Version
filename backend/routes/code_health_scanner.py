@@ -20,7 +20,7 @@ DB_NAME = os.environ.get("DB_NAME", "realaicoach")
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
 
-FRONTEND_ROOT = "/app/mobile"
+FRONTEND_ROOT = "/app/frontend"
 SCAN_DIRS = [
     os.path.join(FRONTEND_ROOT, "src"),
     os.path.join(FRONTEND_ROOT, "app"),

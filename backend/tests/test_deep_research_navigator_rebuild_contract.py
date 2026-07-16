@@ -3,8 +3,8 @@ from pathlib import Path
 
 ROUTE_PATH = Path('/app/backend/routes/research_navigator.py')
 SERVER_PATH = Path('/app/backend/server.py')
-FRONTEND_PATH = Path('/app/mobile/src/components/AISearchScreen.tsx')
-E2E_PATH = Path('/app/mobile/e2e/ai-search.spec.ts')
+FRONTEND_PATH = Path('/app/frontend/src/components/AISearchScreen.tsx')
+E2E_PATH = Path('/app/frontend/e2e/ai-search.spec.ts')
 
 
 def test_research_navigator_route_has_core_endpoints() -> None:

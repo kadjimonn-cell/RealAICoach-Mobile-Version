@@ -164,7 +164,7 @@ class TestFrontendNonSuccessToastSystem:
 
     def test_realtime_toast_has_payment_failed_type(self):
         """RealtimeToast should have payment_failed type configuration."""
-        toast_path = "/app/mobile/src/components/RealtimeToast.tsx"
+        toast_path = "/app/frontend/src/components/RealtimeToast.tsx"
         with open(toast_path, "r") as f:
             content = f.read()
 
@@ -176,7 +176,7 @@ class TestFrontendNonSuccessToastSystem:
 
     def test_plans_page_emits_nonsuccess_toast(self):
         """Plans page should emit toast for non-success return status."""
-        plans_path = "/app/mobile/app/subscription/plans.tsx"
+        plans_path = "/app/frontend/app/subscription/plans.tsx"
         with open(plans_path, "r") as f:
             content = f.read()
 
@@ -188,7 +188,7 @@ class TestFrontendNonSuccessToastSystem:
 
     def test_mobile_subscriptions_emits_inactive_store_toast(self):
         """MobileSubscriptionsViewV2 should emit toast for inactive store status."""
-        mobile_subs_path = "/app/mobile/src/components/MobileSubscriptionsViewV2.tsx"
+        mobile_subs_path = "/app/frontend/src/components/MobileSubscriptionsViewV2.tsx"
         with open(mobile_subs_path, "r") as f:
             content = f.read()
 
@@ -205,7 +205,7 @@ class TestContractTestCoverage:
 
     def test_contract_test_has_nonsuccess_assertions(self):
         """Contract test should have assertions for non-success notification behavior."""
-        contract_test_path = "/app/mobile/src/__tests__/homeDashboardAuthLock.contract.test.ts"
+        contract_test_path = "/app/frontend/src/__tests__/homeDashboardAuthLock.contract.test.ts"
         with open(contract_test_path, "r") as f:
             content = f.read()
 
@@ -295,14 +295,14 @@ class TestProviderByProviderSummary:
             summary["google_iap"]["user_sees"].append("In-app notification for failed/expired/refunded IAP")
 
         # Check frontend handling
-        with open("/app/mobile/app/subscription/plans.tsx", "r") as f:
+        with open("/app/frontend/app/subscription/plans.tsx", "r") as f:
             plans_content = f.read()
         if "notificationEvents.emit('toast'" in plans_content and "returnStatusBanner" in plans_content:
             for provider in ["stripe", "paypal", "fedapay"]:
                 summary[provider]["frontend_handling"] = True
                 summary[provider]["user_sees"].append("Toast notification on plans page for non-success return")
 
-        with open("/app/mobile/src/components/MobileSubscriptionsViewV2.tsx", "r") as f:
+        with open("/app/frontend/src/components/MobileSubscriptionsViewV2.tsx", "r") as f:
             mobile_content = f.read()
         if "hasObservedInactiveStoreStatus" in mobile_content and "notificationEvents.emit('toast'" in mobile_content:
             summary["apple_iap"]["frontend_handling"] = True

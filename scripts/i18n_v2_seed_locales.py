@@ -37,7 +37,7 @@ sys.path.insert(0, "/app/backend")
 
 from services.auto_translate import translate_batch  # noqa: E402
 
-LOCALES_DIR = Path("/app/mobile/src/i18n/locales")
+LOCALES_DIR = Path("/app/frontend/src/i18n/locales")
 EN_FILE = LOCALES_DIR / "en.ts"
 CACHE_FILE = Path("/app/.i18n_seed_cache.json")
 

@@ -14,7 +14,7 @@ import pytest
 import requests
 from dotenv import load_dotenv
 
-load_dotenv("/app/mobile/.env")
+load_dotenv("/app/frontend/.env")
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 
 ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": os.environ.get("TEST_ADMIN_PASSWORD", "")}

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-SOURCE_PATH = Path("/app/mobile/src/components/ErrorBoundary.tsx")
+SOURCE_PATH = Path("/app/frontend/src/components/ErrorBoundary.tsx")
 
 
 def test_error_boundary_declares_session_attempt_limit_constants() -> None:

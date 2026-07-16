@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-ERROR_BOUNDARY_PATH = Path("/app/mobile/src/components/ErrorBoundary.tsx")
-LANGUAGE_CONTEXT_PATH = Path("/app/mobile/src/i18n/LanguageContext.tsx")
+ERROR_BOUNDARY_PATH = Path("/app/frontend/src/components/ErrorBoundary.tsx")
+LANGUAGE_CONTEXT_PATH = Path("/app/frontend/src/i18n/LanguageContext.tsx")
 MIDDLEWARE_PATH = Path("/app/backend/middleware.py")
 
 

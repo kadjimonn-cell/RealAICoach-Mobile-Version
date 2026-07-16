@@ -101,8 +101,8 @@ def optimize_directory(directory: str, quality: int = DEFAULT_QUALITY, max_dim: 
 if __name__ == "__main__":
 
     target_dirs = [
-        "/app/mobile/assets",
-        "/app/mobile/public",
+        "/app/frontend/assets",
+        "/app/frontend/public",
     ]
 
     print("Image Optimization Utility")

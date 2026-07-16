@@ -204,13 +204,13 @@ class TestUseJobsPortalSummaryHook:
     def test_hook_file_exists(self):
         """Verify useJobsPortalSummary.ts hook file exists."""
         from pathlib import Path
-        hook_path = Path("/app/mobile/src/hooks/useJobsPortalSummary.ts")
+        hook_path = Path("/app/frontend/src/hooks/useJobsPortalSummary.ts")
         assert hook_path.exists(), "useJobsPortalSummary.ts hook file not found"
 
     def test_hook_exports_correct_types(self):
         """Verify hook exports JobsPortalSummaryState type and useJobsPortalSummary function."""
         from pathlib import Path
-        source = Path("/app/mobile/src/hooks/useJobsPortalSummary.ts").read_text(encoding="utf-8")
+        source = Path("/app/frontend/src/hooks/useJobsPortalSummary.ts").read_text(encoding="utf-8")
         assert "export type JobsPortalSummaryState" in source, "Missing JobsPortalSummaryState export"
         assert "export const useJobsPortalSummary" in source, "Missing useJobsPortalSummary export"
         assert "openRoles" in source, "Missing openRoles field"
