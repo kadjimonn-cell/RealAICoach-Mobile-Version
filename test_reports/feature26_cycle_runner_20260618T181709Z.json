@@ -27,7 +27,7 @@
       "attempt": 1
     },
     "free_user_admin_block_e2e": {
-      "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+      "base_url": "https://admin-policy-hub.preview.emergentagent.com",
       "artifact": "/app/test_reports/feature26_free_user_admin_block_e2e_20260618T181727Z.json",
       "overall_verdict": "pass",
       "details": {

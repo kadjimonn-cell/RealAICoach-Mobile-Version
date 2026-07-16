@@ -10,7 +10,7 @@ BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 
 # Test credentials
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 def _risk_engine_admin_blocked(response: requests.Response) -> bool:

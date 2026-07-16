@@ -249,7 +249,7 @@ Validation performed in this run:
 
 - **Contract posture:** ✅ GREEN (all required suites passing)
 - **Runtime latest report record:** ⚠️ still shows previous pre-fix `INFRA_BLOCKED` snapshot (`gtec_c5_17c24adb20a5`, generated `2026-06-23T21:28:31Z`)
-- **Live probe after fix:** `get_external_host_proxy_health("https://visa-polish-v2.preview.emergentagent.com") -> stable=true` with `/_preview/health=200` and `/auth/login=200`
+- **Live probe after fix:** `get_external_host_proxy_health("https://admin-policy-hub.preview.emergentagent.com") -> stable=true` with `/_preview/health=200` and `/auth/login=200`
 
 Interpretation: root cause is fixed in code and validated; runtime dashboard will reflect it on the next autonomous scan cycle.
 

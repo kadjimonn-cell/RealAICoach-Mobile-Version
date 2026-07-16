@@ -14,7 +14,7 @@ import threading
 import requests
 import pytest
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 AUTO_TR_URL = f"{BASE_URL}/api/i18n/auto-translate"
 HEALTH_URL = f"{BASE_URL}/api/health"
 

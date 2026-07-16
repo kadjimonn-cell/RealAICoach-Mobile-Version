@@ -13,7 +13,7 @@ import json
 import time
 from typing import Dict, Any
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 def test_auto_translate_batch() -> Dict[str, Any]:
     """Test 1: POST /api/i18n/auto-translate with texts and target_language"""

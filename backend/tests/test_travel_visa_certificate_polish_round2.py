@@ -19,7 +19,7 @@ import fitz  # PyMuPDF
 
 BASE_URL = "http://localhost:8001"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 CERT_ID = "TV-6B604E13"
 
 

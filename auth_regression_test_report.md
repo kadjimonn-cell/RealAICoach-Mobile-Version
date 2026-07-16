@@ -5,7 +5,7 @@
 **Objective**: Verify RealAICoach backend auth flow remains healthy after frontend-only protected-route refactor
 
 ## Test Environment
-- **Base URL**: https://visa-polish-v2.preview.emergentagent.com
+- **Base URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Backend Routes**: /api/*
 - **Test Scope**: Backend auth endpoints only (no frontend code changes)
 

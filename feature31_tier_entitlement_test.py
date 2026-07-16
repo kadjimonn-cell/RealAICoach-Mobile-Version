@@ -18,7 +18,7 @@ import json
 from typing import Dict, Any, Optional, List, Tuple
 
 # Base URL
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials
 CREDENTIALS = {

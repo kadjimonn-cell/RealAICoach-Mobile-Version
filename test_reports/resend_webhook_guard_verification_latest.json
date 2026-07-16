@@ -6,7 +6,7 @@
     "aligned": true,
     "action": "none",
     "active_matching_webhooks": 1,
-    "expected_endpoint": "https://visa-polish-v2.preview.emergentagent.com/api/webhooks/resend"
+    "expected_endpoint": "https://admin-policy-hub.preview.emergentagent.com/api/webhooks/resend"
   },
   "locked_protocol_note": "Resend webhook drift/disabled guard active; auto-repair + admin alert path enabled."
 }

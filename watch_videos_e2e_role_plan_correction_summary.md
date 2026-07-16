@@ -1,7 +1,7 @@
 # Watch Videos Backend E2E Verification - Role/Plan Correction Re-run
 
 **Date:** 2026-05-11 22:34 UTC  
-**External URL:** https://visa-polish-v2.preview.emergentagent.com  
+**External URL:** https://admin-policy-hub.preview.emergentagent.com  
 **Testing Method:** Internal backend API (http://127.0.0.1:8001) to bypass Cloudflare  
 **Test Accounts:** New accounts with timestamp 1778538343
 
@@ -97,4 +97,4 @@ The Watch Videos backend E2E verification after role/plan correction is **FULLY 
 
 **Success Rate: 100% (27/27 tests passed)**
 
-The feature is production-ready on https://visa-polish-v2.preview.emergentagent.com.
+The feature is production-ready on https://admin-policy-hub.preview.emergentagent.com.

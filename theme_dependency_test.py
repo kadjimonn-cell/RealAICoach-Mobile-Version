@@ -13,7 +13,7 @@ import sys
 from typing import Dict, Any
 
 # Backend URL from environment (using actual deployed URL from test_result.md)
-BACKEND_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BACKEND_URL = "https://admin-policy-hub.preview.emergentagent.com"
 # API is accessible locally within the container
 API_BASE = "http://localhost:8001/api"
 

@@ -31,7 +31,7 @@ if str(BACKEND_DIR) not in sys.path:
 from dotenv import load_dotenv  # noqa: E402
 load_dotenv(BACKEND_DIR / ".env")
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL") or "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL") or "https://admin-policy-hub.preview.emergentagent.com"
 BASE_URL = BASE_URL.rstrip("/")
 
 ARTIFACT_FILES = [
@@ -304,7 +304,7 @@ class TestBackendRegression:
     def test_31_admin_login(self):
         r = requests.post(
             f"{BASE_URL}/api/auth/login",
-            json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+            json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
             headers={"Content-Type": "application/json"},
             timeout=20,
         )

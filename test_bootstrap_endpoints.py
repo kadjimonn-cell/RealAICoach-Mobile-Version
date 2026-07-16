@@ -9,7 +9,7 @@ import json
 import sys
 
 # Base URL from frontend/.env
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Valid fallback_user_id format: user_[a-zA-Z0-9_-]{12,80}
 VALID_FALLBACK_USER_ID = "user_test12345678"

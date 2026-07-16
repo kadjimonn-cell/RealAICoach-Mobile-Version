@@ -45,7 +45,7 @@
   "rca_of_the_issue": {
     "root_cause": "In talent-network.tsx, the useMemo declarations for talentNetworkPageSource, talentNetworkProHubSource, talentNetworkHubSource, and talentNetworkTimelineSource were placed at lines 555-558, but they were referenced in useCallback hooks (loadHub at line 219) and useEffect (line 251) that were defined earlier in the component. This caused a 'Cannot access before initialization' error because JavaScript hoisting doesn't apply to const/let declarations.",
     "reproduction_steps": [
-      "1. Navigate to https://visa-polish-v2.preview.emergentagent.com/talent-network",
+      "1. Navigate to https://admin-policy-hub.preview.emergentagent.com/talent-network",
       "2. Page crashes immediately with error: 'Cannot access Le before initialization'"
     ],
     "mitigation": "Moved the analytics source useMemo declarations from lines 555-558 to lines 149-153, before any callbacks that reference them. This follows the same pattern used in careers.tsx where analytics sources are defined early in the component."

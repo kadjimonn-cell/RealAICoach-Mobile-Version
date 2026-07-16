@@ -1,7 +1,7 @@
 # Strict Deep Audit Rerun — Production Live Validation
 
 Date: 2026-05-14  
-Preview URL tested: `https://visa-polish-v2.preview.emergentagent.com`
+Preview URL tested: `https://admin-policy-hub.preview.emergentagent.com`
 
 ## Final Verdict
 - **Overall: PASS**

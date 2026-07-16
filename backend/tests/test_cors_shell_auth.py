@@ -11,11 +11,11 @@ import os
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
-    BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+    BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials from test_credentials.md
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Shell origins that should be allowed
 ALLOWED_SHELL_ORIGINS = [
@@ -26,7 +26,7 @@ ALLOWED_SHELL_ORIGINS = [
 ]
 
 # Preview origin (same-origin context)
-PREVIEW_ORIGIN = "https://visa-polish-v2.preview.emergentagent.com"
+PREVIEW_ORIGIN = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Unknown origin that should be blocked
 BLOCKED_ORIGIN = "https://malicious-site.example.com"

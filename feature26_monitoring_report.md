@@ -1,7 +1,7 @@
 # Feature 26 Periodic Monitoring Cycle + Operational Signal Rollout - PASS ✅
 
 **Date**: 2026-06-18 03:57 UTC  
-**Base URL**: https://visa-polish-v2.preview.emergentagent.com  
+**Base URL**: https://admin-policy-hub.preview.emergentagent.com  
 **Locked Protocol**: feature_number=26, feature_id=jobs-portal
 
 ---
@@ -98,7 +98,7 @@
 # Feature 26 Periodic Backend Monitoring Check - PASS ✅
 
 **Date**: 2026-06-17 16:44 UTC  
-**Base URL**: https://visa-polish-v2.preview.emergentagent.com  
+**Base URL**: https://admin-policy-hub.preview.emergentagent.com  
 **Locked Protocol**: feature_number=26, feature_id=jobs-portal  
 ---
 

@@ -16,9 +16,9 @@ import requests
 import os
 from urllib.parse import urlparse, parse_qs
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Expected preflight-accepted paths
 PREFLIGHT_ACCEPTED_PATHS = {
@@ -183,7 +183,7 @@ class TestAppleSSOForkVerification:
         # Should match the current fork's base URL
         expected_base = BASE_URL.replace("/api", "").rstrip("/")
         if "fork-proof-login" in BASE_URL:
-            expected_base = "https://visa-polish-v2.preview.emergentagent.com"
+            expected_base = "https://admin-policy-hub.preview.emergentagent.com"
         
         # The redirect_uri base should be a valid preview host
         assert "preview.emergentagent.com" in redirect_base or redirect_base == expected_base, \

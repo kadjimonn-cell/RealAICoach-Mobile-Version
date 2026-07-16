@@ -44,6 +44,6 @@
   "seed_data_creation": "none",
   "retest_needed": false,
   "should_main_agent_self_test": false,
-  "context_for_next_testing_agent": "Theme testids: data-testid=theme-toggle-light|dark|system on the sidebar theme toggle bar (bottom of left rail). Key testids: ai-learning-hub-kpi-card-{streak,active,complete,minutes}, ai-learning-hub-weekly-streak-badge-label, ai-learning-hub-weekly-streak-badge-card. Body bg is rgb(5,10,24) in dark and rgb(248,250,252) in light. Cloudflare occasionally interstitials on cold navigations; retry after a 15s pause. The frontend is a static export (no hot reload) at https://visa-polish-v2.preview.emergentagent.com.",
+  "context_for_next_testing_agent": "Theme testids: data-testid=theme-toggle-light|dark|system on the sidebar theme toggle bar (bottom of left rail). Key testids: ai-learning-hub-kpi-card-{streak,active,complete,minutes}, ai-learning-hub-weekly-streak-badge-label, ai-learning-hub-weekly-streak-badge-card. Body bg is rgb(5,10,24) in dark and rgb(248,250,252) in light. Cloudflare occasionally interstitials on cold navigations; retry after a 15s pause. The frontend is a static export (no hot reload) at https://admin-policy-hub.preview.emergentagent.com.",
   "rca of the issue": "N/A - fix verification only. Main agent's RCA (unknown theme tokens resolving to undefined -> falling back to default rgb(0,0,0)) was correct; adding missing keys/aliases and passing explicit dark prop resolves it."
 }

@@ -21,7 +21,7 @@ from urllib.parse import urlparse, parse_qs
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Expected values based on env configuration
 EXPECTED_APPLE_BASE = "https://realaicoach.app"
@@ -29,8 +29,8 @@ EXPECTED_APPLE_CALLBACK = "https://realaicoach.app/api/auth/apple/callback"
 EXPECTED_APPLE_VERIFICATION_SOURCE = "provider_verified_list"
 
 # Microsoft should still use preview (regression check)
-EXPECTED_MS_BASE = "https://visa-polish-v2.preview.emergentagent.com"
-EXPECTED_MS_CALLBACK = "https://visa-polish-v2.preview.emergentagent.com/api/auth/microsoft/callback"
+EXPECTED_MS_BASE = "https://admin-policy-hub.preview.emergentagent.com"
+EXPECTED_MS_CALLBACK = "https://admin-policy-hub.preview.emergentagent.com/api/auth/microsoft/callback"
 
 
 @lru_cache(maxsize=1)

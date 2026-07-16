@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 ADMIN_EMAIL = "admin@realaicoach.app"
 ADMIN_PASSWORD = "NewAdminPass2026!"
 

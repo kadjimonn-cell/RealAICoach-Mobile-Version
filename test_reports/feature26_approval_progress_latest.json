@@ -5,7 +5,7 @@
     "feature_number": 26,
     "feature_id": "jobs-portal"
   },
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "checks": {
     "onboarding_route": 1,
     "approval_progress": 1,

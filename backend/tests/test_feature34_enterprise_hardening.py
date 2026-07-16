@@ -20,7 +20,7 @@ CREDENTIALS = {
     "free": {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"},
     "basic": {"email": "f22.basic.20260613@example.com", "password": "F22Basic#2026Aa"},
     "premium": {"email": "f22.premium.20260613@example.com", "password": "F22Premium#2026Aa"},
-    "admin": {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+    "admin": {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
 }
 
 

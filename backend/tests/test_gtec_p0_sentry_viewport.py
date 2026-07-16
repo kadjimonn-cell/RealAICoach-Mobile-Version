@@ -30,7 +30,7 @@ def _load_base_url() -> str:
 
 BASE_URL = _load_base_url()
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@realaicoach.app")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "NewAdminPass2026!")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", os.environ.get("ADMIN_PASSWORD", ""))
 
 # Module-level session
 _ADMIN_SESSION = None

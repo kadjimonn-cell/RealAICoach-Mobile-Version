@@ -48,8 +48,8 @@ BASE_URL = (
 ).rstrip("/")
 
 ENV_PATH = BACKEND_DIR / ".env"
-ORIGINAL_MS_ENV_LINE = "MS_SSO_REGISTERED_REDIRECT_URIS=https://visa-polish-v2.preview.emergentagent.com,https://realaicoach.app"
-ORIGINAL_MS_VALUE = "https://visa-polish-v2.preview.emergentagent.com,https://realaicoach.app"
+ORIGINAL_MS_ENV_LINE = "MS_SSO_REGISTERED_REDIRECT_URIS=https://admin-policy-hub.preview.emergentagent.com,https://realaicoach.app"
+ORIGINAL_MS_VALUE = "https://admin-policy-hub.preview.emergentagent.com,https://realaicoach.app"
 
 
 # ---------------------------------------------------------------------------

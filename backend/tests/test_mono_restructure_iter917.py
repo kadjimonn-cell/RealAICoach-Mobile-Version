@@ -12,7 +12,7 @@ import requests
 
 BASE_URL = os.environ["REACT_APP_BACKEND_URL"].rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASS = "NewAdminPass2026!"
+ADMIN_PASS = os.environ.get("ADMIN_PASSWORD", "")
 FREE_EMAIL = "p1.free.1779113329@example.com"
 FREE_PASS = "P1Free#2026!Aa"
 
@@ -42,7 +42,7 @@ class TestStructure:
 
     def test_frontend_env_has_expo_tunnel_subdomain(self):
         env = Path("/app/frontend/.env").read_text()
-        assert "EXPO_TUNNEL_SUBDOMAIN=visa-polish-v2" in env
+        assert "EXPO_TUNNEL_SUBDOMAIN=admin-policy-hub
         assert "REACT_APP_BACKEND_URL=" in env
 
 

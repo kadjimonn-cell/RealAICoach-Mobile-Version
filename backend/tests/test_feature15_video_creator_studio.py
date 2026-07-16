@@ -1,3 +1,4 @@
+import os
 """
 Feature 15: Video Creator Studio - Backend E2E Validation Script
 Tests all core endpoints, AI integration, tier limits, and data persistence.
@@ -9,9 +10,9 @@ import sys
 from typing import Dict, Optional
 
 # Configuration
-API_BASE = "https://visa-polish-v2.preview.emergentagent.com/api"
+API_BASE = "https://admin-policy-hub.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Test Results Tracking
 results = {

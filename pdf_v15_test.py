@@ -6,7 +6,7 @@ from io import BytesIO
 from pypdf import PdfReader
 
 # Test configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 USER_EMAIL = "fedapay.prod.notify.done.2f8da905@gmail.com"
 USER_PASSWORD = "FedapayLive#2026Aa!"
 ADMIN_EMAIL = "admin@realaicoach.app"

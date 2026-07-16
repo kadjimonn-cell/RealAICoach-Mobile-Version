@@ -19,7 +19,7 @@ VIEWPORTS = [
     {"width": 1365, "height": 900, "label": "1365px (desktop)"},
 ]
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com/welcome"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com/welcome"
 
 async def test_viewport(page, vp):
     """Test a single viewport"""

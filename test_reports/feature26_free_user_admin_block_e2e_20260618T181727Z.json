@@ -5,7 +5,7 @@
     "feature_number": 26,
     "feature_id": "jobs-portal"
   },
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "accounts": {
     "free_non_otp": "jobs.free.final.90705154@gmail.com",
     "admin": "admin@realaicoach.app"
@@ -15,7 +15,7 @@
       200
     ],
     "free_admin_attempt": {
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-candidate",
       "admin_route_testid_count": 0,
       "admin_title_testid_count": 0,
       "admin_events_testid_count": 0,
@@ -23,7 +23,7 @@
     },
     "free_allowed_route_check": {
       "route": "/job-platform-candidate",
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-candidate",
       "candidate_route_testid_count": 1,
       "verdict": "allowed_route_reachable"
     },
@@ -32,7 +32,7 @@
     ],
     "admin_route_check": {
       "route": "/job-platform-admin",
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-admin",
       "admin_route_testid_count": 1,
       "admin_title_testid_count": 1,
       "admin_events_testid_count": 1,

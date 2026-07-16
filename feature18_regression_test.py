@@ -13,7 +13,7 @@ import requests
 import json
 import uuid
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 GUEST_USER_ID = f"user_{uuid.uuid4().hex[:16]}"
 
 test_results = []

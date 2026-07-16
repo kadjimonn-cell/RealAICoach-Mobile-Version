@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-05-20 05:33 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Verify role-gated visibility for home stale dashboard banner
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Role-Based UI Verification & Code Review

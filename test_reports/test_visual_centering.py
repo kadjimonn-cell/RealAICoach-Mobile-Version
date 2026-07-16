@@ -7,7 +7,7 @@ Tests visual centering across multiple viewport widths.
 import asyncio
 from playwright.async_api import async_playwright
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com/welcome"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com/welcome"
 
 TEST_VIEWPORTS = [
     {"width": 320, "height": 844, "name": "320px"},

@@ -1,7 +1,7 @@
 # Emergent Preview Stale Routing Evidence
 - Timestamp (UTC): 2026-05-07T09:24:04.923164Z
 - Job/Run ID: `21a85e87-b105-4fa4-b385-10bd5c641b79`
-- External preview checked: `https://visa-polish-v2.preview.emergentagent.com/job-platform`
+- External preview checked: `https://admin-policy-hub.preview.emergentagent.com/job-platform`
 - Local service checked: `http://127.0.0.1:3000/job-platform`
 
 ## 1) External vs Local response mismatch
@@ -16,7 +16,7 @@
 - Local index script found: `/_expo/static/js/web/index-a7cfd30a2925e955caf4aac21298dd22.js?v=1778144031971`
 
 ## 3) Wrapper target host behavior
-- Wrapper target checked: `https://visa-polish-v2.preview.emergentagent.com/job-platform`
+- Wrapper target checked: `https://admin-policy-hub.preview.emergentagent.com/job-platform`
 - Wrapper target also returns iframe host: `trust-layer-checkout.preview.emergentagent.com`
 - Wrapper target index script found: `NONE`
 

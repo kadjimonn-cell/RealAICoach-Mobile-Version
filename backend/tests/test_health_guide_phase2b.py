@@ -15,7 +15,7 @@ import json
 from datetime import datetime, timezone
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 API_BASE = f"{BASE_URL}/api/health-guide"
 ADMIN_EMAIL = "admin@realaicoach.app"
 ADMIN_PASSWORD = "NewAdminPass2026!"

@@ -18,7 +18,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 FREE_USER = ("p1.free.1779113329@example.com", "P1Free#2026!Aa")
 BASIC_USER = ("f22.basic.20260613@example.com", "F22Basic#2026Aa")
 PREMIUM_USER = ("f22.premium.20260613@example.com", "F22Premium#2026Aa")
-ADMIN_USER = ("admin@realaicoach.app", "NewAdminPass2026!")
+ADMIN_USER = ("admin@realaicoach.app", os.environ.get("ADMIN_PASSWORD", ""))
 
 # Expanded premium surfaces (free blocked, basic/premium allowed)
 EXPANDED_PREMIUM_SURFACES = [

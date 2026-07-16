@@ -164,7 +164,7 @@ class TestAuthFlowsNoRegression:
             f"{BASE_URL}/api/auth/login",
             json={
                 "email": "admin@realaicoach.app",
-                "password": "NewAdminPass2026!"
+                "password": os.environ.get("ADMIN_PASSWORD", "")
             }
         )
         assert response.status_code == 200, \
@@ -227,7 +227,7 @@ class TestAuthFlowsNoRegression:
             f"{BASE_URL}/api/auth/login",
             json={
                 "email": "admin@realaicoach.app",
-                "password": "NewAdminPass2026!"
+                "password": os.environ.get("ADMIN_PASSWORD", "")
             }
         )
         assert login_response.status_code == 200, f"Login failed: {login_response.status_code}"

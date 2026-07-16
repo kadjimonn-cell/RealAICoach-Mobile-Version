@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Feature 25 (Daily Meditation) Backend Smoke Validation
-Test against: https://visa-polish-v2.preview.emergentagent.com
+Test against: https://admin-policy-hub.preview.emergentagent.com
 """
 
 import requests
@@ -9,7 +9,7 @@ import json
 import sys
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 FREE_USER_EMAIL = "p1.free.1779113329@example.com"
 FREE_USER_PASSWORD = "P1Free#2026!Aa"
 

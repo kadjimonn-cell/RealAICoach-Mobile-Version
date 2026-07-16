@@ -5,7 +5,7 @@ import asyncio
 import httpx
 import json
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 TEST_USER_EMAIL = "paypal.prod.retest.fix.611e6d3d@gmail.com"
 TEST_USER_PASSWORD = "PayPalLive#2026Aa!"
 

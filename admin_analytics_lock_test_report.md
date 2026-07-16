@@ -1,7 +1,7 @@
 # Admin Analytics/Insights Global Strict Lock - Test Report
 
 **Test Date**: 2026-06-24  
-**Target**: https://visa-polish-v2.preview.emergentagent.com  
+**Target**: https://admin-policy-hub.preview.emergentagent.com  
 **Test Type**: Backend API Verification  
 
 ## Executive Summary

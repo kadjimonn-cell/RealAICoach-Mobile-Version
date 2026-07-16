@@ -2,8 +2,8 @@
 
 ## Test Information
 - **Date**: 2026-06-22 10:17 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/features/watch-videos
-- **Login URL**: https://visa-polish-v2.preview.emergentagent.com/auth/login
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/features/watch-videos
+- **Login URL**: https://admin-policy-hub.preview.emergentagent.com/auth/login
 - **Objective**: Validate frontend after AudioCatalogTab migration to v2 endpoints and wrapper retirement controls
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Migration Validation & Network Monitoring
@@ -49,7 +49,7 @@
 
 **Evidence**:
 - Login button clicked successfully
-- Current URL after login: `https://visa-polish-v2.preview.emergentagent.com/auth/login` (no redirect)
+- Current URL after login: `https://admin-policy-hub.preview.emergentagent.com/auth/login` (no redirect)
 - Attempting to navigate to /features/watch-videos results in timeout (30+ seconds)
 - Screenshot shows "Checking access" spinner indefinitely
 - This is an ENVIRONMENTAL issue, not a code issue

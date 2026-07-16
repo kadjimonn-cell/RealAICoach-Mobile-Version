@@ -16,7 +16,7 @@ import uuid
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 TEST_MEMBER_EMAIL = f"tn.p2.test.{uuid.uuid4().hex[:8]}@example.com"
 
 

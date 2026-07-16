@@ -13,7 +13,7 @@
     },
     "login_flow_end_to_end": {
       "credentials": "admin@realaicoach.app / NewAdminPass2026!",
-      "post_login_url": "https://visa-polish-v2.preview.emergentagent.com/",
+      "post_login_url": "https://admin-policy-hub.preview.emergentagent.com/",
       "auth_status": "success (Resume Dashboard modal + authenticated sidebar visible)",
       "status": "PASS"
     },
@@ -50,6 +50,6 @@
   "seed_data_creation": "none",
   "retest_needed": false,
   "main_agent_can_self_test": true,
-  "context_for_next_testing_agent": "Static export (dist mode) at https://visa-polish-v2.preview.emergentagent.com. Login theme toggle testid is 'login-theme-toggle' (single icon at top-right of the login card; click cycles between light and dark). Post-login sidebar theme toggles are 'theme-toggle-light' / 'theme-toggle-system' / 'theme-toggle-dark' at bottom of the left rail. Public landing (/welcome) exposes 'welcome-theme-toggle-*' variants. Login flow with data-testid: fill 'input[type=\"email\"]' and 'input[type=\"password\"]', click 'login-submit-button', wait for URL change; a 'Resume Dashboard' / 'Go to Home instead' modal may appear on landing. Cloudflare may occasionally intercept the root '/' navigation with a security check; navigate directly to feature routes (e.g., /ai-learning-hub, /features/fps-game) with wait_until='domcontentloaded' to avoid that. LearningCinema Resume button was not spot-checked in this pass (admin account did not surface the cinema hero on Discover; review said 'Skip if not rendered').",
+  "context_for_next_testing_agent": "Static export (dist mode) at https://admin-policy-hub.preview.emergentagent.com. Login theme toggle testid is 'login-theme-toggle' (single icon at top-right of the login card; click cycles between light and dark). Post-login sidebar theme toggles are 'theme-toggle-light' / 'theme-toggle-system' / 'theme-toggle-dark' at bottom of the left rail. Public landing (/welcome) exposes 'welcome-theme-toggle-*' variants. Login flow with data-testid: fill 'input[type=\"email\"]' and 'input[type=\"password\"]', click 'login-submit-button', wait for URL change; a 'Resume Dashboard' / 'Go to Home instead' modal may appear on landing. Cloudflare may occasionally intercept the root '/' navigation with a security check; navigate directly to feature routes (e.g., /ai-learning-hub, /features/fps-game) with wait_until='domcontentloaded' to avoid that. LearningCinema Resume button was not spot-checked in this pass (admin account did not surface the cinema hero on Discover; review said 'Skip if not rendered').",
   "rca of the issue": "N/A - verification pass. The iteration_836 flagged issue (SIGN IN light-mode text = dark navy rgb(15,23,42) instead of white) has been resolved by (a) adding onPrimary: colors.primaryText to the login palette in useLoginController.ts / useLoginControllerLegacy.ts and (b) swapping T.white to T.onPrimary in loginStyles.ts (primaryBtnText, recoveryPrimaryBtnText, guidancePrimaryBtnText, tabTextActive). Runtime CSS now returns rgb(255,255,255) on rgb(15,118,110) in light and rgb(11,18,32) on rgb(20,184,166) in dark. WCAG contrast: light 5.87:1 (AA large text pass), dark 7.52:1 (AAA pass)."
 }

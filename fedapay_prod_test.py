@@ -1,6 +1,6 @@
 """
 FedaPay Production-Readiness Flow Verification Test
-Test URL: https://visa-polish-v2.preview.emergentagent.com
+Test URL: https://admin-policy-hub.preview.emergentagent.com
 
 Test Flow:
 1. Register a new free user and confirm `/api/auth/me` shows free/active
@@ -16,7 +16,7 @@ import json
 import uuid
 from datetime import datetime
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 API_BASE = f"{BASE_URL}/api"
 
 # Test data

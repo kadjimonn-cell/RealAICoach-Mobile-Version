@@ -1,7 +1,7 @@
 {
   "test_run": {
     "timestamp": "2026-05-20T03:47:39.234892",
-    "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+    "base_url": "https://admin-policy-hub.preview.emergentagent.com",
     "test_email": "fedapay.prod.test.1779248852@example.com",
     "all_passed": false
   },

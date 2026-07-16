@@ -19,11 +19,11 @@ import asyncio
 import websockets
 from websockets.exceptions import ConnectionClosed
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://visa-polish-v2.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://admin-policy-hub.preview.emergentagent.com').rstrip('/')
 
 # Test credentials
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 class TestWSTicketEndpoint:

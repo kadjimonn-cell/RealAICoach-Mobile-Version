@@ -41,7 +41,7 @@ LATEST = REPORT_DIR / "gtec_scan_latest.json"
 FRONTEND_BASE = os.environ.get("GTEC_FRONTEND_URL") or "http://127.0.0.1:3000"
 API_BASE = FRONTEND_BASE
 TEST_EMAIL = os.environ.get("GTEC_TEST_EMAIL", "admin@realaicoach.app")
-TEST_PASSWORD = os.environ.get("GTEC_TEST_PASSWORD", "NewAdminPass2026!")
+TEST_PASSWORD = os.environ.get("GTEC_TEST_PASSWORD", os.environ.get("ADMIN_PASSWORD", ""))
 REAL_BROWSER_UA = os.environ.get(
     "GTEC_CRAWLER_USER_AGENT",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "

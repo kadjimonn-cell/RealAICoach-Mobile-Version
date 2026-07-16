@@ -3,7 +3,7 @@
 **Date**: 2026-06-16 00:00 UTC  
 **Tester**: Testing Agent (E2)  
 **Test Type**: Frontend Route Verification  
-**Base URL**: https://visa-polish-v2.preview.emergentagent.com  
+**Base URL**: https://admin-policy-hub.preview.emergentagent.com  
 **Test User**: p1.free.1779113329@example.com (Free tier)
 
 ---
@@ -46,8 +46,8 @@ Focused frontend verification for Feature 26 P0 job platform routes:
 3. Verified redirect behavior
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/job-platform`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fjob-platform&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/job-platform`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fjob-platform&auth_reason=unauthenticated`
 - **Redirected**: YES ✅
 - **Redirect Target**: `/welcome` with return URL and auth reason
 
@@ -69,7 +69,7 @@ Focused frontend verification for Feature 26 P0 job platform routes:
 
 **Results:**
 - **Login Status**: SUCCESS ✅
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/job-platform`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/job-platform`
 - **Redirected**: YES (away from login page) ✅
 
 **Verdict**: ✅ **PASS** - Login successful, user redirected to intended destination
@@ -89,7 +89,7 @@ Focused frontend verification for Feature 26 P0 job platform routes:
 3. Verified page elements and testids
 
 **Results:**
-- **Current URL**: `https://visa-polish-v2.preview.emergentagent.com/job-platform`
+- **Current URL**: `https://admin-policy-hub.preview.emergentagent.com/job-platform`
 - **Error Boundary**: NO ✅
 - **Testid `jobs-portal-page`**: FOUND ✅
 - **Page Content Length**: 3032 characters ✅

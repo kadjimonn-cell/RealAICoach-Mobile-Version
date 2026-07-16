@@ -27,7 +27,7 @@ if not BASE_URL:
     raise RuntimeError("REACT_APP_BACKEND_URL not set in environment")
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Ensure backend src is importable for the import-level smoke tests
 sys.path.insert(0, "/app/backend")

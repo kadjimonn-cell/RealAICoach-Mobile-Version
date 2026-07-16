@@ -1,7 +1,7 @@
 # Global RBAC + Subscription Enforcement Audit (RealAICoach)
 
 Date: 2026-05-14  
-Environment: `https://visa-polish-v2.preview.emergentagent.com`
+Environment: `https://admin-policy-hub.preview.emergentagent.com`
 
 ## Scope Implemented
 1. Remove Basic/Premium access for all existing non-admin real users.

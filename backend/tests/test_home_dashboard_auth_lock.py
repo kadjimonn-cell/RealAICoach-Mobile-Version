@@ -16,7 +16,7 @@ FREE_USER_PASSWORD = "P1Free#2026!Aa"
 BASIC_USER_EMAIL = "f21.basic.1781338672@example.com"
 BASIC_USER_PASSWORD = "F21Basic#2026Aa"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 class TestAuthMeEndpoint:

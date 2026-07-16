@@ -21,7 +21,7 @@ EXPECTED_PREVIEW_BASE = os.environ.get("PYTEST_EXTERNAL_PREVIEW_BASE", "").rstri
 
 # Admin credentials
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 @pytest.fixture(scope="module")

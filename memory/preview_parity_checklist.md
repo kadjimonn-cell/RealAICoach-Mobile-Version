@@ -4,7 +4,7 @@ Use this immediately after Emergent support confirms preview routing/cache refre
 
 ## 1) Quick hash parity
 - Local URL: `http://127.0.0.1:3000/job-platform`
-- External URL: `https://visa-polish-v2.preview.emergentagent.com/job-platform`
+- External URL: `https://admin-policy-hub.preview.emergentagent.com/job-platform`
 - Confirm both serve the same `index-*.js` hash in HTML script tags.
 
 ## 2) Jobs Portal funnel parity

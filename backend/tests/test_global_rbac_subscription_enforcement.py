@@ -14,7 +14,7 @@ if not BASE_URL:
     pytest.skip("REACT_APP_BACKEND_URL not set for RBAC subscription enforcement tests", allow_module_level=True)
 
 # Test credentials from test_credentials.md
-ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 FREE_CREDS = {"email": "tv.free.test@realaicoach.app", "password": "TvFree#2026!Aa"}
 BASIC_NOW_FREE_CREDS = {"email": "tv.basic.test@realaicoach.app", "password": "TvBasic#2026!Aa"}
 PREMIUM_NOW_FREE_CREDS = {"email": "tv.premium.test@realaicoach.app", "password": "TvPrem#2026!Aa"}

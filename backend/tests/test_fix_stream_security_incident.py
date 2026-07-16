@@ -13,7 +13,7 @@ import requests
 import os
 import time
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://visa-polish-v2.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://admin-policy-hub.preview.emergentagent.com').rstrip('/')
 
 
 @pytest.fixture(scope="module")
@@ -21,7 +21,7 @@ def admin_token():
     """Get admin authentication token"""
     response = requests.post(
         f"{BASE_URL}/api/auth/login",
-        json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+        json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
         headers={"X-Requested-With": "XMLHttpRequest"},
         timeout=15
     )

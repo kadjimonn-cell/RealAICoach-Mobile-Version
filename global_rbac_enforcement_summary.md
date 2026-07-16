@@ -1,6 +1,6 @@
 # Global RBAC+Subscription Enforcement Validation Summary
 **Test Date:** 2026-05-14 16:05 UTC
-**Base URL:** https://visa-polish-v2.preview.emergentagent.com
+**Base URL:** https://admin-policy-hub.preview.emergentagent.com
 **Test Status:** ✅ PASS (All critical requirements met)
 
 ## Test Results Summary

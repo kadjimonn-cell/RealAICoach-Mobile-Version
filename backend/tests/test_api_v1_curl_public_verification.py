@@ -24,7 +24,7 @@ if not BASE_URL:
                 break
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 CSRF_HEADER = {"X-Requested-With": "XMLHttpRequest"}
 NATIVE_HEADER = {"X-Client-Platform": "ios", **CSRF_HEADER}

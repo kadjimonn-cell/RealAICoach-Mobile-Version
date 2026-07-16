@@ -20,7 +20,7 @@ ALLOWLISTED_ADMIN_E2E_EMAIL = "watchvideos.phase4.admin.306786@example.com"
 ALLOWLISTED_ADMIN_E2E_PASSWORD = "Phase4Admin#2026Aa"
 
 PRIMARY_ADMIN_EMAIL = "admin@realaicoach.app"
-PRIMARY_ADMIN_PASSWORD = "NewAdminPass2026!"
+PRIMARY_ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 FREE_TEST_USER_EMAIL = "feature21.test.1781234530@example.com"
 FREE_TEST_USER_PASSWORD = "Feature21Test#2026Aa"

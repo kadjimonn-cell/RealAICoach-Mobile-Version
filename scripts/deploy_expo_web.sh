@@ -109,12 +109,12 @@ stale_matches=$(grep -rhoE 'https://[a-z0-9-]+\.preview\.emergentagent\.com' "$T
 if [ -n "$stale_matches" ]; then
   echo "✗ Stale preview URL(s) detected in bundle:" >&2
   echo "$stale_matches" | sed 's/^/    /' >&2
-  echo "  Expected only: https://visa-polish-v2.preview.emergentagent.com" >&2
+  echo "  Expected only: https://admin-policy-hub.preview.emergentagent.com" >&2
   echo "  Run: cd /app/frontend && rm -rf .metro-cache && $(basename "$0")" >&2
   rm -rf "$TMP_DIR"
   exit 1
 fi
-echo "✓ Bundle scan clean — only https://visa-polish-v2.preview.emergentagent.com referenced."
+echo "✓ Bundle scan clean — only https://admin-policy-hub.preview.emergentagent.com referenced."
 
 echo "▶ Replacing /app/frontend/dist atomically …"
 rm -rf /app/frontend/dist

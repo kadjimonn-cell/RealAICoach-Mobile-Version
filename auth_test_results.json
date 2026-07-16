@@ -1,6 +1,6 @@
 {
   "timestamp": "2026-06-08 21:38:48 UTC",
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "tests": [
     {
       "name": "Test 1: Valid Login",

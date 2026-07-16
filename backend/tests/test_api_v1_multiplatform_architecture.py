@@ -21,7 +21,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 CONTRACTS_DIR = Path(__file__).resolve().parents[1] / "contracts" / "v1"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 CSRF_HEADERS = {"X-Requested-With": "XMLHttpRequest"}
 

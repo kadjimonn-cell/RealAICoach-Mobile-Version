@@ -8,7 +8,7 @@ import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 FREE_EMAIL = "p1.free.1779113329@example.com"
 FREE_PASS = "P1Free#2026!Aa"
 CSRF = {"X-Requested-With": "XMLHttpRequest"}

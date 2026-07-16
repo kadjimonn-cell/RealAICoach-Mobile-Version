@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-06-13 04:27 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Validate strict RBAC P1 behavior for Not logged in (unauthenticated request state) users
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Comprehensive Unauthenticated RBAC Verification
@@ -73,48 +73,48 @@
 **Test Method:** Playwright browser automation with fresh browser context (no session)
 
 #### 1.1 /dashboard Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/dashboard`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fdashboard&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/dashboard`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fdashboard&auth_reason=unauthenticated`
 - **Query Parameters**: ✅ Both `return_to` and `auth_reason` present
 - **Status**: ✅ PASS
 - **Previous Issue**: Missing query parameters → **NOW FIXED**
 
 #### 1.2 /content-library Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/content-library`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fcontent-library&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/content-library`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fcontent-library&auth_reason=unauthenticated`
 - **Query Parameters**: ✅ Both `return_to` and `auth_reason` present
 - **Status**: ✅ PASS
 - **Previous Issue**: Redirected to /auth/login instead of /welcome → **NOW FIXED**
 
 #### 1.3 /features/watch-videos Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/watch-videos`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/watch-videos`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
 - **Query Parameters**: ✅ Both `return_to` and `auth_reason` present
 - **Status**: ✅ PASS
 - **Note**: return_to shows `/features` (parent route)
 
 #### 1.4 /admin-console Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/admin-console`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fadmin-console&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/admin-console`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fadmin-console&auth_reason=unauthenticated`
 - **Query Parameters**: ✅ Both `return_to` and `auth_reason` present
 - **Status**: ✅ PASS
 - **Previous Issue**: Timeout → **NOW FIXED**
 
 #### 1.5 /executive-dashboard Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/executive-dashboard`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fexecutive-dashboard&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/executive-dashboard`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fexecutive-dashboard&auth_reason=unauthenticated`
 - **Query Parameters**: ✅ Both `return_to` and `auth_reason` present
 - **Status**: ✅ PASS
 
 #### 1.6 /team-management Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/team-management`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fteam-management&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/team-management`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fteam-management&auth_reason=unauthenticated`
 - **Query Parameters**: ✅ Both `return_to` and `auth_reason` present
 - **Status**: ✅ PASS
 
 #### 1.7 /non-existent-rbac-probe Redirect ✅
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/non-existent-rbac-probe`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/non-existent-rbac-probe`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome`
 - **Query Parameters**: ⚠️ No params (expected for unknown route)
 - **Status**: ✅ PASS
 - **Note**: Unknown routes redirect to /welcome without params (correct behavior)
@@ -203,7 +203,7 @@
 - **Result**: ✅ Page content is 6239 characters (well above threshold)
 
 #### 3.3 Redirect Loop Check ✅
-- **Current URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome`
+- **Current URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome`
 - **URL stable**: Yes
 - **Has error message**: False (false positive from empty ARIA live region)
 - **Status**: ✅ PASS - No redirect loop detected

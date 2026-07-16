@@ -10,7 +10,7 @@ import json
 from typing import Dict, Any
 
 # Base URL from frontend/.env
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials from test_credentials.md
 ADMIN_EMAIL = "admin@realaicoach.app"

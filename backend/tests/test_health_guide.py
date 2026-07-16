@@ -8,7 +8,7 @@ Test Credentials:
 - Email: admin@realaicoach.app
 - Password: NewAdminPass2026!
 
-Backend URL: https://visa-polish-v2.preview.emergentagent.com
+Backend URL: https://admin-policy-hub.preview.emergentagent.com
 
 Endpoints Tested:
 1. Bootstrap & Profile (High Priority)
@@ -40,7 +40,7 @@ import json
 from datetime import datetime, timezone
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 API_BASE = f"{BASE_URL}/api"
 ADMIN_EMAIL = "admin@realaicoach.app"
 ADMIN_PASSWORD = "NewAdminPass2026!"

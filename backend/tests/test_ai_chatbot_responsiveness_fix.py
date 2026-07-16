@@ -29,7 +29,7 @@ TEST_USERS = {
     },
     'admin': {
         'email': 'admin@realaicoach.app',
-        'password': 'NewAdminPass2026!',
+        'password': os.environ.get("ADMIN_PASSWORD", ""),
         'expected_tier': 'premium',
         'expected_daily_limit': -1,  # unlimited
     },

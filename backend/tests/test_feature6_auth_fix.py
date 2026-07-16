@@ -13,7 +13,7 @@ import base64
 # Configuration
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Test state
 session = requests.Session()

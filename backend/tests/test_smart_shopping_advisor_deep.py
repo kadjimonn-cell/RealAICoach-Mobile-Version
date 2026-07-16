@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001")
 TEST_EMAIL = "admin@realaicoach.app"
-TEST_PASSWORD = "NewAdminPass2026!"
+TEST_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 class TestSmartShoppingAdvisor:

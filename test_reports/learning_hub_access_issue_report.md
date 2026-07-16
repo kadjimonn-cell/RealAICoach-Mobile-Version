@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-05-20 05:04 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Reproduce Learning Hub access behavior showing "Please sign in" error for authenticated users
 - **Tester**: Testing Agent (E2)
 - **Test Credentials**: fedapay.prod.retest.219df6d8@gmail.com / FedapayLive#2026Aa!
@@ -17,7 +17,7 @@
 | User Authentication | User appears authenticated | ✅ Notification bell (4 unread), User badge visible, PREMIUM status shown | PASS |
 | Navigate to Learning Hub | Access granted | ❌ Error: "Please sign in to access AI Learning Hub." | **FAIL** |
 | Retry Button | Should not appear for authenticated users | ❌ Retry button present | **FAIL** |
-| Final URL | /ai-learning-hub | ✅ https://visa-polish-v2.preview.emergentagent.com/ai-learning-hub | PASS |
+| Final URL | /ai-learning-hub | ✅ https://admin-policy-hub.preview.emergentagent.com/ai-learning-hub | PASS |
 
 ## Detailed Test Evidence
 
@@ -39,7 +39,7 @@
 **Navigation:**
 - ✅ Learning Hub link visible in sidebar under "AI TOOLS" section
 - ✅ Successfully navigated to /ai-learning-hub
-- ✅ Final URL: https://visa-polish-v2.preview.emergentagent.com/ai-learning-hub
+- ✅ Final URL: https://admin-policy-hub.preview.emergentagent.com/ai-learning-hub
 
 **Error State:**
 - ❌ Page displays error icon (alert circle)

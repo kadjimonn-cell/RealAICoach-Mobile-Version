@@ -20,13 +20,13 @@ import requests
 
 BASE_URL = (
     os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
-    or "https://visa-polish-v2.preview.emergentagent.com"
+    or "https://admin-policy-hub.preview.emergentagent.com"
 )
 
 FREE_EMAIL = "p1.free.1779113329@example.com"
 FREE_PASSWORD = "P1Free#2026!Aa"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 TXN_ID = "txn_a98b73968e034fe7"
 
 

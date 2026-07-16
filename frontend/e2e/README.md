@@ -12,7 +12,7 @@ This suite guards the Welcome page against white/blank-screen regressions and ve
 
 ```bash
 cd /app/frontend
-E2E_BASE_URL="https://visa-polish-v2.preview.emergentagent.com" \
+E2E_BASE_URL="https://admin-policy-hub.preview.emergentagent.com" \
 node node_modules/@playwright/test/cli.js test e2e/welcome-first-paint-regression.spec.ts --reporter=list
 ```
 
@@ -46,7 +46,7 @@ This suite verifies full passkey flow with a virtual authenticator:
 
 ```bash
 cd /app/frontend
-E2E_BASE_URL="https://visa-polish-v2.preview.emergentagent.com" \
+E2E_BASE_URL="https://admin-policy-hub.preview.emergentagent.com" \
 node node_modules/@playwright/test/cli.js test e2e/passkey-virtual-authenticator.spec.ts --project=desktop-chromium --reporter=list
 ```
 

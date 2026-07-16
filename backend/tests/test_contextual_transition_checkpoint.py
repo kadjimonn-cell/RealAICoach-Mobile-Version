@@ -11,7 +11,7 @@ BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 # Test credentials from test_credentials.md
 FREE_USER = {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"}
 BASIC_USER = {"email": "f21.basic.1781338672@example.com", "password": "F21Basic#2026Aa"}
-ADMIN_USER = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN_USER = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 
 
 class TestHealthAndBasicEndpoints:

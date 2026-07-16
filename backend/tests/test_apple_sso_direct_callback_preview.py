@@ -25,7 +25,7 @@ import base64
 from urllib.parse import urlparse, parse_qs, urlencode
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
-PREVIEW_BASE = "https://visa-polish-v2.preview.emergentagent.com"
+PREVIEW_BASE = "https://admin-policy-hub.preview.emergentagent.com"
 PRODUCTION_BASE = "https://realaicoach.app"
 
 
@@ -77,8 +77,8 @@ class TestAppleSSODirectCallbackInPreview:
         # The redirect_uri should NOT point to production realaicoach.app
         # when we're in preview context with force direct enabled
         # It can be either:
-        # 1. Preview direct: https://visa-polish-v2.preview.emergentagent.com/api/auth/apple/callback
-        # 2. Preview broker: https://visa-polish-v2.preview.emergentagent.com/api/auth/apple/broker/callback
+        # 1. Preview direct: https://admin-policy-hub.preview.emergentagent.com/api/auth/apple/callback
+        # 2. Preview broker: https://admin-policy-hub.preview.emergentagent.com/api/auth/apple/broker/callback
         # 3. Production broker (if broker strategy is still active): https://realaicoach.app/api/auth/apple/broker/callback
         
         # The key requirement is that the STATE carries preview return_base

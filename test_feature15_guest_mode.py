@@ -9,7 +9,7 @@ import json
 import sys
 
 # Base URL from frontend/.env
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 def test_bootstrap_with_valid_guest_id():
     """Test 1: GET /api/video-studio/bootstrap?fallback_user_id=user_testfeature15abc12345"""

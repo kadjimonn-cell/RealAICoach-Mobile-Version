@@ -22,7 +22,7 @@ BASIC_USER = {
 }
 ADMIN_USER = {
     "email": "admin@realaicoach.app",
-    "password": "NewAdminPass2026!"
+    "password": os.environ.get("ADMIN_PASSWORD", "")
 }
 
 

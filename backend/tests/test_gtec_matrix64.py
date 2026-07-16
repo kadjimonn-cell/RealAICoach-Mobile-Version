@@ -48,7 +48,7 @@ class TestGtecMatrix64Pipeline:
         # Login as admin
         login_resp = self.session.post(f"{BASE_URL}/api/auth/login", json={
             "email": "admin@realaicoach.app",
-            "password": "NewAdminPass2026!"
+            "password": os.environ.get("ADMIN_PASSWORD", "")
         }, headers={"X-Requested-With": "XMLHttpRequest"})
         if login_resp.status_code != 200:
             pytest.skip(f"Admin login failed: {login_resp.status_code} - {login_resp.text[:200]}")
@@ -180,7 +180,7 @@ class TestSchedulerHealth:
         # Login as admin
         login_resp = self.session.post(f"{BASE_URL}/api/auth/login", json={
             "email": "admin@realaicoach.app",
-            "password": "NewAdminPass2026!"
+            "password": os.environ.get("ADMIN_PASSWORD", "")
         }, headers={"X-Requested-With": "XMLHttpRequest"})
         if login_resp.status_code != 200:
             pytest.skip(f"Admin login failed: {login_resp.status_code} - {login_resp.text[:200]}")

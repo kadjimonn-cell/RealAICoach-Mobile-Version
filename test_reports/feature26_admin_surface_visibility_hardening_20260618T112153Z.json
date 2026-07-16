@@ -5,7 +5,7 @@
     "feature_number": 26,
     "feature_id": "jobs-portal"
   },
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "requirement": "Non-admin users must never see Feature 26 admin-only tab/surface; admin-only surface remains visible for admins.",
   "implementation": {
     "frontend_access_control_redirect_override": "non-admin /job-platform-admin -> /job-platform-candidate",
@@ -14,14 +14,14 @@
   "validation": {
     "testing_agent": "auto_frontend_testing_agent",
     "non_admin": {
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/",
       "job-platform-admin-route": 0,
       "job-platform-admin-title": 0,
       "job-platform-admin-events": 0,
       "verdict": "admin_surface_hidden"
     },
     "admin": {
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-admin",
       "job-platform-admin-route": 1,
       "job-platform-admin-title": 1,
       "job-platform-admin-events": 1,

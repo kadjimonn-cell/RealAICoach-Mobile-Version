@@ -6,10 +6,10 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://visa-polish-v2.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://admin-policy-hub.preview.emergentagent.com').rstrip('/')
 
 # Test credentials from test_credentials.md
-ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 FREE_CREDS = {"email": "tv.free.test@realaicoach.app", "password": "TvFree#2026!Aa"}
 BASIC_CREDS = {"email": "tv.basic.test@realaicoach.app", "password": "TvBasic#2026!Aa"}
 PREMIUM_CREDS = {"email": "tv.premium.test@realaicoach.app", "password": "TvPrem#2026!Aa"}

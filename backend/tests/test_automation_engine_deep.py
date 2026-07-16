@@ -15,7 +15,7 @@ import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASS = "NewAdminPass2026!"
+ADMIN_PASS = os.environ.get("ADMIN_PASSWORD", "")
 
 PASS = "PASS"
 FAIL = "FAIL"

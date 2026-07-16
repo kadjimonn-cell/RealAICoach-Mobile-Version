@@ -1,7 +1,7 @@
 ## Backend API Test Results - System Metrics Endpoints
 
 **Test Date:** 2026-04-12 17:34 UTC  
-**Backend URL:** https://visa-polish-v2.preview.emergentagent.com/api  
+**Backend URL:** https://admin-policy-hub.preview.emergentagent.com/api  
 **Test Scope:** Focused backend API tests for vanity-metrics, live-metrics, config/global, and features/gallery-data
 
 ### Test Results Summary

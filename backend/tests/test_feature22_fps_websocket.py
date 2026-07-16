@@ -10,7 +10,7 @@ Verifies:
 
 Uses admin + free user credentials from /app/memory/test_credentials.md.
 
-Run:  TEST_ADMIN_PASSWORD='NewAdminPass2026!' python -m pytest \
+Run:  TEST_ADMIN_PASSWORD=os.environ.get("ADMIN_PASSWORD", "") python -m pytest \
         backend/tests/test_feature22_fps_websocket.py -v -s
 """
 
@@ -31,7 +31,7 @@ WS_URL = BASE_URL.replace("https://", "wss://").replace("http://", "ws://")
 
 ADMIN = {
     "email": "admin@realaicoach.app",
-    "password": os.environ.get("TEST_ADMIN_PASSWORD", "NewAdminPass2026!"),
+    "password": os.environ.get("TEST_ADMIN_PASSWORD", os.environ.get("ADMIN_PASSWORD", "")),
 }
 FREE_USER = {
     "email": "p1.free.1779113329@example.com",

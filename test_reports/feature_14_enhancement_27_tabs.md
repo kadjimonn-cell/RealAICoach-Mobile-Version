@@ -343,7 +343,7 @@ All 10 new tabs have proper translation keys:
 ### Backend API Verification
 
 **Backend Status**: ✅ RUNNING
-- API accessible via `https://visa-polish-v2.preview.emergentagent.com/api`
+- API accessible via `https://admin-policy-hub.preview.emergentagent.com/api`
 - Authentication: Working (Admin login successful)
 - Bootstrap endpoint: Responding correctly
 

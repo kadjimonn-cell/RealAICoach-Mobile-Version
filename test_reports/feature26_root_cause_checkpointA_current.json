@@ -1,6 +1,6 @@
 {
   "timestamp_utc": "2026-06-18T17:32:50.693537Z",
-  "backend_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "backend_url": "https://admin-policy-hub.preview.emergentagent.com",
   "health": {
     "ok": true,
     "service": "hiring-v2",

@@ -24,7 +24,7 @@ ADMIN_USER_EMAIL = "watchvideos.phase4.admin.306786@example.com"
 ADMIN_USER_PASSWORD = "Phase4Admin#2026Aa"
 
 ADMIN_FALLBACK_EMAIL = "admin@realaicoach.app"
-ADMIN_FALLBACK_PASSWORD = "NewAdminPass2026!"
+ADMIN_FALLBACK_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 @pytest.fixture(scope="module")

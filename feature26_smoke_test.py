@@ -10,7 +10,7 @@ import sys
 from typing import Dict, Any, Tuple
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BACKEND_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials
 ADMIN_CREDS = {

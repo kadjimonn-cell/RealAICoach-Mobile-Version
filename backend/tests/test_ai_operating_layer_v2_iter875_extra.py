@@ -20,7 +20,7 @@ import pytest
 import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
-ADMIN = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 
 NEW_ENDPOINTS = [
     ("GET", "/api/agent-framework/route/log"),

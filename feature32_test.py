@@ -9,7 +9,7 @@ from typing import Dict, Any
 from datetime import datetime, timedelta
 
 # Backend URL from environment
-BACKEND_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BACKEND_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials
 ADMIN_CREDS = {

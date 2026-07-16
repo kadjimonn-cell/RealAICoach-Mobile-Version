@@ -8,7 +8,7 @@ import time
 import requests
 import websockets
 
-BASE = "https://visa-polish-v2.preview.emergentagent.com"
+BASE = "https://admin-policy-hub.preview.emergentagent.com"
 EMAIL = "p1.free.1779113329@example.com"
 PASSWORD = "P1Free#2026!Aa"
 ROOM = "iter815-enhancements-1"

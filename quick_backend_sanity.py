@@ -9,7 +9,7 @@ Tests:
 import requests
 import sys
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 def test_health_endpoint():
     """Test 1: GET /api/health => expect 200"""

@@ -172,7 +172,7 @@ useEffect(() => {
 **Remaining Step**: User must manually verify Feature 15 in browser:
 
 ### **Manual Validation Checklist**:
-1. Navigate to: `https://visa-polish-v2.preview.emergentagent.com/features/ai-video`
+1. Navigate to: `https://admin-policy-hub.preview.emergentagent.com/features/ai-video`
 2. Verify page loads without redirecting to homepage
 3. Verify "Video Creator Studio" heading is visible
 4. Verify tabs are visible (Video Creator Studio, Scan, AI Chat)

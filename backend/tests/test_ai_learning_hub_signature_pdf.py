@@ -33,7 +33,7 @@ def admin_session():
     s.headers.update({"Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest"})
     r = s.post(
         f"{BASE_URL}/api/auth/login",
-        json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+        json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
     )
     assert r.status_code == 200, f"admin login failed: {r.status_code} {r.text[:400]}"
     return s

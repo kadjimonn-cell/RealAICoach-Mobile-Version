@@ -50,43 +50,43 @@
     "ui_regression_tests": {
       "about_us_page": {
         "status": "PASS",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/about-us",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/about-us",
         "elements_verified": ["hero-title", "start-trial-cta", "book-demo-cta", "cta-block"],
         "notes": "Page loads correctly, all CTA buttons visible and functional"
       },
       "contact_page": {
         "status": "PASS",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/contact",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/contact",
         "elements_verified": ["contact-heading", "enterprise-form", "submit-button"],
         "notes": "Contact Command Center page loads correctly with form"
       },
       "talent_network_page": {
         "status": "PASS",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/talent-network",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/talent-network",
         "elements_verified": ["hero-title", "hero-badge", "email-input", "load-hub-button"],
         "notes": "Talent Network Pro page loads correctly"
       },
       "careers_page": {
         "status": "PASS",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/careers",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/careers",
         "elements_verified": ["careers-page", "talent-network-card", "talent-network-submit", "toolbar"],
         "notes": "Careers page loads correctly with talent network card"
       },
       "subscription_plans_page": {
         "status": "EXPECTED_REDIRECT",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/subscription/plans",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/subscription/plans",
         "redirect_to": "/welcome?section=pricing",
         "notes": "Protected route correctly redirects unauthenticated visitors"
       },
       "certificate_gallery_page": {
         "status": "EXPECTED_REDIRECT",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/certificate-gallery",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/certificate-gallery",
         "redirect_to": "/welcome?return_to=%2Fcertificate-gallery&auth_reason=unauthenticated",
         "notes": "Protected route correctly redirects unauthenticated visitors"
       },
       "certificate_verify_page": {
         "status": "EXPECTED_REDIRECT",
-        "url": "https://visa-polish-v2.preview.emergentagent.com/certificate-verify/test-verification-id",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/certificate-verify/test-verification-id",
         "redirect_to": "/welcome",
         "notes": "Certificate verify page redirects for invalid/test verification IDs"
       }
@@ -124,7 +124,7 @@
   "main_agent_can_self_test": true,
   "context_for_next_testing_agent": "Analytics source naming cleanup verified. All public-facing source values now use hyphenated format: about-us-signup-cta, about-us-book-demo-cta, about-us-cta-block, contact-command-center, plans-page, talent-network-hub, talent-network-pro-hub, talent-network-timeline, careers-talent-network-card, certificate-gallery, certificate-verifier. Event names (talent_network_joined, etc.) were intentionally left unchanged as they are internal telemetry, not public-facing analytics sources.",
   "external_preview_verification": {
-    "url": "https://visa-polish-v2.preview.emergentagent.com",
+    "url": "https://admin-policy-hub.preview.emergentagent.com",
     "status": "VERIFIED",
     "pages_tested": ["/about-us", "/contact", "/talent-network", "/careers", "/subscription/plans", "/certificate-gallery", "/certificate-verify/test-verification-id"]
   }

@@ -19,7 +19,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstr
 
 # Test credentials
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 FREE_USER_EMAIL = "p1.free.1779113329@example.com"
 FREE_USER_PASSWORD = "P1Free#2026!Aa"
 

@@ -1,6 +1,6 @@
 {
   "timestamp": "2026-06-16T19:02:36.353933+00:00",
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "feature_lock_expected": {
     "feature_number": 26,
     "feature_id": "jobs-portal"
@@ -10,7 +10,7 @@
       "name": "base_url_present",
       "pass": true,
       "status_code": null,
-      "detail": "https://visa-polish-v2.preview.emergentagent.com",
+      "detail": "https://admin-policy-hub.preview.emergentagent.com",
       "data": null
     },
     {

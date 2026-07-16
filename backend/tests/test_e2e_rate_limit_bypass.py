@@ -32,7 +32,7 @@ STANDARD_HEADERS = {
 TEST_USERS = {
     'admin': {
         'email': 'admin@realaicoach.app',
-        'password': 'NewAdminPass2026!',
+        'password': os.environ.get("ADMIN_PASSWORD", ""),
     },
     'premium': {
         'email': 'f22.premium.20260613@example.com',

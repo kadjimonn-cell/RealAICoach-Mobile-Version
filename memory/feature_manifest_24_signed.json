@@ -1,6 +1,6 @@
 {
   "manifest_version": "v1",
-  "source_endpoint": "https://visa-polish-v2.preview.emergentagent.com/api/features/registry",
+  "source_endpoint": "https://admin-policy-hub.preview.emergentagent.com/api/features/registry",
   "generated_at_utc": "2026-05-14T13:22:17.327356+00:00",
   "total_features": 24,
   "signature_algorithm": "SHA-256(canonical_json)",

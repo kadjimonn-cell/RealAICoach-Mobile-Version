@@ -13,11 +13,11 @@ import pytest
 import requests
 
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 
 FREE_USER = {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"}
 BASIC_USER = {"email": "f21.basic.1781338672@example.com", "password": "F21Basic#2026Aa"}
-PREMIUM_ADMIN = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+PREMIUM_ADMIN = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 APPROVED_EMPLOYER = {
     "email": "feature26.approved.employer.e2e@realaicoach.app",
     "password": "Feature26Approved#2026!",

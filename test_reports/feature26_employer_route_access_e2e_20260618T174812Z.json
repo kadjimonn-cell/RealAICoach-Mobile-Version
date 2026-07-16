@@ -5,13 +5,13 @@
     "feature_number": 26,
     "feature_id": "jobs-portal"
   },
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "results": {
     "free_user": {
       "actor": "free_user",
       "login_status": 200,
       "is_admin": false,
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-employer",
       "employer_route_testid_count": 1,
       "employer_title_testid_count": 1,
       "redirecting_non_employer_testid_count": 0
@@ -20,7 +20,7 @@
       "actor": "admin_user",
       "login_status": 200,
       "is_admin": true,
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-employer",
       "employer_route_testid_count": 1,
       "employer_title_testid_count": 1,
       "redirecting_non_employer_testid_count": 0
@@ -29,7 +29,7 @@
       "actor": "employer_user",
       "login_status": 200,
       "is_admin": false,
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-employer",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-employer",
       "employer_route_testid_count": 1,
       "employer_title_testid_count": 1,
       "redirecting_non_employer_testid_count": 0

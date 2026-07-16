@@ -1,6 +1,6 @@
 # Backend Testing Summary: Logout + Disclaimer Features
 **Test Date:** 2026-05-04 22:25 UTC
-**Base URL:** https://visa-polish-v2.preview.emergentagent.com
+**Base URL:** https://admin-policy-hub.preview.emergentagent.com
 **Tester:** Testing Agent (E2)
 
 ## Test Results Overview

@@ -21,7 +21,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 FREE_USER_EMAIL = "p1.free.1779113329@example.com"
 FREE_USER_PASSWORD = "P1Free#2026!Aa"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 EMPLOYER_EMAIL = "e2e.employer.feature26@realaicoach.app"
 EMPLOYER_PASSWORD = "E2EEmployer#Feature26!2026"
 

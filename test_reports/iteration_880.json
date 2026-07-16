@@ -12,7 +12,7 @@
     "GET /api/ai-enterprise/bootstrap?fallback_user_id=user_...": "HTTP 200 (guest scope, plan=free)",
     "GET /api/ai-photo-studio/bootstrap?fallback_user_id=user_...": "HTTP 200 (guest scope, plan=free)",
     "GET /api/personal-assistant/bootstrap?fallback_user_id=user_...": "HTTP 200 (guest session created)",
-    "preview_url_reachability": "https://visa-polish-v2.preview.emergentagent.com healthy — NO Cloudflare 429 seen in this iteration; both local and preview backends verified.",
+    "preview_url_reachability": "https://admin-policy-hub.preview.emergentagent.com healthy — NO Cloudflare 429 seen in this iteration; both local and preview backends verified.",
     "ui_smoke": {
       "GET /auth/login": "renders (login-email-input / login-password-input / login-submit-button data-testids present)",
       "admin_login_via_UI": "SUCCESS - redirected to / after submit; user chip 'RealAICoach admin@... OWNER' visible; sidebar with Home/Features/FPS Game/... visible",

@@ -3,7 +3,7 @@
 # Feature 32 Backend Test using curl
 # Tests reliability endpoints and regression guardrails
 
-BACKEND_URL="https://visa-polish-v2.preview.emergentagent.com"
+BACKEND_URL="https://admin-policy-hub.preview.emergentagent.com"
 ADMIN_EMAIL="admin@realaicoach.app"
 ADMIN_PASS="NewAdminPass2026!"
 FREE_EMAIL="p1.free.1779113329@example.com"

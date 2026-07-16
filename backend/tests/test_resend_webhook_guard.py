@@ -39,7 +39,7 @@ class TestResendWebhookGuardSchedulerRegistration:
         """Verify scheduler heartbeat for resend_webhook_guard exists"""
         # Admin login to check heartbeats
         admin_email = "admin@realaicoach.app"
-        admin_password = "NewAdminPass2026!"
+        admin_password = os.environ.get("ADMIN_PASSWORD", "")
         
         session = requests.Session()
         login_resp = session.post(
@@ -108,7 +108,7 @@ class TestResendWebhookGuardRuntimeState:
         """Verify the guard uses correct runtime flag key"""
         # The guard should write to system_runtime_flags with key 'resend_webhook_guard_state'
         admin_email = "admin@realaicoach.app"
-        admin_password = "NewAdminPass2026!"
+        admin_password = os.environ.get("ADMIN_PASSWORD", "")
         
         session = requests.Session()
         login_resp = session.post(
@@ -374,7 +374,7 @@ class TestHealthEndpointIntegration:
     def test_system_status_accessible_with_auth(self):
         """Verify system status endpoint is accessible with admin auth"""
         admin_email = "admin@realaicoach.app"
-        admin_password = "NewAdminPass2026!"
+        admin_password = os.environ.get("ADMIN_PASSWORD", "")
         
         session = requests.Session()
         login_resp = session.post(

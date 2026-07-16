@@ -26,7 +26,7 @@ from utils.email_templates import build_gtec_scan_v2_report_email
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://127.0.0.1:8001").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 def _is_risk_engine_admin_blocked(response: requests.Response) -> bool:

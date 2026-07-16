@@ -3,7 +3,7 @@ CRITICAL JOURNEY MONITOR & PLATFORM CACHE FRESHNESS VALIDATION - COMPLETE
 ================================================================================
 Test Date: 2026-05-06 05:17 UTC
 Backend URL: http://127.0.0.1:8001 (internal)
-External URL: https://visa-polish-v2.preview.emergentagent.com
+External URL: https://admin-policy-hub.preview.emergentagent.com
 
 ================================================================================
 REQUIREMENT 1: Admin Auth + Critical Journey Monitor Contract
@@ -11,16 +11,16 @@ REQUIREMENT 1: Admin Auth + Critical Journey Monitor Contract
 
 ✅ PASS: GET /api/admin/critical-journeys/status
   - Returns HTTP 200
-  - Includes 'resolved_base_url': https://visa-polish-v2.preview.emergentagent.com
+  - Includes 'resolved_base_url': https://admin-policy-hub.preview.emergentagent.com
   - Includes 'config' object with:
     * request_timeout_seconds: 12.0 (valid range 4-20)
-    * base_url_override: 'https://visa-polish-v2.preview.emergentagent.com'
+    * base_url_override: 'https://admin-policy-hub.preview.emergentagent.com'
   - Additional fields: counts, current_state, latest_run, open_incidents, timestamp
 
 ✅ PASS: POST /api/admin/critical-journeys/run-now
   - Returns HTTP 200
   - Includes 'run_id': cjm_run_3f8788fe47f8
-  - Includes 'base_url': https://visa-polish-v2.preview.emergentagent.com
+  - Includes 'base_url': https://admin-policy-hub.preview.emergentagent.com
   - Includes 'summary' with:
     * journey_count: 6
     * healthy_journeys: 0
@@ -90,13 +90,13 @@ EVIDENCE VALUES
 ================================================================================
 
 Critical Journey Monitor Status:
-  - resolved_base_url: https://visa-polish-v2.preview.emergentagent.com
+  - resolved_base_url: https://admin-policy-hub.preview.emergentagent.com
   - config.request_timeout_seconds: 12.0
-  - config.base_url_override: https://visa-polish-v2.preview.emergentagent.com
+  - config.base_url_override: https://admin-policy-hub.preview.emergentagent.com
 
 Critical Journey Monitor Run-Now:
   - run_id: cjm_run_3f8788fe47f8
-  - base_url: https://visa-polish-v2.preview.emergentagent.com
+  - base_url: https://admin-policy-hub.preview.emergentagent.com
   - duration_ms: 3000
   - journey_count: 6
   - final_status: failing (expected - preview environment issues)

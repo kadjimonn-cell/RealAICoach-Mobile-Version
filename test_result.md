@@ -2,8 +2,8 @@
 
 ## Test Information
 - **Date**: 2026-06-28 16:55 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/book-meeting
-- **Login URL**: https://visa-polish-v2.preview.emergentagent.com/auth/login
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/book-meeting
+- **Login URL**: https://admin-policy-hub.preview.emergentagent.com/auth/login
 - **Objective**: Validate frontend regression for rate-limit bypass and reliability panel flow
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Admin Reliability Panel & Network Stability Validation
@@ -50,12 +50,12 @@
 - Backend logs confirm successful authentication: `auth_login_perf stage=success user_id=user_4b5a68d2f7c6`
 - Session cookie not persisting across page navigations
 - After login, user stays on login page or is redirected to /welcome
-- Attempting to navigate to /book-meeting results in redirect to: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Fbook-meeting&auth_reason=unauthenticated`
+- Attempting to navigate to /book-meeting results in redirect to: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Fbook-meeting&auth_reason=unauthenticated`
 
 **Evidence**:
 - Login button clicked successfully
 - Backend logs show: `http_request method=POST path=/api/auth/login status=200 duration_ms=4748.20`
-- Current URL after login attempt: `https://visa-polish-v2.preview.emergentagent.com/auth/login` (no redirect)
+- Current URL after login attempt: `https://admin-policy-hub.preview.emergentagent.com/auth/login` (no redirect)
 - Navigating to /book-meeting results in redirect to welcome page with `auth_reason=unauthenticated`
 - This is the SAME issue documented in Feature 30 tests on 2026-06-22 09:00 UTC and 09:30 UTC
 
@@ -379,7 +379,7 @@
 **Test Details:**
 - **Test Date**: 2026-06-23 14:25 UTC
 - **Test Type**: POST-STABILITY-PATCH OBSERVATION (20-second observation)
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20.00 seconds
 - **Total Network Requests**: 1367 in 20 seconds
@@ -465,7 +465,7 @@ The flood rate has INCREASED by 16.2% compared to the 14:13 UTC test. ALL top en
 **Test Details:**
 - **Test Date**: 2026-06-23 14:13 UTC
 - **Test Type**: POST-STABILITY-PATCH OBSERVATION (20-second observation)
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20.00 seconds
 - **Total Network Requests**: 1334 in 20 seconds
@@ -548,7 +548,7 @@ The flood rate has INCREASED by 6.2% compared to the 14:05 UTC test. Mixed resul
 **Test Details:**
 - **Test Date**: 2026-06-23 14:05 UTC
 - **Test Type**: POST-FIX VALIDATION (20-second observation)
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20 seconds
 - **Total Network Requests**: 1231 in 20 seconds
@@ -628,7 +628,7 @@ The flood rate has DECREASED by 20.9% compared to the 13:53 UTC test. The fix is
 **Test Details:**
 - **Test Date**: 2026-06-23 13:53 UTC
 - **Test Type**: POST-RCA-FIX VALIDATION
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20 seconds
 - **Total Network Requests**: 1374 in 20 seconds
@@ -705,7 +705,7 @@ The flood rate has INCREASED by 7.7% compared to the 13:46 UTC test. The RCA fix
 
 **Test Details:**
 - **Test Date**: 2026-06-23 13:46 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20 seconds
 - **Total Network Requests**: 1359 in 20 seconds
@@ -762,7 +762,7 @@ The flood rate has INCREASED by 27.7% compared to the 13:39 UTC test. The issue 
 
 **Test Details:**
 - **Test Date**: 2026-06-23 13:39 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20 seconds
 - **Total Network Requests**: 1193 in 20 seconds
@@ -818,7 +818,7 @@ The flood rate has decreased by 53.6% compared to the 12:52 UTC test, but the is
 
 **Test Details:**
 - **Test Date**: 2026-06-23 12:52 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 20 seconds
 - **Total Network Requests**: 1449 in 20 seconds
@@ -877,7 +877,7 @@ The fix that was working at 11:17 UTC is no longer active. Possible causes:
 
 **Test Details:**
 - **Test Date**: 2026-06-23 11:17 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Test User**: p1.free.1779113329@example.com
 - **Observation Duration**: Exactly 30 seconds
 - **Total Network Requests**: 62 in 30 seconds
@@ -896,7 +896,7 @@ The fix that was working at 11:17 UTC is no longer active. Possible causes:
 
 ## Test Information
 - **Date**: 2026-06-23 09:58 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/content-library
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/content-library
 - **Objective**: Re-test 30-second request-flood behavior for free user
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Network Request Monitoring & Rate Limiting Validation
@@ -1137,8 +1137,8 @@ The `/api/gps/state` endpoint is being polled aggressively without proper backof
 
 ## Test Information
 - **Date**: 2026-06-22 09:30 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/features/sports
-- **Login URL**: https://visa-polish-v2.preview.emergentagent.com/auth/login
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/features/sports
+- **Login URL**: https://admin-policy-hub.preview.emergentagent.com/auth/login
 - **Objective**: Validate frontend behavior after retiring legacy /api/videos/sports/* wrappers and migrating to canonical /sports/v2 calls
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Migration Validation & UI Functional Testing
@@ -1183,8 +1183,8 @@ The `/api/gps/state` endpoint is being polled aggressively without proper backof
 
 **Evidence**:
 - Login button clicked successfully
-- Current URL after login: `https://visa-polish-v2.preview.emergentagent.com/auth/login` (no redirect)
-- Attempting to navigate to /features/sports results in redirect to: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
+- Current URL after login: `https://admin-policy-hub.preview.emergentagent.com/auth/login` (no redirect)
+- Attempting to navigate to /features/sports results in redirect to: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
 - Backend logs show no successful login POST to /api/auth/login during test
 - This is the SAME issue documented in the previous test on 2026-06-22 09:00 UTC
 
@@ -1468,8 +1468,8 @@ The `/api/gps/state` endpoint is being polled aggressively without proper backof
 
 ## Test Information
 - **Date**: 2026-06-22 09:00 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/features/sports
-- **Login URL**: https://visa-polish-v2.preview.emergentagent.com/auth/login
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/features/sports
+- **Login URL**: https://admin-policy-hub.preview.emergentagent.com/auth/login
 - **Objective**: Validate Feature 30 Sports v2 P1 UI rails and testids
 - **Tester**: Testing Agent (E2)
 - **Test Type**: UI Contract Validation
@@ -1527,7 +1527,7 @@ The `/api/gps/state` endpoint is being polled aggressively without proper backof
 
 **Evidence**:
 - Multiple test attempts show consistent pattern: login succeeds, but session lost on navigation
-- URL after navigation: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
+- URL after navigation: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
 - No sports-v2-* testids found in DOM (0 elements) because welcome page is rendered instead
 - Page content shows "ENTERPRISE AI PLATFORM" landing page, not Sports v2 feature
 
@@ -1579,7 +1579,7 @@ The `/api/gps/state` endpoint is being polled aggressively without proper backof
 ### Test 1: Login Flow ✅
 
 **Test Flow:**
-1. Navigated to https://visa-polish-v2.preview.emergentagent.com/auth/login
+1. Navigated to https://admin-policy-hub.preview.emergentagent.com/auth/login
 2. Filled email: p1.free.1779113329@example.com
 3. Filled password: P1Free#2026!Aa
 4. Clicked login submit button
@@ -1604,8 +1604,8 @@ The `/api/gps/state` endpoint is being polled aggressively without proper backof
 2. Waited for page to load
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/sports`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/sports`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
 - **Session Status**: LOST ❌
 - **Backend Response**: 401 Unauthorized for /api/auth/me
 - **Page Content**: Welcome/landing page instead of Sports v2 feature
@@ -2629,7 +2629,7 @@ The 2 missing admin testids (`job-platform-admin-funnel-rates` and `job-platform
 ## Test Information
 - **Date**: 2026-06-13 11:12 UTC (Final Verification)
 - **Previous Test**: 2026-06-13 10:52 UTC (Identified issue)
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Final verification after Feature 19 access-control patch and frontend dist rebuild
 - **Tester**: Testing Agent (E2)
 - **Test Type**: 3-Tier Access Control Validation
@@ -2767,8 +2767,8 @@ The 2 missing admin testids (`job-platform-admin-funnel-rates` and `job-platform
 3. Verified redirect behavior
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/bill-generator`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/bill-generator`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
 - **Redirected**: YES ✅
 - **Redirect Target**: `/welcome` with return URL
 
@@ -3036,7 +3036,7 @@ if (normalizedPath.startsWith('/features/bill-generator')) {
 
 ## Test Information
 - **Date**: 2026-06-13 10:00 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Re-validate Feature 20 tier access after frontend dist rebuild
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Tier-Based Access Control Validation
@@ -3093,8 +3093,8 @@ if (normalizedPath.startsWith('/features/bill-generator')) {
 3. Verified access and indicators
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/lexicon-intelligence`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/features/lexicon-intelligence`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/lexicon-intelligence`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/features/lexicon-intelligence`
 - **Redirected**: NO ✅
 - **Access Granted**: YES ✅
 - **Plan Displayed**: `FREE` ✅
@@ -3152,8 +3152,8 @@ if (normalizedPath.startsWith('/features/bill-generator')) {
 3. Verified access and indicators
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/lexicon-intelligence`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/features/lexicon-intelligence`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/lexicon-intelligence`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/features/lexicon-intelligence`
 - **Redirected**: NO ✅
 - **Access Granted**: YES ✅
 - **Plan Displayed**: `PREMIUM` ✅
@@ -3911,7 +3911,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 
 ## Test Information
 - **Date**: 2026-06-14 02:23 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Backend re-verification after entitlement stabilization patch (_effective_plan_for_user integration)
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Backend API Verification
@@ -3931,7 +3931,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 
 ## Test Information
 - **Date**: 2026-06-17 23:07 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Feature 26 (Jobs Portal) frontend monitoring validation - locked protocol (monitoring-only cycle, no route pruning)
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Access Control Validation (Free-user admin block + Admin control)
@@ -3975,7 +3975,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 **Results:**
 - **Login Status**: SUCCESS ✅
 - **Navigation Attempt**: /job-platform-admin
-- **Final URL**: https://visa-polish-v2.preview.emergentagent.com/ (redirected to home)
+- **Final URL**: https://admin-policy-hub.preview.emergentagent.com/ (redirected to home)
 - **Access Granted**: NO ✅ (correctly blocked)
 - **Redirect Behavior**: Free user was blocked and redirected away from admin surface
 
@@ -4001,7 +4001,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 
 **Results:**
 - **Navigation**: /job-platform-candidate
-- **Final URL**: https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate
+- **Final URL**: https://admin-policy-hub.preview.emergentagent.com/job-platform-candidate
 - **Access Granted**: YES ✅
 - **Page Load**: SUCCESS ✅
 
@@ -4027,7 +4027,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 **Results:**
 - **Login Status**: SUCCESS ✅
 - **Navigation**: /job-platform-admin
-- **Final URL**: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
+- **Final URL**: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
 - **Access Granted**: YES ✅
 - **Admin Content**: Detected ✅
 
@@ -4064,18 +4064,18 @@ error: ReferenceError: Cannot access 'oa' before initialization
 ### Final URLs Captured:
 
 1. **Free user attempting admin access:**
-   - Attempted: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
-   - Final: https://visa-polish-v2.preview.emergentagent.com/ (redirected to home)
+   - Attempted: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
+   - Final: https://admin-policy-hub.preview.emergentagent.com/ (redirected to home)
    - **Result**: ✅ Blocked as expected
 
 2. **Free user accessing candidate portal:**
-   - Attempted: https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate
-   - Final: https://visa-polish-v2.preview.emergentagent.com/job-platform-candidate
+   - Attempted: https://admin-policy-hub.preview.emergentagent.com/job-platform-candidate
+   - Final: https://admin-policy-hub.preview.emergentagent.com/job-platform-candidate
    - **Result**: ✅ Access granted as expected
 
 3. **Admin accessing admin portal:**
-   - Attempted: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
-   - Final: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
+   - Attempted: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
+   - Final: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
    - **Result**: ✅ Access granted as expected
 
 ### Key Page Markers/TestIDs Found:
@@ -4468,7 +4468,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 
 ## Test Information
 - **Date**: 2026-06-14 04:34 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Retest Daily Meditation frontend access after route allowlist patch
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Route Access Control Validation
@@ -4539,7 +4539,7 @@ error: ReferenceError: Cannot access 'oa' before initialization
 ### Test 1: Login ✅
 
 **Test Flow:**
-1. Navigated to https://visa-polish-v2.preview.emergentagent.com
+1. Navigated to https://admin-policy-hub.preview.emergentagent.com
 2. Clicked "Sign In" button in navigation
 3. Filled email: p1.free.1779113329@example.com
 4. Filled password: P1Free#2026!Aa
@@ -4561,8 +4561,8 @@ error: ReferenceError: Cannot access 'oa' before initialization
 2. Observed redirect behavior
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/daily-meditation`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/subscription/plans`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/daily-meditation`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/subscription/plans`
 - **Redirected**: YES ❌
 - **Access Granted**: NO ❌
 - **Reason**: Frontend route guard blocking free users from `/features/daily-meditation`
@@ -4738,7 +4738,7 @@ cd /app/frontend && yarn build
 
 ## Test Information
 - **Date**: 2026-06-14 12:54 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Focused frontend validation after route allowlist patch and dist rebuild
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Route Access Control + Selector Validation
@@ -4854,8 +4854,8 @@ cd /app/frontend && yarn build
 3. Verified redirect behavior
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/daily-meditation`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/daily-meditation`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/welcome?return_to=%2Ffeatures&auth_reason=unauthenticated`
 - **Redirected**: YES ✅
 - **Redirect Target**: `/welcome` with return URL and auth reason
 
@@ -4899,8 +4899,8 @@ cd /app/frontend && yarn build
 3. Verified final URL
 
 **Results:**
-- **Initial URL**: `https://visa-polish-v2.preview.emergentagent.com/features/daily-meditation`
-- **Final URL**: `https://visa-polish-v2.preview.emergentagent.com/features/daily-meditation`
+- **Initial URL**: `https://admin-policy-hub.preview.emergentagent.com/features/daily-meditation`
+- **Final URL**: `https://admin-policy-hub.preview.emergentagent.com/features/daily-meditation`
 - **Redirected**: NO ✅
 - **Access Granted**: YES ✅
 - **Route Allowlist**: WORKING ✅
@@ -5043,7 +5043,7 @@ cd /app/frontend && yarn build
 
 ## Test Information
 - **Date**: 2026-06-17 09:50 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Frontend verification after final dead-code purge in routes/jobs.py (Feature 26)
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Route Access + Regression Validation
@@ -5207,7 +5207,7 @@ cd /app/frontend && yarn build
 3. Verified page content and functionality
 
 **Results:**
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
 - **Content Length**: 2760 characters
 - **Blank Page**: NO ✅
 - **JavaScript Errors**: NO ✅
@@ -5234,7 +5234,7 @@ cd /app/frontend && yarn build
 3. Verified page content and functionality
 
 **Results:**
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/career
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/career
 - **Content Length**: 1393 characters
 - **Blank Page**: NO ✅
 - **JavaScript Errors**: NO ✅
@@ -5259,8 +5259,8 @@ cd /app/frontend && yarn build
 3. Verified page content and functionality
 
 **Results:**
-- **Initial URL**: https://visa-polish-v2.preview.emergentagent.com/mini-apps/job-platform
-- **Final URL**: https://visa-polish-v2.preview.emergentagent.com/job-platform
+- **Initial URL**: https://admin-policy-hub.preview.emergentagent.com/mini-apps/job-platform
+- **Final URL**: https://admin-policy-hub.preview.emergentagent.com/job-platform
 - **Redirect**: YES (expected routing behavior)
 - **Content Length**: 3105 characters
 - **Blank Page**: NO ✅
@@ -5282,7 +5282,7 @@ cd /app/frontend && yarn build
 3. Verified page content and functionality
 
 **Results:**
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/employer-apply
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/employer-apply
 - **Content Length**: 1341 characters
 - **Blank Page**: NO ✅
 - **JavaScript Errors**: NO ✅
@@ -5428,7 +5428,7 @@ cd /app/frontend && yarn build
 
 ## Test Information
 - **Date**: 2026-06-17 13:15 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Re-test Feature 26 frontend security fix after successful web export and service restart
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Frontend Security Validation
@@ -5482,7 +5482,7 @@ cd /app/frontend && yarn build
 
 # Access to /job-platform-admin
 - HTTP Status: 200
-- Final URL: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
+- Final URL: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
 - Content Length: 126,619 bytes
 ```
 
@@ -5498,7 +5498,7 @@ cd /app/frontend && yarn build
 
 # Access to /job-platform-admin
 - HTTP Status: 200
-- Final URL: https://visa-polish-v2.preview.emergentagent.com/job-platform-admin
+- Final URL: https://admin-policy-hub.preview.emergentagent.com/job-platform-admin
 - Content Length: 126,619 bytes
 ```
 
@@ -5841,7 +5841,7 @@ router.replace((decision.redirectTo || '/dashboard') as any);
 
 ## Test Information
 - **Date**: 2026-06-17 16:36 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Periodic frontend monitoring verification for Feature 26 P1 (monitoring-only cycle)
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Monitoring Verification
@@ -5900,7 +5900,7 @@ http_request method=GET path=/api/auth/me status=200 duration_ms=5.99
 
 **Test Method**: Direct API call with session cookie
 ```bash
-curl -L -b cookies.txt "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin"
+curl -L -b cookies.txt "https://admin-policy-hub.preview.emergentagent.com/job-platform-admin"
 - Final URL: /job-platform-admin (no redirect)
 - Response: Full HTML page served
 - Status: 200 OK
@@ -6197,7 +6197,7 @@ Content: Full HTML page (not redirect)
 
 ## Test Information
 - **Date**: 2026-06-17 17:35 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Focused locked-protocol backend verification for Feature 26 Checkpoint C
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Backend API Verification
@@ -6405,7 +6405,7 @@ All admin monitoring endpoints operational:
 
 ## Test Information
 - **Date**: 2026-06-18 00:43 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Independent backend verification for Feature 26 latest cycle
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Backend API Verification - Locked Protocol
@@ -6640,7 +6640,7 @@ Expected:
 
 ## Test Information
 - **Date**: 2026-06-18 02:31 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Independent backend verification for Feature 26 latest cycle + remains-for-DONE checklist
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Backend API Verification - Locked Protocol
@@ -6883,7 +6883,7 @@ Validate:
 
 ## Test Information
 - **Date**: 2026-06-18 04:09 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Independent backend verification for latest Feature 26 monitoring cycle
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Backend API Verification
@@ -7137,7 +7137,7 @@ Validate:
 
 ## Test Information
 - **Date**: 2026-06-20 10:14 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Feature 26 frontend verification with selector-driven checks (no networkidle wait)
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Frontend Selector Verification
@@ -7389,7 +7389,7 @@ Validate:
 
 ## Test Information
 - **Date**: 2026-06-20 10:25 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Employer-only frontend verification with exact credentials from review request
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Employer Selector Validation
@@ -7481,7 +7481,7 @@ error: Failed to load resource: the server responded with a status of 429 ()
 
 **Results:**
 - **Page Load**: ✅ SUCCESS
-- **URL**: `https://visa-polish-v2.preview.emergentagent.com/job-platform-employer`
+- **URL**: `https://admin-policy-hub.preview.emergentagent.com/job-platform-employer`
 - **Content Visible**: ✅ YES
 
 **Page Content Observed** (from screenshot):

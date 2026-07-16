@@ -8,7 +8,7 @@ import requests
 import sys
 import os
 
-BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://visa-polish-v2.preview.emergentagent.com')
+BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://admin-policy-hub.preview.emergentagent.com')
 BASE_URL = f"{BACKEND_URL}/api"
 
 def test_subscription_conversion_telemetry():

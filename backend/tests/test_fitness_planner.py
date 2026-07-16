@@ -1,3 +1,4 @@
+import os
 #!/usr/bin/env python3
 """
 Feature 8 (Fitness Planner Pro) - Comprehensive Backend E2E Testing
@@ -10,9 +11,9 @@ import sys
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Test state
 session = requests.Session()

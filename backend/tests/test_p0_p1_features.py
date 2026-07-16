@@ -13,10 +13,10 @@ from datetime import datetime, timezone
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 if not BASE_URL:
-    BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+    BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 def _is_admin_containment_response(response: requests.Response) -> bool:

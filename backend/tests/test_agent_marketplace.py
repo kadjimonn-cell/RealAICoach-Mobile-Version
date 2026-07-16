@@ -18,7 +18,7 @@ from agent_framework.marketplace import (  # noqa: E402
 from utils.access_control_engine import CANONICAL_FEATURE_METERS  # noqa: E402
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
-ADMIN = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 
 FEATURE_KEYS = {m["feature_key"] for m in CANONICAL_FEATURE_METERS}
 KNOWN_TOOLS = {"template_render", "db_read", "http_fetch"}

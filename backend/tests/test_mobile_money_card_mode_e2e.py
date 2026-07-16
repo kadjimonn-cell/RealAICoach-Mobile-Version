@@ -14,13 +14,13 @@ import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 
 # Test credentials
 FREE_USER_EMAIL = "ui.test.new.1779211745@example.com"
 FREE_USER_PASSWORD = "UiTestNew#2026Aa!"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 def _is_environment_auth_block(response: requests.Response) -> bool:

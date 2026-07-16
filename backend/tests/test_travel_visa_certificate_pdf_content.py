@@ -30,7 +30,7 @@ import requests
 BASE_URL = "http://localhost:8001"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASS = "NewAdminPass2026!"
+ADMIN_PASS = os.environ.get("ADMIN_PASSWORD", "")
 ADMIN_USER_ID = "user_4b5a68d2f7c6"
 EXISTING_CERT_ID = "TV-6B604E13"
 

@@ -11,7 +11,7 @@
       "unknown"
     ]
   },
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "scans": {
     "dependencies": {
       "python": {
@@ -1107,265 +1107,265 @@
       "runtime": {
         "checks": [
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/autonomous-engine/failure-memory/dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/autonomous-engine/failure-memory/dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/activity-log?limit=1",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/activity-log?limit=1",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/system/metrics",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/system/metrics",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/overview",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/overview",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/fraud/dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/fraud/dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/infra/metrics",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/infra/metrics",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/sla/dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/sla/dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/page-performance/dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/page-performance/dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/page-performance/alerts",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/page-performance/alerts",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/page-performance/autofix-log",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/page-performance/autofix-log",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/stats",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/stats",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/approvals",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/approvals",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/listings",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/listings",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/support/tickets",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/support/tickets",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/config/admin",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/config/admin",
             "status": 404
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/config/admin",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/config/admin",
             "status": 404,
             "warning": "unexpected status for unauthenticated admin probe"
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/global-adaptation/overview",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/global-adaptation/overview",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/global-adaptation/effectiveness",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/global-adaptation/effectiveness",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/language-quality-dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/language-quality-dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/multilingual-smoke-report",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/multilingual-smoke-report",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/emails",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/emails",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/system/health-deep",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/system/health-deep",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/self-repair/status",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/self-repair/status",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/system/repair-history",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/system/repair-history",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/support/faq/admin/list",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/support/faq/admin/list",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/submissions",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/submissions",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/cia-trust/overview",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/cia-trust/overview",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/cia-trust/widget",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/cia-trust/widget",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/cia-trust/self-heal/logs",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/cia-trust/self-heal/logs",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/status",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/scaling/status",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/rules",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/scaling/rules",
             "status": 500
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/rules",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/scaling/rules",
             "status": 500,
             "warning": "unexpected status for unauthenticated admin probe"
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/history",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/scaling/history",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/scaling/ai-history",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/scaling/ai-history",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin-tab-integrity",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin-tab-integrity",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin-tab-e2e",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin-tab-e2e",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/ai-support/dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/ai-support/dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/ai-support/log",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/ai-support/log",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/link-host-self-heal/history",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/link-host-self-heal/history",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/payment-analytics/fedapay-policy/timeline",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/payment-analytics/fedapay-policy/timeline",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/subscriptions/expiry-overview",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/subscriptions/expiry-overview",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/subscriptions/analytics",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/subscriptions/analytics",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/payments/executive-billing-pack",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/payments/executive-billing-pack",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/payment-history-export-settings",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/payment-history-export-settings",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/receipt-branding",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/receipt-branding",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/push/subscribers",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/push/subscribers",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/web-vitals/dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/web-vitals/dashboard",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/web-vitals/alerts",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/web-vitals/alerts",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/analytics",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/analytics",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/lighthouse/history",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/lighthouse/history",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/lighthouse/latest",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/lighthouse/latest",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/aso/analytics",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/aso/analytics",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/mobile-indexing/latest",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/mobile-indexing/latest",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/global-performance/latest",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/global-performance/latest",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/seo/responsiveness/latest",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/seo/responsiveness/latest",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/otp-dashboard",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/admin/otp-dashboard",
             "status": 401
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/fallback-links/health",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/admin/fallback-links/health",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/sso-redirect-drift-sentinel",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/admin/sso-redirect-drift-sentinel",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/multi-region-auth-probe/status",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/admin/multi-region-auth-probe/status",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/sso-status",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/sso-status",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/sso-debug",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/sso-debug",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/session-timeout-config",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/admin/session-timeout-config",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/admin/session-timeout-config/history",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/admin/session-timeout-config/history",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/media-storage/stats",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/media-storage/stats",
             "status": 403
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/admin/feature-access/matrix",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/admin/feature-access/matrix",
             "status": 403
           }
         ],
@@ -1384,12 +1384,12 @@
       "runtime": {
         "checks": [
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/login",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/login",
             "status": 422,
             "payload_type": "string_sqli_like"
           },
           {
-            "url": "https://visa-polish-v2.preview.emergentagent.com/api/auth/login",
+            "url": "https://admin-policy-hub.preview.emergentagent.com/api/auth/login",
             "status": 422,
             "payload_type": "nosql_like"
           }

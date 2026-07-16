@@ -76,8 +76,8 @@
   "main_agent_can_self_test": true,
   "context_for_next_testing_agent": "Public visitor paywall routing for /mini-apps/mobile-money is working correctly. Unauthenticated visitors are redirected to /auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money instead of /subscription/plans. The implementation uses resolveVisitorCtaPath() in miniAppRedirects.ts with proper fallback handling. RBAC guardrails remain intact - this is only a public pre-auth routing hygiene fix.",
   "external_preview_verification": {
-    "url": "https://visa-polish-v2.preview.emergentagent.com/mini-apps/mobile-money",
+    "url": "https://admin-policy-hub.preview.emergentagent.com/mini-apps/mobile-money",
     "status": "VERIFIED",
-    "final_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money"
+    "final_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=mini-apps-mobile-money&return_to=%2Fmini-apps%2Fmobile-money"
   }
 }

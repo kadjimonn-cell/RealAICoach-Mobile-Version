@@ -1,3 +1,4 @@
+import os
 #!/usr/bin/env python3
 """GTEC C5 white-screen sentry + responsive viewport matrix artifact generator.
 
@@ -445,7 +446,7 @@ async def run(
 
     artifacts: list[dict[str, Any]] = []
     email = "admin@realaicoach.app"
-    password = "NewAdminPass2026!"
+    password = os.environ.get("ADMIN_PASSWORD", "")
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(

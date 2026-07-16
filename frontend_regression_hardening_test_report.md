@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-05-23 00:13 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Validate frontend regression-hardening changes after dependency split
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Regression Validation - Dependency Split Safety

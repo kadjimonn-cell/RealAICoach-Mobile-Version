@@ -9,7 +9,7 @@ import json
 import sys
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 FREE_USER_EMAIL = "p1.free.1779113329@example.com"
 FREE_USER_PASSWORD = "P1Free#2026!Aa"
 ADMIN_EMAIL = "admin@realaicoach.app"

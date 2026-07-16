@@ -42,7 +42,7 @@ def _load_backend_url() -> str:
 
 BASE_URL = _load_backend_url()
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 FP_ENDPOINT = f"{BASE_URL}/api/admin/payments/simulate-fedapay-production-e2e"
 ST_ENDPOINT = f"{BASE_URL}/api/admin/payments/simulate-stripe-production-e2e"
 PP_ENDPOINT = f"{BASE_URL}/api/admin/payments/simulate-paypal-production-e2e"

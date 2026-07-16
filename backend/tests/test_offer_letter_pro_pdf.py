@@ -676,7 +676,7 @@ class TestEndpointSmoke:
         s.headers.update({"X-Requested-With": "XMLHttpRequest"})
         r = s.post(
             f"{self.BASE_URL}/api/auth/login",
-            json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+            json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
             timeout=15,
         )
         if r.status_code != 200:

@@ -42,7 +42,7 @@ load_dotenv("/app/backend/.env")
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 SECURITY_INCIDENTS_PATH = Path("/app/backend/routes/security_incidents.py")
 AUTH_PATH = Path("/app/backend/routes/auth.py")

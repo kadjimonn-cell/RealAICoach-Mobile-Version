@@ -29,7 +29,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstr
 # Fall back to localhost for internal test runs (matches existing offer test file)
 LOCAL_URL = "http://localhost:8001"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 OFFER_ID = "off_ddb1e393a694"
 
 EXPECTED_BRAND_NAME = "RealAICoach"

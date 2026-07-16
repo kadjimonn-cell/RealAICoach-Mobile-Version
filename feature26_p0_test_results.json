@@ -2,14 +2,14 @@
   "test_run_timestamp": "2026-06-17T23:01:15.286964",
   "feature_number": 26,
   "feature_id": "jobs-portal",
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "tests": [
     {
       "test_name": "Health Endpoint",
       "status": "PASS",
       "timestamp": "2026-06-17T23:01:17.377121",
       "details": {
-        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/health",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/api/hiring/v2/health",
         "status_code": 200,
         "response": {
           "ok": true,
@@ -32,7 +32,7 @@
       "status": "PASS",
       "timestamp": "2026-06-17T23:01:17.455971",
       "details": {
-        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
         "status_code": 200,
         "response": {
           "generated_at": "2026-06-17T23:01:17.406322+00:00",
@@ -164,7 +164,7 @@
       "status": "PASS",
       "timestamp": "2026-06-17T23:01:17.535725",
       "details": {
-        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-removal-readiness?mode=strict_zero&exclude_synthetic=false",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/api/hiring/v2/admin/legacy-removal-readiness?mode=strict_zero&exclude_synthetic=false",
         "status_code": 200,
         "response": {
           "generated_at": "2026-06-17T23:01:17.486572+00:00",
@@ -441,7 +441,7 @@
       "status": "PASS",
       "timestamp": "2026-06-17T23:01:17.575550",
       "details": {
-        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-removal-readiness?mode=near_zero&exclude_synthetic=false",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/api/hiring/v2/admin/legacy-removal-readiness?mode=near_zero&exclude_synthetic=false",
         "status_code": 200,
         "response": {
           "generated_at": "2026-06-17T23:01:17.566536+00:00",
@@ -698,7 +698,7 @@
       "status": "PASS",
       "timestamp": "2026-06-17T23:01:17.616610",
       "details": {
-        "url": "https://visa-polish-v2.preview.emergentagent.com/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
+        "url": "https://admin-policy-hub.preview.emergentagent.com/api/hiring/v2/admin/legacy-retirement-readiness?lookback_hours=72",
         "status_code": 200,
         "controls_snapshot": {
           "legacy_retirement_enabled": false,

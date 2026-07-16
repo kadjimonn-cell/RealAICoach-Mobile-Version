@@ -8,7 +8,7 @@ import requests
 import json
 import sys
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 def test_health_endpoint():
     """Test GET /api/health returns 200"""

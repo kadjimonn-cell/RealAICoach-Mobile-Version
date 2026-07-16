@@ -13,7 +13,7 @@ import sys
 from datetime import datetime
 
 # Base URL from frontend/.env
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Admin credentials from test_credentials.md
 ADMIN_EMAIL = "admin@realaicoach.app"

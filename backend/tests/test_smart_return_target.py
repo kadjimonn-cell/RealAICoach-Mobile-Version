@@ -24,7 +24,7 @@ BASIC_USER_EMAIL = "f21.basic.1781338672@example.com"
 BASIC_USER_PASSWORD = "F21Basic#2026Aa"
 
 ADMIN_USER_EMAIL = "admin@realaicoach.app"
-ADMIN_USER_PASSWORD = "NewAdminPass2026!"
+ADMIN_USER_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 @pytest.fixture

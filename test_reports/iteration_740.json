@@ -18,7 +18,7 @@
         "actual_source": "feature-entry",
         "expected_return_to": "%2Fmini-apps",
         "actual_return_to": "%2Fmini-apps",
-        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry&return_to=%2Fmini-apps"
+        "final_url": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry&return_to=%2Fmini-apps"
       },
       "test_2_creator_exchange": {
         "status": "PASS",
@@ -27,7 +27,7 @@
         "actual_source": "feature-entry-creator-exchange",
         "expected_return_to": "%2Fmini-apps%2Fcreator-exchange",
         "actual_return_to": "%2Fmini-apps%2Fcreator-exchange",
-        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange"
+        "final_url": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange"
       },
       "test_3_job_platform": {
         "status": "PASS",
@@ -36,7 +36,7 @@
         "actual_source": "feature-entry-job-platform",
         "expected_return_to": "%2Fmini-apps%2Fjob-platform",
         "actual_return_to": "%2Fmini-apps%2Fjob-platform",
-        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-job-platform&return_to=%2Fmini-apps%2Fjob-platform"
+        "final_url": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry-job-platform&return_to=%2Fmini-apps%2Fjob-platform"
       },
       "test_4_mobile_money": {
         "status": "PASS",
@@ -45,7 +45,7 @@
         "actual_source": "feature-entry-mobile-money",
         "expected_return_to": "%2Fmini-apps%2Fmobile-money",
         "actual_return_to": "%2Fmini-apps%2Fmobile-money",
-        "final_url": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-mobile-money&return_to=%2Fmini-apps%2Fmobile-money"
+        "final_url": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry-mobile-money&return_to=%2Fmini-apps%2Fmobile-money"
       }
     },
     "footer_regression": {
@@ -119,13 +119,13 @@
   "main_agent_can_self_test": true,
   "context_for_next_testing_agent": "Checkpoint C implementation verified. Mini-app routes (/mini-apps, /mini-apps/creator-exchange, /mini-apps/job-platform, /mini-apps/mobile-money) now use neutral 'feature-entry*' source values instead of 'mini-apps*'. Footer protected links remain unchanged with 'footer-*' sources. Internal route namespace /mini-apps/* is preserved - only analytics source values were renamed.",
   "external_preview_verification": {
-    "url": "https://visa-polish-v2.preview.emergentagent.com",
+    "url": "https://admin-policy-hub.preview.emergentagent.com",
     "status": "VERIFIED",
-    "mini_apps_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry&return_to=%2Fmini-apps",
-    "creator_exchange_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
-    "job_platform_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
-    "mobile_money_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=feature-entry-mobile-money&return_to=%2Fmini-apps%2Fmobile-money",
-    "footer_learning_hub_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
-    "footer_my_analytics_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics"
+    "mini_apps_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry&return_to=%2Fmini-apps",
+    "creator_exchange_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
+    "job_platform_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
+    "mobile_money_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=feature-entry-mobile-money&return_to=%2Fmini-apps%2Fmobile-money",
+    "footer_learning_hub_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
+    "footer_my_analytics_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics"
   }
 }

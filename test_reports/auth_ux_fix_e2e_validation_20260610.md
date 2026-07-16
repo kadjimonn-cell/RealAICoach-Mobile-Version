@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-06-10 03:03 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Validate P0 auth UX fix - banner suppression/visibility based on auth_reason parameter
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Frontend E2E Validation
@@ -104,9 +104,9 @@ Users reported confusing login warning banner shown even when already authentica
 **Results**:
 - Login successful: ✅ Redirected to home page
 - Navigation to `/features/watch-videos`: ✅ Page loaded successfully
-- URL after navigation: `https://visa-polish-v2.preview.emergentagent.com/features/watch-videos`
+- URL after navigation: `https://admin-policy-hub.preview.emergentagent.com/features/watch-videos`
 - Page refresh: ✅ Completed successfully
-- URL after refresh: `https://visa-polish-v2.preview.emergentagent.com/features/watch-videos`
+- URL after refresh: `https://admin-policy-hub.preview.emergentagent.com/features/watch-videos`
 - ✅ **PASS**: Stayed on protected page after refresh, no redirect loop
 
 **Evidence**: Screenshot `case3-post-login-success.png` shows Watch Videos feature page loaded successfully

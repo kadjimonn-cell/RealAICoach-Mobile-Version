@@ -25,7 +25,7 @@ CREDENTIALS = {
     "free": {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"},
     "basic": {"email": "f21.basic.1781338672@example.com", "password": "F21Basic#2026Aa"},
     "premium": {"email": "watchvideos.premium.4dc6ab84@example.com", "password": "WatchVideos#2026Aa"},
-    "admin": {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+    "admin": {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
 }
 
 # Paid/authenticated feature APIs that should be blocked for free users

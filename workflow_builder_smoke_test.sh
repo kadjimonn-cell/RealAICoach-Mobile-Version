@@ -3,7 +3,7 @@
 # Workflow Builder API Smoke Test
 # Testing Feature 4 Workflow Builder API endpoints
 
-BASE_URL="https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL="https://admin-policy-hub.preview.emergentagent.com"
 FALLBACK_USER_ID="guest123456789012"
 
 echo "=========================================="

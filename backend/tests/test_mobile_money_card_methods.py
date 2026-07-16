@@ -83,7 +83,7 @@ class TestMobileMoneyGatewaysCardMethods:
             f"{BASE_URL}/api/auth/login",
             json={
                 "email": "admin@realaicoach.app",
-                "password": "NewAdminPass2026!"
+                "password": os.environ.get("ADMIN_PASSWORD", "")
             },
             headers={"X-Requested-With": "XMLHttpRequest"}
         )

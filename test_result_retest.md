@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-05-17 05:08 UTC (Retest after CSS class implementation)
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/welcome
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/welcome
 - **Objective**: Validate CSS class immediate overlay implementation for EN->FR language switch
 - **Tester**: Testing Agent (E2)
 - **Previous Test**: 2026-05-17 04:45 UTC (FAILED - 1.843s gap)
@@ -15,7 +15,7 @@
 5. Validate post-switch usability
 
 ## Test Environment
-- **Frontend URL**: https://visa-polish-v2.preview.emergentagent.com/welcome
+- **Frontend URL**: https://admin-policy-hub.preview.emergentagent.com/welcome
 - **Browser**: Chromium (Playwright)
 - **Viewport**: Desktop (1920x1080)
 - **Initial Language**: English (EN)

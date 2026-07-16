@@ -5,7 +5,7 @@
     "feature_number": 26,
     "feature_id": "jobs-portal"
   },
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "fixture_account": {
     "email": "feature26.approved.employer.e2e@realaicoach.app",
     "is_admin_expected": false,
@@ -25,7 +25,7 @@
     "permissions_api": {
       "raw": "non-json"
     },
-    "final_url": "https://visa-polish-v2.preview.emergentagent.com/job-platform-admin"
+    "final_url": "https://admin-policy-hub.preview.emergentagent.com/job-platform-admin"
   },
   "verdicts": {
     "login_success": false,

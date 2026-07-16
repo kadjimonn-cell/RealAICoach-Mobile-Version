@@ -22,7 +22,7 @@ if not BASE_URL:
 
 # Test credentials
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Module-level storage
 _test_data = {}

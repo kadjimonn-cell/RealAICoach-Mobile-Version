@@ -8,9 +8,9 @@ import os
 import requests
 import pytest
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 
-ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN_CREDS = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 FREE_CREDS = {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"}
 
 

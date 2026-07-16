@@ -8,7 +8,7 @@ import json
 from typing import Dict, Any, List
 
 # Base URL from frontend env
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials from review request
 CREDENTIALS = {

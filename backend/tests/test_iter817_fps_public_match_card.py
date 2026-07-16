@@ -12,7 +12,7 @@ Validates:
 import os
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 VALID_MATCH_ID = "fps_caa911d0104e"
 INVALID_MATCH_ID = "fps_doesnotexist"
 

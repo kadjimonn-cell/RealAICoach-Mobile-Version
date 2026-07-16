@@ -18,7 +18,7 @@ import os
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 class TestAppleSSOPreflightAcceptance:
@@ -239,7 +239,7 @@ class TestAppleSSOPreflightAcceptance:
         # Based on .env:
         # APPLE_SSO_REQUIRE_PREFLIGHT_ACCEPTED=true
         # APPLE_SSO_STRICT_CALLBACK_ALLOWLIST=true
-        # APPLE_SSO_PROVIDER_ACCEPTED_CALLBACK_BASES=https://visa-polish-v2.preview.emergentagent.com
+        # APPLE_SSO_PROVIDER_ACCEPTED_CALLBACK_BASES=https://admin-policy-hub.preview.emergentagent.com
         
         assert data.get("apple_require_preflight_accepted") is True, \
             "APPLE_SSO_REQUIRE_PREFLIGHT_ACCEPTED should be true"

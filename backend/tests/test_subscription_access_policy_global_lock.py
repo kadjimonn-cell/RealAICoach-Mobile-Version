@@ -15,7 +15,7 @@ USERS = {
     "free": ("p1.free.1779113329@example.com", "P1Free#2026!Aa"),
     "basic": ("f22.basic.20260613@example.com", "F22Basic#2026Aa"),
     "premium": ("f22.premium.20260613@example.com", "F22Premium#2026Aa"),
-    "admin": ("admin@realaicoach.app", "NewAdminPass2026!"),
+    "admin": ("admin@realaicoach.app", os.environ.get("ADMIN_PASSWORD", "")),
 }
 
 

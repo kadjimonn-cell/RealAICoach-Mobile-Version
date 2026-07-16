@@ -15,7 +15,7 @@ from agent_framework.analytics import estimate_cost  # noqa: E402
 from agent_framework.orchestration_v2 import RESOLUTION_STRATEGIES  # noqa: E402
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
-ADMIN = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 
 
 @pytest.fixture(scope="module")

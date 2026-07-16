@@ -48,7 +48,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 assert BASE_URL, "REACT_APP_BACKEND_URL must be set for testing"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 CANONICAL_HOST = "https://realaicoach.app"
 PREVIEW_HOST_MARKER = "admin-analytics-80.preview.emergentagent.com"

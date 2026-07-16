@@ -11,7 +11,7 @@ import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstrip("/")
 
-ADMIN = ("admin@realaicoach.app", "NewAdminPass2026!")
+ADMIN = ("admin@realaicoach.app", os.environ.get("ADMIN_PASSWORD", ""))
 FREE = ("p1.free.1779113329@example.com", "P1Free#2026!Aa")
 
 

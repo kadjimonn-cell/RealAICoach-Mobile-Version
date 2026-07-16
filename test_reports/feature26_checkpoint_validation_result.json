@@ -2,7 +2,7 @@
   "timestamp": "2026-06-18T02:14:41.558835Z",
   "validation_type": "feature26_checkpoint_validation",
   "checkpoint_file": "/app/test_reports/feature26_root_cause_checkpointC_20260618T021249Z.json",
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "tests": [
     {
       "test": "telemetry includes candidate_save_job",

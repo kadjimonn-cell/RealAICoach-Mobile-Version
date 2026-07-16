@@ -13,7 +13,7 @@
     "test_1_root_url_visitor": {
       "status": "PASS",
       "description": "Visitor opening root URL `/` should NOT show blocking overlay",
-      "url_tested": "https://visa-polish-v2.preview.emergentagent.com/",
+      "url_tested": "https://admin-policy-hub.preview.emergentagent.com/",
       "blocking_overlay_visible": false,
       "redirected_to_welcome": true,
       "evidence": "No route-access-guard-overlay visible, URL correctly redirected to /welcome"
@@ -21,7 +21,7 @@
     "test_2_welcome_direct": {
       "status": "PASS",
       "description": "Visitor opening `/welcome` directly should NOT show blocking overlay",
-      "url_tested": "https://visa-polish-v2.preview.emergentagent.com/welcome",
+      "url_tested": "https://admin-policy-hub.preview.emergentagent.com/welcome",
       "blocking_overlay_visible": false,
       "welcome_content_visible": true,
       "evidence": "No route-access-guard-overlay visible, welcome page content rendered"
@@ -33,14 +33,14 @@
       "login_successful": true,
       "blocking_overlay_after_login": false,
       "console_evidence": "[auth-session] session_renew_success {phase: route_guard_session_probe_auth_me_success}",
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/"
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/"
     },
     "test_4_protected_route_after_login": {
       "status": "PASS",
       "description": "After login, navigating to protected route should work without blocking overlay",
-      "url_tested": "https://visa-polish-v2.preview.emergentagent.com/dashboard",
+      "url_tested": "https://admin-policy-hub.preview.emergentagent.com/dashboard",
       "blocking_overlay_visible": false,
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/dashboard",
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/dashboard",
       "evidence": "Dashboard rendered successfully with sidebar and user content visible"
     },
     "test_5_regression_public_routes": {
@@ -50,7 +50,7 @@
       "root_accessible": true,
       "blocking_overlay_on_welcome": false,
       "blocking_overlay_on_root": false,
-      "final_url": "https://visa-polish-v2.preview.emergentagent.com/welcome"
+      "final_url": "https://admin-policy-hub.preview.emergentagent.com/welcome"
     }
   },
   "bug_fix_verification": {

@@ -10,7 +10,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 EMPLOYER_EMAIL = "e2e.employer.feature26@realaicoach.app"
 EMPLOYER_PASSWORD = "E2EEmployer#Feature26!2026"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 @pytest.fixture(scope="module")

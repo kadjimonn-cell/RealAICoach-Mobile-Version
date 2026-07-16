@@ -57,8 +57,8 @@
       "line": 11
     },
     "functional_smoke_cta_navigation": {
-      "before_url": "https://visa-polish-v2.preview.emergentagent.com/",
-      "after_url": "https://visa-polish-v2.preview.emergentagent.com/feature-gallery",
+      "before_url": "https://admin-policy-hub.preview.emergentagent.com/",
+      "after_url": "https://admin-policy-hub.preview.emergentagent.com/feature-gallery",
       "navigated": true
     }
   },

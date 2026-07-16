@@ -2,7 +2,7 @@
 ## CSS Injection Implementation Verification
 
 **Test Date:** 2026-05-17 05:17 UTC  
-**Test URL:** https://visa-polish-v2.preview.emergentagent.com/welcome  
+**Test URL:** https://admin-policy-hub.preview.emergentagent.com/welcome  
 **Test Objective:** Verify inline CSS injection reduces pre-overlay gap to <200ms  
 **Tester:** Testing Agent (E2)
 

@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-06-10 05:02 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com
+- **URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Verify P1 auth hardening after fix - auth_reason banner behavior and login flow stability
 - **Tester**: Testing Agent (E2)
 - **Test Type**: Frontend E2E Regression Testing
@@ -85,8 +85,8 @@
 **Result**: ✅ PASS
 - Login successful - redirected to home page (/)
 - Successfully accessed /features/watch-videos
-- URL before refresh: `https://visa-polish-v2.preview.emergentagent.com/features/watch-videos`
-- URL after refresh: `https://visa-polish-v2.preview.emergentagent.com/features/watch-videos`
+- URL before refresh: `https://admin-policy-hub.preview.emergentagent.com/features/watch-videos`
+- URL after refresh: `https://admin-policy-hub.preview.emergentagent.com/features/watch-videos`
 - **No redirect loop detected** - stayed on watch-videos page after refresh
 - Screenshots:
   - `test5-watch-videos-before-refresh.png`

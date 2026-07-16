@@ -13,7 +13,7 @@ BASE_URL = BASE_URL.rstrip('/')
 
 # Test credentials from test_credentials.md
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 FREE_USER_EMAIL = "tv.free.test@realaicoach.app"
 FREE_USER_PASSWORD = "TvFree#2026!Aa"
 

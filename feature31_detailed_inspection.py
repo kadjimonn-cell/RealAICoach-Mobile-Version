@@ -5,7 +5,7 @@ Inspect the actual response structure to find policy/limit fields.
 import requests
 import json
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 CREDENTIALS = {
     "free": {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"},

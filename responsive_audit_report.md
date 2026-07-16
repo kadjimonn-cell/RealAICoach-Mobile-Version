@@ -20,7 +20,7 @@
 ## Test Configuration
 
 ### URLs Tested
-1. **External:** https://visa-polish-v2.preview.emergentagent.com
+1. **External:** https://admin-policy-hub.preview.emergentagent.com
 2. **Local:** http://127.0.0.1:3000
 
 ### Routes Tested
@@ -49,7 +49,7 @@
 
 ## PASS/FAIL Matrix
 
-### External URL: https://visa-polish-v2.preview.emergentagent.com
+### External URL: https://admin-policy-hub.preview.emergentagent.com
 
 | Route | 320x800 | 768x1024 | 1024x800 | 1440x900 |
 |-------|---------|----------|----------|----------|

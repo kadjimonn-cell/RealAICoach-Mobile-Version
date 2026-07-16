@@ -24,7 +24,7 @@ import requests
 from playwright.async_api import async_playwright
 
 
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 FREE_EMAIL = "jobs.free.final.90705154@gmail.com"
 FREE_PASSWORD = "JobsFree#2026Aa!"

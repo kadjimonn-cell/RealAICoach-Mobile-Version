@@ -39,7 +39,7 @@ def admin_token():
     """Get admin authentication token"""
     response = requests.post(
         f"{BASE_URL}/api/auth/login",
-        json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+        json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
         headers={"Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest"}
     )
     if response.status_code != 200:

@@ -26,7 +26,7 @@ def test_startup_guard_allows_noncritical_stale_preview_aliases(monkeypatch, tmp
         f"""
         REACT_APP_BACKEND_URL=https://{CURRENT_PREVIEW_HOST}
         EXPO_PUBLIC_BACKEND_URL=https://{CURRENT_PREVIEW_HOST}
-        EXPO_TUNNEL_SUBDOMAIN=visa-polish-v2
+        EXPO_TUNNEL_SUBDOMAIN=admin-policy-hub
         """,
     )
 
@@ -58,7 +58,7 @@ def test_startup_guard_fails_on_critical_preview_host_mismatch(monkeypatch, tmp_
         frontend_env,
         f"""
         REACT_APP_BACKEND_URL=https://{CURRENT_PREVIEW_HOST}
-        EXPO_TUNNEL_SUBDOMAIN=visa-polish-v2
+        EXPO_TUNNEL_SUBDOMAIN=admin-policy-hub
         """,
     )
 
@@ -86,7 +86,7 @@ def test_startup_guard_fails_on_blocked_token(monkeypatch, tmp_path: Path) -> No
         frontend_env,
         f"""
         REACT_APP_BACKEND_URL=https://{CURRENT_PREVIEW_HOST}
-        EXPO_TUNNEL_SUBDOMAIN=visa-polish-v2
+        EXPO_TUNNEL_SUBDOMAIN=admin-policy-hub
         """,
     )
 
@@ -116,10 +116,10 @@ def test_ci_guard_still_flags_stale_preview_hosts(monkeypatch, tmp_path: Path) -
         frontend_env,
         f"""
         REACT_APP_BACKEND_URL=https://{CURRENT_PREVIEW_HOST}
-        EXPO_TUNNEL_SUBDOMAIN=visa-polish-v2
+        EXPO_TUNNEL_SUBDOMAIN=admin-policy-hub
         """,
     )
-    _write_env(backend_env, "FRONTEND_BASE_URL=https://visa-polish-v2.preview.emergentagent.com")
+    _write_env(backend_env, "FRONTEND_BASE_URL=https://admin-policy-hub.preview.emergentagent.com")
     _write_env(sample_file, f"BROKER_REDIRECT=https://{STALE_PREVIEW_HOST}/api/auth/apple/callback")
 
     monkeypatch.setattr(guard, "FRONTEND_ENV", frontend_env)

@@ -17,7 +17,7 @@ if not BASE_URL:
 
 API_BASE = f"{BASE_URL}/api"
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 session = requests.Session()
 session.headers.update({"Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest"})

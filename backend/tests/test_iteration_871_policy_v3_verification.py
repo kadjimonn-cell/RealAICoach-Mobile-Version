@@ -25,7 +25,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 FREE = {"email": "p1.free.1779113329@example.com", "password": "P1Free#2026!Aa"}
 BASIC = {"email": "f22.basic.20260613@example.com", "password": "F22Basic#2026Aa"}
 PREMIUM = {"email": "f22.premium.20260613@example.com", "password": "F22Premium#2026Aa"}
-ADMIN = {"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"}
+ADMIN = {"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")}
 
 # BACKEND 1 — endpoints listed in the review request
 BACKEND1_READS = [

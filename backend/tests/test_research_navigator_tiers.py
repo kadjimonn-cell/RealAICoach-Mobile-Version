@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 # Base URL from environment
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com/api"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com/api"
 
 # Test credentials
 GUEST_USER_PREFIX = "user_test_"

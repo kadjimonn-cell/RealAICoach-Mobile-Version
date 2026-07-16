@@ -14,7 +14,7 @@ import sys
 from datetime import datetime
 
 # Test configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 API_URL = f"{BASE_URL}/api"
 
 # Test credentials

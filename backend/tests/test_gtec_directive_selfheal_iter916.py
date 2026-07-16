@@ -24,7 +24,7 @@ BACKEND_DIR = "/app/backend"
 if BACKEND_DIR not in sys.path:
     sys.path.insert(0, BACKEND_DIR)
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com").rstrip("/")
 
 DIRECTIVE_PATH = Path("/app/memory/GTEC_DIRECTIVE.md")
 PACKAGED_PATH = Path("/app/backend/assets/gtec_directive_canonical.md")
@@ -182,7 +182,7 @@ class TestBackendLiveHealth:
         })
         r = s.post(
             f"{BASE_URL}/api/auth/login",
-            json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+            json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
             timeout=20,
         )
         assert r.status_code == 200, f"Admin login failed: {r.status_code} {r.text[:200]}"

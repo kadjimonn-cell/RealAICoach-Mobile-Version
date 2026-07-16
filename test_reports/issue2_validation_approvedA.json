@@ -7,7 +7,7 @@
     "result": "18 passed"
   },
   "frontend_tests": {
-    "command": "E2E_BASE_URL=https://visa-polish-v2.preview.emergentagent.com playwright test e2e/theme-first-paint.spec.ts --grep \"@component\" --project=desktop-chromium --workers=1 --retries=1",
+    "command": "E2E_BASE_URL=https://admin-policy-hub.preview.emergentagent.com playwright test e2e/theme-first-paint.spec.ts --grep \"@component\" --project=desktop-chromium --workers=1 --retries=1",
     "result": "2 passed"
   },
   "conclusion": "Issue 2 requested controls are present and currently passing guardrails."

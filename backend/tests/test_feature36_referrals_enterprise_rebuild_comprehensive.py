@@ -19,7 +19,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 
 # Test credentials from test_credentials.md
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 BASIC_EMAIL = "f22.basic.20260613@example.com"
 BASIC_PASSWORD = "F22Basic#2026Aa"
 PREMIUM_EMAIL = "f22.premium.20260613@example.com"

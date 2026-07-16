@@ -84,7 +84,7 @@ class TestMobileMoneyGateways:
         """Login and get session token"""
         login_resp = requests.post(
             f"{BASE_URL}/api/auth/login",
-            json={"email": "admin@realaicoach.app", "password": "NewAdminPass2026!"},
+            json={"email": "admin@realaicoach.app", "password": os.environ.get("ADMIN_PASSWORD", "")},
             headers={"Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest", "X-Client-Platform": "mobile"}
         )
         if _is_env_auth_block(login_resp):

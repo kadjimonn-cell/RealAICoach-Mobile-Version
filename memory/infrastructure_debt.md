@@ -71,7 +71,7 @@ Infrastructure/DevOps Team (requires specialized Expo/Metro expertise)
 **Impact**: MEDIUM - Delays visibility of frontend changes on preview URL
 
 #### Description
-External proxy (`https://visa-polish-v2.preview.emergentagent.com`) aggressively caches old React Native web bundles, preventing updated code from being visible even when Metro successfully builds.
+External proxy (`https://admin-policy-hub.preview.emergentagent.com`) aggressively caches old React Native web bundles, preventing updated code from being visible even when Metro successfully builds.
 
 #### Workaround
 - Test against `localhost:3000` directly when possible

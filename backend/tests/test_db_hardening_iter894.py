@@ -36,7 +36,7 @@ MONGO_URL = os.environ.get("MONGO_URL")
 DB_NAME = os.environ.get("DB_NAME")
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PW = "NewAdminPass2026!"
+ADMIN_PW = os.environ.get("ADMIN_PASSWORD", "")
 FREE_EMAIL = "p1.free.1779113329@example.com"
 FREE_PW = "P1Free#2026!Aa"
 

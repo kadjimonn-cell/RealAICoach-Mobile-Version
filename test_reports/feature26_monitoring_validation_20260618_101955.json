@@ -4,7 +4,7 @@
   "feature_id": "jobs-portal",
   "test_type": "periodic_monitoring_cycle_validation",
   "protocol": "locked",
-  "base_url": "https://visa-polish-v2.preview.emergentagent.com",
+  "base_url": "https://admin-policy-hub.preview.emergentagent.com",
   "test_results": {
     "admin_login": true,
     "health_endpoint": true,

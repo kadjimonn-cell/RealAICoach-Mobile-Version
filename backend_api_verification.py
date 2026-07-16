@@ -13,7 +13,7 @@ import sys
 from typing import Dict, Any, Optional
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BACKEND_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials from test_credentials.md
 PREMIUM_USER_EMAIL = "watchvideos.premium.4dc6ab84@example.com"

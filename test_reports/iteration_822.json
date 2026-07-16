@@ -28,6 +28,6 @@
   "seed_data_creation": "Admin user now has personal_best=50, games_played=7 in flappy_bird_scores collection (up from 5 games as noted in main-agent context). No cleanup performed intentionally to preserve leaderboard for follow-up tests.",
   "retest_needed": false,
   "main_agent_can_self_test": true,
-  "context_for_next_testing_agent": "Feature 37 fully green. Backend contract tests live at /app/backend/tests/test_feature37_flappy_bird.py and can be re-run as regression. Admin state after this run: personal_best=50, games_played=7. Preview URL: https://visa-polish-v2.preview.emergentagent.com. Game canvas is HTML5 Canvas2D (not iframe); bird sprite/pipes/ground/bg PNGs load from /flappy-bird/. The game auto-progresses phase loading->ready->playing->dying->gameover; leaving the bird alone triggers game-over in ~2-3s + ~1s dying anim.",
+  "context_for_next_testing_agent": "Feature 37 fully green. Backend contract tests live at /app/backend/tests/test_feature37_flappy_bird.py and can be re-run as regression. Admin state after this run: personal_best=50, games_played=7. Preview URL: https://admin-policy-hub.preview.emergentagent.com. Game canvas is HTML5 Canvas2D (not iframe); bird sprite/pipes/ground/bg PNGs load from /flappy-bird/. The game auto-progresses phase loading->ready->playing->dying->gameover; leaving the bird alone triggers game-over in ~2-3s + ~1s dying anim.",
   "rca of the issue": "N/A — no bugs detected."
 }

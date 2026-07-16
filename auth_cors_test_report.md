@@ -1,7 +1,7 @@
 # Backend Auth CORS Regression Test Report
 **Date**: 2026-06-12 07:42 UTC  
 **Tester**: Testing Agent (E2)  
-**Backend URL**: https://visa-polish-v2.preview.emergentagent.com
+**Backend URL**: https://admin-policy-hub.preview.emergentagent.com
 
 ## Executive Summary
 
@@ -36,7 +36,7 @@ access-control-allow-credentials: true
 
 **Affected Origins**:
 - Shell origins (https://app.emergent.sh, https://www.emergent.sh)
-- Backend origin (https://visa-polish-v2.preview.emergentagent.com)
+- Backend origin (https://admin-policy-hub.preview.emergentagent.com)
 - All other origins
 
 ### ❌ FAIL: Auth Register Endpoint CORS Headers

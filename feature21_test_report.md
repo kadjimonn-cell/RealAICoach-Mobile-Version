@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-06-09 06:43 UTC
-- **Base URL**: https://visa-polish-v2.preview.emergentagent.com
+- **Base URL**: https://admin-policy-hub.preview.emergentagent.com
 - **Objective**: Validate Feature 21 (Watch Videos) backend after Phase-0 contract stabilization
 - **Tester**: Testing Agent (E2)
 - **Test Credentials**: admin@realaicoach.app / NewAdminPass2026!
@@ -41,7 +41,7 @@
 
 **GET /api/videos/health (unauth)**
 ```bash
-curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/health"
+curl -X GET "https://admin-policy-hub.preview.emergentagent.com/api/videos/health"
 ```
 **Response:**
 ```json
@@ -51,7 +51,7 @@ curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/health"
 
 **GET /api/videos/bootstrap (unauth)**
 ```bash
-curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/bootstrap"
+curl -X GET "https://admin-policy-hub.preview.emergentagent.com/api/videos/bootstrap"
 ```
 **Response:**
 ```json
@@ -63,7 +63,7 @@ curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/bootstr
 
 **POST /api/auth/login**
 ```bash
-curl -X POST "https://visa-polish-v2.preview.emergentagent.com/api/auth/login" \
+curl -X POST "https://admin-policy-hub.preview.emergentagent.com/api/auth/login" \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@realaicoach.app","password":"NewAdminPass2026!"}'
 ```
@@ -87,7 +87,7 @@ curl -X POST "https://visa-polish-v2.preview.emergentagent.com/api/auth/login" \
 
 **GET /api/videos/health (auth)**
 ```bash
-curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/health" \
+curl -X GET "https://admin-policy-hub.preview.emergentagent.com/api/videos/health" \
   -b cookies.txt
 ```
 **Response:** 200 ✅
@@ -108,7 +108,7 @@ curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/health"
 
 **GET /api/videos/bootstrap (auth)**
 ```bash
-curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/bootstrap" \
+curl -X GET "https://admin-policy-hub.preview.emergentagent.com/api/videos/bootstrap" \
   -b cookies.txt
 ```
 **Response:** 200 ✅
@@ -142,7 +142,7 @@ curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/bootstr
 
 **GET /api/videos/catalog?sort_by=latest&limit=12 (auth)**
 ```bash
-curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/catalog?sort_by=latest&limit=12" \
+curl -X GET "https://admin-policy-hub.preview.emergentagent.com/api/videos/catalog?sort_by=latest&limit=12" \
   -b cookies.txt
 ```
 **Response:** 200 ✅
@@ -178,7 +178,7 @@ curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/catalog
 
 **GET /api/videos/recommendations/reasons?limit=8 (auth)**
 ```bash
-curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/recommendations/reasons?limit=8" \
+curl -X GET "https://admin-policy-hub.preview.emergentagent.com/api/videos/recommendations/reasons?limit=8" \
   -b cookies.txt
 ```
 **Response:** 200 ✅
@@ -210,7 +210,7 @@ curl -X GET "https://visa-polish-v2.preview.emergentagent.com/api/videos/recomme
 
 **POST /api/videos/watch**
 ```bash
-curl -X POST "https://visa-polish-v2.preview.emergentagent.com/api/videos/watch" \
+curl -X POST "https://admin-policy-hub.preview.emergentagent.com/api/videos/watch" \
   -H "Content-Type: application/json" \
   -H "X-Requested-With: XMLHttpRequest" \
   -b cookies.txt \

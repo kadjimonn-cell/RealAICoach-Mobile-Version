@@ -56,6 +56,6 @@
       "mobile_390": {"horizontal_overflow": false, "status": "PASS"},
       "desktop_1365": {"horizontal_overflow": false, "status": "PASS"}
     },
-    "destination_url_format": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=welcome-capability-command-center&return_to=%2Fwelcome%3Fsection%3Dfeatures"
+    "destination_url_format": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=welcome-capability-command-center&return_to=%2Fwelcome%3Fsection%3Dfeatures"
   }
 }

@@ -25,7 +25,7 @@ PREVIEW_DOMAIN = (
 
 # Admin credentials
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 @lru_cache(maxsize=1)

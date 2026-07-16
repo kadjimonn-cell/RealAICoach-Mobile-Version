@@ -1,5 +1,5 @@
 {
-  "base": "https://visa-polish-v2.preview.emergentagent.com",
+  "base": "https://admin-policy-hub.preview.emergentagent.com",
   "user": {
     "email": "fedapay.live.e2e.eb742407bf@example.com",
     "password": "FedapayLive#2026Aa!",
@@ -92,7 +92,7 @@
     {
       "step": "callback_basic",
       "status_code": 307,
-      "location": "https://visa-polish-v2.preview.emergentagent.com/subscription/payment-result?gateway=fedapay&status=approved&tx_id=MMSUB_299497498D",
+      "location": "https://admin-policy-hub.preview.emergentagent.com/subscription/payment-result?gateway=fedapay&status=approved&tx_id=MMSUB_299497498D",
       "is_redirect": true
     },
     {
@@ -110,7 +110,7 @@
     {
       "step": "callback_premium",
       "status_code": 307,
-      "location": "https://visa-polish-v2.preview.emergentagent.com/subscription/payment-result?gateway=fedapay&status=approved&tx_id=MMSUB_937FEE2921",
+      "location": "https://admin-policy-hub.preview.emergentagent.com/subscription/payment-result?gateway=fedapay&status=approved&tx_id=MMSUB_937FEE2921",
       "is_redirect": true
     }
   ]

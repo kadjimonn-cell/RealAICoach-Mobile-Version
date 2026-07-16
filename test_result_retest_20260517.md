@@ -2,7 +2,7 @@
 
 ## Test Information
 - **Date**: 2026-05-17 05:01 UTC
-- **URL**: https://visa-polish-v2.preview.emergentagent.com/welcome
+- **URL**: https://admin-policy-hub.preview.emergentagent.com/welcome
 - **Objective**: Retest overlay timing after immediate DOM mask fix implementation
 - **Tester**: Testing Agent (E2)
 - **Previous Test Result**: FAIL (1,843ms delay before overlay)
@@ -15,7 +15,7 @@
 4. Report pass/fail with precise timings
 
 ## Test Environment
-- **Frontend URL**: https://visa-polish-v2.preview.emergentagent.com/welcome
+- **Frontend URL**: https://admin-policy-hub.preview.emergentagent.com/welcome
 - **Browser**: Chromium (Playwright)
 - **Viewport**: Desktop (1920x1080)
 - **Initial Language**: English (EN)

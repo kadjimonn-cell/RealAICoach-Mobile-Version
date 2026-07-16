@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = process.env.PLAYWRIGHT_BASE_URL || 'https://visa-polish-v2.preview.emergentagent.com';
+const BASE = process.env.PLAYWRIGHT_BASE_URL || 'https://admin-policy-hub.preview.emergentagent.com';
 
 test.describe('Preview Host Recovery Banner', () => {
   test('shows one-load recovery banner when wrapper path is recovered', async ({ page }) => {

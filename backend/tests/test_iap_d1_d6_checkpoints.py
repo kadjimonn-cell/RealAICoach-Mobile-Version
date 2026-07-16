@@ -26,7 +26,7 @@ NON_ADMIN_PASSWORD = "NovaV2#2026!Aa"
 
 # Admin credentials for comparison
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 def _is_env_admin_block(response: requests.Response) -> bool:

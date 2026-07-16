@@ -19,7 +19,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstr
 BACKEND_ENV = "/app/backend/.env"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PW = "NewAdminPass2026!"
+ADMIN_PW = os.environ.get("ADMIN_PASSWORD", "")
 ADMIN_USER_ID = "user_4b5a68d2f7c6"
 FREE_EMAIL = "p1.free.1779113329@example.com"
 FREE_PW = "P1Free#2026!Aa"

@@ -97,13 +97,13 @@
   "main_agent_can_self_test": true,
   "context_for_next_testing_agent": "Public entry register-first routing is working correctly. Mini-app aliases (/mini-apps, /mini-apps/creator-exchange, /mini-apps/job-platform) and footer protected links (Learning Hub, Content Library, My Analytics) all redirect unauthenticated visitors to /auth/register with proper source tracking and return_to context. RBAC guardrails remain intact - this is only a public pre-auth routing hygiene fix that does not introduce any protected-route bypass.",
   "external_preview_verification": {
-    "url": "https://visa-polish-v2.preview.emergentagent.com",
+    "url": "https://admin-policy-hub.preview.emergentagent.com",
     "status": "VERIFIED",
-    "mini_apps_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps&return_to=%2Fmini-apps",
-    "creator_exchange_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
-    "job_platform_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=mini-apps-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
-    "footer_learning_hub_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
-    "footer_content_library_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-contentlibrary&return_to=%2Fcontent-library",
-    "footer_my_analytics_redirect": "https://visa-polish-v2.preview.emergentagent.com/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics"
+    "mini_apps_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=mini-apps&return_to=%2Fmini-apps",
+    "creator_exchange_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=mini-apps-creator-exchange&return_to=%2Fmini-apps%2Fcreator-exchange",
+    "job_platform_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=mini-apps-job-platform&return_to=%2Fmini-apps%2Fjob-platform",
+    "footer_learning_hub_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=footer-learninghub&return_to=%2Fai-learning-hub",
+    "footer_content_library_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=footer-contentlibrary&return_to=%2Fcontent-library",
+    "footer_my_analytics_redirect": "https://admin-policy-hub.preview.emergentagent.com/auth/register?source=footer-myanalytics&return_to=%2Fmy-analytics"
   }
 }

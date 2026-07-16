@@ -1,7 +1,7 @@
 # Feature 26 (Jobs Portal) Backend Monitoring Verification - PASS ✅
 
 **Test Date**: 2026-06-18 00:30 UTC  
-**Base URL**: https://visa-polish-v2.preview.emergentagent.com  
+**Base URL**: https://admin-policy-hub.preview.emergentagent.com  
 **Admin**: admin@realaicoach.app  
 **Locked Protocol**: feature_number=26, feature_id=jobs-portal
 

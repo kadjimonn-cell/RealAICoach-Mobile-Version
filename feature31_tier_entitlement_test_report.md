@@ -2,7 +2,7 @@
 
 **Test Date**: 2026-06-23 05:12 UTC  
 **Test Type**: Root-Cause Patch Verification  
-**Base URL**: https://visa-polish-v2.preview.emergentagent.com  
+**Base URL**: https://admin-policy-hub.preview.emergentagent.com  
 **Tester**: Testing Agent (E2)
 
 ## Test Credentials

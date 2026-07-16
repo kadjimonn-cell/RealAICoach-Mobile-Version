@@ -20,7 +20,7 @@ from urllib.parse import urlparse, parse_qs
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # Expected provider-verified base from config include list (security invariant)
 EXPECTED_APPLE_PROVIDER_VERIFIED_BASE = "https://realaicoach.app"

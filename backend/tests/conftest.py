@@ -1,5 +1,9 @@
 import os
 import itertools
+
+from dotenv import load_dotenv
+
+load_dotenv("/app/backend/.env")
 from pathlib import Path
 from urllib.parse import urlparse
 

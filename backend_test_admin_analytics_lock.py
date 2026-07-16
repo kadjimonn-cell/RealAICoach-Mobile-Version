@@ -2,7 +2,7 @@
 """
 Backend Test - Admin Analytics/Insights Global Strict Lock
 Verify ALL /api/admin/*analytics* and /api/admin/*insights* are strict admin-only
-Target: https://visa-polish-v2.preview.emergentagent.com
+Target: https://admin-policy-hub.preview.emergentagent.com
 Date: 2026-06-24
 """
 
@@ -11,7 +11,7 @@ import json
 import sys
 
 # Configuration
-BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials
 ADMIN_EMAIL = "admin@realaicoach.app"

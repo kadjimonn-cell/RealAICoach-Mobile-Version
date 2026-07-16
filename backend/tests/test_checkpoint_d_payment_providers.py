@@ -9,7 +9,7 @@ import requests
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
-    BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+    BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Test credentials
 TEST_EMAIL = "p1.free.1779113329@example.com"

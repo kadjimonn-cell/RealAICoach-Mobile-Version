@@ -35,7 +35,7 @@ MONGO_URL = os.environ.get("MONGO_URL") or "mongodb://localhost:27017"
 DB_NAME = os.environ.get("DB_NAME") or "realtalk_db"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 FREE_EMAIL = "p1.free.1779113329@example.com"
 FREE_PASSWORD = "P1Free#2026!Aa"
 

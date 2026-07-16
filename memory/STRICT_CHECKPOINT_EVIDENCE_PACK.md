@@ -1,7 +1,7 @@
 # Strict Checkpoint Evidence Pack — Checkpoint C (Final)
 
 Generated: 2026-05-17T21:16:15.617995+00:00
-Backend URL: https://visa-polish-v2.preview.emergentagent.com
+Backend URL: https://admin-policy-hub.preview.emergentagent.com
 
 ## C1 — Wave 0 Stabilization
 - Alpha runtime fixed at entrypoint: `frontend/index.js` now assigns `globalThis.__alphaColor` **before** `ExpoRoot` route module loading.

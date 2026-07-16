@@ -10,7 +10,7 @@ import uuid
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
-    BASE_URL = "https://visa-polish-v2.preview.emergentagent.com"
+    BASE_URL = "https://admin-policy-hub.preview.emergentagent.com"
 
 # Guest user ID for testing (matches GUEST_ID_RE pattern: user_[a-zA-Z0-9_-]{12,80})
 TEST_GUEST_ID = f"user_test_{uuid.uuid4().hex[:16]}"

@@ -4,7 +4,7 @@ Test Apple SSO Preflight Parser Fix - Iteration 137
 Tests the fix for preflight parser truncation causing false 'unverifiable' decisions.
 Expected post-fix behavior:
 - Apple login redirects to appleid.apple.com/auth/authorize (not local fail-close)
-- redirect_uri in Apple authorize URL is https://visa-polish-v2.preview.emergentagent.com/api/auth/apple/callback
+- redirect_uri in Apple authorize URL is https://admin-policy-hub.preview.emergentagent.com/api/auth/apple/callback
 - GET /api/admin/sso-status shows Apple status configured with preflight selected_via=apple_authorize_preflight
 - apple_redirect_preflight probe includes signal=accepted for active preview callback
 - Microsoft login regression unaffected
@@ -18,8 +18,8 @@ from urllib.parse import urlparse, parse_qs
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
-EXPECTED_PREVIEW_CALLBACK = "https://visa-polish-v2.preview.emergentagent.com/api/auth/apple/callback"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+EXPECTED_PREVIEW_CALLBACK = "https://admin-policy-hub.preview.emergentagent.com/api/auth/apple/callback"
 
 
 @lru_cache(maxsize=1)

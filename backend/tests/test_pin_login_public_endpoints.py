@@ -21,7 +21,7 @@ LOOKUP_URL = f"{BASE_URL}/api/auth/lookup"
 LOGIN_URL = f"{BASE_URL}/api/auth/login"
 
 ADMIN_EMAIL = "admin@realaicoach.app"
-ADMIN_PASSWORD = "NewAdminPass2026!"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 @pytest.fixture(scope="module")

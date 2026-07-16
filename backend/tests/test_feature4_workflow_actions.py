@@ -15,7 +15,7 @@ import pytest
 import requests
 
 # Test Configuration
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://visa-polish-v2.preview.emergentagent.com")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://admin-policy-hub.preview.emergentagent.com")
 API_BASE = f"{BASE_URL}/api"
 
 # Generate unique guest user ID for this test run

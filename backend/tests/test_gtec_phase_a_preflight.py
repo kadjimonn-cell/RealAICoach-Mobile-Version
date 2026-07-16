@@ -62,7 +62,7 @@ async def test_external_proxy_health_retries_429_as_transient(monkeypatch):
 
     monkeypatch.setattr(svc, "_probe_with_transient_retry", fake_probe)
 
-    result = await svc.get_external_host_proxy_health("https://visa-polish-v2.preview.emergentagent.com")
+    result = await svc.get_external_host_proxy_health("https://admin-policy-hub.preview.emergentagent.com")
     checks = result.get("checks") or []
     preview = next((c for c in checks if c.get("path") == "/_preview/health"), {})
 
@@ -94,7 +94,7 @@ async def test_external_proxy_health_marks_unstable_when_429_persists(monkeypatc
 
     monkeypatch.setattr(svc, "_probe_with_transient_retry", fake_probe)
 
-    result = await svc.get_external_host_proxy_health("https://visa-polish-v2.preview.emergentagent.com")
+    result = await svc.get_external_host_proxy_health("https://admin-policy-hub.preview.emergentagent.com")
     checks = result.get("checks") or []
     preview = next((c for c in checks if c.get("path") == "/_preview/health"), {})
 

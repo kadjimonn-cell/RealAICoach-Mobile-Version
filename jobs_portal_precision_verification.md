@@ -12,7 +12,7 @@
 
 The P1 Jobs Portal destination refinement implementation is **COMPLETE and CORRECT** based on comprehensive static code analysis. All 6 precision chips are implemented with correct test IDs, click behavior routing is properly configured, and employer funnel focus stage mapping is correctly wired to the drilldownFilter system.
 
-**Live E2E testing blocked:** External preview URL (https://visa-polish-v2.preview.emergentagent.com) returns loading iframe, preventing runtime validation. However, code-level verification confirms all requirements are met.
+**Live E2E testing blocked:** External preview URL (https://admin-policy-hub.preview.emergentagent.com) returns loading iframe, preventing runtime validation. However, code-level verification confirms all requirements are met.
 
 ---
 
@@ -368,7 +368,7 @@ const clearFunnelFocus = () => {
 
 ### External Preview URL Check:
 ```bash
-$ curl -s https://visa-polish-v2.preview.emergentagent.com | head -20
+$ curl -s https://admin-policy-hub.preview.emergentagent.com | head -20
 <!DOCTYPE html>
 <html lang="en">
 <head>
