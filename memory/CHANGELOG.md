@@ -385,3 +385,7 @@ KNOWN NOISE (pre-existing, non-blocking): /api/auth/me 401/403 console noise bef
 - Disk now 78%. Revert committed (4e8894f). USER must Save to GitHub again + redeploy.
 - Verified: testing_agent iteration_922 — 100% backend (35/35) + 100% frontend.
 - NOTE: PRD entry about Mono maintenance rules is now obsolete — structure is Expo-only again.
+
+## 2026-07-16 — Daily SSO Callback Liveness Probe + Safe Auto-Fix (Feature)
+- New scheduler job scheduled_sso_callback_liveness_probe (scheduler_jobs/sso_auth_health.py, CronTrigger 06:20 UTC, id sso_callback_liveness_daily): probes derived {base}/api/auth/{microsoft,apple}/callback reachability, detects registry drift vs MS/APPLE_SSO_REGISTERED_REDIRECT_URIS, applies additive-only auto-fix (env + backend/.env), alerts Ops Console (emit_realtime_alert, severity=warning) with exact URIs to register in provider consoles, records heartbeat + report doc (sso_callback_liveness_reports).
+- Verified: testing_agent iteration_923 (100% — happy path, mismatch+auto-fix cycle with env restoration, alert emission, scheduler registration, heartbeat, regression). Minor severity fix applied post-test.

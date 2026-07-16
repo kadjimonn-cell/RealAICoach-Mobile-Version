@@ -1049,7 +1049,7 @@ async def scheduled_sso_callback_liveness_probe():
                 )
             await emit_realtime_alert(
                 alert_type="sso_callback_liveness",
-                severity="warning" if failures else "info",
+                severity="warning",
                 title="SSO callback liveness: issues detected",
                 message=" ".join(parts),
             )
